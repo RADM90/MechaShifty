@@ -400,6 +400,13 @@ svg.chart rect.hit { fill: transparent; }
 .kv { display: grid; grid-template-columns: 84px 1fr; gap: 6px 10px; font-size: 13px; }
 .kv dt { color: var(--ink-muted); font-size: 12px; }
 .kv dd { margin: 0; }
+.aliases { display: flex; flex-wrap: wrap; gap: 5px; }
+.alias {
+  font-size: 12px; padding: 2px 8px; border-radius: 999px;
+  background: var(--bg-raise); border: 1px solid var(--line);
+  color: var(--ink-2);
+}
+
 .hist { display: grid; gap: 6px; }
 .hist-item {
   border: 1px solid var(--line); border-radius: var(--r-s); padding: 7px 9px; font-size: 12px;
