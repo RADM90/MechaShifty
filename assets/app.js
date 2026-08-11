@@ -112,6 +112,53 @@ function statusOf(p, now = Date.now()) {
   return 'ongoing';
 }
 
+/* ── 검색 (초성 지원) ──────────────────────────────────────────
+   한글 음절은 U+AC00 부터 초성 하나당 588자(중성 21 × 종성 28)씩
+   연속으로 배치돼 있다. 그래서 초성 자모 하나는 곧 588자짜리 범위
+   하나이고, 쿼리를 문자 단위로 정규식에 옮기면 초성/완성형 혼용이
+   자연스럽게 처리된다. 'ㄹㅍ' → /[ㄹ라-맇][ㅍ파-핗]/ → '라피'.       */
+const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ',
+  'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
+const HANGUL_BASE = 0xAC00, PER_CHO = 588;
+
+/* '라피 : 레드 후드' 처럼 구분자가 낀 이름을 '라피레드후드' 로 붙여서
+   비교한다 — 사용자가 띄어쓰기/콜론을 그대로 칠 이유가 없다. */
+const compact = s => s.replace(/[\s:·・]/g, '');
+const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const u = n => '\\u' + n.toString(16).padStart(4, '0');
+
+function buildMatcher(raw) {
+  const q = compact(raw.trim());
+  if (!q) return null;
+
+  const chars = [...q];
+  if (!chars.some(c => CHO.includes(c))) {
+    const lower = q.toLowerCase();
+    return s => compact(s).toLowerCase().includes(lower);
+  }
+
+  const pattern = chars.map(ch => {
+    const i = CHO.indexOf(ch);
+    if (i < 0) return escapeRe(ch);
+    const start = HANGUL_BASE + i * PER_CHO;
+    // 자모 그 자체 + 그 초성으로 시작하는 완성형 음절 전체
+    return `[${ch}${u(start)}-${u(start + PER_CHO - 1)}]`;
+  }).join('');
+
+  let re;
+  try { re = new RegExp(pattern, 'i'); } catch { return () => true; }
+  return s => re.test(compact(s));
+}
+
+/* state.q 가 바뀔 때만 다시 만든다 (행마다 정규식을 새로 짜지 않게) */
+function matcher() {
+  if (state._q !== state.q) {
+    state._q = state.q;
+    state._match = buildMatcher(state.q);
+  }
+  return state._match;
+}
+
 /* ── 필터 ─────────────────────────────────────────────────────
    except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용.     */
 function matchNikke(n, except) {
@@ -124,14 +171,12 @@ function matchNikke(n, except) {
   if (state.overspec && n.corporation_sub_type !== 'OVERSPEC') return false;
   if (state.relFrom && (!n.release_date || n.release_date < state.relFrom)) return false;
   if (state.relTo && (!n.release_date || n.release_date > state.relTo)) return false;
-  if (state.q) {
-    const q = state.q.toLowerCase();
-    const hit = Object.values(n.name).some(v => v && v.toLowerCase().includes(q))
-      || (n.squad || '').toLowerCase().includes(q);
-    if (!hit) return false;
-  }
+  const m = matcher();
+  if (m && !nikkeText(n).some(m)) return false;
   return true;
 }
+
+const nikkeText = n => [n.name.ko, n.name.en, n.name.ja, n.squad].filter(Boolean);
 
 function matchPickup(p, except) {
   const n = p.rid ? byRid.get(p.rid) : null;
@@ -158,11 +203,8 @@ function matchPickup(p, except) {
   if (state.rerun === 'first' && p.rerun_of != null) return false;
   if (state.rerun === 'rerun' && p.rerun_of == null) return false;
 
-  if (state.q) {
-    const q = state.q.toLowerCase();
-    const names = [p.name_ko, ...(n ? Object.values(n.name) : [])];
-    if (!names.some(v => v && v.toLowerCase().includes(q))) return false;
-  }
+  const m = matcher();
+  if (m && ![p.name_ko, ...(n ? nikkeText(n) : [])].some(m)) return false;
   return true;
 }
 
