@@ -10,8 +10,9 @@
 
 const NS = 'http://www.w3.org/2000/svg';
 
-/* 아이콘 팩토리는 renderStats 의 ctx 로 넘겨받는다 (app.js 와 순환 import 회피) */
+/* 아이콘 팩토리와 번역기는 renderStats 의 ctx 로 넘겨받는다 (app.js 와 순환 import 회피) */
 let makeIcon = null;
+let t = k => k;
 
 /* 순차 램프는 CSS 토큰(--ramp-0 … --ramp-10)에서 읽는다. 방향이 테마마다
    반대라서다 — 라이트는 밝음→어두움, 다크는 어두움→밝음. 어느 쪽이든
@@ -104,7 +105,7 @@ function barList(items, total, colorOf, iconAxis) {
     row.appendChild(v);
 
     const pct = total ? (it.value / total * 100).toFixed(1) : '0.0';
-    bindTip(row, `${it.label} — <b>${it.value}</b> (${pct}%)`);
+    bindTip(row, t('st.tipCount', it.label, it.value, pct));
     box.appendChild(row);
   }
   return box;
@@ -149,7 +150,7 @@ function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis)
         td.style.background = step.bg;
         td.style.color = step.ink;
       }
-      bindTip(td, `${labelRow(r)} × ${labelCol(c)} — <b>${v}</b>명`);
+      bindTip(td, t('st.tipCell', labelRow(r), labelCol(c), v));
       tr.appendChild(td);
     }
     tb.appendChild(tr);
@@ -162,13 +163,13 @@ function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis)
 
   const lg = el('div', 'legend');
   const s = el('span');
-  s.appendChild(el('span', null, '적음'));
+  s.appendChild(el('span', null, t('st.few')));
   for (const step of [ramp[1], ramp[4], ramp[7], ramp[10]]) {
     const i = document.createElement('i');
     i.style.background = step.bg;
     s.appendChild(i);
   }
-  s.appendChild(el('span', null, '많음'));
+  s.appendChild(el('span', null, t('st.many')));
   lg.appendChild(s);
   wrap.appendChild(lg);
   return wrap;
@@ -223,14 +224,12 @@ function columnChart(points, fmtTip) {
 
 /* ── 통계 렌더 ────────────────────────────────────────────── */
 export function renderStats(root, nikkes, pickups, ctx) {
-  const { L, AXES, ELEMENT_COLOR, statusOf } = ctx;
+  const { L, AXES, ELEMENT_COLOR, statusOf, axisLabel } = ctx;
   makeIcon = ctx.iconEl || null;
+  t = ctx.t;
   root.textContent = '';
 
-  root.appendChild(Object.assign(el('p', 'stats-head'), {
-    textContent: `현재 필터 기준 · 니케 ${nikkes.length}명 · 픽업 배너 ${pickups.length}개`
-      + ` — 필터를 바꾸면 아래 모든 차트가 함께 좁혀집니다.`,
-  }));
+  root.appendChild(el('p', 'stats-head', t('st.head', nikkes.length, pickups.length)));
 
   const cards = el('div', 'cards');
   root.appendChild(cards);
@@ -246,51 +245,37 @@ export function renderStats(root, nikkes, pickups, ctx) {
   };
 
   /* 1. 니케 축별 분포 */
-  const dist = [
-    ['corporation', '기업별 분포'],
-    ['element', '속성별 분포'],
-    ['class', '클래스별 분포'],
-    ['weapon_type', '무기별 분포'],
-    ['burst', '버스트별 분포'],
-    ['rarity', '등급별 분포'],
-  ];
-  for (const [axis, title] of dist) {
+  const dist = ['corporation', 'element', 'class', 'weapon_type', 'burst', 'rarity'];
+  for (const axis of dist) {
+    const title = t('st.byAxis', axisLabel(axis));
     const m = countBy(nikkes, axis);
     const order = AXES[axis]?.order || [...m.keys()];
     const items = order.filter(k => m.has(k)).map(k => ({ key: k, label: L(axis, k), value: m.get(k) }));
-    const c = card(title, `${nikkes.length}명 기준`);
+    const c = card(title, t('st.basis', nikkes.length));
     c.appendChild(barList(items, nikkes.length,
       axis === 'element' ? (it => ELEMENT_COLOR[it.key]) : null, axis));
     if (axis === 'element') {
       c.appendChild(Object.assign(el('p', 'hint'), {
-        textContent: '막대 색은 검증된 팔레트이고, 아이콘은 게임 내 아이콘입니다. 둘 다 항상 속성 이름과 함께 표시됩니다.',
+        textContent: t('st.elementNote'),
         style: 'margin:10px 0 0',
       }));
     }
     cards.appendChild(c);
   }
 
-  /* 공격타입 + 스쿼드 TOP */
-  {
-    const m = countBy(nikkes, 'attack_type');
-    const items = ['Metal', 'Energy', 'Bio'].filter(k => m.has(k))
-      .map(k => ({ key: k, label: L('attack_type', k), value: m.get(k) }));
-    const c = card('공격타입별 분포', `${nikkes.length}명 기준`);
-    c.appendChild(barList(items, nikkes.length));
-    cards.appendChild(c);
-  }
+  /* 스쿼드 TOP */
   {
     const m = countBy(nikkes, 'squad');
     const items = [...m.entries()].sort((a, b) => b[1] - a[1]).slice(0, 12)
       .map(([k, v]) => ({ key: k, label: L('squad', k), value: v }));
-    const c = card('스쿼드 TOP 12', `총 ${m.size}개 스쿼드`);
+    const c = card(t('st.squadTop'), t('st.squadTotal', m.size));
     c.appendChild(barList(items, nikkes.length));
     cards.appendChild(c);
   }
 
   /* 2. 교차표 */
   {
-    const c = card('속성 × 클래스', '칸의 숫자는 해당 조합의 니케 수', true);
+    const c = card(t('st.cross', axisLabel('element'), axisLabel('class')), t('st.crossHint'), true);
     c.appendChild(heatmap(
       AXES.element.order, AXES.class.order,
       (r, col) => nikkes.filter(n => n.element === r && n.class === col).length,
@@ -299,7 +284,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
   {
-    const c = card('기업 × 무기', '칸의 숫자는 해당 조합의 니케 수', true);
+    const c = card(t('st.cross', axisLabel('corporation'), axisLabel('weapon_type')), t('st.crossHint'), true);
     c.appendChild(heatmap(
       AXES.corporation.order, AXES.weapon_type.order,
       (r, col) => nikkes.filter(n => n.corporation === r && n.weapon_type === col).length,
@@ -326,19 +311,19 @@ export function renderStats(root, nikkes, pickups, ctx) {
         }
       }
     }
-    const c = card('분기별 출시 추이', '가로축은 분기, 세로축은 출시된 니케 수', true);
+    const c = card(t('st.quarter'), t('st.quarterHint'), true);
     if (pts.length) {
-      c.appendChild(columnChart(pts, p => `${p.label} — <b>${p.value}</b>명`));
+      c.appendChild(columnChart(pts, p => t('st.tipQuarter', p.label, p.value)));
       const byYear = new Map();
       for (const n of dated) {
         const y = n.release_date.slice(0, 4);
         byYear.set(y, (byYear.get(y) || 0) + 1);
       }
       c.appendChild(barList(
-        [...byYear.entries()].sort().map(([k, v]) => ({ key: k, label: k + '년', value: v })),
+        [...byYear.entries()].sort().map(([k, v]) => ({ key: k, label: t('st.yearLabel', k), value: v })),
         dated.length,
       ));
-    } else c.appendChild(el('p', 'hint', '해당 조건의 니케가 없습니다.'));
+    } else c.appendChild(el('p', 'hint', t('st.empty')));
     cards.appendChild(c);
   }
 
@@ -347,7 +332,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     const m = countBy(pickups, 'availability');
     const items = ['standard', 'limited'].filter(k => m.has(k))
       .map(k => ({ key: k, label: L('availability', k), value: m.get(k) }));
-    const c = card('한정 / 상시 비율', `${pickups.length}개 배너 기준`);
+    const c = card(t('st.avail'), t('st.basisBanner', pickups.length));
     c.appendChild(barList(items, pickups.length,
       it => it.key === 'limited' ? 'var(--series-2)' : 'var(--series-1)'));
     cards.appendChild(c);
@@ -355,19 +340,17 @@ export function renderStats(root, nikkes, pickups, ctx) {
   {
     const m = countBy(pickups, p => p.tag ?? '_none');
     const items = [...m.entries()].sort((a, b) => b[1] - a[1])
-      .map(([k, v]) => ({ key: k, label: k === '_none' ? '일반' : L('tag', k), value: v }));
-    const c = card('픽업 구분별 분포', `${pickups.length}개 배너 기준`);
+      .map(([k, v]) => ({ key: k, label: k === '_none' ? ctx.statusLabel('_none') : L('tag', k), value: v }));
+    const c = card(t('st.tagDist'), t('st.basisBanner', pickups.length));
     c.appendChild(barList(items, pickups.length));
     cards.appendChild(c);
   }
   {
     const m = countBy(pickups, p => statusOf(p));
     const items = ['ongoing', 'upcoming', 'ended'].filter(k => m.has(k)).map(k => ({
-      key: k,
-      label: { ongoing: '진행중', upcoming: '예정', ended: '종료' }[k],
-      value: m.get(k),
+      key: k, label: ctx.statusLabel(k), value: m.get(k),
     }));
-    const c = card('배너 진행 상태', '브라우저 현재 시각 기준');
+    const c = card(t('st.status'), t('st.statusHint'));
     c.appendChild(barList(items, pickups.length,
       it => it.key === 'ongoing' ? 'var(--st-good)'
         : it.key === 'upcoming' ? 'var(--st-warn)' : 'var(--ink-muted)'));
@@ -387,12 +370,12 @@ export function renderStats(root, nikkes, pickups, ctx) {
     const bins = [[0, 6], [6, 12], [12, 18], [18, 24], [24, 36], [36, 999]];
     const items = bins.map(([a, b]) => ({
       key: `${a}`,
-      label: b === 999 ? `${a}개월+` : `${a}~${b}개월`,
+      label: t('st.months', a, b === 999 ? null : b),
       value: gaps.filter(g => g >= a && g < b).length,
     }));
-    const c = card('복각 주기', gaps.length
-      ? `복각 ${gaps.length}건 · 첫 픽업 이후 경과 개월 (중앙값 ${median(gaps)}개월)`
-      : '현재 조건에 복각 배너가 없습니다');
+    const c = card(t('st.gap'), gaps.length
+      ? t('st.gapHint', gaps.length, median(gaps))
+      : t('st.gapNone'));
     if (gaps.length) c.appendChild(barList(items, gaps.length));
     cards.appendChild(c);
   }
@@ -400,10 +383,10 @@ export function renderStats(root, nikkes, pickups, ctx) {
   /* 6. 픽업 없는 니케 */
   {
     const none = nikkes.filter(n => !pickups.some(p => p.rid === n.rid));
-    const c = card('픽업 이력 없음', '런칭 유닛이거나 가챠 배너를 받은 적 없는 니케');
+    const c = card(t('st.noBanner'), t('st.noBannerHint'));
     c.appendChild(barList([
-      { key: 'has', label: '픽업 있음', value: nikkes.length - none.length },
-      { key: 'none', label: '픽업 없음', value: none.length },
+      { key: 'has', label: t('st.hasBanner'), value: nikkes.length - none.length },
+      { key: 'none', label: t('st.hasNoBanner'), value: none.length },
     ], nikkes.length));
     cards.appendChild(c);
   }
