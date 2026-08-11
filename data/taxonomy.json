@@ -220,65 +220,315 @@
   }
  },
  "squad": {
-  "777.0": {
+  "Counters": {
+   "ko": "카운터스",
+   "en": "Counters",
+   "ja": "カウンターズ"
+  },
+  "Scouting": {
+   "ko": "스카우팅",
+   "en": "The Scouts",
+   "ja": "スカウティング"
+  },
+  "Triangle": {
+   "ko": "트라이앵글",
+   "en": "Triangle",
+   "ja": "トライアングル"
+  },
+  "PrimaDonna": {
+   "ko": "프리마돈나",
+   "en": "Prima Donna",
+   "ja": "プリマドンナ"
+  },
+  "Overseer": {
+   "ko": "오버시어",
+   "en": "Overseer",
+   "ja": "オーバーシアー"
+  },
+  "SiegePerilous": {
+   "ko": "시지 패러리스",
+   "en": "Perilous Siege",
+   "ja": "シージペリラス"
+  },
+  "LittleCannon": {
+   "ko": "리틀 캐논",
+   "en": "The Carronades",
+   "ja": "リトルキャノン"
+  },
+  "InfinityRail": {
+   "ko": "인피니티 레일",
+   "en": "Infinity Rail",
+   "ja": "インフィニティレール"
+  },
+  "MightyTools": {
+   "ko": "마이티 툴즈",
+   "en": "Mighty Tools",
+   "ja": "マイティツールズ"
+  },
+  "Weissritter": {
+   "ko": "바이스리터",
+   "en": "White Knight",
+   "ja": "ヴァイスリッター"
+  },
+  "Exotic": {
+   "ko": "이그조틱",
+   "en": "Exotic",
+   "ja": "エキゾチック"
+  },
+  "Talentum": {
+   "ko": "달란트",
+   "en": "Talentum",
+   "ja": "タレント"
+  },
+  "Matis": {
+   "ko": "메티스",
+   "en": "Matis",
+   "ja": "メティス"
+  },
+  "LifeTonic": {
+   "ko": "라이프 토닉",
+   "en": "Nepenthe",
+   "ja": "ライフトニック"
+  },
+  "Protocol": {
+   "ko": "프로토콜",
+   "en": "Protocol",
+   "ja": "プロトコール"
+  },
+  "RecallRelease": {
+   "ko": "리콜&릴리즈",
+   "en": "Recall & Release",
+   "ja": "リコール・リリーズ"
+  },
+  "CafeSweety": {
+   "ko": "카페 스위티",
+   "en": "Cafe Sweety",
+   "ja": "カフェ・スウィーティー"
+  },
+  "Seraphim": {
+   "ko": "세라핌",
+   "en": "Seraphim",
+   "ja": "セラフィム"
+  },
+  "External": {
+   "ko": "익스터너",
+   "en": "Extrinsic",
+   "ja": "エクスターナー"
+  },
+  "RealKindness": {
+   "ko": "리얼 카인드니스",
+   "en": "Real Kindness",
+   "ja": "リアルカインドネス"
+  },
+  "Inherit": {
+   "ko": "인헤르트",
+   "en": "Inherit",
+   "ja": "インヘルト"
+  },
+  "MasterHand": {
+   "ko": "마스터 핸드",
+   "en": "Master Hand",
+   "ja": "マスターハンド"
+  },
+  "Wardress": {
+   "ko": "워드리스",
+   "en": "Wardress",
+   "ja": "ワードレス"
+  },
+  "HeavyGram": {
+   "ko": "헤비그램",
+   "en": "Heavy Gram",
+   "ja": "ヘビーグラム"
+  },
+  "Unlimited": {
+   "ko": "언리미티드",
+   "en": "Unlimited",
+   "ja": "アンリミテッド"
+  },
+  "Incubator": {
+   "ko": "인큐베이터",
+   "en": "Incubator",
+   "ja": "インキュベーター"
+  },
+  "Heretic": {
+   "ko": "헬레틱",
+   "en": "Heretic",
+   "ja": "ヘレティック"
+  },
+  "Pioneer": {
+   "ko": "파이오니아",
+   "en": "Pioneer",
+   "ja": "パイオニア"
+  },
+  "Goddess": {
+   "ko": "갓데스",
+   "en": "Goddess",
+   "ja": "ゴッデス"
+  },
+  "SchoolCircle": {
+   "ko": "스쿨 서클",
+   "en": "School Circle",
+   "ja": "スクールサークル"
+  },
+  "UnderworldQueen": {
+   "ko": "언더월드 퀸",
+   "en": "Underworld Queen",
+   "ja": "アンダーワールドクイーン"
+  },
+  "MMR": {
+   "ko": "M.M.R.",
+   "en": "M.M.R.",
+   "ja": "M.M.R."
+  },
+  "Replace": {
+   "ko": "리플레이스",
+   "en": "Replace",
+   "ja": "リプレイス"
+  },
+  "MaidForYou": {
+   "ko": "메이드 포 유",
+   "en": "Maid For You",
+   "ja": "メイド・フォー・ユー"
+  },
+  "Akademeia": {
+   "ko": "아카데미아",
+   "en": "Academia",
+   "ja": "アカデミア"
+  },
+  "Aegis": {
+   "ko": "이지스",
+   "en": "Aegis",
+   "ja": "イージス"
+  },
+  "HappyZoo": {
+   "ko": "해피 주",
+   "en": "Happy Zoo",
+   "ja": "ハッピーズー"
+  },
+  "BotanicGarden": {
+   "ko": "보타닉 가든",
+   "en": "Botanic Garden",
+   "ja": "ボタニックガーデン"
+  },
+  "DazzlingPearl": {
+   "ko": "다즐링 펄",
+   "en": "Dazzling Pearl",
+   "ja": "ダージリンパール"
+  },
+  "ElectricShock": {
+   "ko": "일렉트릭 쇼크",
+   "en": "Electric Shock",
+   "ja": "エレクトリックショック"
+  },
+  "OldTales": {
+   "ko": "올드 테일즈",
+   "en": "Old Tales",
+   "ja": "オールドテイルズ"
+  },
+  "CookingOil": {
+   "ko": "쿠킹오일",
+   "en": "Cooking Oil",
+   "ja": "クッキングオイル"
+  },
+  "OverTheHorizon": {
+   "ko": "오버 더 호라이즌",
+   "en": "Over the Horizon",
+   "ja": "オーバー・ザ・ホライズン"
+  },
+  "Rewind": {
+   "ko": "리와인드",
+   "en": "Rewind",
+   "ja": "リワインド"
+  },
+  "ArkRanger": {
+   "ko": "여신전대 아크레인저",
+   "en": "Ark Rangers",
+   "ja": "女神戦隊アークレンジャー"
+  },
+  "BestSeller": {
+   "ko": "베스트 셀러",
+   "en": "Best Seller",
+   "ja": "ベストセラー"
+  },
+  "T.T.STAR": {
+   "ko": "T.T. STAR",
+   "en": "T.T. STAR",
+   "ja": "T.T. STAR"
+  },
+  "VeiledOrder": {
+   "ko": "베일드 오더",
+   "en": "Veiled Order",
+   "ja": "ヴェイルド・オーダー"
+  },
+  "777": {
    "ko": "777",
    "en": "777",
    "ja": "777"
   },
-  "CE003": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
+  "Absolute": {
+   "ko": "앱솔루트",
+   "en": "Absolute",
+   "ja": "アブソルート"
   },
-  "CE004": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE005": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE006_01": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE006_02": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE006_03": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE007": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "CE008": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "ce002_01": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
-  },
-  "ce002_02": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
+  "ACPU": {
+   "ko": "A.C.P.U.",
+   "en": "A.C.P.U.",
+   "ja": "A.C.P.U."
   },
   "ce_01": {
-   "ko": "콜라보",
-   "en": "Collab",
-   "ja": "コラボ"
+   "ko": "데블 헌터",
+   "en": "Devil Hunter",
+   "ja": "デビルハンター"
+  },
+  "ce002_01": {
+   "ko": "요르하",
+   "en": "YoRHa",
+   "ja": "ヨルハ"
+  },
+  "ce002_02": {
+   "ko": "기계생명체",
+   "en": "Machine Lifeform",
+   "ja": "機械生命体"
+  },
+  "CE003": {
+   "ko": "에밀리아 진영",
+   "en": "Emilia's Faction",
+   "ja": "エミリア陣営"
+  },
+  "CE004": {
+   "ko": "NERV",
+   "en": "NERV",
+   "ja": "NERV"
+  },
+  "CE005": {
+   "ko": "WILLE",
+   "en": "WILLE",
+   "ja": "WILLE"
+  },
+  "CE007": {
+   "ko": "B.S.T.",
+   "en": "B.S.T.",
+   "ja": "B.S.T."
+  },
+  "CE006_01": {
+   "ko": "7차 강하 부대",
+   "en": "7th Airborne Squad",
+   "ja": "第7空挺部隊"
+  },
+  "CE006_02": {
+   "ko": "2차 강하 부대",
+   "en": "2nd Airborne Squad",
+   "ja": "第2空挺部隊"
+  },
+  "CE006_03": {
+   "ko": "5차 강하 부대",
+   "en": "5th Airborne Squad",
+   "ja": "第5空挺部隊"
+  },
+  "CE008": {
+   "ko": "찻집 리코리코",
+   "en": "Café LycoReco",
+   "ja": "喫茶リコリコ"
   }
  }
 }
