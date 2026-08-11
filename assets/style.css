@@ -1,38 +1,61 @@
 /* ── 토큰 ──────────────────────────────────────────────────────
-   다크 전용. MechaShifty 하우스 팔레트(Module_Nipago.md)를 기준면으로 쓰고,
-   차트 색은 dataviz 검증기를 통과한 값만 사용한다.
-   (검증: 5색 속성 팔레트 · dark · surface #0f1e35 · adjacent
-    → 최악 인접쌍 normal ΔE 20.9 / CVD ΔE 17.3, 전 항목 PASS)         */
+   라이트가 기본, 다크는 data-theme="dark" 로 선택한다.
+   다크는 라이트의 자동 반전이 아니라 각 표면에 맞춰 따로 고른 스텝이다.
+
+   차트 색은 눈으로 고르지 않고 dataviz 검증기로 확정했다.
+     라이트 · surface #ffffff · 인접쌍 → 전 항목 PASS
+       (최악 인접쌍 normal ΔE 20.8 / CVD ΔE 19.9, 대비 전부 ≥3:1)
+     다크   · surface #0f1e35 · 인접쌍 → 전 항목 PASS
+       (최악 인접쌍 normal ΔE 20.9 / CVD ΔE 17.3)
+   전 쌍(all-pairs) 기준으로는 전격↔수냉이 적록색약에서 갈리지 않으므로
+   속성 색은 언제나 속성 이름 텍스트와 함께만 쓴다.                     */
 :root {
-  color-scheme: dark;
+  color-scheme: light;
 
-  --bg-deep:      #1a1a2e;   /* 페이지 평면 */
-  --bg-panel:     #0f1e35;   /* 카드 · 차트 표면 */
-  --bg-raise:     #17294a;   /* 입력/헤더 셀 */
+  --bg-deep:      #f4f5f7;   /* 페이지 평면 */
+  --bg-panel:     #ffffff;   /* 카드 · 차트 표면 */
+  --bg-raise:     #eef0f4;   /* 입력/헤더 셀 */
 
-  --ink:          #ffffff;
-  --ink-2:        #c3c2b7;
-  --ink-muted:    #8b93a7;
+  --ink:          #12131a;
+  --ink-2:        #4b4f5a;
+  --ink-muted:    #5b6270;
 
-  --line:         rgba(255,255,255,.10);
-  --line-strong:  rgba(255,255,255,.18);
-  --grid:         rgba(255,255,255,.07);
+  --line:         rgba(11, 11, 11, .12);
+  --line-strong:  rgba(11, 11, 11, .22);
+  --grid:         rgba(11, 11, 11, .09);
+  --hover:        rgba(11, 11, 11, .035);
+  --track:        rgba(11, 11, 11, .06);
 
-  --cyan:         #00c8c8;   /* UI 액센트 */
-  --amber:        #f0a020;
-  --green:        #4ade80;
+  --accent:       #067d7d;   /* UI 액센트 (흰 글자 4.96:1) */
+  --accent-ink:   #ffffff;
+  --amber:        #8a5a00;
 
-  --series-1:     #3987e5;   /* 단일 시리즈 막대 */
-  --series-2:     #d95926;   /* 2분류(한정/상시) 대비색 */
+  --series-1:     #2a78d6;   /* 단일 시리즈 막대 */
+  --series-2:     #d9531f;   /* 2분류(한정/상시) 대비색 */
+  --series-2-ink: #ffffff;
 
-  --el-fire:        #e66767;
-  --el-water:       #3987e5;
-  --el-wind:        #199e70;
-  --el-electronic:  #9085e9;
+  --el-fire:        #d93a39;
+  --el-water:       #2a78d6;
+  --el-wind:        #178f63;
+  --el-electronic:  #5b46c9;
   --el-iron:        #c98500;
 
-  --st-good:      #0ca30c;
-  --st-warn:      #fab219;
+  --st-good:      #0a7d0a;  --st-good-ink: #ffffff;
+  --st-warn:      #fab219;  --st-warn-ink: #3d2b00;
+  --st-bad-bg:    rgba(217, 58, 57, .08);
+  --st-bad-line:  rgba(217, 58, 57, .35);
+  --st-bad-ink:   #8c1f1e;
+
+  /* 교차표 순차 램프 — 라이트는 밝음(0) → 어두움(최대) */
+  --ramp-0: #e8f0fd;  --ramp-1: #cde2fb;  --ramp-2: #b7d3f6;  --ramp-3: #9ec5f4;
+  --ramp-4: #86b6ef;  --ramp-5: #5598e7;  --ramp-6: #3987e5;  --ramp-7: #2a78d6;
+  --ramp-8: #256abf;  --ramp-9: #1c5cab;  --ramp-10: #184f95;
+  --hm-ink-strong: #ffffff;  /* 진한 칸 위 글자색 */
+
+  --tip-bg:       #1f2430;
+  --tip-ink:      #ffffff;
+  --tip-accent:   #5fd4d4;
+  --shadow:       0 1px 2px rgba(11, 11, 11, .06), 0 6px 20px rgba(11, 11, 11, .06);
 
   --r:  10px;
   --r-s: 6px;
@@ -40,6 +63,56 @@
 
   --font: "Pretendard", "Noto Sans KR", system-ui, -apple-system, "Segoe UI",
           "Hiragino Sans", "Apple SD Gothic Neo", sans-serif;
+}
+
+/* MechaShifty 하우스 팔레트(Module_Nipago.md)를 기준면으로 쓰는 다크 */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg-deep:      #1a1a2e;
+  --bg-panel:     #0f1e35;
+  --bg-raise:     #17294a;
+
+  --ink:          #ffffff;
+  --ink-2:        #c3c2b7;
+  --ink-muted:    #8b93a7;
+
+  --line:         rgba(255, 255, 255, .10);
+  --line-strong:  rgba(255, 255, 255, .18);
+  --grid:         rgba(255, 255, 255, .07);
+  --hover:        rgba(255, 255, 255, .04);
+  --track:        rgba(255, 255, 255, .05);
+
+  --accent:       #00c8c8;
+  --accent-ink:   #04121b;
+  --amber:        #f0a020;
+
+  --series-1:     #3987e5;
+  --series-2:     #d95926;
+  --series-2-ink: #1b0a04;
+
+  --el-fire:        #e66767;
+  --el-water:       #3987e5;
+  --el-wind:        #199e70;
+  --el-electronic:  #9085e9;
+  --el-iron:        #c98500;
+
+  --st-good:      #0ca30c;  --st-good-ink: #04140a;
+  --st-warn:      #fab219;  --st-warn-ink: #1c1503;
+  --st-bad-bg:    rgba(230, 103, 103, .10);
+  --st-bad-line:  rgba(230, 103, 103, .35);
+  --st-bad-ink:   #ffd7d7;
+
+  /* 다크는 어두움(0, 표면에 가까움) → 밝음(최대) */
+  --ramp-0: #0d366b;  --ramp-1: #104281;  --ramp-2: #184f95;  --ramp-3: #1c5cab;
+  --ramp-4: #256abf;  --ramp-5: #2a78d6;  --ramp-6: #3987e5;  --ramp-7: #5598e7;
+  --ramp-8: #6da7ec;  --ramp-9: #86b6ef;  --ramp-10: #9ec5f4;
+  --hm-ink-strong: #06121f;
+
+  --tip-bg:       #0a1526;
+  --tip-ink:      #ffffff;
+  --tip-accent:   #00c8c8;
+  --shadow:       0 6px 20px rgba(0, 0, 0, .5);
 }
 
 * { box-sizing: border-box; }
@@ -56,7 +129,7 @@ body {
   -webkit-text-size-adjust: 100%;
 }
 
-a { color: var(--cyan); }
+a { color: var(--accent); }
 
 /* ── 상단바 ─────────────────────────────────────────────────── */
 .topbar {
@@ -72,13 +145,23 @@ a { color: var(--cyan); }
 .brand { margin: 0; font-size: 16px; font-weight: 700; letter-spacing: -.01em; }
 .brand-sub { color: var(--ink-muted); font-weight: 500; }
 
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
 .langswitch { display: flex; border: 1px solid var(--line-strong); border-radius: var(--r-s); overflow: hidden; }
 .langswitch button {
   appearance: none; border: 0; background: transparent; color: var(--ink-2);
   font: inherit; font-size: 12px; padding: 5px 10px; cursor: pointer;
 }
 .langswitch button + button { border-left: 1px solid var(--line); }
-.langswitch button.on { background: var(--cyan); color: #04121b; font-weight: 700; }
+.langswitch button.on { background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+
+.themebtn {
+  appearance: none; cursor: pointer; font: inherit; font-size: 14px; line-height: 1;
+  background: transparent; color: var(--ink-2);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  padding: 5px 9px;
+}
+.themebtn:hover { color: var(--ink); border-color: var(--accent); }
 
 .tabs {
   display: flex; gap: 2px; padding: 0 var(--pad);
@@ -89,21 +172,21 @@ a { color: var(--cyan); }
   color: var(--ink-muted); font: inherit; font-weight: 600;
   padding: 8px 12px; cursor: pointer; white-space: nowrap;
 }
-.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--cyan); }
+.tabs button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
 
 main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
 
 .notice { padding: 40px var(--pad); text-align: center; color: var(--ink-muted); }
 .notice-error {
-  color: #ffd7d7; background: rgba(230,103,103,.10);
-  border: 1px solid rgba(230,103,103,.35); border-radius: var(--r); text-align: left;
+  color: var(--st-bad-ink); background: var(--st-bad-bg);
+  border: 1px solid var(--st-bad-line); border-radius: var(--r); text-align: left;
 }
 .notice-error code { color: var(--ink-2); word-break: break-all; }
 
 /* ── 필터 ───────────────────────────────────────────────────── */
 .filters {
   background: var(--bg-panel); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 12px; margin-bottom: 14px;
+  border-radius: var(--r); padding: 12px; margin-bottom: 14px; box-shadow: var(--shadow);
 }
 .filter-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 #q {
@@ -112,7 +195,7 @@ main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
   color: var(--ink); font: inherit; padding: 7px 10px;
 }
 #q:focus-visible, select:focus-visible, input:focus-visible, button:focus-visible {
-  outline: 2px solid var(--cyan); outline-offset: 1px;
+  outline: 2px solid var(--accent); outline-offset: 1px;
 }
 .count { color: var(--ink-2); font-variant-numeric: tabular-nums; font-size: 13px; }
 .count b { color: var(--ink); }
@@ -121,7 +204,7 @@ main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
   border: 1px solid var(--line-strong); border-radius: var(--r-s);
   font: inherit; font-size: 12px; padding: 6px 10px; cursor: pointer;
 }
-.btn-reset:hover { color: var(--ink); border-color: var(--cyan); }
+.btn-reset:hover { color: var(--ink); border-color: var(--accent); }
 
 .chipgrid { display: grid; gap: 8px; }
 .chiprow { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
@@ -134,11 +217,20 @@ main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
   border: 1px solid var(--line-strong); border-radius: 999px; padding: 4px 10px;
   display: inline-flex; align-items: center; gap: 6px;
 }
-.chip:hover { border-color: var(--line-strong); color: var(--ink); }
-.chip[aria-pressed="true"] { background: var(--cyan); border-color: var(--cyan); color: #04121b; font-weight: 700; }
+.chip:hover { color: var(--ink); }
+.chip[aria-pressed="true"] {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--accent-ink); font-weight: 700;
+}
 .chip .dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
 .chip .n { opacity: .65; font-variant-numeric: tabular-nums; }
-.chip[aria-pressed="true"] .n { opacity: .8; }
+.chip[aria-pressed="true"] .n { opacity: .85; }
+/* 오버스펙은 기업을 대체하지 않는 부가 속성이라 기업 칩들과 시각적으로 구분한다 */
+.chip-ovr { margin-left: 6px; border-style: dashed; }
+.chip-ovr[aria-pressed="true"] {
+  background: var(--amber); border-color: var(--amber);
+  border-style: solid; color: var(--bg-panel);
+}
 
 .filter-row {
   display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
@@ -156,7 +248,7 @@ main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
 /* ── 표 ─────────────────────────────────────────────────────── */
 .tablewrap {
   background: var(--bg-panel); border: 1px solid var(--line);
-  border-radius: var(--r); overflow-x: auto;
+  border-radius: var(--r); overflow-x: auto; box-shadow: var(--shadow);
 }
 table.grid { width: 100%; border-collapse: collapse; font-size: 13px; }
 table.grid th, table.grid td {
@@ -168,14 +260,43 @@ table.grid thead th {
   background: var(--bg-raise); color: var(--ink-2);
   font-size: 12px; font-weight: 600; cursor: pointer; user-select: none;
 }
-table.grid thead th .arrow { color: var(--cyan); font-size: 10px; }
+table.grid thead th .arrow { color: var(--accent); font-size: 10px; }
 table.grid tbody tr { cursor: pointer; }
-table.grid tbody tr:hover { background: rgba(255,255,255,.04); }
+table.grid tbody tr:hover { background: var(--hover); }
 table.grid tbody tr:last-child td { border-bottom: 0; }
 td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 td.name { font-weight: 600; white-space: normal; min-width: 180px; }
 .sub { color: var(--ink-muted); font-size: 11px; font-weight: 400; }
 .empty { color: var(--ink-muted); text-align: center; padding: 32px; }
+
+/* ── 아이콘 ─────────────────────────────────────────────────────
+   게임 아이콘은 언제나 텍스트 라벨 옆의 보조 표시다. 아이콘만으로
+   의미를 나르는 자리는 없으므로 alt 는 비워 스크린리더에서 감춘다. */
+.ic {
+  height: 16px; width: auto; flex: none;
+  object-fit: contain; vertical-align: -3px;
+}
+.ic-lg { height: 20px; }
+.iconlbl { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+
+/* 실루엣 아이콘 보정 — 원본이 한쪽 테마만 상정하고 만들어져 있다.
+   class·burst 는 순백(측정 lum 255 / 채도 0)이라 라이트 표면에서 사라지고,
+   weapon 은 짙은 회색(lum 76 / 채도 4)이라 다크 표면에서 묻힌다.
+   셋 다 채도가 사실상 0 이라 밝기 반전으로 색을 잃을 게 없다.
+   element·rarity·company 는 유채색이거나 중간 회색이라 양쪽에서 그대로 읽힌다. */
+:root:not([data-theme="dark"]) .ic[data-axis="class"],
+:root:not([data-theme="dark"]) .ic[data-axis="burst"] {
+  filter: brightness(0) opacity(.72);
+}
+:root[data-theme="dark"] .ic[data-axis="weapon_type"] {
+  filter: brightness(0) invert(1) opacity(.8);
+}
+
+.chip .ic { height: 15px; margin-right: -1px; }
+.bar-row .k .ic { height: 14px; }
+.hm .ic { height: 15px; }
+.tl-row .who .ic { height: 15px; }
+.kv dd .iconlbl { gap: 7px; }
 
 /* 배지 — 색은 항상 텍스트 라벨과 함께만 쓴다(색 단독으로 의미를 나르지 않음) */
 .badge {
@@ -188,10 +309,10 @@ td.name { font-weight: 600; white-space: normal; min-width: 180px; }
   border: 1px solid var(--line-strong); color: var(--ink-2);
 }
 .tag:not(:first-child) { margin-left: 5px; }
-.tag.on   { color: #04140a; background: var(--st-good); border-color: var(--st-good); font-weight: 700; }
-.tag.soon { color: #1c1503; background: var(--st-warn); border-color: var(--st-warn); font-weight: 700; }
+.tag.on   { color: var(--st-good-ink);  background: var(--st-good);  border-color: var(--st-good);  font-weight: 700; }
+.tag.soon { color: var(--st-warn-ink);  background: var(--st-warn);  border-color: var(--st-warn);  font-weight: 700; }
 .tag.off  { color: var(--ink-muted); }
-.tag.lim  { color: #1b0a04; background: var(--series-2); border-color: var(--series-2); font-weight: 700; }
+.tag.lim  { color: var(--series-2-ink); background: var(--series-2); border-color: var(--series-2); font-weight: 700; }
 .tag.ovr  { color: var(--amber); border-color: var(--amber); }
 
 /* ── 타임라인 ───────────────────────────────────────────────── */
@@ -215,7 +336,7 @@ td.name { font-weight: 600; white-space: normal; min-width: 180px; }
 .cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
 .card {
   background: var(--bg-panel); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 14px;
+  border-radius: var(--r); padding: 14px; box-shadow: var(--shadow);
 }
 .card.wide { grid-column: 1 / -1; }
 .card h3 { margin: 0 0 2px; font-size: 13px; font-weight: 700; }
@@ -224,11 +345,14 @@ td.name { font-weight: 600; white-space: normal; min-width: 180px; }
 
 .bars { display: grid; gap: 7px; }
 .bar-row { display: grid; grid-template-columns: 84px 1fr 44px; gap: 8px; align-items: center; }
-.bar-row .k { font-size: 12px; color: var(--ink-2); text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.bar-track { height: 14px; background: rgba(255,255,255,.05); border-radius: 4px; overflow: hidden; }
+.bar-row .k {
+  font-size: 12px; color: var(--ink-2); min-width: 0;
+  display: flex; align-items: center; justify-content: flex-end; gap: 5px;
+}
+.bar-row .k > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track { height: 14px; background: var(--track); border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 4px; background: var(--series-1); min-width: 2px; }
 .bar-row .v { font-size: 12px; color: var(--ink); font-variant-numeric: tabular-nums; }
-.bar-row .v small { color: var(--ink-muted); }
 
 .hm { border-collapse: separate; border-spacing: 2px; font-size: 12px; }
 .hm th { color: var(--ink-muted); font-weight: 600; font-size: 11px; padding: 2px 4px; }
@@ -237,13 +361,12 @@ td.name { font-weight: 600; white-space: normal; min-width: 180px; }
   text-align: center; border-radius: 4px; padding: 7px 4px; min-width: 40px;
   font-variant-numeric: tabular-nums; color: var(--ink);
 }
-.hm td.zero { color: var(--ink-muted); }
+.hm td.zero { color: var(--ink-muted); background: var(--track); }
 
 svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
 svg.chart .gridline { stroke: var(--grid); stroke-width: 1; }
 svg.chart .axis { stroke: var(--line-strong); stroke-width: 1; }
 svg.chart text { fill: var(--ink-muted); font-size: 10px; }
-svg.chart text.val { fill: var(--ink-2); }
 svg.chart rect.mark { fill: var(--series-1); rx: 3; }
 svg.chart rect.hit { fill: transparent; }
 
@@ -253,15 +376,15 @@ svg.chart rect.hit { fill: transparent; }
 
 .tip {
   position: fixed; z-index: 90; pointer-events: none;
-  background: #0a1526; border: 1px solid var(--line-strong); border-radius: var(--r-s);
-  padding: 6px 9px; font-size: 12px; color: var(--ink); white-space: nowrap;
-  box-shadow: 0 6px 20px rgba(0,0,0,.5);
+  background: var(--tip-bg); border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  padding: 6px 9px; font-size: 12px; color: var(--tip-ink); white-space: nowrap;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .35);
 }
-.tip b { color: var(--cyan); }
+.tip b { color: var(--tip-accent); }
 
 /* ── 상세 시트 ──────────────────────────────────────────────── */
 .sheet { position: fixed; inset: 0; z-index: 60; display: flex; justify-content: flex-end; }
-.sheet-back { position: absolute; inset: 0; background: rgba(0,0,0,.55); }
+.sheet-back { position: absolute; inset: 0; background: rgba(0, 0, 0, .45); }
 .sheet-body {
   position: relative; width: min(440px, 100%); height: 100%; overflow-y: auto;
   background: var(--bg-panel); border-left: 1px solid var(--line-strong); padding: 18px;
