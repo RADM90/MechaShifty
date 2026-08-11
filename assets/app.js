@@ -173,15 +173,20 @@ const compact = s => s.replace(/[\s:·・]/g, '');
 const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const u = n => '\\u' + n.toString(16).padStart(4, '0');
 
+/* 매처 두 벌을 만든다.
+     name  — 이름/스쿼드용. 초성 + 완성형 혼용을 받는다.
+     alias — 별명용. 부분 일치만 하고 초성 확장은 하지 않는다.
+   별명을 초성으로도 풀면 'ㄱ' 하나에 수십 개가 걸려 검색이 무의미해진다.
+   별명 자체가 초성인 것들('ㄹㅊㄹ', 'ㅋㄷ')은 부분 일치로 그대로 잡힌다. */
 function buildMatcher(raw) {
   const q = compact(raw.trim());
   if (!q) return null;
 
+  const lower = q.toLowerCase();
+  const plain = s => compact(s).toLowerCase().includes(lower);
+
   const chars = [...q];
-  if (!chars.some(c => CHO.includes(c))) {
-    const lower = q.toLowerCase();
-    return s => compact(s).toLowerCase().includes(lower);
-  }
+  if (!chars.some(c => CHO.includes(c))) return { name: plain, alias: plain };
 
   const pattern = chars.map(ch => {
     const i = CHO.indexOf(ch);
@@ -192,8 +197,8 @@ function buildMatcher(raw) {
   }).join('');
 
   let re;
-  try { re = new RegExp(pattern, 'i'); } catch { return () => true; }
-  return s => re.test(compact(s));
+  try { re = new RegExp(pattern, 'i'); } catch { return { name: plain, alias: plain }; }
+  return { name: s => re.test(compact(s)), alias: plain };
 }
 
 /* state.q 가 바뀔 때만 다시 만든다 (행마다 정규식을 새로 짜지 않게) */
@@ -203,6 +208,12 @@ function matcher() {
     state._match = buildMatcher(state.q);
   }
   return state._match;
+}
+
+/* 니케 하나가 현재 검색어에 걸리는지 — 이름/스쿼드는 초성까지, 별명은 부분 일치만 */
+function hitsNikke(m, n) {
+  return [n.name.ko, n.name.en, n.name.ja, n.squad].some(v => v && m.name(v))
+    || (n.aliases || []).some(m.alias);
 }
 
 /* ── 필터 ─────────────────────────────────────────────────────
@@ -218,11 +229,9 @@ function matchNikke(n, except) {
   if (state.relFrom && (!n.release_date || n.release_date < state.relFrom)) return false;
   if (state.relTo && (!n.release_date || n.release_date > state.relTo)) return false;
   const m = matcher();
-  if (m && !nikkeText(n).some(m)) return false;
+  if (m && !hitsNikke(m, n)) return false;
   return true;
 }
-
-const nikkeText = n => [n.name.ko, n.name.en, n.name.ja, n.squad].filter(Boolean);
 
 function matchPickup(p, except) {
   const n = p.rid ? byRid.get(p.rid) : null;
@@ -249,8 +258,9 @@ function matchPickup(p, except) {
   if (state.rerun === 'first' && p.rerun_of != null) return false;
   if (state.rerun === 'rerun' && p.rerun_of == null) return false;
 
+  // rid 가 없는 예정 배너는 니케 레코드가 없으므로 시트의 한국어 이름으로만 판정한다
   const m = matcher();
-  if (m && ![p.name_ko, ...(n ? nikkeText(n) : [])].some(m)) return false;
+  if (m && !(m.name(p.name_ko) || (n && hitsNikke(m, n)))) return false;
   return true;
 }
 
@@ -583,6 +593,13 @@ function openSheet(n) {
   put('출시일', n.release_date || '—');
   put('ID', `${n.rid} · ${n.id} · res ${n.resource_id}`);
   c.appendChild(dl);
+
+  if (n.aliases?.length) {
+    c.appendChild(el('h4', null, `별명 (${n.aliases.length})`));
+    const box = el('div', 'aliases');
+    for (const a of n.aliases) box.appendChild(el('span', 'alias', a));
+    c.appendChild(box);
+  }
 
   const hist = (pickupsByRid.get(n.rid) || []).slice().sort((a, b) => a._start - b._start);
   c.appendChild(el('h4', null, `픽업 이력 (${hist.length})`));
