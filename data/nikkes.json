@@ -8,6 +8,9 @@
    "en": "Rapi",
    "ja": "ラピ"
   },
+  "aliases": [
+   "고아"
+  ],
   "rarity": "SR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -28,6 +31,9 @@
    "en": "Neon",
    "ja": "ネオン"
   },
+  "aliases": [
+   "고아"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -48,6 +54,9 @@
    "en": "Anis",
    "ja": "アニス"
   },
+  "aliases": [
+   "고아"
+  ],
   "rarity": "SR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -68,6 +77,11 @@
    "en": "Neon: Blue Ocean",
    "ja": "ネオン：ブルーオーシャン"
   },
+  "aliases": [
+   "수네온",
+   "고아",
+   "병신"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -88,6 +102,10 @@
    "en": "Anis: Sparkling Summer",
    "ja": "アニス：スパークリングサマー"
   },
+  "aliases": [
+   "수니스",
+   "고아"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -108,6 +126,16 @@
    "en": "Rapi: Red Hood",
    "ja": "ラピ：レッドフード"
   },
+  "aliases": [
+   "라후",
+   "라피 후드",
+   "엄마",
+   "라레후",
+   "듀얼",
+   "고아",
+   "물병",
+   "생수"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -128,6 +156,14 @@
    "en": "Anis: Star",
    "ja": "アニス：スター"
   },
+  "aliases": [
+   "돌니스",
+   "돌",
+   "별니스",
+   "팔각",
+   "아이돌",
+   "고아"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -148,6 +184,17 @@
    "en": "Neon: Vision Eye",
    "ja": "ネオン：ビジョン・アイ"
   },
+  "aliases": [
+   "화력",
+   "스톨3세",
+   "셋째",
+   "네네온",
+   "초화력",
+   "고아",
+   "건강해라",
+   "네오네온",
+   "네오"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -168,6 +215,7 @@
    "en": "Delta",
    "ja": "デルタ"
   },
+  "aliases": [],
   "rarity": "SR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -188,6 +236,9 @@
    "en": "Admi",
    "ja": "アドミ"
   },
+  "aliases": [
+   "캣맘"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -208,6 +259,11 @@
    "en": "Delta: Ninja Thief",
    "ja": "デルタ：ニンジャシーフ"
   },
+  "aliases": [
+   "닌델",
+   "닌델타",
+   "젖닌"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -228,6 +284,11 @@
    "en": "Aria",
    "ja": "アリア"
   },
+  "aliases": [
+   "랩쳐",
+   "랩처",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -248,6 +309,9 @@
    "en": "Avista",
    "ja": "アビスタ"
   },
+  "aliases": [
+   "다람쥐"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -268,6 +332,9 @@
    "en": "Quiry",
    "ja": "キリ"
   },
+  "aliases": [
+   "퀴리"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -288,6 +355,7 @@
    "en": "D",
    "ja": "D"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -308,6 +376,9 @@
    "en": "K",
    "ja": "K"
   },
+  "aliases": [
+   "처제"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -328,6 +399,13 @@
    "en": "D: Killer Wife",
    "ja": "D：キラーワイフ"
   },
+  "aliases": [
+   "동디",
+   "동탄",
+   "미시",
+   "경디",
+   "경찰"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -348,6 +426,9 @@
    "en": "Belorta",
    "ja": "ベロータ"
   },
+  "aliases": [
+   "고아"
+  ],
   "rarity": "SR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -368,6 +449,7 @@
    "en": "Mica",
    "ja": "ミカ"
   },
+  "aliases": [],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -388,6 +470,9 @@
    "en": "Mica: Snow Buddy",
    "ja": "ミカ：スノーバディ"
   },
+  "aliases": [
+   "클미카"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -408,6 +493,9 @@
    "en": "Brid",
    "ja": "ブリッド"
   },
+  "aliases": [
+   "옆슴"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -428,6 +516,9 @@
    "en": "Centi",
    "ja": "センチ"
   },
+  "aliases": [
+   "애센"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -448,6 +539,10 @@
    "en": "Chime",
    "ja": "チャイム"
   },
+  "aliases": [
+   "이놈",
+   "네이놈"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -468,6 +563,10 @@
    "en": "Brid: Silent Track",
    "ja": "ブリッド：サイレントトラック"
   },
+  "aliases": [
+   "클",
+   "클리드"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -488,6 +587,13 @@
    "en": "Soline: Frost Ticket",
    "ja": "ソリン：フロストチケット"
   },
+  "aliases": [
+   "클",
+   "클솔",
+   "프솔린",
+   "가솔린",
+   "휘발유"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -508,6 +614,14 @@
    "en": "Diesel: Winter Sweets",
    "ja": "ディーゼル：ウィンタースイーツ"
   },
+  "aliases": [
+   "클",
+   "클디젤",
+   "퉁퉁이",
+   "퉁디젤",
+   "함께 노래해",
+   "퉁젤"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -528,6 +642,12 @@
    "en": "Crow",
    "ja": "クロウ"
   },
+  "aliases": [
+   "폭탄",
+   "테러",
+   "비호감",
+   "이런니케없음"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -548,6 +668,7 @@
    "en": "Diesel",
    "ja": "ディーゼル"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -568,6 +689,9 @@
    "en": "Dolla",
    "ja": "ドラー"
   },
+  "aliases": [
+   "버쿨"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -588,6 +712,11 @@
    "en": "Drake",
    "ja": "ドレイク"
   },
+  "aliases": [
+   "드황",
+   "하하하",
+   "드크"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -608,6 +737,7 @@
    "en": "Emma",
    "ja": "エマ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -628,6 +758,10 @@
    "en": "Emma: Tactical Upgrade",
    "ja": "エマ：タクティカル・アップ"
   },
+  "aliases": [
+   "택마",
+   "택엠"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -648,6 +782,10 @@
    "en": "Vesti: Tactical Upgrade",
    "ja": "ベスティー：タクティカル・アップ"
   },
+  "aliases": [
+   "택스티",
+   "택베"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -668,6 +806,11 @@
    "en": "Eunhwa: Tactical Upgrade",
    "ja": "ウンファ：タクティカル・アップ"
   },
+  "aliases": [
+   "택화",
+   "삼류",
+   "절벽"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -688,6 +831,9 @@
    "en": "Laplace",
    "ja": "ラプラス"
   },
+  "aliases": [
+   "히어로"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -708,6 +854,10 @@
    "en": "Epinel",
    "ja": "エピネル"
   },
+  "aliases": [
+   "스케이트보드",
+   "풍선껌"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -728,6 +878,11 @@
    "en": "Eunhwa",
    "ja": "ウンファ"
   },
+  "aliases": [
+   "일류",
+   "절벽",
+   "원반"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -748,6 +903,11 @@
    "en": "Laplace: Ultimate Hero",
    "ja": "ラプラス：アルティメットヒーロー"
   },
+  "aliases": [
+   "얼라",
+   "풍라",
+   "히어로"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -768,6 +928,11 @@
    "en": "Maxwell: Ordinary Mechanic",
    "ja": "マクスウェル：オーディナリーメカニック"
   },
+  "aliases": [
+   "마망",
+   "맥케닉",
+   "맥머니"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -788,6 +953,10 @@
    "en": "Exia",
    "ja": "エクシア"
   },
+  "aliases": [
+   "뉴비",
+   "에식이"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -808,6 +977,10 @@
    "en": "Jackal",
    "ja": "ジャッカル"
   },
+  "aliases": [
+   "댕댕이",
+   "개"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -828,6 +1001,11 @@
    "en": "Viper",
    "ja": "バイパー"
   },
+  "aliases": [
+   "빵",
+   "독사",
+   "독사련"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -848,6 +1026,9 @@
    "en": "E.H.",
    "ja": "E.H."
   },
+  "aliases": [
+   "태"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -868,6 +1049,10 @@
    "en": "N102",
    "ja": "N102"
   },
+  "aliases": [
+   "앤",
+   "엔"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -888,6 +1073,11 @@
    "en": "Anne: Miracle Fairy",
    "ja": "エヌ : ミラクルフェアリー"
   },
+  "aliases": [
+   "클앤",
+   "농",
+   "엔"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -908,6 +1098,7 @@
    "en": "Folkwang",
    "ja": "フォルクヴァン"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -928,6 +1119,9 @@
    "en": "Frima",
    "ja": "プリム"
   },
+  "aliases": [
+   "커피"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -948,6 +1142,10 @@
    "en": "Mary: Bay Goddess",
    "ja": "メアリー：ベイゴッデス"
   },
+  "aliases": [
+   "수어리",
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -968,6 +1166,10 @@
    "en": "Guillotine",
    "ja": "ギロチン"
   },
+  "aliases": [
+   "중2병",
+   "흑염룡"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -988,6 +1190,9 @@
    "en": "Guilty",
    "ja": "ギルティ"
   },
+  "aliases": [
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -1008,6 +1213,10 @@
    "en": "Harran",
    "ja": "ハラン"
   },
+  "aliases": [
+   "가루",
+   "에덴"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1028,6 +1237,9 @@
    "en": "Milk: Blooming Bunny",
    "ja": "ミルク：ブルーミングバニー"
   },
+  "aliases": [
+   "바밀크"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1048,6 +1260,11 @@
    "en": "Isabel",
    "ja": "イサベル"
   },
+  "aliases": [
+   "재",
+   "24벨",
+   "에덴"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1068,6 +1285,10 @@
    "en": "Julia",
    "ja": "ジュリア"
   },
+  "aliases": [
+   "율황",
+   "율라리"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -1088,6 +1309,7 @@
    "en": "Mihara",
    "ja": "ミハラ"
   },
+  "aliases": [],
   "rarity": "SR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -1108,6 +1330,10 @@
    "en": "Mihara: Bonding Chain",
    "ja": "ミハラ：ボンディングチェーン"
   },
+  "aliases": [
+   "마허라",
+   "미하라"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -1128,6 +1354,11 @@
    "en": "Kilo",
    "ja": "キロ"
   },
+  "aliases": [
+   "깡",
+   "건담",
+   "메카"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -1148,6 +1379,12 @@
    "en": "Liter",
    "ja": "リター"
   },
+  "aliases": [
+   "할매",
+   "노인네",
+   "할머니",
+   "할무니"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -1168,6 +1405,7 @@
    "en": "Ludmilla",
    "ja": "ルドミラ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1188,6 +1426,7 @@
    "en": "Maiden",
    "ja": "メイデン"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -1208,6 +1447,7 @@
    "en": "Mary",
    "ja": "メアリー"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -1228,6 +1468,10 @@
    "en": "Guillotine: Winter Slayer",
    "ja": "ギロチン：ウィンタースレイヤー"
   },
+  "aliases": [
+   "클",
+   "클로틴"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -1248,6 +1492,10 @@
    "en": "Maiden: Ice Rose",
    "ja": "メイデン：アイスローズ"
   },
+  "aliases": [
+   "클",
+   "클이든"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -1268,6 +1516,7 @@
    "en": "Maxwell",
    "ja": "マクスウェル"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -1288,6 +1537,10 @@
    "en": "Alice",
    "ja": "アリス"
   },
+  "aliases": [
+   "핑그림",
+   "토끼씨"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1308,6 +1561,7 @@
    "en": "Tove",
    "ja": "トーブ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -1328,6 +1582,9 @@
    "en": "Neve",
    "ja": "ネヴェ"
   },
+  "aliases": [
+   "곰"
+  ],
   "rarity": "SR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1348,6 +1605,10 @@
    "en": "Ludmilla: Winter Owner",
    "ja": "ルドミラ：ウィンターオーナー"
   },
+  "aliases": [
+   "클루드",
+   "온천"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1368,6 +1629,10 @@
    "en": "Alice: Wonderland Bunny",
    "ja": "アリス：ワンダーランドバニー"
   },
+  "aliases": [
+   "바니스",
+   "바리스"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -1388,6 +1653,9 @@
    "en": "Milk",
    "ja": "ミルク"
   },
+  "aliases": [
+   "커피"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1408,6 +1676,9 @@
    "en": "Miranda",
    "ja": "ミランダ"
   },
+  "aliases": [
+   "애란다"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -1428,6 +1699,9 @@
    "en": "Mori",
    "ja": "モリー"
   },
+  "aliases": [
+   "삽그림"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -1448,6 +1722,9 @@
    "en": "Rupee: Winter Shopper",
    "ja": "ルピー：ウィンターショッパー"
   },
+  "aliases": [
+   "클루피"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1468,6 +1745,12 @@
    "en": "Nihilister",
    "ja": "ニヒリスター"
   },
+  "aliases": [
+   "니힐",
+   "랩쳐",
+   "랩처",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1488,6 +1771,16 @@
    "en": "Noah",
    "ja": "ノア"
   },
+  "aliases": [
+   "ㅋㄷ",
+   "키득",
+   "에덴",
+   "석탄",
+   "재",
+   "방패",
+   "숯",
+   "앨트루이아"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "PILGRIM",
@@ -1508,6 +1801,7 @@
    "en": "Noise",
    "ja": "ノイズ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -1528,6 +1822,10 @@
    "en": "Novel",
    "ja": "ノベル"
   },
+  "aliases": [
+   "셜록",
+   "빡통"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1548,6 +1846,9 @@
    "en": "Pepper",
    "ja": "ペッパー"
   },
+  "aliases": [
+   "후추"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -1568,6 +1869,12 @@
    "en": "Nayuta",
    "ja": "ナユタ"
   },
+  "aliases": [
+   "랩쳐",
+   "랩처",
+   "땡중",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -1588,6 +1895,11 @@
    "en": "Poli",
    "ja": "ポリ"
   },
+  "aliases": [
+   "에흉",
+   "개라운",
+   "댕댕이"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -1608,6 +1920,11 @@
    "en": "Scarlet: Black Shadow",
    "ja": "紅蓮：ブラックシャドウ"
   },
+  "aliases": [
+   "흑련",
+   "흑북이",
+   "월화"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1628,6 +1945,12 @@
    "en": "Privaty",
    "ja": "プリバティ"
   },
+  "aliases": [
+   "프바",
+   "애프바",
+   "2x2",
+   "선생님"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -1648,6 +1971,9 @@
    "en": "Quency",
    "ja": "クエンシー"
   },
+  "aliases": [
+   "해방"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -1668,6 +1994,9 @@
    "en": "Rapunzel",
    "ja": "ラプンツェル"
   },
+  "aliases": [
+   "변태"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -1688,6 +2017,10 @@
    "en": "Rapunzel: Pure Grace",
    "ja": "ラプンツェル：ピュアグレイス"
   },
+  "aliases": [
+   "농푼젤",
+   "구푼젤"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "PILGRIM",
@@ -1708,6 +2041,13 @@
    "en": "Dorothy",
    "ja": "ドロシー"
   },
+  "aliases": [
+   "핑뚝",
+   "DORO",
+   "도황",
+   "1로시",
+   "에덴"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -1728,6 +2068,14 @@
    "en": "Dorothy: Serendipity",
    "ja": "ドロシー：セレンディピティ"
   },
+  "aliases": [
+   "핑뚝",
+   "수로시",
+   "빵",
+   "수도세",
+   "DORO",
+   "도덩이"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1748,6 +2096,7 @@
    "en": "Rumani",
    "ja": "ルマニ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1768,6 +2117,9 @@
    "en": "Rei",
    "ja": "ライ"
   },
+  "aliases": [
+   "농"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1788,6 +2140,7 @@
    "en": "Rupee",
    "ja": "ルピー"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1808,6 +2161,15 @@
    "en": "Modernia",
    "ja": "モダニア"
   },
+  "aliases": [
+   "모엥",
+   "마리안",
+   "랩쳐련",
+   "모앵",
+   "ㄹㅊㄹ",
+   "랩처",
+   "셔츠"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1828,6 +2190,14 @@
    "en": "Scarlet",
    "ja": "紅蓮"
   },
+  "aliases": [
+   "도령",
+   "삿갓",
+   "냉삼",
+   "홍북이",
+   "홍부기",
+   "홍트"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1848,6 +2218,17 @@
    "en": "Liberalio",
    "ja": "リバーレリオ"
   },
+  "aliases": [
+   "리버렐루",
+   "렐루",
+   "렐렐루",
+   "랩쳐",
+   "랩처",
+   "리/버",
+   "해파리",
+   "해산물",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -1868,11 +2249,16 @@
    "en": "Blanc",
    "ja": "ブラン"
   },
+  "aliases": [
+   "슬랜더",
+   "자매",
+   "흰우유"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
   "corporation_sub_type": null,
-  "squad": "777.0",
+  "squad": "777",
   "element": "Wind",
   "weapon_type": "AR",
   "attack_type": "Energy",
@@ -1888,11 +2274,15 @@
    "en": "Noir",
    "ja": "ノワール"
   },
+  "aliases": [
+   "자매",
+   "초코우유"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
   "corporation_sub_type": null,
-  "squad": "777.0",
+  "squad": "777",
   "element": "Wind",
   "weapon_type": "SG",
   "attack_type": "Energy",
@@ -1908,11 +2298,14 @@
    "en": "Rouge",
    "ja": "ルージュ"
   },
+  "aliases": [
+   "역바니"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
   "corporation_sub_type": null,
-  "squad": "777.0",
+  "squad": "777",
   "element": "Electronic",
   "weapon_type": "SR",
   "attack_type": "Metal",
@@ -1928,6 +2321,10 @@
    "en": "Rosanna",
    "ja": "ロザンナ"
   },
+  "aliases": [
+   "노산나",
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -1948,6 +2345,11 @@
    "en": "Moran",
    "ja": "モラン"
   },
+  "aliases": [
+   "빡통",
+   "누님",
+   "짱룡"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -1968,6 +2370,7 @@
    "en": "Sakura",
    "ja": "サクラ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -1988,6 +2391,11 @@
    "en": "Rosanna: Chic Ocean",
    "ja": "ロザンナ：シックオーシャン"
   },
+  "aliases": [
+   "노산나",
+   "수산나",
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2008,6 +2416,9 @@
    "en": "Sakura: Bloom in Summer",
    "ja": "サクラ：ブルーム・イン・サマー"
   },
+  "aliases": [
+   "수쿠라"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -2028,6 +2439,9 @@
    "en": "Mana",
    "ja": "マナ"
   },
+  "aliases": [
+   "갓경"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -2048,6 +2462,11 @@
    "en": "Ether",
    "ja": "エーテル"
   },
+  "aliases": [
+   "비커",
+   "샬레",
+   "플라스크"
+  ],
   "rarity": "SR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -2068,6 +2487,7 @@
    "en": "Soldier EG",
    "ja": "ソルジャーE.G."
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2088,6 +2508,7 @@
    "en": "Soldier FA",
    "ja": "ソルジャーF.A."
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -2108,6 +2529,7 @@
    "en": "Product 08",
    "ja": "プロダクト08"
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -2128,6 +2550,7 @@
    "en": "Product 12",
    "ja": "プロダクト12"
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -2148,6 +2571,7 @@
    "en": "iDoll Flower",
    "ja": "I-DOLL・フラワー"
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Defender",
   "corporation": "TETRA",
@@ -2168,6 +2592,7 @@
    "en": "iDoll Ocean",
    "ja": "I-DOLL・オーシャン"
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2188,6 +2613,7 @@
    "en": "Soldier OW",
    "ja": "ソルジャーO.W."
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2208,6 +2634,9 @@
    "en": "Product 23",
    "ja": "プロダクト23"
   },
+  "aliases": [
+   "피나"
+  ],
   "rarity": "R",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -2228,6 +2657,7 @@
    "en": "iDoll Sun",
    "ja": "I-DOLL・サン"
   },
+  "aliases": [],
   "rarity": "R",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2248,6 +2678,9 @@
    "en": "Ade",
    "ja": "エード"
   },
+  "aliases": [
+   "안경"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2268,6 +2701,9 @@
    "en": "Cocoa",
    "ja": "ココア"
   },
+  "aliases": [
+   "농"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2288,6 +2724,7 @@
    "en": "Soda",
    "ja": "ソーダ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2308,6 +2745,10 @@
    "en": "Privaty: Unkind Maid",
    "ja": "プリバティ：アンカインド・メイド"
   },
+  "aliases": [
+   "메프바",
+   "메이드"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2328,6 +2769,9 @@
    "en": "Soda: Twinkling Bunny",
    "ja": "ソーダ：トゥインクルバニー"
   },
+  "aliases": [
+   "바소다"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -2348,6 +2792,11 @@
    "en": "Ade: Agent Bunny",
    "ja": "エード：エージェントバニー"
   },
+  "aliases": [
+   "바이드ㄴ",
+   "바니드",
+   "바이든"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2368,6 +2817,9 @@
    "en": "Velvet",
    "ja": "ベルベット"
   },
+  "aliases": [
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2388,6 +2840,10 @@
    "en": "Marciana",
    "ja": "マルチャーナ"
   },
+  "aliases": [
+   "선생님",
+   "말차"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2408,6 +2864,18 @@
    "en": "Marciana: Marine Study",
    "ja": "マルチャーナ：マリンスタディ"
   },
+  "aliases": [
+   "화장실",
+   "수말차",
+   "뗑컨",
+   "르나린디",
+   "르나",
+   "말차",
+   "비데",
+   "펭귄",
+   "치녀",
+   "선생님"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2428,6 +2896,11 @@
    "en": "Crown",
    "ja": "クラウン"
   },
+  "aliases": [
+   "신",
+   "인권",
+   "여왕"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "PILGRIM",
@@ -2448,6 +2921,9 @@
    "en": "Signal",
    "ja": "シグナル"
   },
+  "aliases": [
+   "드라마"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2468,6 +2944,7 @@
    "en": "Mast",
    "ja": "マスト"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2488,6 +2965,9 @@
    "en": "Anchor",
    "ja": "アンカー"
   },
+  "aliases": [
+   "농"
+  ],
   "rarity": "SR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -2508,6 +2988,10 @@
    "en": "Helm",
    "ja": "ヘルム"
   },
+  "aliases": [
+   "방최창",
+   "애헬름"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2528,6 +3012,9 @@
    "en": "Helm: Aquamarine",
    "ja": "ヘルム：アクアマリン"
   },
+  "aliases": [
+   "수헬름"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2548,6 +3035,10 @@
    "en": "Mast: Romantic Maid",
    "ja": "マスト：ロマンチックメイド"
   },
+  "aliases": [
+   "메스트",
+   "메이드"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2568,6 +3059,12 @@
    "en": "Anchor: Innocent Maid",
    "ja": "アンカー：イノセントメイド"
   },
+  "aliases": [
+   "메",
+   "메앵커",
+   "메앵",
+   "뮁커"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2588,6 +3085,7 @@
    "en": "Sin",
    "ja": "シン"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -2608,6 +3106,9 @@
    "en": "Nero",
    "ja": "ネロ"
   },
+  "aliases": [
+   "ㅈ냥이"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -2628,6 +3129,11 @@
    "en": "Biscuit",
    "ja": "ビスケット"
   },
+  "aliases": [
+   "댕댕이",
+   "개",
+   "강아지"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2648,6 +3154,7 @@
    "en": "Leona",
    "ja": "レオナ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2668,6 +3175,9 @@
    "en": "Zwei",
    "ja": "ツバイ"
   },
+  "aliases": [
+   "애바이"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -2688,6 +3198,9 @@
    "en": "Ein",
    "ja": "アイン"
   },
+  "aliases": [
+   "일진"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -2708,6 +3221,11 @@
    "en": "Snow White",
    "ja": "スノーホワイト"
   },
+  "aliases": [
+   "스화",
+   "철갑노조",
+   "백설"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -2728,6 +3246,12 @@
    "en": "Snow White: Innocent Days",
    "ja": "スノーホワイト：イノセントデイズ"
   },
+  "aliases": [
+   "농스화",
+   "농",
+   "농설",
+   "백설"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -2748,6 +3272,10 @@
    "en": "Soline",
    "ja": "ソリン"
   },
+  "aliases": [
+   "가솔린",
+   "휘발유"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2768,6 +3296,11 @@
    "en": "Sugar",
    "ja": "シュガー"
   },
+  "aliases": [
+   "커피",
+   "애슈",
+   "듀얼"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -2788,6 +3321,11 @@
    "en": "Quency: Escape Queen",
    "ja": "クエンシー：エスケープクイーン"
   },
+  "aliases": [
+   "꽌시",
+   "거봉",
+   "포도"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -2808,6 +3346,11 @@
    "en": "Flora",
    "ja": "フローラ"
   },
+  "aliases": [
+   "애플",
+   "꽃라운",
+   "꽃친련"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -2828,6 +3371,12 @@
    "en": "Trina",
    "ja": "トリナ"
   },
+  "aliases": [
+   "젖소",
+   "홍북이친구",
+   "홍트",
+   "나무"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -2848,6 +3397,7 @@
    "en": "Vesti",
    "ja": "ベスティー"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -2868,6 +3418,9 @@
    "en": "Volume",
    "ja": "ボリューム"
   },
+  "aliases": [
+   "니머니"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -2888,6 +3441,7 @@
    "en": "Yan",
    "ja": "ヤン"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -2908,6 +3462,7 @@
    "en": "Yulha",
    "ja": "ユルハ"
   },
+  "aliases": [],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -2928,6 +3483,9 @@
    "en": "Naga",
    "ja": "ナガ"
   },
+  "aliases": [
+   "NAGA"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -2948,6 +3506,10 @@
    "en": "Tia",
    "ja": "ティア"
   },
+  "aliases": [
+   "파충류",
+   "빵"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -2968,6 +3530,10 @@
    "en": "Red Hood",
    "ja": "レッドフード"
   },
+  "aliases": [
+   "레후",
+   "레듀듀"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -2988,6 +3554,11 @@
    "en": "Snow White: Heavy Arms",
    "ja": "スノーホワイト：ヘビーアームズ"
   },
+  "aliases": [
+   "수화",
+   "각설(이)",
+   "백설"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -3008,6 +3579,9 @@
    "en": "Elegg",
    "ja": "エレグ"
   },
+  "aliases": [
+   "붐"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "MISSILIS",
@@ -3028,6 +3602,10 @@
    "en": "Trony",
    "ja": "トロニー"
   },
+  "aliases": [
+   "진순",
+   "농"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -3048,6 +3626,12 @@
    "en": "Elegg: Boom and Shock",
    "ja": "エレグ：ブーム・アンド・ショック"
   },
+  "aliases": [
+   "수레그",
+   "붐",
+   "전기세",
+   "스위치"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "MISSILIS",
@@ -3068,6 +3652,13 @@
    "en": "Cinderella",
    "ja": "シンデレラ"
   },
+  "aliases": [
+   "렐루",
+   "랩쳐",
+   "랩처",
+   "아나키오르",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "PILGRIM",
@@ -3088,6 +3679,13 @@
    "en": "Little Mermaid",
    "ja": "リトルマーメイド"
   },
+  "aliases": [
+   "세이렌",
+   "아우",
+   "물고기",
+   "해산물",
+   "턱"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -3108,6 +3706,12 @@
    "en": "Grave",
    "ja": "グレイブ"
   },
+  "aliases": [
+   "그레그레",
+   "에이브",
+   "그브",
+   "그머니"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "PILGRIM",
@@ -3128,6 +3732,15 @@
    "en": "Cinderella: Crystal Wave",
    "ja": "シンデレラ：クリスタルウェーブ"
   },
+  "aliases": [
+   "수렐루",
+   "렐루",
+   "어흐",
+   "랩쳐",
+   "랩처",
+   "철렐루",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "PILGRIM",
@@ -3148,6 +3761,14 @@
    "en": "Bready",
    "ja": "ブレッディ"
   },
+  "aliases": [
+   "돼지",
+   "빵순이",
+   "빵",
+   "댇지",
+   "미쉐린",
+   "미슐랭"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -3168,6 +3789,10 @@
    "en": "Crust",
    "ja": "クラスト"
   },
+  "aliases": [
+   "농",
+   "바삭이"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -3188,6 +3813,12 @@
    "en": "Sora",
    "ja": "ソラ"
   },
+  "aliases": [
+   "이재용",
+   "재드래곤",
+   "재용",
+   "쉿"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -3208,6 +3839,9 @@
    "en": "Bay",
    "ja": "ベイ"
   },
+  "aliases": [
+   "치어리더"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "TETRA",
@@ -3228,6 +3862,9 @@
    "en": "Clay",
    "ja": "クレイ"
   },
+  "aliases": [
+   "치어리더"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -3248,6 +3885,12 @@
    "en": "Ark Ranger Black",
    "ja": "アークレンジャー・ブラック"
   },
+  "aliases": [
+   "아블",
+   "아레블",
+   "아이스블라스트",
+   "히어로"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "TETRA",
@@ -3268,6 +3911,12 @@
    "en": "Phantom",
    "ja": "ファントム"
   },
+  "aliases": [
+   "체리",
+   "카드",
+   "괴도",
+   "마춤뻡"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -3288,6 +3937,9 @@
    "en": "Arcana",
    "ja": "アルカナ"
   },
+  "aliases": [
+   "알카"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ELYSION",
@@ -3308,6 +3960,11 @@
    "en": "Label",
    "ja": "レーベル"
   },
+  "aliases": [
+   "음침",
+   "빵",
+   "얀데레"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ELYSION",
@@ -3328,6 +3985,18 @@
    "en": "Arcana: Fortune Mate",
    "ja": "アルカナ：フォーチュンメイト"
   },
+  "aliases": [
+   "알카",
+   "불알",
+   "불알카",
+   "부랄",
+   "교르카나",
+   "굘카",
+   "교복카나",
+   "내아내임",
+   "2x2",
+   "르나츈트"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ELYSION",
@@ -3348,6 +4017,13 @@
    "en": "Yuni",
    "ja": "ユニ"
   },
+  "aliases": [
+   "테러",
+   "우우",
+   "랩쳐",
+   "랩처",
+   "ㄹㅊㄹ"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -3368,6 +4044,10 @@
    "en": "Mint",
    "ja": "ミント"
   },
+  "aliases": [
+   "찬가",
+   "아이돌"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -3388,6 +4068,10 @@
    "en": "Prika",
    "ja": "プリカ"
   },
+  "aliases": [
+   "아이돌",
+   "파프리카"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "TETRA",
@@ -3408,6 +4092,10 @@
    "en": "Snow Crane",
    "ja": "シラツル"
   },
+  "aliases": [
+   "할매",
+   "피규어"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "MISSILIS",
@@ -3428,6 +4116,10 @@
    "en": "Makima",
    "ja": "マキマ"
   },
+  "aliases": [
+   "톱",
+   "지배"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ABNORMAL",
@@ -3448,6 +4140,9 @@
    "en": "Power",
    "ja": "パワー"
   },
+  "aliases": [
+   "톱"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3468,6 +4163,9 @@
    "en": "Himeno",
    "ja": "姫野"
   },
+  "aliases": [
+   "톱"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3488,6 +4186,9 @@
    "en": "2B",
    "ja": "2B"
   },
+  "aliases": [
+   "뚜비"
+  ],
   "rarity": "SSR",
   "class": "Defender",
   "corporation": "ABNORMAL",
@@ -3508,6 +4209,9 @@
    "en": "A2",
    "ja": "A2"
   },
+  "aliases": [
+   "니어"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3528,6 +4232,10 @@
    "en": "Pascal",
    "ja": "パスカル"
   },
+  "aliases": [
+   "니어",
+   "깡통"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3548,6 +4256,9 @@
    "en": "Rem",
    "ja": "レム"
   },
+  "aliases": [
+   "리제로"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3568,6 +4279,9 @@
    "en": "Emilia",
    "ja": "エミリア"
   },
+  "aliases": [
+   "리제로"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3588,6 +4302,9 @@
    "en": "Ram",
    "ja": "ラム"
   },
+  "aliases": [
+   "리제로"
+  ],
   "rarity": "SR",
   "class": "Defender",
   "corporation": "ABNORMAL",
@@ -3608,6 +4325,12 @@
    "en": "Asuka",
    "ja": "アスカ"
   },
+  "aliases": [
+   "에게리",
+   "작스카",
+   "작슝좍",
+   "작게리"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3628,6 +4351,12 @@
    "en": "Rei",
    "ja": "レイ"
   },
+  "aliases": [
+   "에게리",
+   "작레이",
+   "작슝좍",
+   "작게리"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3648,6 +4377,11 @@
    "en": "Mari",
    "ja": "マリ"
   },
+  "aliases": [
+   "에게리",
+   "슝좍",
+   "ㅈ경"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3668,6 +4402,10 @@
    "en": "Misato",
    "ja": "ミサト"
   },
+  "aliases": [
+   "에게리",
+   "슝좍"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3688,6 +4426,12 @@
    "en": "Rei (Tentative Name)",
    "ja": "レイ（仮称）"
   },
+  "aliases": [
+   "에게리",
+   "풍레이",
+   "풍슝좍",
+   "풍게리"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3708,6 +4452,13 @@
    "en": "Asuka: WILLE",
    "ja": "アスカ：WILLE"
   },
+  "aliases": [
+   "에게리",
+   "풍스카",
+   "풍게리",
+   "풍슝좍",
+   "빌레"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3728,6 +4479,9 @@
    "en": "Sakura",
    "ja": "サクラ"
   },
+  "aliases": [
+   "에게리"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3748,6 +4502,13 @@
    "en": "Ada",
    "ja": "エイダ"
   },
+  "aliases": [
+   "바하",
+   "웡줌마",
+   "적폐",
+   "바슝좍",
+   "바이오하자드"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3768,6 +4529,13 @@
    "en": "Jill",
    "ja": "ジル"
   },
+  "aliases": [
+   "바하",
+   "소중이누나",
+   "발렌타인",
+   "질발",
+   "바이오하자드"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3788,6 +4556,10 @@
    "en": "Claire",
    "ja": "クレア"
   },
+  "aliases": [
+   "바하",
+   "바이오하자드"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3808,6 +4580,10 @@
    "en": "EVE",
    "ja": "イヴ"
   },
+  "aliases": [
+   "스블",
+   "아오리"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3828,6 +4604,10 @@
    "en": "Raven",
    "ja": "レイヴン"
   },
+  "aliases": [
+   "스블",
+   "까마귀"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3848,6 +4628,9 @@
    "en": "Lily",
    "ja": "リリー"
   },
+  "aliases": [
+   "스블"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3868,6 +4651,9 @@
    "en": "Chisato",
    "ja": "千束"
   },
+  "aliases": [
+   "리코"
+  ],
   "rarity": "SSR",
   "class": "Attacker",
   "corporation": "ABNORMAL",
@@ -3888,6 +4674,10 @@
    "en": "Takina",
    "ja": "たきな"
   },
+  "aliases": [
+   "리코",
+   "사카나"
+  ],
   "rarity": "SSR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
@@ -3908,6 +4698,10 @@
    "en": "Kurumi",
    "ja": "クルミ"
   },
+  "aliases": [
+   "리코",
+   "틱택토"
+  ],
   "rarity": "SR",
   "class": "Supporter",
   "corporation": "ABNORMAL",
