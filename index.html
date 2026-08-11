@@ -18,67 +18,74 @@
 
 <header class="topbar">
   <div class="topbar-in">
-    <h1 class="brand">니케 리스트 <span class="brand-sub">· 픽업일정</span></h1>
+    <h1 class="brand">
+      <span data-i18n="app.brand">니케 리스트</span>
+      <span class="brand-sub" data-i18n="app.brandSub">· 픽업일정</span>
+    </h1>
     <div class="topbar-right">
-      <div class="langswitch" role="group" aria-label="표시 언어">
+      <div class="langswitch" role="group" data-i18n-aria="ui.langGroup" aria-label="표시 언어">
         <button type="button" data-lang="ko" class="on">한</button>
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="ja">日</button>
       </div>
-      <button type="button" id="theme" class="themebtn" aria-pressed="false" title="테마 전환">
+      <button type="button" id="theme" class="themebtn" aria-pressed="false"
+              data-i18n-title="ui.theme" title="테마 전환">
         <span id="themeIcon">☾</span>
       </button>
     </div>
   </div>
   <nav class="tabs" role="tablist">
-    <button type="button" role="tab" data-tab="nikkes" aria-selected="true">니케 리스트</button>
-    <button type="button" role="tab" data-tab="pickups" aria-selected="false">픽업일정</button>
-    <button type="button" role="tab" data-tab="stats" aria-selected="false">통계</button>
+    <button type="button" role="tab" data-tab="nikkes" aria-selected="true" data-i18n="tab.nikkes">니케 리스트</button>
+    <button type="button" role="tab" data-tab="pickups" aria-selected="false" data-i18n="tab.pickups">픽업일정</button>
+    <button type="button" role="tab" data-tab="stats" aria-selected="false" data-i18n="tab.stats">통계</button>
   </nav>
 </header>
 
 <main id="main">
 
-  <div id="loading" class="notice">데이터를 불러오는 중…</div>
+  <div id="loading" class="notice" data-i18n="ui.loading">데이터를 불러오는 중…</div>
   <div id="error" class="notice notice-error" hidden></div>
 
   <div id="app" hidden>
 
     <!-- ── 필터 ───────────────────────────────────────────── -->
-    <section class="filters" aria-label="필터">
+    <section class="filters" data-i18n-aria="ui.filters" aria-label="필터">
       <div class="filter-head">
-        <input type="search" id="q" placeholder="이름 검색 — 한/영/일, 초성도 가능 (예: ㄹㅍ, ㅅㄷㄹㄹ)" autocomplete="off" spellcheck="false">
+        <input type="search" id="q" autocomplete="off" spellcheck="false"
+               data-i18n-placeholder="ui.search">
         <span id="count" class="count"></span>
-        <button type="button" id="reset" class="btn-reset">필터 초기화</button>
+        <button type="button" id="reset" class="btn-reset" data-i18n="ui.reset">필터 초기화</button>
       </div>
 
       <div id="chipfilters" class="chipgrid"></div>
 
       <div class="filter-row" id="extrafilters">
         <label class="field">
-          <span>스쿼드</span>
-          <select id="squad"><option value="">전체</option></select>
+          <span data-i18n="f.squad">스쿼드</span>
+          <select id="squad"><option value="" data-i18n="f.all">전체</option></select>
         </label>
         <label class="field">
-          <span>출시일</span>
+          <span data-i18n="f.release">출시일</span>
           <span class="range">
-            <input type="date" id="relFrom" aria-label="출시일 시작">
+            <input type="date" id="relFrom" data-i18n-aria="f.releaseFrom">
             <em>~</em>
-            <input type="date" id="relTo" aria-label="출시일 종료">
+            <input type="date" id="relTo" data-i18n-aria="f.releaseTo">
           </span>
         </label>
       </div>
 
       <div class="filter-row" id="pickupfilters" hidden>
         <label class="field">
-          <span>복각</span>
+          <span data-i18n="f.rerun">복각</span>
           <select id="rerun">
-            <option value="all">전체</option>
-            <option value="first">최초 픽업만</option>
-            <option value="rerun">복각만</option>
+            <option value="all" data-i18n="f.all">전체</option>
+            <option value="first" data-i18n="f.firstOnly">최초 픽업만</option>
+            <option value="rerun" data-i18n="f.rerunOnly">복각만</option>
           </select>
         </label>
-        <label class="check"><input type="checkbox" id="tlview"> 타임라인 보기</label>
+        <label class="check">
+          <input type="checkbox" id="tlview"> <span data-i18n="f.timeline">타임라인 보기</span>
+        </label>
       </div>
     </section>
 
@@ -90,7 +97,7 @@
           <tbody id="nikkeBody"></tbody>
         </table>
       </div>
-      <p class="empty" id="nikkeEmpty" hidden>조건에 맞는 니케가 없습니다.</p>
+      <p class="empty" id="nikkeEmpty" hidden data-i18n="msg.emptyNikke">조건에 맞는 니케가 없습니다.</p>
     </section>
 
     <!-- ── 탭 2: 픽업일정 ─────────────────────────────────── -->
@@ -102,7 +109,7 @@
         </table>
       </div>
       <div id="timeline" class="timeline" hidden></div>
-      <p class="empty" id="pickupEmpty" hidden>조건에 맞는 픽업이 없습니다.</p>
+      <p class="empty" id="pickupEmpty" hidden data-i18n="msg.emptyPickup">조건에 맞는 픽업이 없습니다.</p>
     </section>
 
     <!-- ── 탭 3: 통계 ─────────────────────────────────────── -->
@@ -116,16 +123,14 @@
 <!-- 니케 상세 -->
 <div id="sheet" class="sheet" hidden>
   <div class="sheet-back" data-close></div>
-  <aside class="sheet-body" role="dialog" aria-modal="true" aria-labelledby="sheetName">
-    <button type="button" class="sheet-x" data-close aria-label="닫기">×</button>
+  <aside class="sheet-body" role="dialog" aria-modal="true">
+    <button type="button" class="sheet-x" data-close data-i18n-aria="ui.close" aria-label="닫기">×</button>
     <div id="sheetContent"></div>
   </aside>
 </div>
 
 <footer class="foot">
   <span id="metaline"></span>
-  <span class="foot-sep">·</span>
-  <span>데이터: <a href="https://github.com/RADM90/MechaShifty/tree/main/data" target="_blank" rel="noopener">RADM90/MechaShifty</a></span>
 </footer>
 
 <div id="tip" class="tip" hidden></div>
