@@ -11,18 +11,206 @@ const FILES = ['nikkes', 'pickups', 'taxonomy', 'meta'];
    order 는 표시 순서. element 순서는 dataviz 검증기를 통과한 인접
    순서라서 임의로 바꾸면 인접쌍 대비가 깨진다.                        */
 export const AXES = {
-  corporation: { label: '기업', order: ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'] },
-  element: { label: '속성', order: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'] },
-  class: { label: '클래스', order: ['Attacker', 'Defender', 'Supporter'] },
-  weapon_type: { label: '무기', order: ['AR', 'SMG', 'SG', 'MG', 'SR', 'RL'] },
-  burst: { label: '버스트', order: ['Step1', 'Step2', 'Step3', 'AllStep'] },
-  rarity: { label: '등급', order: ['SSR', 'SR', 'R'] },
+  corporation: { order: ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'] },
+  element: { order: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'] },
+  class: { order: ['Attacker', 'Defender', 'Supporter'] },
+  weapon_type: { order: ['AR', 'SMG', 'SG', 'MG', 'SR', 'RL'] },
+  burst: { order: ['Step1', 'Step2', 'Step3', 'AllStep'] },
+  rarity: { order: ['SSR', 'SR', 'R'] },
 };
 const PICKUP_AXES = {
-  status: { label: '진행', order: ['ongoing', 'upcoming', 'ended'] },
-  availability: { label: '픽업', order: ['standard', 'limited'] },
-  tag: { label: '구분', order: ['collab', 'summer', 'christmas', 'new_year', 'anniversary', 'half_anniversary', 'maid', 'bunny', '_none'] },
+  status: { order: ['ongoing', 'upcoming', 'ended'] },
+  availability: { order: ['standard', 'limited'] },
+  tag: { order: ['collab', 'summer', 'christmas', 'new_year', 'anniversary', 'half_anniversary', 'maid', 'bunny', '_none'] },
 };
+/* 축 이름은 UI 문구라 t() 로, 축의 값(엘리시온/작열…)은 taxonomy 라 L() 로 간다 */
+export const axisLabel = axis => t('ax.' + axis);
+/* ── UI 문자열 ─────────────────────────────────────────────────
+   [ko, en, ja] 순서. 값이 함수면 인자를 받아 문자열을 만든다.
+   데이터 쪽 라벨(기업/속성/스쿼드…)은 taxonomy.json 이 담당하고,
+   여기는 순수 UI 문구만 둔다. 초성 검색은 한국어에서만 의미가 있어서
+   검색 안내 예시도 언어별로 다르다.                                  */
+const LANGS = ['ko', 'en', 'ja'];
+const STR = {
+  'app.title': ['니케 리스트 · 픽업일정', 'NIKKE List · Banner Schedule', 'ニケリスト・ピックアップ日程'],
+  'app.brand': ['니케 리스트', 'NIKKE List', 'ニケリスト'],
+  'app.brandSub': ['· 픽업일정', '· Banners', '・ピックアップ'],
+
+  'tab.nikkes': ['니케 리스트', 'Nikkes', 'ニケ一覧'],
+  'tab.pickups': ['픽업일정', 'Banners', 'ピックアップ'],
+  'tab.stats': ['통계', 'Stats', '統計'],
+
+  'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
+  'ui.reset': ['필터 초기화', 'Reset filters', 'フィルタ初期化'],
+  'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
+  'ui.close': ['닫기', 'Close', '閉じる'],
+  'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
+  'ui.toDark': ['다크 모드로 전환', 'Switch to dark mode', 'ダークモードに切替'],
+  'ui.filters': ['필터', 'Filters', 'フィルタ'],
+  'ui.langGroup': ['표시 언어', 'Display language', '表示言語'],
+  'ui.search': [
+    '이름 · 별명 · 초성 검색 (예: ㄹㅍ, 스화, 흑염룡)',
+    'Search by name, squad or Korean nickname (e.g. Rapi, Counters)',
+    '名前・スカッド・あだ名で検索（例: ラピ、カウンターズ）',
+  ],
+  'ui.meta': [
+    m => `데이터 기준일 ${m.updated_at} · 니케 ${m.counts.nikkes}명 · 배너 ${m.counts.pickups}개`,
+    m => `Data as of ${m.updated_at} · ${m.counts.nikkes} Nikkes · ${m.counts.pickups} banners`,
+    m => `データ基準日 ${m.updated_at} · ニケ ${m.counts.nikkes}体 · バナー ${m.counts.pickups}件`,
+  ],
+
+  'f.squad': ['스쿼드', 'Squad', 'スカッド'],
+  'f.release': ['출시일', 'Released', '実装日'],
+  'f.releaseFrom': ['출시일 시작', 'Released from', '実装日 開始'],
+  'f.releaseTo': ['출시일 종료', 'Released to', '実装日 終了'],
+  'f.rerun': ['복각', 'Rerun', '復刻'],
+  'f.rerunOnly': ['복각만', 'Reruns only', '復刻のみ'],
+  'f.firstOnly': ['최초 픽업만', 'First run only', '初回のみ'],
+  'f.timeline': ['타임라인 보기', 'Timeline view', 'タイムライン表示'],
+  'f.all': ['전체', 'All', 'すべて'],
+
+  'ax.corporation': ['기업', 'Corp', '製造'],
+  'ax.element': ['속성', 'Element', '属性'],
+  'ax.class': ['클래스', 'Class', 'クラス'],
+  'ax.weapon_type': ['무기', 'Weapon', '武器'],
+  'ax.burst': ['버스트', 'Burst', 'バースト'],
+  'ax.rarity': ['등급', 'Rarity', 'レア'],
+  'ax.status': ['진행', 'Status', '状態'],
+  'ax.availability': ['픽업', 'Pool', '排出'],
+  'ax.tag': ['구분', 'Type', '区分'],
+  'ax.attack_type': ['공격타입', 'Attack type', '攻撃タイプ'],
+
+  'col.name': ['이름', 'Name', '名前'],
+  'col.squad': ['스쿼드', 'Squad', 'スカッド'],
+  'col.release': ['출시일', 'Released', '実装日'],
+  'col.pickups': ['픽업', 'Banners', 'PU'],
+  'col.no': ['연번', '#', '番号'],
+  'col.period': ['기간', 'Period', '期間'],
+
+  'msg.emptyNikke': ['조건에 맞는 니케가 없습니다.', 'No Nikkes match these filters.', '条件に合うニケがいません。'],
+  'msg.emptyPickup': ['조건에 맞는 픽업이 없습니다.', 'No banners match these filters.', '条件に合うピックアップがありません。'],
+  'msg.unlisted': ['(리스트 미등록)', '(not in list yet)', '（リスト未登録）'],
+  'msg.noPickup': [
+    '픽업 배너 이력이 없습니다 (런칭 유닛 또는 비가챠).',
+    'No banner history (launch unit or non-gacha).',
+    'ピックアップ履歴がありません（実装時ユニットまたは非ガチャ）。',
+  ],
+  'msg.rerunOf': [n => `#${n} 복각`, n => `Rerun of #${n}`, n => `#${n} 復刻`],
+  'msg.dday': [n => `D-${n}`, n => `in ${n}d`, n => `あと${n}日`],
+  'msg.year': [y => `${y}년`, y => `${y}`, y => `${y}年`],
+
+  'cnt.nikkes': [
+    (n, t) => `<b>${n}</b> / ${t}명`,
+    (n, t) => `<b>${n}</b> / ${t}`,
+    (n, t) => `<b>${n}</b> / ${t}体`,
+  ],
+  'cnt.banners': [
+    (n, t) => `<b>${n}</b> / ${t}개 배너`,
+    (n, t) => `<b>${n}</b> / ${t} banners`,
+    (n, t) => `<b>${n}</b> / ${t}件`,
+  ],
+  'cnt.both': [
+    (a, b) => `니케 <b>${a}</b> · 배너 <b>${b}</b>`,
+    (a, b) => `<b>${a}</b> Nikkes · <b>${b}</b> banners`,
+    (a, b) => `ニケ <b>${a}</b> · バナー <b>${b}</b>`,
+  ],
+
+  'sheet.aliases': [n => `별명 (${n})`, n => `Nicknames (${n})`, n => `あだ名 (${n})`],
+  'sheet.history': [n => `픽업 이력 (${n})`, n => `Banner history (${n})`, n => `ピックアップ履歴 (${n})`],
+
+  'err.title': ['데이터를 불러오지 못했습니다.', 'Could not load the data.', 'データを読み込めませんでした。'],
+  'err.hint': [
+    'data/*.json 이 레포에 올라가 있는지 확인하세요. 로컬에서 열었다면 <code>file://</code> 이 아니라 <code>python3 -m http.server</code> 로 띄워야 합니다.',
+    'Check that data/*.json exists in the repo. If opened locally, serve it with <code>python3 -m http.server</code> — <code>file://</code> will not work.',
+    'data/*.json がリポジトリにあるか確認してください。ローカルで開いた場合は <code>file://</code> ではなく <code>python3 -m http.server</code> で配信してください。',
+  ],
+
+  /* 통계 탭 (charts.js 에서 ctx.t 로 받아 쓴다) */
+  'st.head': [
+    (a, b) => `현재 필터 기준 · 니케 ${a}명 · 픽업 배너 ${b}개 — 필터를 바꾸면 아래 모든 차트가 함께 좁혀집니다.`,
+    (a, b) => `Current filters · ${a} Nikkes · ${b} banners — every chart below narrows with the filters.`,
+    (a, b) => `現在のフィルタ · ニケ ${a}体 · バナー ${b}件 — フィルタを変えると下のチャートも一緒に絞られます。`,
+  ],
+  'st.byAxis': [
+    a => `${a}별 분포`, a => `By ${a}`, a => `${a}別の分布`,
+  ],
+  'st.basis': [n => `${n}명 기준`, n => `of ${n} Nikkes`, n => `${n}体 基準`],
+  'st.basisBanner': [n => `${n}개 배너 기준`, n => `of ${n} banners`, n => `${n}件のバナー基準`],
+  'st.squadTop': [n => `스쿼드 TOP 12`, n => `Top 12 squads`, n => `スカッド TOP 12`],
+  'st.squadTotal': [n => `총 ${n}개 스쿼드`, n => `${n} squads total`, n => `全 ${n} スカッド`],
+  'st.cross': [(a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`],
+  'st.crossHint': [
+    '칸의 숫자는 해당 조합의 니케 수',
+    'Each cell is the number of Nikkes in that combination',
+    'マスの数字はその組み合わせのニケ数',
+  ],
+  'st.elementNote': [
+    '막대 색은 검증된 팔레트이고, 아이콘은 게임 내 아이콘입니다. 둘 다 항상 속성 이름과 함께 표시됩니다.',
+    'Bar colors come from the validated palette; icons are the in-game ones. Both always sit beside the element name.',
+    'バーの色は検証済みパレット、アイコンはゲーム内のものです。どちらも常に属性名と一緒に表示されます。',
+  ],
+  'st.quarter': ['분기별 출시 추이', 'Releases by quarter', '四半期ごとの実装推移'],
+  'st.quarterHint': [
+    '가로축은 분기, 세로축은 출시된 니케 수',
+    'X axis is the quarter, Y axis is Nikkes released',
+    '横軸は四半期、縦軸は実装されたニケ数',
+  ],
+  'st.avail': ['한정 / 상시 비율', 'Limited vs standard', '限定 / 常設の比率'],
+  'st.tagDist': ['픽업 구분별 분포', 'Banners by type', '区分別の分布'],
+  'st.status': ['배너 진행 상태', 'Banner status', 'バナーの状態'],
+  'st.statusHint': ['브라우저 현재 시각 기준', 'Based on your current time', 'ブラウザの現在時刻基準'],
+  'st.gap': ['복각 주기', 'Time until rerun', '復刻までの期間'],
+  'st.gapHint': [
+    (n, med) => `복각 ${n}건 · 첫 픽업 이후 경과 개월 (중앙값 ${med}개월)`,
+    (n, med) => `${n} reruns · months since first banner (median ${med})`,
+    (n, med) => `復刻 ${n}件 · 初回からの経過月数（中央値 ${med}ヶ月）`,
+  ],
+  'st.gapNone': [
+    '현재 조건에 복각 배너가 없습니다',
+    'No reruns match the current filters',
+    '現在の条件に復刻バナーがありません',
+  ],
+  'st.months': [
+    (a, b) => b == null ? `${a}개월+` : `${a}~${b}개월`,
+    (a, b) => b == null ? `${a}+ months` : `${a}–${b} months`,
+    (a, b) => b == null ? `${a}ヶ月以上` : `${a}〜${b}ヶ月`,
+  ],
+  'st.noBanner': ['픽업 이력 없음', 'Never featured', 'ピックアップ履歴なし'],
+  'st.noBannerHint': [
+    '런칭 유닛이거나 가챠 배너를 받은 적 없는 니케',
+    'Launch units, or Nikkes that never had a banner',
+    '実装時ユニット、またはバナーを持たないニケ',
+  ],
+  'st.hasBanner': ['픽업 있음', 'Featured', 'ピックアップあり'],
+  'st.hasNoBanner': ['픽업 없음', 'Never featured', 'ピックアップなし'],
+  'st.empty': ['해당 조건의 니케가 없습니다.', 'No Nikkes match.', '条件に合うニケがいません。'],
+  'st.few': ['적음', 'Low', '少'],
+  'st.many': ['많음', 'High', '多'],
+  'st.tipCount': [
+    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
+    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
+    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
+  ],
+  'st.tipCell': [
+    (r, c, v) => `${r} × ${c} — <b>${v}</b>명`,
+    (r, c, v) => `${r} × ${c} — <b>${v}</b>`,
+    (r, c, v) => `${r} × ${c} — <b>${v}</b>体`,
+  ],
+  'st.tipQuarter': [
+    (label, v) => `${label} — <b>${v}</b>명`,
+    (label, v) => `${label} — <b>${v}</b>`,
+    (label, v) => `${label} — <b>${v}</b>体`,
+  ],
+  'st.yearLabel': [y => `${y}년`, y => `${y}`, y => `${y}年`],
+};
+
+export function t(key, ...args) {
+  const row = STR[key];
+  if (!row) return key;
+  const v = row[LANGS.indexOf(state.lang)] ?? row[0];
+  return typeof v === 'function' ? v(...args) : v;
+}
+
 const STATUS_LABEL = {
   ongoing: { ko: '진행중', en: 'Ongoing', ja: '開催中' },
   upcoming: { ko: '예정', en: 'Upcoming', ja: '予定' },
@@ -174,9 +362,11 @@ const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const u = n => '\\u' + n.toString(16).padStart(4, '0');
 
 /* 매처 두 벌을 만든다.
-     name  — 이름/스쿼드용. 초성 + 완성형 혼용을 받는다.
-     alias — 별명용. 부분 일치만 하고 초성 확장은 하지 않는다.
-   별명을 초성으로도 풀면 'ㄱ' 하나에 수십 개가 걸려 검색이 무의미해진다.
+     name  — 니케 이름(한/영/일) 전용. 초성 + 완성형 혼용을 받는다.
+     plain — 스쿼드·별명용. 부분 일치만 하고 초성 확장은 하지 않는다.
+   초성 확장을 이름 밖으로 넓히면 검색이 금방 무의미해진다. 별명은 'ㄱ' 하나에
+   개·곰·깡이 전부 걸리고, 스쿼드는 'ㄹㅍ' 하나에 리플레이스·세라핌 소속이
+   통째로 딸려온다. 둘 다 통으로 쳐서 찾는 이름이라 부분 일치면 충분하다.
    별명 자체가 초성인 것들('ㄹㅊㄹ', 'ㅋㄷ')은 부분 일치로 그대로 잡힌다. */
 function buildMatcher(raw) {
   const q = compact(raw.trim());
@@ -186,7 +376,7 @@ function buildMatcher(raw) {
   const plain = s => compact(s).toLowerCase().includes(lower);
 
   const chars = [...q];
-  if (!chars.some(c => CHO.includes(c))) return { name: plain, alias: plain };
+  if (!chars.some(c => CHO.includes(c))) return { name: plain, plain };
 
   const pattern = chars.map(ch => {
     const i = CHO.indexOf(ch);
@@ -197,8 +387,8 @@ function buildMatcher(raw) {
   }).join('');
 
   let re;
-  try { re = new RegExp(pattern, 'i'); } catch { return { name: plain, alias: plain }; }
-  return { name: s => re.test(compact(s)), alias: plain };
+  try { re = new RegExp(pattern, 'i'); } catch { return { name: plain, plain }; }
+  return { name: s => re.test(compact(s)), plain };
 }
 
 /* state.q 가 바뀔 때만 다시 만든다 (행마다 정규식을 새로 짜지 않게) */
@@ -210,10 +400,21 @@ function matcher() {
   return state._match;
 }
 
-/* 니케 하나가 현재 검색어에 걸리는지 — 이름/스쿼드는 초성까지, 별명은 부분 일치만 */
+/* 스쿼드는 내부 코드가 아니라 화면에 보이는 표시명으로 찾는다.
+   코드로 매칭하면 콜라보 스쿼드(ce_01, ce002_01, CE006_01)에 들어 있는
+   숫자 때문에 '1' 같은 검색어에 엉뚱한 니케가 걸리고, 반대로 '카운터스'
+   처럼 실제로 보이는 이름으로는 못 찾는다. 라벨이 없는 새 코드만 코드로 폴백. */
+const squadText = code => {
+  if (!code) return [];
+  const e = D.taxonomy.squad?.[code];
+  return e ? [e.ko, e.en, e.ja].filter(Boolean) : [code];
+};
+
+/* 니케 하나가 현재 검색어에 걸리는지 — 이름만 초성까지, 스쿼드/별명은 부분 일치 */
 function hitsNikke(m, n) {
-  return [n.name.ko, n.name.en, n.name.ja, n.squad].some(v => v && m.name(v))
-    || (n.aliases || []).some(m.alias);
+  return [n.name.ko, n.name.en, n.name.ja].some(v => v && m.name(v))
+    || squadText(n.squad).some(m.plain)
+    || (n.aliases || []).some(m.plain);
 }
 
 /* ── 필터 ─────────────────────────────────────────────────────
@@ -307,7 +508,7 @@ function buildChips() {
 
   for (const [axis, def] of Object.entries(axes)) {
     const row = el('div', 'chiprow');
-    row.appendChild(el('span', 'lbl', def.label));
+    row.appendChild(el('span', 'lbl', axisLabel(axis)));
     for (const code of def.order) {
       const b = el('button', 'chip');
       b.type = 'button';
@@ -345,8 +546,10 @@ function buildChips() {
   };
 }
 
+const statusLabel = code => STATUS_LABEL[code]?.[lang()] ?? code;
+
 function chipLabel(axis, code) {
-  if (axis === 'status' || code === '_none') return STATUS_LABEL[code]?.[lang()] ?? code;
+  if (axis === 'status' || code === '_none') return statusLabel(code);
   return L(axis, code);
 }
 
@@ -383,17 +586,18 @@ function updateChipCounts() {
 
 /* ── 니케 표 ───────────────────────────────────────────────── */
 const NIKKE_COLS = [
-  { key: 'name', label: '이름', cls: 'name' },
-  { key: 'rarity', label: '등급' },
-  { key: 'corporation', label: '기업' },
-  { key: 'element', label: '속성' },
-  { key: 'class', label: '클래스' },
-  { key: 'weapon_type', label: '무기' },
-  { key: 'burst', label: '버스트' },
-  { key: 'squad', label: '스쿼드' },
-  { key: 'release_date', label: '출시일', cls: 'num' },
-  { key: 'pickups', label: '픽업', cls: 'num' },
+  { key: 'name', str: 'col.name', cls: 'name' },
+  { key: 'rarity', axis: 'rarity' },
+  { key: 'corporation', axis: 'corporation' },
+  { key: 'element', axis: 'element' },
+  { key: 'class', axis: 'class' },
+  { key: 'weapon_type', axis: 'weapon_type' },
+  { key: 'burst', axis: 'burst' },
+  { key: 'squad', str: 'col.squad' },
+  { key: 'release_date', str: 'col.release', cls: 'num' },
+  { key: 'pickups', str: 'col.pickups', cls: 'num' },
 ];
+const colLabel = c => c.axis ? axisLabel(c.axis) : t(c.str);
 
 function sortValue(n, key) {
   if (key === 'name') return nameOf(n);
@@ -415,7 +619,7 @@ function renderNikkes() {
   const head = $('#nikkeHead');
   head.textContent = '';
   for (const c of NIKKE_COLS) {
-    const th = el('th', c.cls === 'num' ? 'num' : null, c.label);
+    const th = el('th', c.cls === 'num' ? 'num' : null, colLabel(c));
     if (state.sort.key === c.key) th.appendChild(el('span', 'arrow', state.sort.dir > 0 ? ' ▲' : ' ▼'));
     th.onclick = () => {
       state.sort = state.sort.key === c.key
@@ -435,7 +639,6 @@ function renderNikkes() {
     const tdName = el('td', 'name');
     tdName.appendChild(el('span', null, nameOf(n)));
     if (n.corporation_sub_type) tdName.appendChild(el('span', 'tag ovr', L('corporation_sub_type', n.corporation_sub_type)));
-    if (lang() !== 'ko' && n.name.ko) tdName.appendChild(el('div', 'sub', n.name.ko));
     tr.appendChild(tdName);
 
     tr.appendChild(iconCell('rarity', n.rarity));
@@ -453,7 +656,7 @@ function renderNikkes() {
   body.appendChild(frag);
 
   $('#nikkeEmpty').hidden = rows.length > 0;
-  $('#count').innerHTML = `<b>${rows.length}</b> / ${D.nikkes.length}명`;
+  $('#count').innerHTML = t('cnt.nikkes', rows.length, D.nikkes.length);
 }
 
 function iconCell(axis, code, opts) {
@@ -472,19 +675,24 @@ const dday = p => Math.ceil((p._start.getTime() - Date.now()) / 86400000);
 
 function statusTag(p) {
   const s = statusOf(p);
-  const t = el('span', 'tag ' + (s === 'ongoing' ? 'on' : s === 'upcoming' ? 'soon' : 'off'),
-    s === 'upcoming' ? `${STATUS_LABEL.upcoming[lang()]} D-${dday(p)}` : STATUS_LABEL[s][lang()]);
-  return t;
+  const text = s === 'upcoming'
+    ? `${statusLabel('upcoming')} ${t('msg.dday', dday(p))}`
+    : statusLabel(s);
+  return el('span', 'tag ' + (s === 'ongoing' ? 'on' : s === 'upcoming' ? 'soon' : 'off'), text);
 }
 
-const PICKUP_COLS = ['연번', '기간', '상태', '이름', '기업', '속성', '클래스', '픽업', '구분', '복각'];
+const PICKUP_COLS = [
+  { str: 'col.no', cls: 'num' }, { str: 'col.period' }, { axis: 'status' },
+  { str: 'col.name' }, { axis: 'corporation' }, { axis: 'element' }, { axis: 'class' },
+  { axis: 'availability' }, { axis: 'tag' }, { str: 'f.rerun' },
+];
 
 function renderPickups() {
   const rows = filteredPickups().sort((a, b) => b._start - a._start);
 
   const head = $('#pickupHead');
   head.textContent = '';
-  PICKUP_COLS.forEach((c, i) => head.appendChild(el('th', i === 0 ? 'num' : null, c)));
+  PICKUP_COLS.forEach(c => head.appendChild(el('th', c.cls || null, colLabel(c))));
 
   const body = $('#pickupBody');
   body.textContent = '';
@@ -501,7 +709,7 @@ function renderPickups() {
 
     const tdName = el('td', 'name');
     tdName.appendChild(el('span', null, n ? nameOf(n) : p.name_ko));
-    if (!n) tdName.appendChild(el('span', 'sub', ' (리스트 미등록)'));
+    if (!n) tdName.appendChild(el('span', 'sub', ' ' + t('msg.unlisted')));
     tr.appendChild(tdName);
 
     tr.appendChild(iconCell('corporation', p.corporation,
@@ -517,7 +725,7 @@ function renderPickups() {
     tr.appendChild(tdA);
 
     tr.appendChild(el('td', null, p.tag ? L('tag', p.tag) : '—'));
-    tr.appendChild(el('td', null, p.rerun_of != null ? `#${p.rerun_of} 복각` : '—'));
+    tr.appendChild(el('td', null, p.rerun_of != null ? t('msg.rerunOf', p.rerun_of) : '—'));
     frag.appendChild(tr);
   }
   body.appendChild(frag);
@@ -526,7 +734,7 @@ function renderPickups() {
   $('#pickupTableWrap').hidden = state.timeline;
   $('#timeline').hidden = !state.timeline;
   $('#pickupEmpty').hidden = rows.length > 0;
-  $('#count').innerHTML = `<b>${rows.length}</b> / ${D.pickups.length}개 배너`;
+  $('#count').innerHTML = t('cnt.banners', rows.length, D.pickups.length);
 }
 
 function renderTimeline(rows) {
@@ -535,7 +743,7 @@ function renderTimeline(rows) {
   let year = null;
   for (const p of rows) {
     const y = p._start.getFullYear();
-    if (y !== year) { year = y; tl.appendChild(el('div', 'tl-year', `${y}년`)); }
+    if (y !== year) { year = y; tl.appendChild(el('div', 'tl-year', t('msg.year', y))); }
 
     const n = p.rid ? byRid.get(p.rid) : null;
     const row = el('div', 'tl-row' + (statusOf(p) === 'ongoing' ? ' is-on' : ''));
@@ -550,7 +758,7 @@ function renderTimeline(rows) {
     who.appendChild(el('span', null, n ? nameOf(n) : p.name_ko));
     if (p.availability === 'limited') who.appendChild(el('span', 'tag lim', L('availability', 'limited')));
     if (p.tag) who.appendChild(el('span', 'tag', L('tag', p.tag)));
-    if (p.rerun_of != null) who.appendChild(el('span', 'tag', `#${p.rerun_of} 복각`));
+    if (p.rerun_of != null) who.appendChild(el('span', 'tag', t('msg.rerunOf', p.rerun_of)));
     who.appendChild(statusTag(p));
     row.appendChild(who);
     tl.appendChild(row);
@@ -581,30 +789,28 @@ function openSheet(n) {
     }
     dl.appendChild(dd);
   };
-  putIcon('등급', 'rarity', n.rarity);
-  putIcon('기업', 'corporation', n.corporation,
+  putIcon(axisLabel('rarity'), 'rarity', n.rarity);
+  putIcon(axisLabel('corporation'), 'corporation', n.corporation,
     ov ? ` (${L('corporation_sub_type', 'OVERSPEC')})` : '');
-  put('스쿼드', L('squad', n.squad));
-  putIcon('속성', 'element', n.element);
-  putIcon('클래스', 'class', n.class);
-  putIcon('무기', 'weapon_type', n.weapon_type);
-  put('공격타입', L('attack_type', n.attack_type));
-  putIcon('버스트', 'burst', n.burst);
-  put('출시일', n.release_date || '—');
-  put('ID', `${n.rid} · ${n.id} · res ${n.resource_id}`);
+  put(t('col.squad'), L('squad', n.squad));
+  putIcon(axisLabel('element'), 'element', n.element);
+  putIcon(axisLabel('class'), 'class', n.class);
+  putIcon(axisLabel('weapon_type'), 'weapon_type', n.weapon_type);
+  putIcon(axisLabel('burst'), 'burst', n.burst);
+  put(t('col.release'), n.release_date || '—');
   c.appendChild(dl);
 
   if (n.aliases?.length) {
-    c.appendChild(el('h4', null, `별명 (${n.aliases.length})`));
+    c.appendChild(el('h4', null, t('sheet.aliases', n.aliases.length)));
     const box = el('div', 'aliases');
     for (const a of n.aliases) box.appendChild(el('span', 'alias', a));
     c.appendChild(box);
   }
 
   const hist = (pickupsByRid.get(n.rid) || []).slice().sort((a, b) => a._start - b._start);
-  c.appendChild(el('h4', null, `픽업 이력 (${hist.length})`));
+  c.appendChild(el('h4', null, t('sheet.history', hist.length)));
   if (!hist.length) {
-    c.appendChild(el('p', 'sub', '픽업 배너 이력이 없습니다 (런칭 유닛 또는 비가챠).'));
+    c.appendChild(el('p', 'sub', t('msg.noPickup')));
   } else {
     const box = el('div', 'hist');
     for (const p of hist) {
@@ -612,7 +818,7 @@ function openSheet(n) {
       const left = el('div');
       left.appendChild(el('span', 'when', fmtRange(p)));
       const right = el('div');
-      if (p.rerun_of != null) right.appendChild(el('span', 'tag', `#${p.rerun_of} 복각`));
+      if (p.rerun_of != null) right.appendChild(el('span', 'tag', t('msg.rerunOf', p.rerun_of)));
       if (p.tag) right.appendChild(el('span', 'tag', L('tag', p.tag)));
       right.appendChild(statusTag(p));
       it.append(left, right);
@@ -639,9 +845,9 @@ function render() {
   else if (state.tab === 'pickups') renderPickups();
   else {
     const ns = filteredNikkes(), ps = filteredPickups();
-    $('#count').innerHTML = `니케 <b>${ns.length}</b> · 배너 <b>${ps.length}</b>`;
+    $('#count').innerHTML = t('cnt.both', ns.length, ps.length);
     renderStats($('#stats'), ns, ps,
-      { L, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid, iconEl });
+      { L, t, axisLabel, statusLabel, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid, iconEl });
   }
   writeHash();
 }
@@ -654,24 +860,42 @@ function wire() {
     render();
   });
 
+  let fillSquads;   // 스쿼드 옵션 재생성 (아래에서 채워짐)
+
+  /* index.html 의 data-i18n* 속성을 현재 언어로 채운다.
+     텍스트는 data-i18n, 속성은 data-i18n-{placeholder,title,aria}. */
+  const paintStatic = () => {
+    $$('[data-i18n]').forEach(n => { n.textContent = t(n.dataset.i18n); });
+    $$('[data-i18n-placeholder]').forEach(n => { n.placeholder = t(n.dataset.i18nPlaceholder); });
+    $$('[data-i18n-title]').forEach(n => { n.title = t(n.dataset.i18nTitle); });
+    $$('[data-i18n-aria]').forEach(n => { n.setAttribute('aria-label', t(n.dataset.i18nAria)); });
+  };
+
+  const paintLang = () => {
+    $$('.langswitch button').forEach(x => x.classList.toggle('on', x.dataset.lang === state.lang));
+    document.documentElement.lang = state.lang;
+    document.title = t('app.title');
+    paintStatic();
+    $('#metaline').textContent = t('ui.meta', D.meta);
+    paintTheme();
+    fillSquads?.();
+  };
   $$('.langswitch button').forEach(b => b.onclick = () => {
     state.lang = b.dataset.lang;
     localStorage.setItem('lang', state.lang);
-    $$('.langswitch button').forEach(x => x.classList.toggle('on', x === b));
-    document.documentElement.lang = state.lang;
+    paintLang();
     buildChips();
     render();
   });
-  $$('.langswitch button').forEach(b => b.classList.toggle('on', b.dataset.lang === state.lang));
-  document.documentElement.lang = state.lang;
+  paintLang();
 
   /* 테마 — 기본 라이트. <head> 인라인 스크립트가 이미 stamp 해 둔 값을 이어받는다. */
-  const paintTheme = () => {
+  function paintTheme() {
     const dark = document.documentElement.dataset.theme === 'dark';
     $('#themeIcon').textContent = dark ? '☀' : '☾';
     $('#theme').setAttribute('aria-pressed', dark);
-    $('#theme').setAttribute('aria-label', dark ? '라이트 모드로 전환' : '다크 모드로 전환');
-  };
+    $('#theme').setAttribute('aria-label', t(dark ? 'ui.toLight' : 'ui.toDark'));
+  }
   $('#theme').onclick = () => {
     const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
@@ -682,22 +906,28 @@ function wire() {
   };
   paintTheme();
 
-  let t;
+  let qTimer;
   $('#q').oninput = e => {
-    clearTimeout(t);
-    t = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150);
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150);
   };
   $('#q').value = state.q;
 
-  const squads = [...new Set(D.nikkes.map(n => n.squad).filter(Boolean))]
-    .sort((a, b) => L('squad', a).localeCompare(L('squad', b), 'ko'));
   const sq = $('#squad');
-  squads.forEach(s => {
-    const o = el('option', null, L('squad', s));
-    o.value = s;
-    sq.appendChild(o);
-  });
-  sq.value = state.squad;
+  const squadCodes = [...new Set(D.nikkes.map(n => n.squad).filter(Boolean))];
+  fillSquads = () => {
+    [...sq.querySelectorAll('option[value]:not([value=""])')].forEach(o => o.remove());
+    squadCodes
+      .slice()
+      .sort((a, b) => L('squad', a).localeCompare(L('squad', b), state.lang))
+      .forEach(code => {
+        const o = el('option', null, L('squad', code));
+        o.value = code;
+        sq.appendChild(o);
+      });
+    sq.value = state.squad;
+  };
+  fillSquads();
   sq.onchange = () => { state.squad = sq.value; render(); };
 
   $('#relFrom').value = state.relFrom;
@@ -728,16 +958,12 @@ function wire() {
     $('#loading').hidden = true;
     const box = $('#error');
     box.hidden = false;
-    box.innerHTML = `<strong>데이터를 불러오지 못했습니다.</strong><br>`
-      + `<code>${String(err.message || err)}</code><br><br>`
-      + `data/*.json 이 <a href="https://github.com/RADM90/MechaShifty/tree/main/data" target="_blank" rel="noopener">RADM90/MechaShifty</a> 에 올라가 있는지 확인하세요. `
-      + `로컬에서 열었다면 <code>file://</code> 이 아니라 <code>python3 -m http.server</code> 로 띄워야 합니다.`;
+    box.innerHTML = `<strong>${t('err.title')}</strong><br>`
+      + `<code>${String(err.message || err)}</code><br><br>${t('err.hint')}`;
     return;
   }
   $('#loading').hidden = true;
   $('#app').hidden = false;
-  $('#metaline').textContent =
-    `데이터 기준일 ${D.meta.updated_at} · 니케 ${D.meta.counts.nikkes}명 · 배너 ${D.meta.counts.pickups}개`;
   wire();
   buildChips();
   render();
