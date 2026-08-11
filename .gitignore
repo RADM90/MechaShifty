@@ -1,0 +1,20 @@
+# 이 폴더는 https://github.com/RADM90/MechaShifty 의 로컬 베이스다.
+# 여기 있는 항목들은 리포지토리에 아직 없는 로컬 전용 파일이라 추적하지 않는다.
+# (사이트 배포본 자체는 이미 origin/main 에 커밋돼 있음: index.html, assets/, data/*.json)
+
+# 원본 엑셀 워크북 — 변환기 입력용 개인 작업 파일. 5MB+ 바이너리라 트래킹하지 않는다.
+전초기지 계산기_20260403_for Google.xlsx
+
+# 데이터 변환/보강용 로컬 소스 (스쿼드 표시명, 니케 별명) — tools/xlsx_to_data.py 가 읽는 입력.
+squad_table.csv
+nikke_alias_v1.csv
+tools/
+
+# 프로젝트 문서 — 아직 리포지토리에 올리지 않은 로컬 작업 노트.
+README.md
+
+# Claude Code 로컬 설정
+.claude/
+
+# OS 잡파일
+.DS_Store
