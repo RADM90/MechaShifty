@@ -10,9 +10,39 @@
 
 const NS = 'http://www.w3.org/2000/svg';
 
-/* 참조 파랑 램프. 다크 표면(#0f1e35)에서는 어두운 끝이 0 에 해당한다. */
-const RAMP = ['#0d366b', '#104281', '#184f95', '#1c5cab', '#256abf',
-  '#2a78d6', '#3987e5', '#5598e7', '#6da7ec', '#86b6ef', '#9ec5f4'];
+/* 아이콘 팩토리는 renderStats 의 ctx 로 넘겨받는다 (app.js 와 순환 import 회피) */
+let makeIcon = null;
+
+/* 순차 램프는 CSS 토큰(--ramp-0 … --ramp-10)에서 읽는다. 방향이 테마마다
+   반대라서다 — 라이트는 밝음→어두움, 다크는 어두움→밝음. 어느 쪽이든
+   0 이 표면에 가장 가깝고 최대값이 가장 멀다. 렌더당 한 번만 읽는다. */
+const RAMP_STEPS = 11;
+
+const toRgb = h => {
+  const s = h.trim().replace('#', '');
+  const f = s.length === 3 ? [...s].map(c => c + c) : s.match(/\w\w/g);
+  return f.map(x => parseInt(x, 16));
+};
+const relLum = h => toRgb(h)
+  .map(c => (c /= 255) <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
+  .reduce((a, c, i) => a + c * [0.2126, 0.7152, 0.0722][i], 0);
+const contrast = (a, b) => {
+  const [x, y] = [relLum(a), relLum(b)].sort((p, q) => q - p);
+  return (x + 0.05) / (y + 0.05);
+};
+
+/* 램프 각 스텝마다 두 잉크 중 대비가 높은 쪽을 고른다. 임계값을 손으로
+   정하면 램프 중간에서 반드시 최악 지점이 생기는데, 스텝별로 재면 그
+   지점이 사라진다. 테마마다 램프 방향이 반대인 것도 자동으로 흡수된다. */
+function readRamp() {
+  const cs = getComputedStyle(document.documentElement);
+  const inkA = cs.getPropertyValue('--ink').trim();
+  const inkB = cs.getPropertyValue('--hm-ink-strong').trim();
+  return Array.from({ length: RAMP_STEPS }, (_, i) => {
+    const bg = cs.getPropertyValue(`--ramp-${i}`).trim();
+    return { bg, ink: contrast(inkA, bg) >= contrast(inkB, bg) ? inkA : inkB };
+  });
+}
 
 const el = (t, c, x) => { const n = document.createElement(t); if (c) n.className = c; if (x != null) n.textContent = x; return n; };
 const svgEl = (t, attrs = {}) => {
@@ -51,12 +81,16 @@ function card(title, hint, wide) {
 }
 
 /* ── 가로 막대 (직접 라벨) ─────────────────────────────────── */
-function barList(items, total, colorOf) {
+function barList(items, total, colorOf, iconAxis) {
   const box = el('div', 'bars');
   const max = Math.max(1, ...items.map(i => i.value));
   for (const it of items) {
     const row = el('div', 'bar-row');
-    row.appendChild(el('div', 'k', it.label));
+    const k = el('div', 'k');
+    const ic = iconAxis && makeIcon ? makeIcon(iconAxis, it.key) : null;
+    if (ic) k.appendChild(ic);
+    k.appendChild(el('span', null, it.label));
+    row.appendChild(k);
 
     const track = el('div', 'bar-track');
     const fill = el('div', 'bar-fill');
@@ -76,34 +110,44 @@ function barList(items, total, colorOf) {
   return box;
 }
 
+/* 축 머리칸: 아이콘 + 텍스트 (아이콘이 없는 축이면 텍스트만) */
+function axisHead(tag, axis, code, text, cls) {
+  const th = el(tag, cls);
+  const ic = axis && makeIcon ? makeIcon(axis, code) : null;
+  if (ic) {
+    const w = el('span', 'iconlbl');
+    w.append(ic, el('span', null, text));
+    th.appendChild(w);
+  } else th.textContent = text;
+  return th;
+}
+
 /* ── 교차 히트맵 ──────────────────────────────────────────── */
-function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol) {
+function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis) {
   const values = [];
   for (const r of rowKeys) for (const c of colKeys) values.push(cellOf(r, c));
   const max = Math.max(1, ...values);
+  const ramp = readRamp();
 
   const table = el('table', 'hm');
   const thead = el('thead');
   const htr = el('tr');
   htr.appendChild(el('th'));
-  for (const c of colKeys) htr.appendChild(el('th', null, labelCol(c)));
+  for (const c of colKeys) htr.appendChild(axisHead('th', colAxis, c, labelCol(c)));
   thead.appendChild(htr);
   table.appendChild(thead);
 
   const tb = el('tbody');
   for (const r of rowKeys) {
     const tr = el('tr');
-    tr.appendChild(el('th', 'rowh', labelRow(r)));
+    tr.appendChild(axisHead('th', rowAxis, r, labelRow(r), 'rowh'));
     for (const c of colKeys) {
       const v = cellOf(r, c);
       const td = el('td', v ? null : 'zero', String(v));
       if (v) {
-        const t = v / max;
-        const step = RAMP[Math.min(RAMP.length - 1, Math.round(t * (RAMP.length - 1)))];
-        td.style.background = step;
-        if (t > 0.62) td.style.color = '#06121f';
-      } else {
-        td.style.background = 'rgba(255,255,255,.03)';
+        const step = ramp[Math.round((v / max) * (RAMP_STEPS - 1))];
+        td.style.background = step.bg;
+        td.style.color = step.ink;
       }
       bindTip(td, `${labelRow(r)} × ${labelCol(c)} — <b>${v}</b>명`);
       tr.appendChild(td);
@@ -119,9 +163,9 @@ function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol) {
   const lg = el('div', 'legend');
   const s = el('span');
   s.appendChild(el('span', null, '적음'));
-  for (const step of [RAMP[1], RAMP[4], RAMP[7], RAMP[10]]) {
+  for (const step of [ramp[1], ramp[4], ramp[7], ramp[10]]) {
     const i = document.createElement('i');
-    i.style.background = step;
+    i.style.background = step.bg;
     s.appendChild(i);
   }
   s.appendChild(el('span', null, '많음'));
@@ -179,7 +223,8 @@ function columnChart(points, fmtTip) {
 
 /* ── 통계 렌더 ────────────────────────────────────────────── */
 export function renderStats(root, nikkes, pickups, ctx) {
-  const { L, AXES, ELEMENT_COLOR, statusOf, byRid } = ctx;
+  const { L, AXES, ELEMENT_COLOR, statusOf } = ctx;
+  makeIcon = ctx.iconEl || null;
   root.textContent = '';
 
   root.appendChild(Object.assign(el('p', 'stats-head'), {
@@ -215,10 +260,10 @@ export function renderStats(root, nikkes, pickups, ctx) {
     const items = order.filter(k => m.has(k)).map(k => ({ key: k, label: L(axis, k), value: m.get(k) }));
     const c = card(title, `${nikkes.length}명 기준`);
     c.appendChild(barList(items, nikkes.length,
-      axis === 'element' ? (it => ELEMENT_COLOR[it.key]) : null));
+      axis === 'element' ? (it => ELEMENT_COLOR[it.key]) : null, axis));
     if (axis === 'element') {
       c.appendChild(Object.assign(el('p', 'hint'), {
-        textContent: '색은 게임 내 속성색이며, 항상 속성 이름과 함께 표시됩니다.',
+        textContent: '막대 색은 검증된 팔레트이고, 아이콘은 게임 내 아이콘입니다. 둘 다 항상 속성 이름과 함께 표시됩니다.',
         style: 'margin:10px 0 0',
       }));
     }
@@ -249,7 +294,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     c.appendChild(heatmap(
       AXES.element.order, AXES.class.order,
       (r, col) => nikkes.filter(n => n.element === r && n.class === col).length,
-      r => L('element', r), col => L('class', col),
+      r => L('element', r), col => L('class', col), 'element', 'class',
     ));
     cards.appendChild(c);
   }
@@ -258,7 +303,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     c.appendChild(heatmap(
       AXES.corporation.order, AXES.weapon_type.order,
       (r, col) => nikkes.filter(n => n.corporation === r && n.weapon_type === col).length,
-      r => L('corporation', r), col => L('weapon_type', col),
+      r => L('corporation', r), col => L('weapon_type', col), 'corporation', 'weapon_type',
     ));
     cards.appendChild(c);
   }
