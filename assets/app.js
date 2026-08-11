@@ -312,7 +312,6 @@ const NIKKE_COLS = [
   { key: 'element', label: '속성' },
   { key: 'class', label: '클래스' },
   { key: 'weapon_type', label: '무기' },
-  { key: 'attack_type', label: '공격' },
   { key: 'burst', label: '버스트' },
   { key: 'squad', label: '스쿼드' },
   { key: 'release_date', label: '출시일', cls: 'num' },
@@ -367,7 +366,6 @@ function renderNikkes() {
     tr.appendChild(elementCell(n.element));
     tr.appendChild(el('td', null, L('class', n.class)));
     tr.appendChild(el('td', null, L('weapon_type', n.weapon_type)));
-    tr.appendChild(el('td', null, L('attack_type', n.attack_type)));
     tr.appendChild(el('td', null, L('burst', n.burst)));
     tr.appendChild(el('td', null, L('squad', n.squad)));
     tr.appendChild(el('td', 'num', n.release_date || '—'));
