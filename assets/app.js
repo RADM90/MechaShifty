@@ -34,6 +34,52 @@ export const ELEMENT_COLOR = {
   Electronic: 'var(--el-electronic)', Iron: 'var(--el-iron)',
 };
 
+/* ── 아이콘 ────────────────────────────────────────────────────
+   assets/icons/ 아래 게임 아이콘. 파일명은 데이터 코드를 소문자로 내린 것.
+   기업은 'simple' 계열을 쓰고, 오버스펙 니케는 전용 변형이 있으면 그쪽을 쓴다. */
+const ICON_DIR = {
+  element: 'element', class: 'class', weapon_type: 'weapon',
+  burst: 'burst', rarity: 'rarity',
+};
+/* overspec 변형이 존재하는 기업만. 실제 OVERSPEC 니케 4명도 이 셋 안에 있다. */
+const CORP_OVERSPEC = new Set(['ELYSION', 'MISSILIS', 'TETRA']);
+
+export function iconSrc(axis, code, overspec) {
+  if (!code) return null;
+  const file = String(code).toLowerCase();
+  if (axis === 'corporation') {
+    const ov = overspec && CORP_OVERSPEC.has(code) ? '_simple_overspec' : '_simple';
+    return `assets/icons/company/${file}${ov}.png`;
+  }
+  const dir = ICON_DIR[axis];
+  return dir ? `assets/icons/${dir}/${file}.webp` : null;
+}
+
+/* 아이콘은 항상 텍스트 라벨 옆에 붙는 장식이라 alt 는 비운다.
+   코드가 새로 생겨 파일이 없으면 조용히 사라지게 한다(화면이 깨지지 않게). */
+export function iconEl(axis, code, opts = {}) {
+  const src = iconSrc(axis, code, opts.overspec);
+  if (!src) return null;
+  const img = document.createElement('img');
+  img.className = 'ic' + (opts.cls ? ' ' + opts.cls : '');
+  img.dataset.axis = axis;   // 테마별 실루엣 보정을 CSS 에서 걸기 위한 훅
+  img.src = src;
+  img.alt = '';
+  img.loading = 'lazy';
+  img.decoding = 'async';
+  img.onerror = () => img.remove();
+  return img;
+}
+
+/* 아이콘 + 텍스트 한 덩어리 */
+function labelWith(axis, code, text, opts) {
+  const s = el('span', 'iconlbl');
+  const ic = iconEl(axis, code, opts);
+  if (ic) s.appendChild(ic);
+  s.appendChild(el('span', null, text));
+  return s;
+}
+
 /* nikkes 에만 있는 축 — 픽업 행에 걸 때는 rid 로 니케를 찾아 판정한다 */
 const NIKKE_ONLY = ['weapon_type', 'burst', 'rarity'];
 
@@ -168,7 +214,7 @@ function matchNikke(n, except) {
     if (sel.size && !sel.has(n[axis])) return false;
   }
   if (state.squad && n.squad !== state.squad) return false;
-  if (state.overspec && n.corporation_sub_type !== 'OVERSPEC') return false;
+  if (except !== '_overspec' && state.overspec && n.corporation_sub_type !== 'OVERSPEC') return false;
   if (state.relFrom && (!n.release_date || n.release_date < state.relFrom)) return false;
   if (state.relTo && (!n.release_date || n.release_date > state.relTo)) return false;
   const m = matcher();
@@ -193,7 +239,7 @@ function matchPickup(p, except) {
     if (sel.size && (!n || !sel.has(n[axis]))) return false;
   }
   if (state.squad && (!n || n.squad !== state.squad)) return false;
-  if (state.overspec && p.corporation_sub_type !== 'OVERSPEC') return false;
+  if (except !== '_overspec' && state.overspec && p.corporation_sub_type !== 'OVERSPEC') return false;
   if (state.relFrom && (!n || !n.release_date || n.release_date < state.relFrom)) return false;
   if (state.relTo && (!n || !n.release_date || n.release_date > state.relTo)) return false;
 
@@ -258,12 +304,22 @@ function buildChips() {
       b.dataset.axis = axis;
       b.dataset.code = code;
       b.setAttribute('aria-pressed', state.sel[axis].has(code));
-      if (axis === 'element') {
-        const dot = el('span', 'dot');
-        dot.style.background = ELEMENT_COLOR[code];
-        b.appendChild(dot);
-      }
+      const ic = iconEl(axis, code);
+      if (ic) b.appendChild(ic);
       b.appendChild(el('span', null, chipLabel(axis, code)));
+      b.appendChild(el('span', 'n'));
+      row.appendChild(b);
+    }
+    // 오버스펙은 기업을 대체하지 않는 부가 속성이라 기업 행에 붙인다
+    if (axis === 'corporation') {
+      const b = el('button', 'chip chip-ovr');
+      b.type = 'button';
+      b.dataset.axis = '_overspec';
+      b.dataset.code = 'OVERSPEC';
+      b.setAttribute('aria-pressed', state.overspec);
+      const ic = iconEl('corporation', 'ELYSION', { overspec: true });
+      if (ic) b.appendChild(ic);
+      b.appendChild(el('span', null, L('corporation_sub_type', 'OVERSPEC')));
       b.appendChild(el('span', 'n'));
       row.appendChild(b);
     }
@@ -273,7 +329,8 @@ function buildChips() {
     const b = e.target.closest('.chip');
     if (!b) return;
     const { axis, code } = b.dataset;
-    state.sel[axis].has(code) ? state.sel[axis].delete(code) : state.sel[axis].add(code);
+    if (axis === '_overspec') state.overspec = !state.overspec;
+    else state.sel[axis].has(code) ? state.sel[axis].delete(code) : state.sel[axis].add(code);
     render();
   };
 }
@@ -287,6 +344,16 @@ function updateChipCounts() {
   for (const b of $$('#chipfilters .chip')) {
     const { axis, code } = b.dataset;
     let n;
+    if (axis === '_overspec') {
+      n = state.tab === 'pickups'
+        ? filteredPickups('_overspec').filter(p => p.corporation_sub_type).length
+        : filteredNikkes('_overspec').filter(x => x.corporation_sub_type).length;
+      b.querySelector('.n').textContent = n;
+      b.setAttribute('aria-pressed', state.overspec);
+      b.disabled = n === 0 && !state.overspec;
+      b.style.opacity = b.disabled ? .4 : '';
+      continue;
+    }
     if (state.tab === 'pickups') {
       const pool = filteredPickups(axis);
       n = axis in PICKUP_AXES
@@ -361,12 +428,13 @@ function renderNikkes() {
     if (lang() !== 'ko' && n.name.ko) tdName.appendChild(el('div', 'sub', n.name.ko));
     tr.appendChild(tdName);
 
-    tr.appendChild(el('td', null, L('rarity', n.rarity)));
-    tr.appendChild(el('td', null, L('corporation', n.corporation)));
-    tr.appendChild(elementCell(n.element));
-    tr.appendChild(el('td', null, L('class', n.class)));
-    tr.appendChild(el('td', null, L('weapon_type', n.weapon_type)));
-    tr.appendChild(el('td', null, L('burst', n.burst)));
+    tr.appendChild(iconCell('rarity', n.rarity));
+    tr.appendChild(iconCell('corporation', n.corporation,
+      { overspec: n.corporation_sub_type === 'OVERSPEC' }));
+    tr.appendChild(iconCell('element', n.element));
+    tr.appendChild(iconCell('class', n.class));
+    tr.appendChild(iconCell('weapon_type', n.weapon_type));
+    tr.appendChild(iconCell('burst', n.burst));
     tr.appendChild(el('td', null, L('squad', n.squad)));
     tr.appendChild(el('td', 'num', n.release_date || '—'));
     tr.appendChild(el('td', 'num', String(pickupsByRid.get(n.rid)?.length || 0)));
@@ -378,15 +446,10 @@ function renderNikkes() {
   $('#count').innerHTML = `<b>${rows.length}</b> / ${D.nikkes.length}명`;
 }
 
-function elementCell(code) {
+function iconCell(axis, code, opts) {
   const td = el('td');
   if (!code) { td.textContent = '—'; return td; }
-  const s = el('span', 'badge');
-  const dot = el('span', 'dot');
-  dot.style.background = ELEMENT_COLOR[code];
-  s.appendChild(dot);
-  s.appendChild(el('span', null, L('element', code)));
-  td.appendChild(s);
+  td.appendChild(labelWith(axis, code, L(axis, code), opts));
   return td;
 }
 
@@ -431,9 +494,10 @@ function renderPickups() {
     if (!n) tdName.appendChild(el('span', 'sub', ' (리스트 미등록)'));
     tr.appendChild(tdName);
 
-    tr.appendChild(el('td', null, L('corporation', p.corporation)));
-    tr.appendChild(elementCell(p.element));
-    tr.appendChild(el('td', null, L('class', p.class)));
+    tr.appendChild(iconCell('corporation', p.corporation,
+      { overspec: p.corporation_sub_type === 'OVERSPEC' }));
+    tr.appendChild(iconCell('element', p.element));
+    tr.appendChild(iconCell('class', p.class));
 
     const tdA = el('td');
     if (p.availability) {
@@ -469,10 +533,9 @@ function renderTimeline(rows) {
 
     row.appendChild(el('div', 'when', `${p.start.slice(5, 10)} ~ ${p.end.slice(5, 10)}`));
     const who = el('div', 'who');
-    if (p.element) {
-      const dot = el('span', 'dot');
-      dot.style.cssText = `width:8px;height:8px;border-radius:50%;background:${ELEMENT_COLOR[p.element]}`;
-      who.appendChild(dot);
+    for (const [axis, code] of [['corporation', p.corporation], ['element', p.element], ['class', p.class]]) {
+      const ic = iconEl(axis, code, { overspec: p.corporation_sub_type === 'OVERSPEC' });
+      if (ic) who.appendChild(ic);
     }
     who.appendChild(el('span', null, n ? nameOf(n) : p.name_ko));
     if (p.availability === 'limited') who.appendChild(el('span', 'tag lim', L('availability', 'limited')));
@@ -491,16 +554,32 @@ function openSheet(n) {
   c.appendChild(el('h2', null, nameOf(n)));
   c.appendChild(el('p', 'aka', [n.name.ko, n.name.en, n.name.ja].filter(Boolean).join(' · ')));
 
+  const ov = n.corporation_sub_type === 'OVERSPEC';
   const dl = el('dl', 'kv');
-  const put = (k, v) => { dl.appendChild(el('dt', null, k)); dl.appendChild(el('dd', null, v)); };
-  put('등급', L('rarity', n.rarity));
-  put('기업', L('corporation', n.corporation) + (n.corporation_sub_type ? ` (${L('corporation_sub_type', n.corporation_sub_type)})` : ''));
+  const put = (k, v) => {
+    dl.appendChild(el('dt', null, k));
+    const dd = el('dd');
+    dd.append(typeof v === 'string' ? v : v);
+    dl.appendChild(dd);
+  };
+  const putIcon = (k, axis, code, extra) => {
+    dl.appendChild(el('dt', null, k));
+    const dd = el('dd');
+    if (!code) dd.textContent = '—';
+    else {
+      dd.appendChild(labelWith(axis, code, L(axis, code) + (extra || ''), { overspec: ov, cls: 'ic-lg' }));
+    }
+    dl.appendChild(dd);
+  };
+  putIcon('등급', 'rarity', n.rarity);
+  putIcon('기업', 'corporation', n.corporation,
+    ov ? ` (${L('corporation_sub_type', 'OVERSPEC')})` : '');
   put('스쿼드', L('squad', n.squad));
-  put('속성', L('element', n.element));
-  put('클래스', L('class', n.class));
-  put('무기', L('weapon_type', n.weapon_type));
+  putIcon('속성', 'element', n.element);
+  putIcon('클래스', 'class', n.class);
+  putIcon('무기', 'weapon_type', n.weapon_type);
   put('공격타입', L('attack_type', n.attack_type));
-  put('버스트', L('burst', n.burst));
+  putIcon('버스트', 'burst', n.burst);
   put('출시일', n.release_date || '—');
   put('ID', `${n.rid} · ${n.id} · res ${n.resource_id}`);
   c.appendChild(dl);
@@ -544,7 +623,8 @@ function render() {
   else {
     const ns = filteredNikkes(), ps = filteredPickups();
     $('#count').innerHTML = `니케 <b>${ns.length}</b> · 배너 <b>${ps.length}</b>`;
-    renderStats($('#stats'), ns, ps, { L, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid });
+    renderStats($('#stats'), ns, ps,
+      { L, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid, iconEl });
   }
   writeHash();
 }
@@ -568,6 +648,23 @@ function wire() {
   $$('.langswitch button').forEach(b => b.classList.toggle('on', b.dataset.lang === state.lang));
   document.documentElement.lang = state.lang;
 
+  /* 테마 — 기본 라이트. <head> 인라인 스크립트가 이미 stamp 해 둔 값을 이어받는다. */
+  const paintTheme = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    $('#themeIcon').textContent = dark ? '☀' : '☾';
+    $('#theme').setAttribute('aria-pressed', dark);
+    $('#theme').setAttribute('aria-label', dark ? '라이트 모드로 전환' : '다크 모드로 전환');
+  };
+  $('#theme').onclick = () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    paintTheme();
+    // 차트는 토큰을 JS 로 읽어 그리므로 테마가 바뀌면 다시 그려야 한다
+    if (state.tab === 'stats') render();
+  };
+  paintTheme();
+
   let t;
   $('#q').oninput = e => {
     clearTimeout(t);
@@ -586,8 +683,6 @@ function wire() {
   sq.value = state.squad;
   sq.onchange = () => { state.squad = sq.value; render(); };
 
-  $('#overspec').checked = state.overspec;
-  $('#overspec').onchange = e => { state.overspec = e.target.checked; render(); };
   $('#relFrom').value = state.relFrom;
   $('#relFrom').onchange = e => { state.relFrom = e.target.value; render(); };
   $('#relTo').value = state.relTo;
@@ -599,7 +694,7 @@ function wire() {
   $('#reset').onclick = () => {
     Object.keys(state.sel).forEach(k => state.sel[k].clear());
     Object.assign(state, { q: '', squad: '', overspec: false, relFrom: '', relTo: '', rerun: 'all' });
-    $('#q').value = ''; sq.value = ''; $('#overspec').checked = false;
+    $('#q').value = ''; sq.value = '';
     $('#relFrom').value = ''; $('#relTo').value = ''; $('#rerun').value = 'all';
     render();
   };
