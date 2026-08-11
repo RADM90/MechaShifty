@@ -1,0 +1,284 @@
+{
+ "weapon_type": {
+  "AR": {
+   "ko": "AR",
+   "en": "AR",
+   "ja": "AR"
+  },
+  "SG": {
+   "ko": "SG",
+   "en": "SG",
+   "ja": "SG"
+  },
+  "SMG": {
+   "ko": "SMG",
+   "en": "SMG",
+   "ja": "SMG"
+  },
+  "MG": {
+   "ko": "MG",
+   "en": "MG",
+   "ja": "MG"
+  },
+  "SR": {
+   "ko": "SR",
+   "en": "SR",
+   "ja": "SR"
+  },
+  "RL": {
+   "ko": "RL",
+   "en": "RL",
+   "ja": "RL"
+  }
+ },
+ "attack_type": {
+  "Metal": {
+   "ko": "메탈",
+   "en": "Metal",
+   "ja": "メタル"
+  },
+  "Energy": {
+   "ko": "에너지",
+   "en": "Energy",
+   "ja": "エネルギー"
+  },
+  "Bio": {
+   "ko": "바이오",
+   "en": "Bio",
+   "ja": "バイオ"
+  }
+ },
+ "burst": {
+  "Step1": {
+   "ko": "I",
+   "en": "I",
+   "ja": "I"
+  },
+  "Step2": {
+   "ko": "II",
+   "en": "II",
+   "ja": "II"
+  },
+  "Step3": {
+   "ko": "III",
+   "en": "III",
+   "ja": "III"
+  },
+  "AllStep": {
+   "ko": "ALL",
+   "en": "ALL",
+   "ja": "ALL"
+  }
+ },
+ "rarity": {
+  "SSR": {
+   "ko": "SSR",
+   "en": "SSR",
+   "ja": "SSR"
+  },
+  "SR": {
+   "ko": "SR",
+   "en": "SR",
+   "ja": "SR"
+  },
+  "R": {
+   "ko": "R",
+   "en": "R",
+   "ja": "R"
+  }
+ },
+ "availability": {
+  "standard": {
+   "ko": "상시",
+   "en": "Standard",
+   "ja": "常設"
+  },
+  "limited": {
+   "ko": "한정",
+   "en": "Limited",
+   "ja": "限定"
+  }
+ },
+ "tag": {
+  "summer": {
+   "ko": "여름",
+   "en": "Summer",
+   "ja": "サマー"
+  },
+  "collab": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "christmas": {
+   "ko": "크리스마스",
+   "en": "Christmas",
+   "ja": "クリスマス"
+  },
+  "maid": {
+   "ko": "메이드",
+   "en": "Maid",
+   "ja": "メイド"
+  },
+  "new_year": {
+   "ko": "신년",
+   "en": "New Year",
+   "ja": "新年"
+  },
+  "anniversary": {
+   "ko": "주년",
+   "en": "Anniversary",
+   "ja": "周年"
+  },
+  "half_anniversary": {
+   "ko": "반주년",
+   "en": "Half Anniversary",
+   "ja": "ハーフアニバーサリー"
+  },
+  "bunny": {
+   "ko": "바니",
+   "en": "Bunny",
+   "ja": "バニー"
+  }
+ },
+ "class": {
+  "Attacker": {
+   "ko": "화력형",
+   "en": "Attacker",
+   "ja": "火力型"
+  },
+  "Supporter": {
+   "ko": "지원형",
+   "en": "Supporter",
+   "ja": "支援型"
+  },
+  "Defender": {
+   "ko": "방어형",
+   "en": "Defender",
+   "ja": "防御型"
+  }
+ },
+ "corporation": {
+  "ELYSION": {
+   "ko": "엘리시온",
+   "en": "ELYSION",
+   "ja": "エリシオン"
+  },
+  "MISSILIS": {
+   "ko": "미실리스",
+   "en": "MISSILIS",
+   "ja": "ミシリス"
+  },
+  "TETRA": {
+   "ko": "테트라",
+   "en": "TETRA",
+   "ja": "テトラ"
+  },
+  "PILGRIM": {
+   "ko": "필그림",
+   "en": "PILGRIM",
+   "ja": "ピルグリム"
+  },
+  "ABNORMAL": {
+   "ko": "어브노멀",
+   "en": "ABNORMAL",
+   "ja": "アブノーマル"
+  }
+ },
+ "corporation_sub_type": {
+  "OVERSPEC": {
+   "ko": "오버스펙",
+   "en": "OVERSPEC",
+   "ja": "オーバースペック"
+  }
+ },
+ "element": {
+  "Electronic": {
+   "ko": "전격",
+   "en": "Electronic",
+   "ja": "電撃"
+  },
+  "Fire": {
+   "ko": "작열",
+   "en": "Fire",
+   "ja": "灼熱"
+  },
+  "Iron": {
+   "ko": "철갑",
+   "en": "Iron",
+   "ja": "鉄甲"
+  },
+  "Water": {
+   "ko": "수냉",
+   "en": "Water",
+   "ja": "水冷"
+  },
+  "Wind": {
+   "ko": "풍압",
+   "en": "Wind",
+   "ja": "風圧"
+  }
+ },
+ "squad": {
+  "777.0": {
+   "ko": "777",
+   "en": "777",
+   "ja": "777"
+  },
+  "CE003": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE004": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE005": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE006_01": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE006_02": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE006_03": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE007": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "CE008": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "ce002_01": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "ce002_02": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  },
+  "ce_01": {
+   "ko": "콜라보",
+   "en": "Collab",
+   "ja": "コラボ"
+  }
+ }
+}
