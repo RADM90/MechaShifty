@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>니케 리스트 · 픽업일정</title>
+<meta name="description" content="승리의 여신: 니케 캐릭터 목록과 역대·예정 픽업 배너 일정을 필터링해서 보는 도구">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f1e35'/%3E%3Cpath d='M8 23V9h3.4l6 8.6V9H21v14h-3.4l-6-8.6V23z' fill='%2300c8c8'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <h1 class="brand">니케 리스트 <span class="brand-sub">· 픽업일정</span></h1>
+    <div class="topbar-right">
+      <div class="langswitch" role="group" aria-label="표시 언어">
+        <button type="button" data-lang="ko" class="on">한</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ja">日</button>
+      </div>
+    </div>
+  </div>
+  <nav class="tabs" role="tablist">
+    <button type="button" role="tab" data-tab="nikkes" aria-selected="true">니케 리스트</button>
+    <button type="button" role="tab" data-tab="pickups" aria-selected="false">픽업일정</button>
+    <button type="button" role="tab" data-tab="stats" aria-selected="false">통계</button>
+  </nav>
+</header>
+
+<main id="main">
+
+  <div id="loading" class="notice">데이터를 불러오는 중…</div>
+  <div id="error" class="notice notice-error" hidden></div>
+
+  <div id="app" hidden>
+
+    <!-- ── 필터 ───────────────────────────────────────────── -->
+    <section class="filters" aria-label="필터">
+      <div class="filter-head">
+        <input type="search" id="q" placeholder="이름 검색 (한/영/일)" autocomplete="off" spellcheck="false">
+        <span id="count" class="count"></span>
+        <button type="button" id="reset" class="btn-reset">필터 초기화</button>
+      </div>
+
+      <div id="chipfilters" class="chipgrid"></div>
+
+      <div class="filter-row" id="extrafilters">
+        <label class="field">
+          <span>스쿼드</span>
+          <select id="squad"><option value="">전체</option></select>
+        </label>
+        <label class="field">
+          <span>출시일</span>
+          <span class="range">
+            <input type="date" id="relFrom" aria-label="출시일 시작">
+            <em>~</em>
+            <input type="date" id="relTo" aria-label="출시일 종료">
+          </span>
+        </label>
+        <label class="check">
+          <input type="checkbox" id="overspec"> 오버스펙만
+        </label>
+      </div>
+
+      <div class="filter-row" id="pickupfilters" hidden>
+        <label class="field">
+          <span>복각</span>
+          <select id="rerun">
+            <option value="all">전체</option>
+            <option value="first">최초 픽업만</option>
+            <option value="rerun">복각만</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" id="tlview"> 타임라인 보기</label>
+      </div>
+    </section>
+
+    <!-- ── 탭 1: 니케 리스트 ───────────────────────────────── -->
+    <section id="panel-nikkes" class="panel">
+      <div class="tablewrap">
+        <table class="grid" id="nikkeTable">
+          <thead><tr id="nikkeHead"></tr></thead>
+          <tbody id="nikkeBody"></tbody>
+        </table>
+      </div>
+      <p class="empty" id="nikkeEmpty" hidden>조건에 맞는 니케가 없습니다.</p>
+    </section>
+
+    <!-- ── 탭 2: 픽업일정 ─────────────────────────────────── -->
+    <section id="panel-pickups" class="panel" hidden>
+      <div class="tablewrap" id="pickupTableWrap">
+        <table class="grid" id="pickupTable">
+          <thead><tr id="pickupHead"></tr></thead>
+          <tbody id="pickupBody"></tbody>
+        </table>
+      </div>
+      <div id="timeline" class="timeline" hidden></div>
+      <p class="empty" id="pickupEmpty" hidden>조건에 맞는 픽업이 없습니다.</p>
+    </section>
+
+    <!-- ── 탭 3: 통계 ─────────────────────────────────────── -->
+    <section id="panel-stats" class="panel" hidden>
+      <div id="stats"></div>
+    </section>
+
+  </div>
+</main>
+
+<!-- 니케 상세 -->
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-back" data-close></div>
+  <aside class="sheet-body" role="dialog" aria-modal="true" aria-labelledby="sheetName">
+    <button type="button" class="sheet-x" data-close aria-label="닫기">×</button>
+    <div id="sheetContent"></div>
+  </aside>
+</div>
+
+<footer class="foot">
+  <span id="metaline"></span>
+  <span class="foot-sep">·</span>
+  <span>데이터: <a href="https://github.com/RADM90/MechaShifty/tree/main/data" target="_blank" rel="noopener">RADM90/MechaShifty</a></span>
+</footer>
+
+<div id="tip" class="tip" hidden></div>
+
+<script type="module" src="assets/app.js"></script>
+</body>
+</html>
