@@ -7,6 +7,12 @@
 <meta name="description" content="승리의 여신: 니케 캐릭터 목록과 역대·예정 픽업 배너 일정을 필터링해서 보는 도구">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f1e35'/%3E%3Cpath d='M8 23V9h3.4l6 8.6V9H21v14h-3.4l-6-8.6V23z' fill='%2300c8c8'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="assets/style.css">
+<script>
+  /* 모듈 스크립트는 defer 라 늦게 뜬다. 첫 페인트 전에 테마를 확정해서
+     라이트→다크 깜빡임을 없앤다. 기본값은 라이트. */
+  document.documentElement.dataset.theme =
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+</script>
 </head>
 <body>
 
@@ -19,6 +25,9 @@
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="ja">日</button>
       </div>
+      <button type="button" id="theme" class="themebtn" aria-pressed="false" title="테마 전환">
+        <span id="themeIcon">☾</span>
+      </button>
     </div>
   </div>
   <nav class="tabs" role="tablist">
@@ -38,7 +47,7 @@
     <!-- ── 필터 ───────────────────────────────────────────── -->
     <section class="filters" aria-label="필터">
       <div class="filter-head">
-        <input type="search" id="q" placeholder="이름 검색 (한/영/일)" autocomplete="off" spellcheck="false">
+        <input type="search" id="q" placeholder="이름 검색 — 한/영/일, 초성도 가능 (예: ㄹㅍ, ㅅㄷㄹㄹ)" autocomplete="off" spellcheck="false">
         <span id="count" class="count"></span>
         <button type="button" id="reset" class="btn-reset">필터 초기화</button>
       </div>
@@ -57,9 +66,6 @@
             <em>~</em>
             <input type="date" id="relTo" aria-label="출시일 종료">
           </span>
-        </label>
-        <label class="check">
-          <input type="checkbox" id="overspec"> 오버스펙만
         </label>
       </div>
 
