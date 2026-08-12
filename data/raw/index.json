@@ -57,14 +57,14 @@
    "file": "attraction_stat.json",
    "group": "combat",
    "title": {
-    "ko": "호감도 보정 스탯",
-    "en": "Bond stat bonus",
-    "ja": "好感度補正ステータス"
+    "ko": "호감도 스탯",
+    "en": "Bond stats",
+    "ja": "好感度ステータス"
    },
    "note": {
-    "ko": "클래스별 호감도 레벨 1~40 보정치.",
-    "en": "Bond level 1–40 bonuses per class.",
-    "ja": "クラス別の好感度レベル1〜40の補正値。"
+    "ko": "클래스별 호감도 레벨 1~40 스탯. 레벨당 증가분이 아니라 해당 레벨에서의 절대값이다.",
+    "en": "Per-class stats at bond level 1–40. Absolute values at each level, not per-level increments.",
+    "ja": "クラス別の好感度レベル1〜40のステータス。レベルごとの増加分ではなく、そのレベルでの絶対値。"
    },
    "rows": 120,
    "columns": 5
@@ -125,14 +125,14 @@
    "file": "collection_bonus.json",
    "group": "combat",
    "title": {
-    "ko": "리사이클 룸 연구 단가",
-    "en": "Recycling Room research unit",
-    "ja": "リサイクルルーム研究の単価"
+    "ko": "리사이클 룸 - 콘솔",
+    "en": "Recycling Room — Console",
+    "ja": "リサイクルルーム - コンソール"
    },
    "note": {
-    "ko": "전초기지 리사이클 룸 연구 1레벨당 증가량. 니케마다 공용 + 자기 클래스 + 자기 기업 세 연구가 적용된다.",
-    "en": "Stat gain per level of Outpost Recycling Room research. Each Nikke gets the shared one plus the ones for its class and corporation.",
-    "ja": "前哨基地リサイクルルーム研究1レベルあたりの増加量。共用＋自分のクラス・企業の3つが適用される。"
+    "ko": "콘솔 1레벨당 증가량. 니케마다 공용 + 자기 클래스 + 자기 기업 세 가지가 적용된다.",
+    "en": "Stat gain per console level. Each Nikke gets the shared one plus the ones for its class and corporation.",
+    "ja": "コンソール1レベルあたりの増加量。共用＋自分のクラス・企業の3つが適用される。"
    },
    "rows": 3,
    "columns": 4

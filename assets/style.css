@@ -472,6 +472,15 @@ svg.chart rect.hit { fill: transparent; }
 .cp-tag-warn {
   background: var(--st-bad-bg); border-color: var(--st-bad-line); color: var(--st-bad-ink);
 }
+.cp-adj { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.cp-adjLbl { font-size: 12px; color: var(--ink-muted); margin-bottom: 6px; }
+.cp-adjRow { display: flex; flex-wrap: wrap; gap: 10px 24px; }
+.cp-adjItem { display: grid; gap: 1px; }
+.cp-adjLv { font-size: 11px; color: var(--ink-muted); }
+.cp-adjNum {
+  font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
 
 .cp-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .cp-stat {
@@ -489,8 +498,6 @@ svg.chart rect.hit { fill: transparent; }
 .cp-scroll { overflow-x: auto; }
 .cp-break td:first-child { color: var(--ink-2); }
 .cp-total td { font-weight: 700; border-top: 1px solid var(--line-strong); }
-.cp-up { color: var(--st-good); }
-.cp-down { color: var(--st-bad-ink); }
 .cp-cmphead { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .cp-cmphead h3 { margin: 0; }
 .cp-x {

@@ -5,11 +5,15 @@
    이 탭을 처음 열 때만 받아온다 — syncro_stat 하나가 500KB라 첫 화면에
    같이 얹지 않는다. */
 
-import { buildTables, compute, byContent, SLOTS, TIERS } from './cp.js';
+import { buildTables, compute, SLOTS, TIERS } from './cp.js';
 
 const NEED = ['syncro_stat', 'attraction_stat', 'attraction_grade', 'equip_stat',
   'equip_option', 'cube_stat', 'collection_stat', 'collection_bonus', 'cp_penalty'];
 const STORE = 'cp.input';
+
+/* 레벨이 고정되는 컨텐츠는 40(협동 작전)과 400(솔로 레이드·챔피언 아레나) 두 가지뿐이라
+   그 두 레벨의 전투력만 보여준다. */
+const ADJ_LEVELS = [40, 400];
 
 let ctx = null, T = null, rules = null, base = './data/';
 let input = null;
@@ -22,7 +26,6 @@ const el = (tag, cls, text) => {
   return n;
 };
 const t = (k, ...a) => ctx.t(k, ...a);
-const label = o => o?.[ctx.lang] || o?.en || o?.ko || '';
 const fmt = v => v == null ? '—' : Math.round(v).toLocaleString();
 
 /* 표는 좁은 화면에서 자기 상자 안에서만 가로 스크롤해야 한다 (페이지가 밀리지 않게) */
@@ -187,7 +190,7 @@ function renderForm(root) {
   g3.appendChild(row3);
   form.appendChild(g3);
 
-  // 콘솔 (리사이클 룸 연구)
+  // 콘솔 (리사이클 룸)
   const g4 = el('div', 'cp-group');
   g4.appendChild(el('h3', null, t('cp.console')));
   g4.appendChild(el('p', 'cp-note', t('cp.consoleHint')));
@@ -271,6 +274,20 @@ function renderResult(root) {
     tags.appendChild(el('span', 'cp-tag cp-tag-warn', t('cp.defOverride', n.defWeapon)));
   }
   head.appendChild(tags);
+
+  // 보정 전투력 — 레벨 40 / 400 두 가지만
+  const adj = el('div', 'cp-adj');
+  adj.appendChild(el('div', 'cp-adjLbl', t('cp.adjusted')));
+  const adjRow = el('div', 'cp-adjRow');
+  for (const lv of ADJ_LEVELS) {
+    const a = compute(T, n, lv);
+    const c = el('div', 'cp-adjItem');
+    c.appendChild(el('span', 'cp-adjLv', t('cp.lv', lv)));
+    c.appendChild(el('span', 'cp-adjNum', fmt(a ? a.cp : null)));
+    adjRow.appendChild(c);
+  }
+  adj.appendChild(adjRow);
+  head.appendChild(adj);
   out.appendChild(head);
 
   // 스탯 3종
@@ -307,34 +324,6 @@ function renderResult(root) {
   br.appendChild(el('p', 'cp-note', t('cp.breakHint', r.skillCoef.toFixed(2), r.elemDmg, r.other)));
   out.appendChild(br);
 
-  // 컨텐츠별 보정
-  const cc = el('div', 'card cp-card-content');
-  cc.appendChild(el('h3', null, t('cp.byContent')));
-  const ct = el('table', 'grid');
-  const th = el('thead'), thr = el('tr');
-  for (const h of [t('cp.content'), t('cp.mode'), t('cp.appliedLv'), t('cp.cp'), t('cp.vsNow')]) {
-    const c = el('th', h === t('cp.content') || h === t('cp.mode') ? null : 'num', h);
-    thr.appendChild(c);
-  }
-  th.appendChild(thr); ct.appendChild(th);
-  const cb = el('tbody');
-  for (const row of byContent(T, n, rules.contents)) {
-    const tr = el('tr');
-    tr.appendChild(el('td', null, label(row.label)));
-    tr.appendChild(el('td', null, label(rules.modes[row.mode])));
-    tr.appendChild(el('td', 'num', row.mode === 'none' ? '—' : String(row.level)));
-    tr.appendChild(el('td', 'num', fmt(row.cp)));
-    const d = row.cp == null ? null : row.cp - r.cp;
-    const dc = el('td', 'num ' + (d > 0 ? 'cp-up' : d < 0 ? 'cp-down' : ''),
-      d == null ? '—' : (Math.abs(d) < 1 ? '—' : (d > 0 ? '+' : '') + fmt(d)));
-    tr.appendChild(dc);
-    cb.appendChild(tr);
-  }
-  ct.appendChild(cb);
-  cc.appendChild(scrollBox(ct));
-  cc.appendChild(el('p', 'cp-note', t('cp.contentHint')));
-  out.appendChild(cc);
-
   // 비교
   const cmp = el('div', 'card cp-card-compare');
   const ch = el('div', 'cp-cmphead');
@@ -351,11 +340,11 @@ function renderResult(root) {
   if (!compare.length) {
     cmp.appendChild(el('p', 'cp-note', t('cp.compareHint')));
   } else {
-    const shown = rules.contents.filter(c => c.mode !== 'none' || c.key === 'campaign');
     const tbl = el('table', 'grid');
     const h2 = el('thead'), hr = el('tr');
     hr.appendChild(el('th', null, t('cp.nikke')));
-    for (const c of shown) hr.appendChild(el('th', 'num', label(c.label)));
+    hr.appendChild(el('th', 'num', t('cp.cp')));
+    for (const lv of ADJ_LEVELS) hr.appendChild(el('th', 'num', t('cp.lv', lv)));
     hr.appendChild(el('th'));
     h2.appendChild(hr); tbl.appendChild(h2);
     const b2 = el('tbody');
@@ -363,11 +352,13 @@ function renderResult(root) {
       const saved = input;
       input = entry.input;
       const en = resolved();
-      const cells = en ? byContent(T, en, shown) : [];
+      const cells = en
+        ? [compute(T, en), ...ADJ_LEVELS.map(lv => compute(T, en, lv))]
+        : [];
       input = saved;
       const tr = el('tr');
       tr.appendChild(el('td', null, entry.name));
-      for (const c of cells) tr.appendChild(el('td', 'num', fmt(c.cp)));
+      for (const c of cells) tr.appendChild(el('td', 'num', fmt(c ? c.cp : null)));
       const x = el('td');
       const del = el('button', 'cp-x', '×');
       del.type = 'button';

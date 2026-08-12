@@ -60,7 +60,7 @@ const STR = {
   'cp.collectionLv': ['등급', 'Grade', '等級'],
   'cp.favorite': ['애장품', 'Favorite item', '愛蔵品'],
   'cp.none': ['미착용', 'None', '未装着'],
-  'cp.console': ['리사이클 룸 연구', 'Recycling Room research', 'リサイクルルーム研究'],
+  'cp.console': ['리사이클 룸 - 콘솔', 'Recycling Room — Console', 'リサイクルルーム - コンソール'],
   'cp.consoleHint': [
     '전초기지 리사이클 룸의 연구 레벨. 니케의 클래스·기업에 해당하는 연구만 적용됩니다.',
     'Research levels in the Outpost Recycling Room. Only the ones matching this Nikke\'s class and corporation apply.',
@@ -101,17 +101,9 @@ const STR = {
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
     (s, u, n) => `スキル係数 ${s} · 優越コードダメージ ${u} · その他のOP ${n}`,
   ],
-  'cp.byContent': ['컨텐츠별 보정 전투력', 'Adjusted CP by content', 'コンテンツ別の補正戦闘力'],
-  'cp.content': ['컨텐츠', 'Content', 'コンテンツ'],
-  'cp.mode': ['보정', 'Adjustment', '補正'],
-  'cp.appliedLv': ['적용 레벨', 'Level used', '適用レベル'],
+  'cp.adjusted': ['보정 전투력', 'Adjusted CP', '補正戦闘力'],
+  'cp.lv': [n => `Lv.${n}`, n => `Lv.${n}`, n => `Lv.${n}`],
   'cp.cp': ['전투력', 'CP', '戦闘力'],
-  'cp.vsNow': ['현재 대비', 'vs. current', '現在比'],
-  'cp.contentHint': [
-    '레벨 상한은 내 레벨이 더 높을 때만 깎이고, 레벨 고정은 내 레벨과 무관하게 그 레벨로 계산됩니다.',
-    'A level cap only lowers your level; a fixed level is applied regardless of your own.',
-    'レベル上限は自分のレベルが高い時だけ下がり、レベル固定は自分のレベルに関係なく適用されます。',
-  ],
   'cp.compare': ['니케 비교', 'Compare Nikkes', 'ニケ比較'],
   'cp.addCompare': ['현재 설정 추가', 'Add current', '現在の設定を追加'],
   'cp.compareHint': [
