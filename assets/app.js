@@ -41,6 +41,7 @@ const STR = {
   'tab.stats': ['통계', 'Stats', '統計'],
   'tab.raw': ['원본 데이터', 'Raw data', '元データ'],
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
+  'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -115,6 +116,111 @@ const STR = {
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
     'No base stats available for this combination — check rarity, class and level.',
     'この組み合わせの基本ステータス資料がありません（レア・クラス・レベルを確認してください）。',
+  ],
+
+  /* 전초기지 탭 (outpost.js 에서 ctx.t 로 받아 쓴다) */
+  'op.loading': ['전초기지 자료를 불러오는 중…', 'Loading outpost data…', '前哨基地データを読み込み中…'],
+  'op.progress': ['캠페인 진행도', 'Campaign progress', 'キャンペーン進行度'],
+  'op.progressHint': [
+    '프로필에 표시되는 최종 클리어 스테이지를 고르세요.',
+    'Pick the last stage you cleared, as shown on your profile.',
+    'プロフィールに表示される最終クリアステージを選んでください。',
+  ],
+  'op.normal': ['노멀', 'Normal', 'ノーマル'],
+  'op.hard': ['하드', 'Hard', 'ハード'],
+  'op.region': ['지역', 'Region', '地域'],
+  'op.stage': ['스테이지', 'Stage', 'ステージ'],
+  'op.notCleared': ['미클리어', 'Not cleared', '未クリア'],
+  'op.reset': ['입력 초기화', 'Reset', '入力リセット'],
+  'op.rules': ['계산 기준', 'How this is calculated', '計算の前提'],
+  'op.formula': [
+    (skip, step) => `전초기지 레벨 = (노멀 클리어 − 앞 ${skip}개 지역) + 하드 클리어를 `
+      + `${step}으로 나눈 몫 + 1. 노멀 지역0~2는 레벨에 반영되지 않습니다.`,
+    (skip, step) => `Outpost level = ⌊((normal clears − first ${skip} regions) + hard clears) / ${step}⌋ + 1. `
+      + `Normal regions 0–2 do not count.`,
+    (skip, step) => `前哨基地レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア を`
+      + `${step}で割った商 + 1。ノーマルの地域0〜2は加算されません。`,
+  ],
+  'op.academyNote': [
+    l => `전술 아카데미는 항상 최대 레슨(${l}) 기준으로 계산합니다. 지휘관 경험치에는 부스트가 붙지 않습니다.`,
+    l => `The Tactics Academy is always assumed maxed (${l}). Commander EXP gets no boost.`,
+    l => `タクティクスアカデミーは常に最大レッスン(${l})前提です。指揮官EXPにはブーストが付きません。`,
+  ],
+  'op.shifty': [
+    'Shiftypad 연동이 붙으면 이 진행도는 프로필에서 자동으로 채워집니다.',
+    'Once Shiftypad is wired up, this progress will be filled in from your profile.',
+    'Shiftypad 連携後は、この進行度がプロフィールから自動入力されます。',
+  ],
+  'op.level': ['전초기지 레벨', 'Outpost level', '前哨基地レベル'],
+  'op.toNext': [
+    (left, into, step) => `다음 레벨까지 ${left}스테이지 (${into}/${step})`,
+    (left, into, step) => `${left} stages to next level (${into}/${step})`,
+    (left, into, step) => `次のレベルまで${left}ステージ (${into}/${step})`,
+  ],
+  'op.atCap': [n => `레벨 상한 ${n} 도달`, n => `Level cap ${n} reached`, n => `レベル上限${n}に到達`],
+  'op.stagesTotal': [
+    n => `총 ${n.toLocaleString()}스테이지`,
+    n => `${n.toLocaleString()} stages total`,
+    n => `合計${n.toLocaleString()}ステージ`,
+  ],
+  'op.stagesSplit': [
+    (a, b) => `노멀 ${a.toLocaleString()} + 하드 ${b.toLocaleString()}`,
+    (a, b) => `Normal ${a.toLocaleString()} + Hard ${b.toLocaleString()}`,
+    (a, b) => `ノーマル ${a.toLocaleString()} + ハード ${b.toLocaleString()}`,
+  ],
+  'op.academyTag': [l => `전술 아카데미 ${l}`, l => `Academy ${l}`, l => `アカデミー ${l}`],
+  'op.mismatch': [
+    (a, b) => `프로필이 알려준 레벨(${a})과 계산값(${b})이 다릅니다. 스테이지 선택을 확인하세요.`,
+    (a, b) => `The level reported by your profile (${a}) differs from the computed one (${b}).`,
+    (a, b) => `プロフィールのレベル(${a})と計算値(${b})が一致しません。`,
+  ],
+  'op.income': ['재화 수급량', 'Resource income', '資源の収入'],
+  'op.dust': ['코어 더스트', 'Core dust', 'コアダスト'],
+  'op.credit': ['크레딧', 'Credits', 'クレジット'],
+  'op.battle': ['배틀 데이터', 'Battle data', 'バトルデータ'],
+  'op.exp': ['지휘관 경험치', 'Commander EXP', '指揮官EXP'],
+  'op.res': ['재화', 'Resource', '資源'],
+  'op.boost': ['부스트', 'Boost', 'ブースト'],
+  'op.baseHr': ['기본/시', 'Base/hr', '基本/時'],
+  'op.appliedHr': ['적용/시', 'With boost/hr', '適用/時'],
+  'op.perHr': ['/시', 'per hour', '/時'],
+  'op.perMinCol': ['/분', 'per min', '/分'],
+  'op.perDay': ['/24시간', 'per 24 h', '/24時間'],
+  'op.next': ['다음 코어더스트 구간', 'Next core dust step', '次のコアダスト区間'],
+  'op.nextHint': [
+    v => `현재 시간당 ${v}. 다음 정수 구간에 닿으려면:`,
+    v => `Currently ${v} per hour. To reach the next whole number:`,
+    v => `現在 毎時 ${v}。次の整数区間に届くには:`,
+  ],
+  'op.noNext': [
+    '이미 자료에 있는 마지막 구간입니다.',
+    'Already at the last step in the data.',
+    'すでに資料上の最終区間です。',
+  ],
+  'op.target': ['코어더스트/시', 'Core dust/hr', 'コアダスト/時'],
+  'op.needLevel': ['필요 레벨', 'Level needed', '必要レベル'],
+  'op.needStages': ['추가 스테이지', 'Stages to go', '追加ステージ'],
+  'op.viaNormal': ['노멀로 밀 경우', 'If pushed in Normal', 'ノーマルで進める場合'],
+  'op.viaHard': ['하드로 밀 경우', 'If pushed in Hard', 'ハードで進める場合'],
+  'op.viaHint': [
+    '노멀·하드 어느 쪽으로 밀어도 스테이지 수는 같습니다. 각 칸은 그 난이도만으로 채웠을 때 도달하는 스테이지입니다.',
+    'Either difficulty counts the same; each column shows where you would land if you pushed only that one.',
+    'どちらの難易度でもステージ数は同じです。各列はその難易度だけで進めた場合の到達地点です。',
+  ],
+  'op.outOfRange': [
+    '남은 스테이지 부족',
+    'Not enough stages left',
+    '残りステージ不足',
+  ],
+  'op.table': ['코어더스트 구간표', 'Core dust steps', 'コアダスト区間表'],
+  'op.half': ['0.5 단위까지', 'Half steps too', '0.5刻みまで'],
+  'op.minLevel': ['최소 레벨', 'Min level', '最小レベル'],
+  'op.cumStages': ['누적 스테이지', 'Stages total', '累計ステージ'],
+  'op.deltaStages': ['현재 대비', 'From here', '現在比'],
+  'op.tableHint': [
+    '전술 아카데미 최대 레벨 기준. 굵은 줄이 지금 노리는 구간입니다.',
+    'Assumes a maxed Tactics Academy. The highlighted row is the step you are working toward.',
+    'タクティクスアカデミー最大前提。強調行が現在狙っている区間です。',
   ],
 
   /* 원본 데이터 탭 (rawdata.js 에서 ctx.t 로 받아 쓴다) */
@@ -930,10 +1036,16 @@ function render() {
   $('#panel-stats').hidden = state.tab !== 'stats';
   $('#panel-raw').hidden = state.tab !== 'raw';
   $('#panel-calc').hidden = state.tab !== 'calc';
+  $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
-  /* 원본 데이터·계산기는 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = state.tab === 'raw' || state.tab === 'calc';
+  /* 원본 데이터·계산기·전초기지는 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
+  $('.filters').hidden = ['raw', 'calc', 'outpost'].includes(state.tab);
 
+  if (state.tab === 'outpost') {
+    writeHash();
+    import('./outpost.js').then(m => m.renderOutpost($('#outpost'), { t, L, lang: lang() }));
+    return;
+  }
   if (state.tab === 'raw') {
     writeHash();
     // 참조 테이블은 이 탭을 처음 열 때만 받아온다
