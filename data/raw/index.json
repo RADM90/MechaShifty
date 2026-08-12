@@ -181,12 +181,12 @@
     "ja": "OP名称・出現率"
    },
    "note": {
-    "ko": "위 표의 약어(우코·공증…)가 뜻하는 정식 이름과 게임 내 영문 표기, 그리고 각 옵션이 뽑힐 확률.",
-    "en": "The full name and in-game English label behind each abbreviation, plus the chance of rolling that option.",
-    "ja": "略語が指す正式名称・ゲーム内英語表記と、そのオプションが出る確率。"
+    "ko": "위 표의 약어(우코·공증…)가 뜻하는 정식 이름과 게임 내 영문·일본어 표기, 그리고 각 옵션이 뽑힐 확률.",
+    "en": "The full name and in-game English / Japanese label behind each abbreviation, plus the chance of rolling that option.",
+    "ja": "略語が指す正式名称・ゲーム内の英語/日本語表記と、そのオプションが出る確率。"
    },
    "rows": 9,
-   "columns": 4
+   "columns": 5
   },
   {
    "key": "skill_chip_req",

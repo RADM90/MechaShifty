@@ -42,6 +42,7 @@ const STR = {
   'tab.raw': ['원본 데이터', 'Raw data', '元データ'],
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
+  'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オーバーロード'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -223,6 +224,108 @@ const STR = {
     'Assumes a maxed Tactics Academy. The highlighted row is the step you are working toward.',
     'タクティクスアカデミー最大前提。強調行が現在狙っている区間です。',
   ],
+
+  /* 니파고 탭 — 오버로드 옵션작 (nipago.js 에서 ctx.t 로 받아 쓴다) */
+  'np.loading': ['옵션 표를 불러오는 중…', 'Loading option tables…', 'OP表を読み込み中…'],
+  'np.goals': ['목표 옵션', 'Target options', '目標OP'],
+  'np.goalsHint': [
+    '노리는 옵션을 고르세요. 2·3슬롯 체크는 그 옵션이 해당 슬롯에 떴을 때 잠금을 권할지입니다.',
+    'Pick what you are aiming for. The slot 2 / slot 3 checkboxes decide whether a lock is recommended when that option lands there.',
+    '狙うOPを選びます。2・3スロットのチェックは、そのスロットに出たときロックを勧めるかどうかです。',
+  ],
+  'np.modeOpt': ['옵션 종류만', 'Option only', 'OP種類のみ'],
+  'np.modeLv': ['옵션 + 최소 레벨', 'Option + min level', 'OP + 最小レベル'],
+  'np.minLv': ['최소 lv', 'Min lv', '最小lv'],
+  'np.slotN': [n => `슬롯 ${n}`, n => `Slot ${n}`, n => `スロット${n}`],
+  'np.slotP': [(n, p) => `슬롯 ${n} (${p}%)`, (n, p) => `Slot ${n} (${p}%)`, (n, p) => `スロット${n} (${p}%)`],
+  'np.appear': [p => `${p}% 등장`, p => `${p}% appear`, p => `${p}% 出現`],
+
+  'np.cost': ['예상 소모량', 'Expected cost', '想定消費量'],
+  'np.module': ['🔵 모듈', '🔵 Modules', '🔵 モジュール'],
+  'np.lockkey': ['🔑 락키', '🔑 Lock keys', '🔑 ロックキー'],
+  'np.expected': ['기대 소모', 'Expected', '期待消費'],
+  'np.spent': ['누적 소모', 'Spent', '累計消費'],
+  'np.perRoll': ['이번 회차', 'This roll', '今回'],
+  'np.pieces': [n => `${n}개`, n => `${n}`, n => `${n}個`],
+  'np.perRollN': [n => `${n}개/회`, n => `${n} per roll`, n => `${n}個/回`],
+  'np.approx': [n => `~${n}개`, n => `~${n}`, n => `~${n}個`],
+
+  'np.goalProb': ['효과변경 1회 목표 등장 확률', 'Target chance per option change', '効果変更1回の目標出現率'],
+  'np.noGoal': ['목표 옵션을 먼저 고르세요.', 'Pick a target option first.', 'まず目標OPを選んでください。'],
+  'np.freeAll': ['자유 슬롯 전체', 'Any free slot', '自由スロット全体'],
+
+  'np.gear': ['개조 장비 효과', 'Overload gear', '改造装備効果'],
+  'np.emptySlot': [n => `슬롯 ${n} — 효과 미획득`, n => `Slot ${n} — no effect`, n => `スロット${n} — 効果なし`],
+  'np.option': ['옵션', 'Option', 'OP'],
+  'np.level': ['레벨', 'Level', 'レベル'],
+  'np.set': ['설정', 'Set', '設定'],
+  'np.emptyOpt': ['— 빈 슬롯 —', '— empty —', '— 空きスロット —'],
+  'np.btnChange': ['효과 변경', 'Change options', '効果変更'],
+  'np.btnReset': ['수치 재설정', 'Reroll values', '数値再設定'],
+  'np.clear': ['입력·누적 초기화', 'Reset everything', '入力・累計リセット'],
+
+  'np.lockTitle': ['잠금', 'Lock', 'ロック'],
+  'np.lockMod': [n => `모듈 ${n}개로 잠금`, n => `Lock with ${n} modules`, n => `モジュール${n}個でロック`],
+  'np.lockKey': [n => `락키 ${n}개로 잠금`, n => `Lock with ${n} keys`, n => `ロックキー${n}個でロック`],
+  'np.lockModS': ['모듈잠금', 'Module lock', 'モジュールロック'],
+  'np.lockKeyS': ['락키잠금', 'Key lock', 'キーロック'],
+  'np.unlock': ['잠금 해제', 'Unlock', 'ロック解除'],
+  'np.cancelLock': [c => `잠금 취소 (${c} 반환)`, c => `Undo lock (${c} back)`, c => `ロック取消 (${c} 返却)`],
+
+  'np.probTable': ['슬롯별 옵션 등장 확률', 'Option chance by slot', 'スロット別OP出現率'],
+  'np.rec': ['추천 행동', 'What to do next', '推奨アクション'],
+  'np.tag_hot': ['지금', 'Now', '今'],
+  'np.tag_rec': ['권장', 'Suggested', '推奨'],
+  'np.tag_ok': ['완료', 'Done', '完了'],
+  'np.recLock': [
+    (n, opt, lv, kind) => `슬롯 ${n} · ${opt} lv${lv} — ${kind} 권장`,
+    (n, opt, lv, kind) => `Slot ${n} · ${opt} lv${lv} — ${kind} suggested`,
+    (n, opt, lv, kind) => `スロット${n} · ${opt} lv${lv} — ${kind}推奨`,
+  ],
+  'np.recLv': [
+    (n, opt, min) => `슬롯 ${n} · ${opt} 수치재설정 → lv${min}+`,
+    (n, opt, min) => `Slot ${n} · reroll ${opt} to lv${min}+`,
+    (n, opt, min) => `スロット${n} · ${opt}の数値再設定 → lv${min}+`,
+  ],
+  'np.recLvDesc': [
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). 달성 확률 ${p}, 기대 ${exp}모듈.`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). ${p} chance, ~${exp} modules.`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want})。達成率 ${p}、期待 ${exp}モジュール。`,
+  ],
+  'np.recRoll': [
+    s => `효과변경 — ${s} 탐색`,
+    s => `Change options — reroll ${s}`,
+    s => `効果変更 — ${s} を再抽選`,
+  ],
+  'np.recRollDesc': [
+    (p, cost, exp) => `목표 등장 확률 ${p} · 리롤당 ${cost}모듈 · 기대 ${exp}모듈. 잠금 순서는 슬롯3 → 슬롯2 → 슬롯1.`,
+    (p, cost, exp) => `${p} chance · ${cost} modules per roll · ~${exp} modules total. Lock in the order slot 3 → 2 → 1.`,
+    (p, cost, exp) => `目標出現率 ${p}・1回あたり${cost}モジュール・期待${exp}モジュール。ロック順はスロット3→2→1。`,
+  ],
+  'np.recDone': ['목표 달성!', 'Goal reached!', '目標達成！'],
+  'np.recDoneDesc': [
+    '모든 슬롯이 목표를 충족했습니다.',
+    'Every slot meets the target.',
+    'すべてのスロットが目標を満たしています。',
+  ],
+  'np.whyBlack': [
+    '블랙라벨 lv15 — 슬롯1이라도 모듈잠금 권장',
+    'Black label lv15 — worth a module lock even in slot 1',
+    'ブラックラベル lv15 — スロット1でもモジュールロック推奨',
+  ],
+  'np.whyLoss': [
+    n => `재탐색 기대손실 ~${n}개 > 잠금비용`,
+    n => `expected loss ~${n} > lock cost`,
+    n => `再抽選の期待損失 ~${n}個 > ロック費用`,
+  ],
+  'np.whySlot3': ['슬롯3 목표 달성', 'Slot 3 target met', 'スロット3の目標達成'],
+
+  'np.modalTitle': ['효과 변경 미리보기', 'Option change preview', '効果変更プレビュー'],
+  'np.cur': ['현재 효과', 'Current', '現在の効果'],
+  'np.next': ['변경 효과', 'After change', '変更後'],
+  'np.none': ['효과 미획득', 'No effect', '効果なし'],
+  'np.keep': ['효과 유지', 'Keep', '維持'],
+  'np.apply': ['효과 변경', 'Change', '変更'],
 
   /* 원본 데이터 탭 (rawdata.js 에서 ctx.t 로 받아 쓴다) */
   'raw.loading': ['표를 불러오는 중…', 'Loading table…', 'テーブルを読み込み中…'],
@@ -1046,10 +1149,16 @@ function render() {
   $('#panel-raw').hidden = state.tab !== 'raw';
   $('#panel-calc').hidden = state.tab !== 'calc';
   $('#panel-outpost').hidden = state.tab !== 'outpost';
+  $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
-  /* 원본 데이터·계산기·전초기지는 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['raw', 'calc', 'outpost'].includes(state.tab);
+  /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
+  $('.filters').hidden = ['raw', 'calc', 'outpost', 'nipago'].includes(state.tab);
 
+  if (state.tab === 'nipago') {
+    writeHash();
+    import('./nipago.js').then(m => m.renderNipago($('#nipago'), { t, L, lang: lang() }));
+    return;
+  }
   if (state.tab === 'outpost') {
     writeHash();
     import('./outpost.js').then(m => m.renderOutpost($('#outpost'), { t, L, lang: lang() }));
