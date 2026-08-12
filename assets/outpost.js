@@ -353,24 +353,28 @@ function renderForm(root) {
    오른다. '한 번도 막히지 않고 매번 올랐다면' 계정 생성일부터 오늘까지 그 타워가
    열린 횟수 × 3 이 도달 가능한 최대 층이다. 실제 도달 층이 아니라 상한선이다.
 
-   보상은 층수로 끊긴다 — 5층마다 기업 몰드 5개, 10층마다 퍼펙트 몰드 5개.
-   몰드는 50개를 모아야 한 번 열 수 있어서, 한 번 열 만큼 모으는 데 드는
-   등반 회차와 주 수를 같이 낸다 (몰드 50개 = 50층 = 17회, 퍼펙트 = 100층 = 34회).
+   보상은 층수로 끊긴다.
+     기업 몰드   — 한 층에 1개, 5의 배수 층에서는 5개. 즉 5층마다 4 + 5 = 9개다.
+     퍼펙트 몰드 — 2025-09-24 업데이트로 추가. 3사는 20층마다, 필그림/오버스펙은
+                   30층마다 5개씩이라 각각 200층·300층에 한 번 모집할 수 있다.
+   모집 한 번에 50개가 필요하므로, 그만큼 모으는 데 드는 층수·등반 회차·주 수를
+   같이 낸다 (기업 몰드는 30층 = 10회, 퍼펙트는 200층 = 67회 / 300층 = 100회).
 
    요일은 브라우저 시간 기준이다. 어차피 '막힘 없이' 라는 가정 위의 상한선이라
    서버 리셋 시각까지 맞출 필요는 없다. */
 const TOWER_FLOORS = 3;        // 한 번 열릴 때 오를 수 있는 층
-const MOLD_STEP = 5;           // 기업 몰드 지급 간격(층)
-const PERFECT_STEP = 10;       // 퍼펙트 몰드 지급 간격(층)
-const MOLD_PER_STEP = 5;       // 한 번에 주는 개수
-const MOLD_UNIT = 50;          // 열 수 있는 최소 단위
+const MOLD_UNIT = 50;          // 모집 한 번에 드는 개수
+const MOLD_BONUS_STEP = 5;     // 이 배수 층에서는 1개가 아니라
+const MOLD_BONUS = 5;          //   이만큼 준다
+const PERFECT_PER = 5;         // 퍼펙트 몰드를 한 번에 주는 개수
 
-/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나다. */
+/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나이고, 퍼펙트 몰드 간격도
+   3사(20층)와 다르다(30층). */
 const TOWERS = [
-  { key: 'ELYSION', days: [0, 2, 5] },
-  { key: 'MISSILIS', days: [0, 3, 6] },
-  { key: 'TETRA', days: [0, 1, 4] },
-  { key: 'PILGRIM', days: [0, 3], label: 'op.towerPilgrim' },
+  { key: 'ELYSION', days: [0, 2, 5], perfectStep: 20 },
+  { key: 'MISSILIS', days: [0, 3, 6], perfectStep: 20 },
+  { key: 'TETRA', days: [0, 1, 4], perfectStep: 20 },
+  { key: 'PILGRIM', days: [0, 3], perfectStep: 30, label: 'op.towerPilgrim' },
 ];
 
 /* 두 날짜(자정 기준) 사이에 요일 d 가 몇 번 오는지 — 양 끝을 포함한다 */
@@ -381,12 +385,23 @@ function weekdayCount(from, to, d) {
   return first > span ? 0 : Math.floor((span - first) / 7) + 1;
 }
 
-/* 몰드 n 개를 모으는 데 드는 등반 회차와 주 수. 회차는 올림(반 번 오를 수 없다),
+/* f 층까지 올랐을 때 받은 몰드 개수. 5의 배수 층은 1개가 아니라 5개다. */
+const moldsAt = f => f + (MOLD_BONUS - 1) * Math.floor(f / MOLD_BONUS_STEP);
+const perfectAt = (f, step) => Math.floor(f / step) * PERFECT_PER;
+
+/* 몰드 50개를 채우는 최소 층. 5층마다 9개라 층수가 딱 떨어지지 않아서
+   (29층 49개 · 30층 54개) 근처까지 건너뛴 뒤 한 층씩 맞춘다. */
+function floorsForMolds(n) {
+  let f = Math.max(0, Math.floor(n / 9) * MOLD_BONUS_STEP - MOLD_BONUS_STEP);
+  while (moldsAt(f) < n) f++;
+  return f;
+}
+
+/* 층수를 등반 회차와 주 수로. 회차는 올림(반 번 오를 수 없다),
    주 수는 소수점 둘째 자리에서 올려 한 자리로 (8.24 -> 8.3). */
-function moldRun(stepFloors, perWeek) {
-  const floors = (MOLD_UNIT / MOLD_PER_STEP) * stepFloors;
+function moldRun(floors, perWeek) {
   const runs = Math.ceil(floors / TOWER_FLOORS);
-  return { runs, weeks: Math.ceil((runs / perWeek) * 10) / 10 };
+  return { floors, runs, weeks: Math.ceil((runs / perWeek) * 10) / 10 };
 }
 
 function renderTower() {
@@ -428,8 +443,8 @@ function renderTower() {
   for (const tw of TOWERS) {
     const opens = tw.days.reduce((a, d) => a + weekdayCount(from, today, d), 0);
     const floors = opens * TOWER_FLOORS;
-    const mold = moldRun(MOLD_STEP, tw.days.length);
-    const perfect = moldRun(PERFECT_STEP, tw.days.length);
+    const mold = moldRun(floorsForMolds(MOLD_UNIT), tw.days.length);
+    const perfect = moldRun(tw.perfectStep * (MOLD_UNIT / PERFECT_PER), tw.days.length);
     const name = tw.label ? t(tw.label) : ctx.L('corporation', tw.key);
 
     const tr = el('tr');
@@ -442,23 +457,23 @@ function renderTower() {
 
     const fl = el('td', 'num', t('op.floorN', floors));
     // 지금까지 쌓인 몰드 개수는 상시로 보여줄 만큼 중요하진 않아 hover 로
-    fl.title = t('op.towerHave', opens,
-      Math.floor(floors / MOLD_STEP) * MOLD_PER_STEP,
-      Math.floor(floors / PERFECT_STEP) * MOLD_PER_STEP);
+    fl.title = t('op.towerHave', opens, moldsAt(floors), perfectAt(floors, tw.perfectStep));
     tr.appendChild(fl);
 
     for (const m of [mold, perfect]) {
       const td = el('td', 'num');
       td.appendChild(el('span', 'op-runs', t('op.runN', m.runs)));
       td.appendChild(el('span', 'op-weeks', t('op.weekN', m.weeks.toFixed(1))));
+      // 몇 층까지 올라야 하는지는 회차·주 수보다 덜 쓰여 hover 로
+      td.title = t('op.towerNeed', MOLD_UNIT, m.floors);
       tr.appendChild(td);
     }
     tb.appendChild(tr);
   }
   tbl.appendChild(tb);
   g.appendChild(tbl);
-  g.appendChild(el('p', 'op-note op-towerFoot', t('op.towerMoldNote', MOLD_STEP, MOLD_PER_STEP,
-    PERFECT_STEP, MOLD_PER_STEP, MOLD_UNIT)));
+  g.appendChild(el('p', 'op-note op-towerFoot',
+    t('op.towerMoldNote', MOLD_BONUS_STEP, MOLD_BONUS, PERFECT_PER, MOLD_UNIT)));
   return g;
 }
 

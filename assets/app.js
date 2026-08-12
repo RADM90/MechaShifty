@@ -285,14 +285,19 @@ const STR = {
   'op.wd3': ['수', 'Wed', '水'], 'op.wd4': ['목', 'Thu', '木'], 'op.wd5': ['금', 'Fri', '金'],
   'op.wd6': ['토', 'Sat', '土'],
   'op.towerHave': [
-    (o, m, p) => `지금까지 ${o}회 열림 · 몰드 ${m}개 · 퍼펙트 ${p}개`,
-    (o, m, p) => `${o} openings so far · ${m} molds · ${p} perfect`,
-    (o, m, p) => `これまで${o}回開放・モールド${m}個・パーフェクト${p}個`,
+    (o, m, p) => `지금까지 ${o}회 열림 · 몰드 ${m.toLocaleString()}개 · 퍼펙트 ${p.toLocaleString()}개`,
+    (o, m, p) => `${o} openings so far · ${m.toLocaleString()} molds · ${p.toLocaleString()} perfect`,
+    (o, m, p) => `これまで${o}回開放・モールド${m.toLocaleString()}個・パーフェクト${p.toLocaleString()}個`,
+  ],
+  'op.towerNeed': [
+    (u, f) => `${u}개까지 ${f}층`,
+    (u, f) => `${f} floors for ${u}`,
+    (u, f) => `${u}個まで${f}階`,
   ],
   'op.towerMoldNote': [
-    (a, b, c, d, u) => `${a}층마다 기업 몰드 ${b}개, ${c}층마다 퍼펙트 몰드 ${d}개. ${u}개를 모아야 한 번 엽니다 — 위 두 칸은 ${u}개까지 필요한 등반 횟수와 주 수입니다.`,
-    (a, b, c, d, u) => `${b} corp molds every ${a} floors, ${d} perfect molds every ${c}. You need ${u} to open once — the last two columns are the runs and weeks to get there.`,
-    (a, b, c, d, u) => `${a}階ごとに企業モールド${b}個、${c}階ごとにパーフェクト${d}個。${u}個で1回開封 — 右の2列はそこまでの登攀回数と週数です。`,
+    (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 오른쪽 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다.`,
+    (s, b, p, u) => `Corp molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the last two columns are the runs and weeks to get there.`,
+    (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 — 右の2列はそこまでの登攀回数と週数です。`,
   ],
   'op.fromAccount': [
     '불러온 계정 자료에서 채웠습니다.',
