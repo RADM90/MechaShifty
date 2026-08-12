@@ -12,6 +12,9 @@ tools/
 
 # 프로젝트 문서 — 아직 리포지토리에 올리지 않은 로컬 작업 노트.
 README.md
+TODO.md
+COMBAT_POWER.md
+DEVIATIONS.md
 
 # Claude Code 로컬 설정
 .claude/

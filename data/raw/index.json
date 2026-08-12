@@ -1,0 +1,328 @@
+{
+ "generated_at": "2026-08-12",
+ "groups": [
+  {
+   "key": "combat",
+   "title": {
+    "ko": "니케 스탯",
+    "en": "Nikke stats",
+    "ja": "ニケのステータス"
+   }
+  },
+  {
+   "key": "gear",
+   "title": {
+    "ko": "장비 · 스킬",
+    "en": "Gear & skills",
+    "ja": "装備・スキル"
+   }
+  },
+  {
+   "key": "outpost",
+   "title": {
+    "ko": "전초기지 · 진행도",
+    "en": "Outpost & progress",
+    "ja": "前哨基地・進行度"
+   }
+  },
+  {
+   "key": "content",
+   "title": {
+    "ko": "컨텐츠",
+    "en": "Content",
+    "ja": "コンテンツ"
+   }
+  }
+ ],
+ "datasets": [
+  {
+   "key": "syncro_stat",
+   "file": "syncro_stat.json",
+   "group": "combat",
+   "title": {
+    "ko": "싱크로 기본 스탯",
+    "en": "Synchro base stats",
+    "ja": "シンクロ基本ステータス"
+   },
+   "note": {
+    "ko": "등급·클래스·레벨(1~1200)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. SR 쪽 빈칸은 해당 조합의 니케가 없다는 뜻.",
+    "en": "Base HP/ATK/DEF by rarity, class and level (1–1200). DEF differs per weapon type; blank SR cells mean no Nikke has that combination.",
+    "ja": "レア・クラス・レベル(1〜1200)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、SRの空欄はその組み合わせが存在しないことを示す。"
+   },
+   "rows": 7200,
+   "columns": 11
+  },
+  {
+   "key": "attraction_stat",
+   "file": "attraction_stat.json",
+   "group": "combat",
+   "title": {
+    "ko": "호감도 보정 스탯",
+    "en": "Bond stat bonus",
+    "ja": "好感度補正ステータス"
+   },
+   "note": {
+    "ko": "클래스별 호감도 레벨 1~40 보정치.",
+    "en": "Bond level 1–40 bonuses per class.",
+    "ja": "クラス別の好感度レベル1〜40の補正値。"
+   },
+   "rows": 120,
+   "columns": 5
+  },
+  {
+   "key": "attraction_grade",
+   "file": "attraction_grade.json",
+   "group": "combat",
+   "title": {
+    "ko": "돌파 / 코어강화 단계표",
+    "en": "Limit break & core levels",
+    "ja": "突破・コア強化段階表"
+   },
+   "note": {
+    "ko": "0돌~3돌, 1코강~7코강이 각각 돌파 수·코어강화 수로 어떻게 대응되는지.",
+    "en": "How each grade maps to a limit-break count and a core-enhance count.",
+    "ja": "各段階が突破数・コア強化数にどう対応するか。"
+   },
+   "rows": 11,
+   "columns": 3
+  },
+  {
+   "key": "cube_stat",
+   "file": "cube_stat.json",
+   "group": "combat",
+   "title": {
+    "ko": "큐브",
+    "en": "Cubes",
+    "ja": "キューブ"
+   },
+   "note": {
+    "ko": "큐브 레벨별 스탯과 스킬 레벨 보정.",
+    "en": "Per-level cube stats and skill-level bonuses.",
+    "ja": "キューブレベル別のステータスとスキルレベル補正。"
+   },
+   "rows": 16,
+   "columns": 6
+  },
+  {
+   "key": "collection_stat",
+   "file": "collection_stat.json",
+   "group": "combat",
+   "title": {
+    "ko": "소장품 / 애장품",
+    "en": "Collection items",
+    "ja": "コレクション"
+   },
+   "note": {
+    "ko": "소장품 R0~SR15, 애장품 단계별 스탯.",
+    "en": "Collection item stats from R0 to SR15, plus favourite items.",
+    "ja": "コレクション R0〜SR15 と愛蔵品の段階別ステータス。"
+   },
+   "rows": 35,
+   "columns": 7
+  },
+  {
+   "key": "collection_bonus",
+   "file": "collection_bonus.json",
+   "group": "combat",
+   "title": {
+    "ko": "리사이클 룸 연구 단가",
+    "en": "Recycling Room research unit",
+    "ja": "リサイクルルーム研究の単価"
+   },
+   "note": {
+    "ko": "전초기지 리사이클 룸 연구 1레벨당 증가량. 니케마다 공용 + 자기 클래스 + 자기 기업 세 연구가 적용된다.",
+    "en": "Stat gain per level of Outpost Recycling Room research. Each Nikke gets the shared one plus the ones for its class and corporation.",
+    "ja": "前哨基地リサイクルルーム研究1レベルあたりの増加量。共用＋自分のクラス・企業の3つが適用される。"
+   },
+   "rows": 3,
+   "columns": 4
+  },
+  {
+   "key": "equip_stat",
+   "file": "equip_stat.json",
+   "group": "gear",
+   "title": {
+    "ko": "장비 스탯",
+    "en": "Gear stats",
+    "ja": "装備ステータス"
+   },
+   "note": {
+    "ko": "클래스 × 부위 × 등급 × 강화 단계별 스탯. 기업 소속이 아닌 일반 T9 장비는 자료가 없어 빠져 있다.",
+    "en": "Stats by class, slot, tier and enhancement step. Non-corporation T9 gear is missing — no stat data available.",
+    "ja": "クラス×部位×等級×強化段階のステータス。企業所属でない通常T9装備は資料がなく含まれない。"
+   },
+   "rows": 144,
+   "columns": 7
+  },
+  {
+   "key": "equip_option",
+   "file": "equip_option.json",
+   "group": "gear",
+   "title": {
+    "ko": "오버로드 옵션 수치",
+    "en": "Overload option values",
+    "ja": "オーバーロードOP数値"
+   },
+   "note": {
+    "ko": "옵션 레벨 1~15의 실제 증가 수치와 해당 레벨이 뜰 확률.",
+    "en": "Actual bonus per option level (1–15) and the chance of rolling that level.",
+    "ja": "オプションレベル1〜15の実数値と、そのレベルが出る確率。"
+   },
+   "rows": 15,
+   "columns": 11
+  },
+  {
+   "key": "equip_glossary",
+   "file": "equip_glossary.json",
+   "group": "gear",
+   "title": {
+    "ko": "옵션 이름 · 등장확률",
+    "en": "Option names & chances",
+    "ja": "OP名称・出現率"
+   },
+   "note": {
+    "ko": "위 표의 약어(우코·공증…)가 뜻하는 정식 이름과 게임 내 영문 표기, 그리고 각 옵션이 뽑힐 확률.",
+    "en": "The full name and in-game English label behind each abbreviation, plus the chance of rolling that option.",
+    "ja": "略語が指す正式名称・ゲーム内英語表記と、そのオプションが出る確率。"
+   },
+   "rows": 9,
+   "columns": 4
+  },
+  {
+   "key": "skill_chip_req",
+   "file": "skill_chip_req.json",
+   "group": "gear",
+   "title": {
+    "ko": "스킬 강화 요구량",
+    "en": "Skill upgrade cost",
+    "ja": "スキル強化要求量"
+   },
+   "note": {
+    "ko": "스킬·버스트 레벨업에 드는 스킬칩 수와 누적량.",
+    "en": "Skill chips needed per level-up, and the running total.",
+    "ja": "スキル・バーストのレベルアップに必要なチップ数と累計。"
+   },
+   "rows": 10,
+   "columns": 13
+  },
+  {
+   "key": "skill_chip_source",
+   "file": "skill_chip_source.json",
+   "group": "gear",
+   "title": {
+    "ko": "스킬칩 획득처",
+    "en": "Skill chip sources",
+    "ja": "スキルチップ入手先"
+   },
+   "note": {
+    "ko": "시뮬레이션 룸 단계별 · 일일퀘스트 · 이벤트상점에서 얻는 스킬칩 수량.",
+    "en": "Chips obtained from Simulation Room stages, daily quests and the event shop.",
+    "ja": "シミュレーションルーム段階別・デイリー・イベントショップの入手量。"
+   },
+   "rows": 44,
+   "columns": 8
+  },
+  {
+   "key": "outpost_income",
+   "file": "outpost_income.json",
+   "group": "outpost",
+   "title": {
+    "ko": "전초기지 수급량",
+    "en": "Outpost income",
+    "ja": "前哨基地の収入"
+   },
+   "note": {
+    "ko": "전초기지 레벨 1~700의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상.",
+    "en": "Per-minute and per-hour income for outpost levels 1–700. Values are converted from a 20-second tick, so the decimals are not round.",
+    "ja": "前哨基地レベル1〜700の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。"
+   },
+   "rows": 700,
+   "columns": 10
+  },
+  {
+   "key": "tactics_academy",
+   "file": "tactics_academy.json",
+   "group": "outpost",
+   "title": {
+    "ko": "전술 아카데미",
+    "en": "Tactics Academy",
+    "ja": "タクティクスアカデミー"
+   },
+   "note": {
+    "ko": "레슨별 재화 획득량 부스트와 해금 효과.",
+    "en": "Resource boosts and unlocks per lesson.",
+    "ja": "レッスン別の獲得量ブーストと解放効果。"
+   },
+   "rows": 41,
+   "columns": 8
+  },
+  {
+   "key": "stage_list",
+   "file": "stage_list.json",
+   "group": "outpost",
+   "title": {
+    "ko": "캠페인 스테이지 목록",
+    "en": "Campaign stages",
+    "ja": "キャンペーンステージ"
+   },
+   "note": {
+    "ko": "지역 0~46의 스테이지 순서와 보스 구간.",
+    "en": "Stage order and boss nodes for regions 0–46.",
+    "ja": "地域0〜46のステージ順とボス区間。"
+   },
+   "rows": 1699,
+   "columns": 4
+  },
+  {
+   "key": "cp_penalty",
+   "file": "cp_penalty.json",
+   "group": "content",
+   "title": {
+    "ko": "전투력 부족 페널티",
+    "en": "CP deficit penalty",
+    "ja": "戦闘力不足ペナルティ"
+   },
+   "note": {
+    "ko": "권장 전투력에 얼마나 못 미치는지(부족률)에 따라 스탯이 얼마나 깎이는지.",
+    "en": "How much your stats are cut based on how far below the recommended CP you are.",
+    "ja": "推奨戦闘力にどれだけ届かないかに応じたステータス減少率。"
+   },
+   "rows": 501,
+   "columns": 2
+  },
+  {
+   "key": "module_settings",
+   "file": "module_settings.json",
+   "group": "content",
+   "title": {
+    "ko": "이상 개체 모듈 확률 설정값",
+    "en": "Anomaly module drop rates",
+    "ja": "異常個体モジュール確率"
+   },
+   "note": {
+    "ko": "단계 1~9의 모듈피스 개수와 랜덤박스 확률. 확률분포 계산의 원천값이다.",
+    "en": "Module pieces and random-box probabilities for steps 1–9 — the base values behind the distribution.",
+    "ja": "段階1〜9のピース数とランダムボックス確率。分布計算のもとになる値。"
+   },
+   "rows": 9,
+   "columns": 8
+  },
+  {
+   "key": "solo_raid_museum",
+   "file": "solo_raid_museum.json",
+   "group": "content",
+   "title": {
+    "ko": "솔로 레이드 뮤지엄",
+    "en": "Solo Raid Museum",
+    "ja": "ソロレイドミュージアム"
+   },
+   "note": {
+    "ko": "Hall별 보스의 등급 1~13 요구 전투력 (Global / KR). 보스 이름 뒤의 '(수<전)' 은 속성 상성 메모.",
+    "en": "Required CP per boss grade 1–13 (Global / KR). The '(수<전)' note after a boss name is an element hint.",
+    "ja": "Hall別ボスの等級1〜13の要求戦闘力（Global / KR）。ボス名の注記は原文のまま。"
+   },
+   "rows": 117,
+   "columns": 6
+  }
+ ]
+}

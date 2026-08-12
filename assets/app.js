@@ -39,6 +39,105 @@ const STR = {
   'tab.nikkes': ['니케 리스트', 'Nikkes', 'ニケ一覧'],
   'tab.pickups': ['픽업일정', 'Banners', 'ピックアップ'],
   'tab.stats': ['통계', 'Stats', '統計'],
+  'tab.raw': ['원본 데이터', 'Raw data', '元データ'],
+  'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
+
+  /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
+  'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
+  'cp.nikke': ['니케', 'Nikke', 'ニケ'],
+  'cp.pick': ['대상', 'Target', '対象'],
+  'cp.level': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
+  'cp.levelHint': [n => `1 ~ ${n}`, n => `1 – ${n}`, n => `1 ~ ${n}`],
+  'cp.grade': ['돌파 / 코강', 'Break / Core', '突破・コア'],
+  'cp.bond': ['호감도', 'Bond', '好感度'],
+  'cp.skills': ['스킬 레벨', 'Skill levels', 'スキルレベル'],
+  'cp.skill1': ['스킬 1', 'Skill 1', 'スキル1'],
+  'cp.skill2': ['스킬 2', 'Skill 2', 'スキル2'],
+  'cp.burst': ['버스트', 'Burst', 'バースト'],
+  'cp.items': ['장착품', 'Equipped items', '装着品'],
+  'cp.cube': ['큐브', 'Cube', 'キューブ'],
+  'cp.collection': ['소장품', 'Collection', 'コレクション'],
+  'cp.collectionLv': ['등급', 'Grade', '等級'],
+  'cp.favorite': ['애장품', 'Favorite item', '愛蔵品'],
+  'cp.none': ['미착용', 'None', '未装着'],
+  'cp.console': ['리사이클 룸 연구', 'Recycling Room research', 'リサイクルルーム研究'],
+  'cp.consoleHint': [
+    '전초기지 리사이클 룸의 연구 레벨. 니케의 클래스·기업에 해당하는 연구만 적용됩니다.',
+    'Research levels in the Outpost Recycling Room. Only the ones matching this Nikke\'s class and corporation apply.',
+    '前哨基地リサイクルルームの研究レベル。そのニケのクラス・企業に対応する研究のみ適用されます。',
+  ],
+  'cp.console_공용': ['공용', 'Shared', '共用'],
+  'cp.console_클래스': ['클래스', 'Class', 'クラス'],
+  'cp.console_기업': ['기업', 'Corporation', '企業'],
+  'cp.gear': ['장비', 'Gear', '装備'],
+  'cp.slot': ['등급', 'Tier', '等級'],
+  'cp.slot_머리': ['머리', 'Head', '頭'],
+  'cp.slot_몸': ['몸', 'Body', '胴'],
+  'cp.slot_팔': ['팔', 'Arm', '腕'],
+  'cp.slot_다리': ['다리', 'Leg', '脚'],
+  'cp.enhance': ['강화', 'Enhance', '強化'],
+  'cp.gearLimit': [
+    '기업 장비(9티어) · 오버로드만 계산할 수 있습니다. 기업 소속이 아닌 일반 T9 장비는 스탯 자료가 아직 없습니다.',
+    'Only corporation T9 gear and Overload can be calculated — stat data for non-corporation T9 gear is not available yet.',
+    '企業装備(9ティア)とオーバーロードのみ計算できます。企業所属でない通常T9装備のステータス資料はまだありません。',
+  ],
+  'cp.noOption': ['옵션 없음', 'No option', 'オプションなし'],
+  'cp.reset': ['입력 초기화', 'Reset inputs', '入力初期化'],
+  'cp.current': [n => `현재 전투력 (레벨 ${n})`, n => `Combat power (level ${n})`, n => `戦闘力（レベル ${n}）`],
+  'cp.atk': ['공격력', 'ATK', '攻撃力'],
+  'cp.def': ['방어력', 'DEF', '防御力'],
+  'cp.defOverride': [
+    w => `방어력 ${w} 계열 적용`, w => `Uses ${w} DEF table`, w => `防御力は ${w} 系統`,
+  ],
+  'cp.breakdown': ['계산 분해', 'Breakdown', '計算の内訳'],
+  'cp.b1': ['(1) HP × 0.7', '(1) HP × 0.7', '(1) HP × 0.7'],
+  'cp.b2': ['(2) 공격력 × 19.35', '(2) ATK × 19.35', '(2) 攻撃力 × 19.35'],
+  'cp.b3': ['(3) 방어력 × 70', '(3) DEF × 70', '(3) 防御力 × 70'],
+  'cp.b4': ['(4) 스킬 + 오버로드 계수', '(4) Skill + overload coef.', '(4) スキル＋OP係数'],
+  'cp.b5': ['(5) 큐브 + 소장품 계수', '(5) Cube + collection coef.', '(5) キューブ＋コレクション係数'],
+  'cp.b6': ['((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100'],
+  'cp.breakHint': [
+    (s, u, n) => `스킬계수 ${s} · 우코(우월코드 데미지) 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
+    (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
+    (s, u, n) => `スキル係数 ${s} · 優越コードダメージ ${u} · その他のOP ${n}`,
+  ],
+  'cp.byContent': ['컨텐츠별 보정 전투력', 'Adjusted CP by content', 'コンテンツ別の補正戦闘力'],
+  'cp.content': ['컨텐츠', 'Content', 'コンテンツ'],
+  'cp.mode': ['보정', 'Adjustment', '補正'],
+  'cp.appliedLv': ['적용 레벨', 'Level used', '適用レベル'],
+  'cp.cp': ['전투력', 'CP', '戦闘力'],
+  'cp.vsNow': ['현재 대비', 'vs. current', '現在比'],
+  'cp.contentHint': [
+    '레벨 상한은 내 레벨이 더 높을 때만 깎이고, 레벨 고정은 내 레벨과 무관하게 그 레벨로 계산됩니다.',
+    'A level cap only lowers your level; a fixed level is applied regardless of your own.',
+    'レベル上限は自分のレベルが高い時だけ下がり、レベル固定は自分のレベルに関係なく適用されます。',
+  ],
+  'cp.compare': ['니케 비교', 'Compare Nikkes', 'ニケ比較'],
+  'cp.addCompare': ['현재 설정 추가', 'Add current', '現在の設定を追加'],
+  'cp.compareHint': [
+    '현재 설정을 추가하면 여러 니케의 보정 전투력을 나란히 비교할 수 있습니다.',
+    'Add the current setup to line several Nikkes up side by side.',
+    '現在の設定を追加すると、複数のニケを並べて比較できます。',
+  ],
+  'cp.noBase': [
+    '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
+    'No base stats available for this combination — check rarity, class and level.',
+    'この組み合わせの基本ステータス資料がありません（レア・クラス・レベルを確認してください）。',
+  ],
+
+  /* 원본 데이터 탭 (rawdata.js 에서 ctx.t 로 받아 쓴다) */
+  'raw.loading': ['표를 불러오는 중…', 'Loading table…', 'テーブルを読み込み中…'],
+  'raw.rows': [n => `${n.toLocaleString()}행`, n => `${n.toLocaleString()} rows`, n => `${n.toLocaleString()}行`],
+  'raw.search': ['표 안에서 검색', 'Search this table', 'この表を検索'],
+  'raw.count': [n => `<b>${n.toLocaleString()}</b>행`, n => `<b>${n.toLocaleString()}</b> rows`, n => `<b>${n.toLocaleString()}</b>行`],
+  'raw.countFiltered': [
+    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()}행`,
+    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()} rows`,
+    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()}行`,
+  ],
+  'raw.page': [(a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`],
+  'raw.csv': ['CSV 내려받기', 'Download CSV', 'CSVダウンロード'],
+  'raw.empty': ['조건에 맞는 행이 없습니다.', 'No rows match.', '条件に合う行がありません。'],
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
   'ui.reset': ['필터 초기화', 'Reset filters', 'フィルタ初期化'],
@@ -837,7 +936,24 @@ function render() {
   $('#panel-nikkes').hidden = state.tab !== 'nikkes';
   $('#panel-pickups').hidden = state.tab !== 'pickups';
   $('#panel-stats').hidden = state.tab !== 'stats';
+  $('#panel-raw').hidden = state.tab !== 'raw';
+  $('#panel-calc').hidden = state.tab !== 'calc';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
+  /* 원본 데이터·계산기는 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
+  $('.filters').hidden = state.tab === 'raw' || state.tab === 'calc';
+
+  if (state.tab === 'raw') {
+    writeHash();
+    // 참조 테이블은 이 탭을 처음 열 때만 받아온다
+    import('./rawdata.js').then(m => m.renderRaw($('#rawdata'), { t, L, lang: lang() }));
+    return;
+  }
+  if (state.tab === 'calc') {
+    writeHash();
+    import('./calc.js').then(m => m.renderCalc($('#calc'),
+      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf }));
+    return;
+  }
 
   updateChipCounts();
 

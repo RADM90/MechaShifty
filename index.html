@@ -38,6 +38,8 @@
     <button type="button" role="tab" data-tab="nikkes" aria-selected="true" data-i18n="tab.nikkes">니케 리스트</button>
     <button type="button" role="tab" data-tab="pickups" aria-selected="false" data-i18n="tab.pickups">픽업일정</button>
     <button type="button" role="tab" data-tab="stats" aria-selected="false" data-i18n="tab.stats">통계</button>
+    <button type="button" role="tab" data-tab="calc" aria-selected="false" data-i18n="tab.calc">전투력 계산기</button>
+    <button type="button" role="tab" data-tab="raw" aria-selected="false" data-i18n="tab.raw">원본 데이터</button>
   </nav>
 </header>
 
@@ -115,6 +117,16 @@
     <!-- ── 탭 3: 통계 ─────────────────────────────────────── -->
     <section id="panel-stats" class="panel" hidden>
       <div id="stats"></div>
+    </section>
+
+    <!-- ── 탭 4: 전투력 계산기 ────────────────────────────── -->
+    <section id="panel-calc" class="panel" hidden>
+      <div id="calc"></div>
+    </section>
+
+    <!-- ── 탭 5: 원본 데이터 ──────────────────────────────── -->
+    <section id="panel-raw" class="panel" hidden>
+      <div id="rawdata" class="rawwrap"></div>
     </section>
 
   </div>

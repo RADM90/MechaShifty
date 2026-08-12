@@ -1,0 +1,39 @@
+{
+ "schema_version": 1,
+ "note": "전투력 계산의 도메인 규칙. 공식과 검증 근거는 COMBAT_POWER.md 참고.",
+ "modes": {
+  "none": {"ko": "무보정", "en": "As-is", "ja": "補正なし"},
+  "cap": {"ko": "레벨 상한", "en": "Level cap", "ja": "レベル上限"},
+  "fix": {"ko": "레벨 고정", "en": "Fixed level", "ja": "レベル固定"}
+ },
+ "contents": [
+  {"key": "campaign", "mode": "none", "level": null, "penalty": true,
+   "label": {"ko": "캠페인", "en": "Campaign", "ja": "キャンペーン"}},
+  {"key": "tower", "mode": "none", "level": null, "penalty": true,
+   "label": {"ko": "타워 (기업 · 트라이브)", "en": "Tower (Corp / Tribe)", "ja": "タワー"}},
+  {"key": "lost_sector", "mode": "none", "level": null, "penalty": true,
+   "label": {"ko": "로스트 섹터", "en": "Lost Sector", "ja": "ロストセクター"}},
+  {"key": "simulation", "mode": "none", "level": null, "penalty": false,
+   "label": {"ko": "시뮬레이션 룸", "en": "Simulation Room", "ja": "シミュレーションルーム"}},
+  {"key": "arena_low", "mode": "none", "level": null, "penalty": false,
+   "label": {"ko": "아레나 (루키 · 스페셜)", "en": "Arena (Rookie / Special)", "ja": "アリーナ（ルーキー・スペシャル）"}},
+  {"key": "union_raid", "mode": "none", "level": null, "penalty": false,
+   "label": {"ko": "유니온 레이드", "en": "Union Raid", "ja": "ユニオンレイド"}},
+
+  {"key": "interception", "mode": "cap", "level": 400, "penalty": false,
+   "label": {"ko": "요격전 (특수 · 이상 개체)", "en": "Interception (Special / Anomaly)", "ja": "迎撃戦"}},
+
+  {"key": "coop", "mode": "fix", "level": 40, "penalty": false,
+   "label": {"ko": "협동 작전 (협전)", "en": "Co-op Operation", "ja": "協同作戦"}},
+  {"key": "solo_raid", "mode": "fix", "level": 400, "penalty": false,
+   "label": {"ko": "솔로 레이드", "en": "Solo Raid", "ja": "ソロレイド"}},
+  {"key": "solo_raid_museum", "mode": "fix", "level": 400, "penalty": false,
+   "label": {"ko": "솔로 레이드 뮤지엄", "en": "Solo Raid Museum", "ja": "ソロレイドミュージアム"}},
+  {"key": "champion_arena", "mode": "fix", "level": 400, "penalty": false,
+   "label": {"ko": "챔피언 아레나", "en": "Champion Arena", "ja": "チャンピオンアリーナ"}}
+ ],
+ "def_weapon_override": {
+  "c230": "AR"
+ },
+ "def_weapon_override_note": "무기 종류와 다른 방어력 계열을 쓰는 니케. c230=하란(SR 무기·AR 방어력). 실계정 대조로 확인(SR 적용 시 -3.43%, AR 적용 시 +0.001%)."
+}
