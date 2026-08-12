@@ -4,14 +4,16 @@
    이 사이트 구조로 옮긴 것이다. 계산 규칙은 그대로 두되 두 가지를 바꿨다.
 
    1. 옵션 수치·등장확률·레벨 확률을 코드에 박지 않고 `data/raw/equip_option.json`
-      과 `equip_glossary.json` 에서 읽는다. 시제품은 크피 12% / 크확 10% 였는데
-      이 사이트는 게임 표기(크피 10% / 크확 12%)를 정본으로 쓴다 (DEVIATIONS §3).
+      과 `equip_glossary.json` 에서 읽는다. 시제품은 크댐 12% / 크확 10% 였는데
+      이 사이트는 게임 표기(크댐 10% / 크확 12%)를 정본으로 쓴다 (DEVIATIONS §3).
    2. 상태를 localStorage 에 남기고, 상태가 바뀌면 패널을 통째로 다시 그린다.
 
    슬롯 등장확률(100/50/30%)과 잠금 비용(모듈 2·3 / 락키 20·30)은 워크북에 없는
    공식 수치라 아래 상수로 둔다.
 
    app.js 와의 결합은 renderNipago(root, ctx) 한 곳뿐. */
+
+import { optionLabel } from './cp.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
@@ -24,19 +26,8 @@ const COST_KEY = [20, 30];
 /* 잠금 추천 기본값이 켜져 있는 옵션 (원본 명세의 기본 목표) */
 const DEFAULT_S3 = ['우코', '공증'];
 
-/* 한국어 약어(데이터의 키)에 대응하는 짧은 영문·일본어 표기.
-   게임 정식 명칭은 슬롯 바·표 헤더에 넣기엔 너무 길다. 한국어 약어가 정식명의
-   앞 글자를 딴 것처럼(우월코드 → 우코) 같은 방식으로 줄였다. */
-const SHORT = {
-  en: {
-    우코: 'Elem.DMG', 공증: 'ATK', 장탄: 'Ammo', 크피: 'Crit.DMG', 크확: 'Crit.Rate',
-    차속: 'Chg.Speed', 명중: 'Hit', 방어: 'DEF', 차뎀: 'Chg.DMG',
-  },
-  ja: {
-    우코: '有利ダメ', 공증: '攻撃', 장탄: '弾数', 크피: 'クリダメ', 크확: 'クリ率',
-    차속: 'チャ速', 명중: '命中', 방어: '防御', 차뎀: 'チャダメ',
-  },
-};
+/* 옛 약어로 저장된 목표(크피·차뎀)를 지금 이름으로 눕힌다 — roster.js 와 같은 표 */
+const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
 
 let ctx = null, D = null, base = './data/', mounted = null;
 let S = null;                       // 저장되는 상태
@@ -53,7 +44,7 @@ const pct = v => (Math.round(v * 1000) / 10).toFixed(1) + '%';
 const val = (o, lv) => (o.vals[lv - 1] * 100).toFixed(2) + '%';
 
 /* 옵션 표시 이름 — 한국어는 데이터의 약어, 그 외에는 그 언어의 줄임말. */
-const optLabel = o => (ctx.lang === 'ko' ? o.id : (SHORT[ctx.lang]?.[o.id] || o.id));
+const optLabel = o => optionLabel(o.id, ctx.lang);
 const optFull = o => o[ctx.lang] || o.en;
 
 /* ── 로드 ─────────────────────────────────────────────────── */
@@ -123,8 +114,10 @@ const save = () => localStorage.setItem(STORE, JSON.stringify(S));
 /* 저장값이 지금 데이터와 안 맞을 수 있으니(옵션 이름 변경 등) 한 번 걸러낸다. */
 function normalize(v) {
   const d = defaults();
+  const fix = id => OPTION_ALIAS[id] || id;
   const slots = [0, 1, 2].map(i => {
-    const s = v.slots?.[i] || {};
+    const s = { ...(v.slots?.[i] || {}) };
+    s.opt = s.opt ? fix(s.opt) : s.opt;
     const ok = s.opt && gO(s.opt);
     return {
       opt: ok ? s.opt : '',
@@ -133,7 +126,8 @@ function normalize(v) {
     };
   });
   const goals = {};
-  for (const [id, g] of Object.entries(v.goals || {})) {
+  for (const [rawId, g] of Object.entries(v.goals || {})) {
+    const id = fix(rawId);
     if (gO(id)) goals[id] = { ...makeGoal(id), ...g };
   }
   return {

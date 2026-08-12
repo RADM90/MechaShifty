@@ -5,8 +5,8 @@
    이 탭을 처음 열 때만 받아온다 — syncro_stat 하나가 500KB라 첫 화면에
    같이 얹지 않는다. */
 
-import { buildTables, compute, K, SLOTS, TIERS } from './cp.js';
-import { renderImport } from './roster.js';
+import { buildTables, compute, optionLabel, gradeLabel, tierLabel, K, SLOTS, TIERS } from './cp.js';
+import { renderImport, OPTION_ALIAS } from './roster.js';
 
 const NEED = ['syncro_stat', 'attraction_stat', 'attraction_grade', 'equip_stat',
   'equip_option', 'cube_stat', 'collection_stat', 'collection_bonus', 'cp_penalty'];
@@ -18,7 +18,6 @@ const ADJ_LEVELS = [40, 400];
 
 let ctx = null, T = null, rules = null, cubes = null, base = './data/';
 let input = null;
-const compare = [];
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -78,9 +77,18 @@ function defaults() {
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE));
-    if (saved && saved.rid && ctx.nikkes.some(n => n.rid === saved.rid)) return saved;
+    if (saved && saved.rid && ctx.nikkes.some(n => n.rid === saved.rid)) return renameOptions(saved);
   } catch { /* 저장값이 깨졌으면 기본값으로 */ }
   return defaults();
+}
+
+/* 옛 약어로 저장된 폼 입력(크피·차뎀)을 지금 이름으로 눕힌다 — 그냥 두면 옵션
+   셀렉트가 값을 못 찾아 조용히 '없음' 으로 떨어진다. roster.js 와 같은 표. */
+function renameOptions(v) {
+  for (const g of v.gear || []) {
+    for (const o of g.options || []) if (OPTION_ALIAS[o.name]) o.name = OPTION_ALIAS[o.name];
+  }
+  return v;
 }
 const save = () => localStorage.setItem(STORE, JSON.stringify(input));
 
@@ -156,7 +164,7 @@ function renderForm(root) {
     number(input.level, T.levels[0], T.levels.at(-1), v => set(() => { input.level = v; })),
     t('cp.levelHint', T.levels.at(-1))));
   row1.appendChild(field(t('cp.grade'),
-    select(T.grades.map(g => ({ value: g.key, label: g.key })), input.grade,
+    select(T.grades.map(g => ({ value: g.key, label: gradeLabel(g.key, t) })), input.grade,
       v => set(() => { input.grade = v; }))));
   row1.appendChild(field(t('cp.bond'),
     number(input.bond, 1, T.bondMax, v => set(() => { input.bond = v; }))));
@@ -211,7 +219,7 @@ function renderForm(root) {
     const box = el('div', 'cp-gear');
     const head = el('div', 'cp-row');
     head.appendChild(field(t('cp.slot'), select(
-      [{ value: '', label: t('cp.none') }, ...TIERS.map(x => ({ value: x, label: x }))],
+      [{ value: '', label: t('cp.none') }, ...TIERS.map(x => ({ value: x, label: tierLabel(x, t) }))],
       g.tier, v => set(() => { g.tier = v; if (!v) g.options = []; })),
       t('cp.slot_' + g.slot)));
     if (g.tier) {
@@ -366,16 +374,17 @@ function renderOverload(n) {
     box.appendChild(el('p', 'cp-note', t('cp.olNone')));
     return box;
   }
-  const list = el('div', 'cp-olList');
+  /* 3행(부위별)과 같은 칩 모양으로 맞춘다. 어느 단계가 몇 개 붙어 나온 합인지는
+     hover 로 — 상시로 펼치면 다섯 줄이 되어 카드가 세로로 길어진다. */
+  const chips = el('div', 'cp-olChips');
   for (const o of totals) {
-    const item = el('div', 'cp-olItem');
-    item.title = t('cp.olExact', pctExact(o.exact));
-    item.appendChild(el('span', 'cp-olName', o.name));
-    item.appendChild(el('span', 'cp-olVal', pct(o.total)));
-    item.appendChild(el('span', 'cp-olParts', o.parts));
-    list.appendChild(item);
+    const chip = el('span', 'cp-olChip is-total');
+    chip.title = `${o.parts} · ${t('cp.olExact', pctExact(o.exact))}`;
+    chip.appendChild(el('span', 'cp-olName', optionLabel(o.name, ctx.lang)));
+    chip.appendChild(el('span', 'cp-olVal', pct(o.total)));
+    chips.appendChild(chip);
   }
-  box.appendChild(list);
+  box.appendChild(chips);
   return box;
 }
 
@@ -403,9 +412,9 @@ function renderOverloadBySlot(n) {
     for (const o of g.options) {
       const raw = T.optionValue.get(`${o.name}|${o.level}`) || 0;
       const chip = el('span', 'cp-olChip');
-      chip.appendChild(el('span', 'cp-olName', o.name));
+      chip.appendChild(el('span', 'cp-olName', optionLabel(o.name, ctx.lang)));
       chip.appendChild(el('span', 'cp-olVal', pctExact(raw)));
-      chip.title = `${o.name} Lv.${o.level}`;
+      chip.title = `${optionLabel(o.name, ctx.lang)} Lv.${o.level}`;
       chips.appendChild(chip);
     }
     line.appendChild(chips);
@@ -423,10 +432,21 @@ function renderDetail(root, n, r) {
   const head = el('div', 'cp-detailHead');
   const who = el('div', 'cp-detailWho');
   const nm = ctx.nameOf(n._nikke);
-  who.appendChild(el('span', 'cp-detailName', nm));
+  const nameEl = el('span', 'cp-detailName', nm);
+  const mark = ctx.overspecMark && ctx.overspecMark(n._nikke.corporation_sub_type);
+  if (mark) nameEl.appendChild(mark);
+  who.appendChild(nameEl);
+  /* 목록에서는 속성·버스트만 아이콘으로 찍으므로, 나머지 축은 여기서 다 보여준다.
+     글자 칩(화력형·SG·SSR…)은 EN/JA 에서 길어져 좁은 오른쪽 단을 밀어낸다. */
   const tags = el('div', 'cp-tags');
-  for (const [axis, code] of [['class', n.class], ['weapon_type', n.weapon], ['rarity', n.rarity]]) {
-    tags.appendChild(el('span', 'cp-tag', ctx.L(axis, code)));
+  const src = n._nikke;
+  const axes = [['rarity', n.rarity], ['corporation', n.corporation], ['element', src.element],
+    ['class', n.class], ['weapon_type', n.weapon], ['burst', src.burst]];
+  for (const [axis, code] of axes) {
+    if (!code) continue;
+    const ic = ctx.iconEl(axis, code);
+    if (ic) { ic.title = ctx.L(axis, code); tags.appendChild(ic); }
+    else tags.appendChild(el('span', 'cp-tag', ctx.L(axis, code)));
   }
   if (n.defWeapon !== n.weapon) {
     tags.appendChild(el('span', 'cp-tag cp-tag-warn', t('cp.defOverride', n.defWeapon)));
@@ -442,9 +462,9 @@ function renderDetail(root, n, r) {
   head.appendChild(edit);
   card.appendChild(head);
 
-  // 1행 — 최종 전투력 3종 (현재 레벨 / Lv.40 / Lv.400)
+  /* 1행 — 최종 전투력 3종 (현재 레벨 / Lv.40 / Lv.400).
+     머리말 없이 숫자 셋만. 셋 다 같은 크기로 두고 현재 레벨만 색으로 구분한다. */
   const row1 = el('div', 'cp-detailRow');
-  row1.appendChild(el('h4', 'cp-rowLbl', t('cp.finalCp')));
   const cps = el('div', 'cp-cpRow');
   const cell = (label, value, big) => {
     const c = el('div', 'cp-cpCell' + (big ? ' is-now' : ''));
@@ -452,8 +472,9 @@ function renderDetail(root, n, r) {
     c.appendChild(el('span', 'cp-cpNum', value));
     return c;
   };
-  cps.appendChild(cell(t('cp.nowLv', r.level), fmt(r.cp), true));
+  cps.appendChild(cell(t('cp.lv', r.level), fmt(r.cp), true));
   for (const lv of ADJ_LEVELS) {
+    if (lv === r.level) continue;      // 현재 레벨이 40·400 이면 같은 값이 두 번 나온다
     const a = compute(T, n, lv);
     cps.appendChild(cell(t('cp.lv', lv), fmt(a ? a.cp : null)));
   }
@@ -520,8 +541,8 @@ function renderResult(root) {
 
   out.appendChild(renderDetail(root, n, r));
 
-  // 스탯 3종
-  const stats = el('div', 'cp-stats');
+  // 스탯 3종 — 카드 하나 안에 세 칸 (라벨 위 / 숫자 아래)
+  const stats = el('div', 'card cp-stats');
   for (const [k, lab] of [['hp', 'HP'], ['atk', t('cp.atk')], ['def', t('cp.def')]]) {
     const c = el('div', 'cp-stat');
     c.appendChild(el('span', 'cp-statLbl', lab));
@@ -554,54 +575,6 @@ function renderResult(root) {
   br.appendChild(el('p', 'cp-note', t('cp.breakHint', r.skillCoef.toFixed(2), r.elemDmg, r.other)));
   out.appendChild(br);
 
-  // 비교
-  const cmp = el('div', 'card cp-card-compare');
-  const ch = el('div', 'cp-cmphead');
-  ch.appendChild(el('h3', null, t('cp.compare')));
-  const addBtn = el('button', 'btn-reset', t('cp.addCompare'));
-  addBtn.type = 'button';
-  addBtn.onclick = () => {
-    compare.push({ name: ctx.nameOf(n._nikke), input: JSON.parse(JSON.stringify(input)) });
-    paint(root);
-  };
-  ch.appendChild(addBtn);
-  cmp.appendChild(ch);
-
-  if (!compare.length) {
-    cmp.appendChild(el('p', 'cp-note', t('cp.compareHint')));
-  } else {
-    const tbl = el('table', 'grid');
-    const h2 = el('thead'), hr = el('tr');
-    hr.appendChild(el('th', null, t('cp.nikke')));
-    hr.appendChild(el('th', 'num', t('cp.cp')));
-    for (const lv of ADJ_LEVELS) hr.appendChild(el('th', 'num', t('cp.lv', lv)));
-    hr.appendChild(el('th'));
-    h2.appendChild(hr); tbl.appendChild(h2);
-    const b2 = el('tbody');
-    compare.forEach((entry, i) => {
-      const saved = input;
-      input = entry.input;
-      const en = resolved();
-      const cells = en
-        ? [compute(T, en), ...ADJ_LEVELS.map(lv => compute(T, en, lv))]
-        : [];
-      input = saved;
-      const tr = el('tr');
-      tr.appendChild(el('td', null, entry.name));
-      for (const c of cells) tr.appendChild(el('td', 'num', fmt(c ? c.cp : null)));
-      const x = el('td');
-      const del = el('button', 'cp-x', '×');
-      del.type = 'button';
-      del.onclick = () => { compare.splice(i, 1); paint(root); };
-      x.appendChild(del);
-      tr.appendChild(x);
-      b2.appendChild(tr);
-    });
-    tbl.appendChild(b2);
-    cmp.appendChild(scrollBox(tbl));
-  }
-  out.appendChild(cmp);
-
   return out;
 }
 
@@ -620,9 +593,10 @@ function importPanel(root) {
   if (!importEl) {
     importEl = el('div', 'cp-importWrap');
     importApi = renderImport(importEl, {
-      t, L: ctx.L, lang: ctx.lang, nameOf: ctx.nameOf, iconEl: ctx.iconEl,
+      t, L: ctx.L, lang: ctx.lang, nameOf: ctx.nameOf,
+      iconEl: ctx.iconEl, overspecMark: ctx.overspecMark, nikkeMatcher: ctx.nikkeMatcher,
       nikkes: ctx.nikkes, byCode: byCode(),
-      bondMax: T.bondMax, levels: ADJ_LEVELS, cpOf, cubes,
+      bondMax: T.bondMax, levels: ADJ_LEVELS, cpOf, cubes, olTotals: overloadTotals,
       research: () => research,
       setResearch: (kind, code, v) => { setResearch(kind, code, v); save(); paint(root); },
       applyResearch: fresh => { applyResearch(fresh); save(); },
@@ -633,7 +607,7 @@ function importPanel(root) {
 }
 
 /* 왼쪽에 계정 카드 -> 니케 목록 -> 입력 폼을 쌓고, 오른쪽은 고른 니케의 결과만.
-   목록이 열 열한 개라 왼쪽을 넓게 잡는다 (비율은 style.css). */
+   목록이 열 열세 개라 왼쪽을 넓게 잡는다 (비율은 style.css). */
 function paint(root) {
   root.textContent = '';
   const wrap = el('div', 'cp-wrap');

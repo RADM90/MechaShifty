@@ -7,8 +7,12 @@
 
    전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
 
-   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐. Shiftypad 연동용으로
-   setProgress() 를 따로 내보낸다. */
+   진행도는 손으로 고를 수도 있지만, 계산기 탭이 불러다 둔 계정 자료
+   (localStorage `cp.roster`)가 있으면 거기서 끌어온다 — 같은 값을 두 번 고르게
+   할 이유가 없다. 계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
+
+   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐. 프로필 응답을 직접 밀어
+   넣는 setProgress() 도 내보내지만, 평소 경로는 위의 끌어오기다. */
 
 const STORE = 'outpost.input';
 
@@ -176,6 +180,7 @@ function defaults() {
     hard: { region: null, seq: null },
     half: false,
     reported: null,
+    from: null,
   };
 }
 
@@ -188,6 +193,44 @@ function load() {
 }
 const save = () => localStorage.setItem(STORE, JSON.stringify(input));
 
+/* ── 불러온 계정에서 진행도 가져오기 ──────────────────────────
+   계산기 탭이 수집한 계정 자료(localStorage 'cp.roster')에 캠페인 진행도가 함께
+   들어 있다. 여기서 끌어 쓴다 — 같은 값을 손으로 또 고르게 할 이유가 없다.
+
+   어느 수집본에서 가져왔는지를 input.from 에 남긴다. 그래서
+     · 같은 수집본이면 두 번 덮어쓰지 않는다 (사용자가 고친 값을 지키려고)
+     · 새로 수집하면 덮어쓴다 (계정 쪽이 언제나 더 최신이라)
+   손으로 스테이지를 바꾸면 from 이 지워져(modeRow 의 set) 다음 수집 전까지 유지된다. */
+const ROSTER_STORE = 'cp.roster';
+
+function accountData() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(ROSTER_STORE));
+    return (raw && raw.account) ? { ...raw.account, _stamp: String(raw.generated_at || '') } : null;
+  } catch { return null; }
+}
+
+function accountProgress() {
+  const acc = accountData();
+  if (!acc || !(acc.progress_normal_campaign || acc.progress_hard_campaign)) return null;
+  return { acc, stamp: acc._stamp };
+}
+
+function seedFromAccount() {
+  const found = accountProgress();
+  if (!found || input.from === found.stamp) return false;
+  const { acc, stamp } = found;
+  input = normalize({
+    normal: decodeProgress(acc.progress_normal_campaign),
+    hard: decodeProgress(acc.progress_hard_campaign),
+    half: input ? input.half : false,
+  });
+  input.reported = Number(acc.outpost_battle_level) || null;
+  input.from = stamp;
+  save();
+  return true;
+}
+
 /* 저장값·외부 입력이 현재 스테이지 표와 안 맞을 수 있으니 한 번 걸러낸다. */
 function normalize(v) {
   const fix = sel => {
@@ -199,7 +242,8 @@ function normalize(v) {
   return {
     normal: fix(v.normal), hard: fix(v.hard),
     half: !!v.half,                          // 구간표 0.5 단위 토글
-    reported: Number(v.reported) || null,    // Shiftypad 가 알려준 레벨 (대조용)
+    reported: Number(v.reported) || null,    // 게임이 알려준 레벨 (대조용)
+    from: v.from || null,                    // 이 값을 채운 수집본 (generated_at)
   };
 }
 
@@ -216,13 +260,15 @@ export function decodeProgress(code) {
   return { region: `지역${Math.floor(n / 1000) % 1000}`, seq: n % 1000 };
 }
 
-/* 유저스크립트에서 프로필을 받아오면 이걸 부르면 된다.
+/* 프로필 응답을 그대로 밀어 넣는 경로. 평소에는 쓰이지 않는다 — 수집한 계정 자료는
+   localStorage 에 남아 있어서 탭에 들어올 때 seedFromAccount() 가 알아서 끌어온다.
    outpost_battle_level 을 같이 넘기면 계산값과 대조해 어긋날 때 경고를 띄운다. */
 export function setProgress(p = {}) {
   if (!D) return false;
   input = normalize({
     normal: decodeProgress(p.progress_normal_campaign),
     hard: decodeProgress(p.progress_hard_campaign),
+    half: input ? input.half : false,
   });
   input.reported = Number(p.outpost_battle_level) || null;
   save();
@@ -252,7 +298,8 @@ function field(labelText, control) {
 
 function modeRow(mode, root) {
   const sel = input[mode];
-  const set = fn => { fn(); input.reported = null; save(); paint(root); };
+  /* 손으로 고르면 계정에서 온 값이 아니게 된다 — 대조용 레벨과 출처를 함께 지운다 */
+  const set = fn => { fn(); input.reported = null; input.from = null; save(); paint(root); };
 
   const row = el('div', 'op-row');
   const regions = [{ value: '', label: t('op.notCleared') },
@@ -276,6 +323,8 @@ function renderForm(root) {
   const g = el('div', 'op-group');
   g.appendChild(el('h3', null, t('op.progress')));
   g.appendChild(el('p', 'op-note', t('op.progressHint')));
+  // 값이 어디서 왔는지 보이게 — 손으로 고른 것과 계정에서 온 것을 구분한다
+  if (input.from) g.appendChild(el('p', 'op-note op-fromAcct', t('op.fromAccount')));
   for (const mode of ['normal', 'hard']) {
     const box = el('div', 'op-mode');
     box.appendChild(el('div', 'op-modeLbl', t('op.' + mode)));
@@ -295,7 +344,122 @@ function renderForm(root) {
   info.appendChild(el('p', 'op-note', t('op.shifty')));
   form.appendChild(info);
 
+  form.appendChild(renderTower());
   return form;
+}
+
+/* ── 기업 타워 ────────────────────────────────────────────────
+   타워는 요일마다 열리는 것이 정해져 있고(아래 TOWERS), 한 번 열리면 세 층까지
+   오른다. '한 번도 막히지 않고 매번 올랐다면' 계정 생성일부터 오늘까지 그 타워가
+   열린 횟수 × 3 이 도달 가능한 최대 층이다. 실제 도달 층이 아니라 상한선이다.
+
+   보상은 층수로 끊긴다 — 5층마다 기업 몰드 5개, 10층마다 퍼펙트 몰드 5개.
+   몰드는 50개를 모아야 한 번 열 수 있어서, 한 번 열 만큼 모으는 데 드는
+   등반 회차와 주 수를 같이 낸다 (몰드 50개 = 50층 = 17회, 퍼펙트 = 100층 = 34회).
+
+   요일은 브라우저 시간 기준이다. 어차피 '막힘 없이' 라는 가정 위의 상한선이라
+   서버 리셋 시각까지 맞출 필요는 없다. */
+const TOWER_FLOORS = 3;        // 한 번 열릴 때 오를 수 있는 층
+const MOLD_STEP = 5;           // 기업 몰드 지급 간격(층)
+const PERFECT_STEP = 10;       // 퍼펙트 몰드 지급 간격(층)
+const MOLD_PER_STEP = 5;       // 한 번에 주는 개수
+const MOLD_UNIT = 50;          // 열 수 있는 최소 단위
+
+/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나다. */
+const TOWERS = [
+  { key: 'ELYSION', days: [0, 2, 5] },
+  { key: 'MISSILIS', days: [0, 3, 6] },
+  { key: 'TETRA', days: [0, 1, 4] },
+  { key: 'PILGRIM', days: [0, 3], label: 'op.towerPilgrim' },
+];
+
+/* 두 날짜(자정 기준) 사이에 요일 d 가 몇 번 오는지 — 양 끝을 포함한다 */
+function weekdayCount(from, to, d) {
+  const span = Math.floor((to - from) / 86400000);
+  if (span < 0) return 0;
+  const first = (d - from.getDay() + 7) % 7;
+  return first > span ? 0 : Math.floor((span - first) / 7) + 1;
+}
+
+/* 몰드 n 개를 모으는 데 드는 등반 회차와 주 수. 회차는 올림(반 번 오를 수 없다),
+   주 수는 소수점 둘째 자리에서 올려 한 자리로 (8.24 -> 8.3). */
+function moldRun(stepFloors, perWeek) {
+  const floors = (MOLD_UNIT / MOLD_PER_STEP) * stepFloors;
+  const runs = Math.ceil(floors / TOWER_FLOORS);
+  return { runs, weeks: Math.ceil((runs / perWeek) * 10) / 10 };
+}
+
+function renderTower() {
+  const g = el('div', 'op-group');
+  g.appendChild(el('h3', null, t('op.tower')));
+
+  const acc = accountData();
+  const created = acc && acc.created_at ? new Date(acc.created_at * 1000) : null;
+  if (!created) {
+    g.appendChild(el('p', 'op-note', t('op.towerNeedAcct')));
+    return g;
+  }
+
+  /* 계정 생성 — 날짜만으로는 '오늘 만든 계정'과 구분이 안 돼 시각까지 적는다 */
+  const pad = n => String(n).padStart(2, '0');
+  const stamp = `${created.getFullYear()}-${pad(created.getMonth() + 1)}-${pad(created.getDate())}`
+    + ` ${pad(created.getHours())}:${pad(created.getMinutes())}`;
+  const from = new Date(created); from.setHours(0, 0, 0, 0);
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const days = Math.max(0, Math.floor((today - from) / 86400000)) + 1;
+
+  const head = el('p', 'op-note op-created');
+  head.appendChild(el('span', 'op-createdLbl', t('op.created')));
+  head.appendChild(el('span', 'op-createdVal', stamp));
+  head.appendChild(el('span', 'op-createdSub', t('op.sinceDays', days)));
+  g.appendChild(head);
+  g.appendChild(el('p', 'op-note', t('op.towerHint', TOWER_FLOORS)));
+
+  const tbl = el('table', 'grid op-towerTbl');
+  const thead = el('thead'), hr = el('tr');
+  for (const [key, cls] of [['op.towerCol', ''], ['op.towerFloor', 'num'],
+    ['op.towerMold', 'num'], ['op.towerPerfect', 'num']]) {
+    hr.appendChild(el('th', cls, t(key)));
+  }
+  thead.appendChild(hr);
+  tbl.appendChild(thead);
+
+  const tb = el('tbody');
+  for (const tw of TOWERS) {
+    const opens = tw.days.reduce((a, d) => a + weekdayCount(from, today, d), 0);
+    const floors = opens * TOWER_FLOORS;
+    const mold = moldRun(MOLD_STEP, tw.days.length);
+    const perfect = moldRun(PERFECT_STEP, tw.days.length);
+    const name = tw.label ? t(tw.label) : ctx.L('corporation', tw.key);
+
+    const tr = el('tr');
+    const nameTd = el('td', 'op-towerName');
+    const ic = ctx.iconEl && ctx.iconEl('corporation', tw.key);
+    if (ic) nameTd.appendChild(ic);
+    nameTd.appendChild(el('span', null, name));
+    nameTd.title = `${name} — ${t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'))}`;
+    tr.appendChild(nameTd);
+
+    const fl = el('td', 'num', t('op.floorN', floors));
+    // 지금까지 쌓인 몰드 개수는 상시로 보여줄 만큼 중요하진 않아 hover 로
+    fl.title = t('op.towerHave', opens,
+      Math.floor(floors / MOLD_STEP) * MOLD_PER_STEP,
+      Math.floor(floors / PERFECT_STEP) * MOLD_PER_STEP);
+    tr.appendChild(fl);
+
+    for (const m of [mold, perfect]) {
+      const td = el('td', 'num');
+      td.appendChild(el('span', 'op-runs', t('op.runN', m.runs)));
+      td.appendChild(el('span', 'op-weeks', t('op.weekN', m.weeks.toFixed(1))));
+      tr.appendChild(td);
+    }
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+  g.appendChild(tbl);
+  g.appendChild(el('p', 'op-note op-towerFoot', t('op.towerMoldNote', MOLD_STEP, MOLD_PER_STEP,
+    PERFECT_STEP, MOLD_PER_STEP, MOLD_UNIT)));
+  return g;
 }
 
 /* ── 결과 ─────────────────────────────────────────────────── */
@@ -528,5 +692,6 @@ export async function renderOutpost(root, context) {
     }
     input = load();
   }
+  seedFromAccount();          // 새로 수집한 계정 자료가 있으면 진행도를 끌어온다
   paint(root);
 }

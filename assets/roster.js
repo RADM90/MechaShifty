@@ -5,11 +5,13 @@
    계산기 입력 형태로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
 
    받는 경로는 셋인데 전부 사용자가 직접 시작한다:
-     1) JSON 파일 열기      2) 붙여넣기      3) 수집 스크립트가 연 탭에서 postMessage
+     1) JSON 열기      2) 붙여넣기      3) 수집 스크립트가 연 탭에서 postMessage
 
    3번은 출처(origin)를 확인한다. 계정 데이터라 아무 창이나 밀어 넣을 수 있으면 안 된다.
    반대로 우리가 보내는 준비 신호도 대상 origin 을 명시해서, blablalink 가 아닌 창에는
    애초에 배달되지 않게 한다. */
+
+import { optionLabel, gradeLabel, tierLabel } from './cp.js';
 
 const STORE = 'cp.roster';
 const SCHEMA = 'mechashifty.roster/2';
@@ -20,7 +22,11 @@ const MAX_NIKKES = 600;
 const SLOTS = ['머리', '몸', '팔', '다리'];
 const GRADE = /^(?:[0-3]돌|[1-7]코강)$/;
 const TIERS = ['', '9티어_기업', '오버로드'];
-const OPTIONS = ['우코', '공증', '장탄', '크피', '크확', '차속', '명중', '방어', '차뎀'];
+const OPTIONS = ['우코', '공증', '장탄', '크댐', '크확', '차속', '명중', '방어', '차댐'];
+/* 옛 약어 → 지금 약어. 이 이름은 `equip_option.json` 의 열 라벨이자 수집 스크립트가
+   내보내는 값이라 데이터의 키다. 이미 받아 둔 JSON·localStorage 를 버리지 않도록
+   읽을 때 한 번 눕힌다 ('데미지' 표기를 '대미지' 로 통일하면서 바뀌었다). */
+export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
 /* 목록에 아이콘으로 찍는 축. 여섯 개를 다 넣으면 11px 로 줄여야 해서 아무것도
    안 보인다. 속성·버스트만 남기고 나머지는 필터 칩과 상세 카드에 맡긴다. */
 const AXES = ['element', 'burst'];
@@ -36,6 +42,15 @@ const int = (v, lo, hi, dflt) => {
   return Number.isFinite(n) && n >= lo && n <= hi ? n : dflt;
 };
 const fmt = v => (v == null ? '—' : Math.round(v).toLocaleString());
+/* 전투력 세 열은 자릿수가 여섯이라 표를 밀어낸다. 유효숫자 세 자리 + k 로 줄이고
+   정확한 값은 hover 로 넘긴다 (447,440 -> 447k · 57,759 -> 57.8k). */
+function kfmt(v) {
+  if (v == null) return '–';
+  const n = Math.round(v);
+  if (n < 1000) return String(n);
+  const k = n / 1000;
+  return (k < 100 ? k.toFixed(1) : String(Math.round(k))) + 'k';
+}
 
 /* ── 검증 ─────────────────────────────────────────────────────
    바깥에서 들어온 JSON 이라 형태를 믿지 않는다. 모르는 값은 버리고 기본값으로
@@ -55,6 +70,11 @@ export function parseRoster(raw) {
       synchro_level: int(acc.synchro_level, 1, 1200, null),
       // Unix 초. 니케 서비스 개시 이전이거나 미래면 버린다.
       created_at: int(acc.created_at, 1667000000, Math.floor(Date.now() / 1000) + 86400, null),
+      /* 캠페인 진행도 — [모드1][지역3][순번3] 7자리 정수. 전초기지 탭이 해독한다
+         (outpost.js decodeProgress). 옛 수집본에는 없어서 null 이 정상값이다. */
+      progress_normal_campaign: int(acc.progress_normal_campaign, 1, 9999999, null),
+      progress_hard_campaign: int(acc.progress_hard_campaign, 1, 9999999, null),
+      outpost_battle_level: int(acc.outpost_battle_level, 1, 9999, null),
     },
     research: {
       common: int(res.common, 0, 999, 0),
@@ -110,6 +130,7 @@ function cleanGear(gear) {
 
 function cleanOptions(options) {
   return (Array.isArray(options) ? options : [])
+    .map(o => (o && OPTION_ALIAS[o.name] ? { ...o, name: OPTION_ALIAS[o.name] } : o))
     .filter(o => o && OPTIONS.includes(o.name) && int(o.level, 1, 15, 0))
     .slice(0, 3)
     .map(o => ({ name: o.name, level: int(o.level, 1, 15, 1) }));
@@ -228,8 +249,9 @@ export function renderImport(root, ctx) {
       facts.appendChild(f);
     };
     if (data) {
+      /* 계정 생성 시각은 여기서 뺐다 — 이 탭에서는 아무 계산에도 안 쓰이고,
+         전초기지 탭의 타워 카드가 그 값으로 등반 가능 층을 낸다. */
       add(t('im.synchro'), data.account.synchro_level || '—');
-      add(t('im.created'), day(data.account.created_at));
       add(t('im.collected'), data.generated_at ? data.generated_at.slice(0, 10) : '—');
     } else {
       facts.appendChild(el('span', 'cp-acctEmpty', t('im.desc')));
@@ -245,7 +267,6 @@ export function renderImport(root, ctx) {
     return box;
   }
 
-  const day = unix => (unix ? new Date(unix * 1000).toISOString().slice(0, 10) : '—');
 
   /* 콘솔(리사이클 룸) 아홉 칸. 값은 계산기가 계정 단위로 들고 있고 여기서는
      읽고 쓰기만 한다. 테두리 없는 입력이라 눈으로는 숫자 줄로 보인다. */
@@ -279,7 +300,9 @@ export function renderImport(root, ctx) {
       }
       return g;
     };
-    wrap.appendChild(group(t('cp.consoleShort'), [
+    /* '콘솔' 이라는 머리말은 달지 않는다 — 첫 칸이 이미 '공용' 이라 줄의 뜻이
+       읽히고, 머리말이 있으면 아홉 칸이 오른쪽으로 밀려 숫자 줄이 어긋난다. */
+    wrap.appendChild(group(null, [
       ['common', null, null,
         () => ctx.research().common, v => ctx.setResearch('common', null, v)],
     ]));
@@ -347,6 +370,7 @@ export function renderImport(root, ctx) {
     if (data) {
       const clear = el('button', 'btn-reset', t('im.clear'));
       clear.type = 'button';
+      clear.title = t('im.clearTitle');
       clear.onclick = () => { drop(); data = null; status = null; paint(); };
       btns.appendChild(clear);
     }
@@ -386,10 +410,24 @@ export function renderImport(root, ctx) {
     return { out, owned: owned.size, unknown };
   }
 
+  /* 검색은 니케 리스트 탭과 같은 함수를 쓴다 — 이름은 초성('ㄹㅍ')·띄어쓰기 무시,
+     별명·스쿼드는 부분 일치. 검색어가 바뀔 때만 매처를 새로 만든다. */
+  let hits = null, hitsFor = null;
+  function matcher() {
+    if (hitsFor !== filter) {
+      hitsFor = filter;
+      const q = filter.trim().toLowerCase();
+      hits = !q ? null
+        : (ctx.nikkeMatcher && ctx.nikkeMatcher(filter))
+          || (n => [n.name.ko, n.name.en, n.name.ja].some(v => v && v.toLowerCase().includes(q)));
+    }
+    return hits;
+  }
+
   /* 검색어 + 아이콘 칩. 같은 축 안은 OR, 축끼리는 AND — 니케 리스트 탭과 같은 규칙. */
   function keep(r) {
-    const needle = filter.trim().toLowerCase();
-    if (needle && !r.name.toLowerCase().includes(needle)) return false;
+    const m = matcher();
+    if (m && !m(r.nikke)) return false;
     for (const [axis, picked] of Object.entries(sel)) {
       if (picked.size && !picked.has(r.nikke[axis])) return false;
     }
@@ -426,6 +464,13 @@ export function renderImport(root, ctx) {
     return bar;
   }
 
+  /* data/cubes.json 은 큐브마다 ko/en 을 들고 있다. 일본어 정식 명칭은 확인되지
+     않아 en 으로 떨어뜨린다 — 일본어 화면에 한국어 이름을 남기는 것보다 낫다. */
+  function cubeInfo(tid) {
+    const c = tid && ctx.cubes ? ctx.cubes[tid] : null;
+    return c ? (c[ctx.lang] || c.en || c.ko) : null;
+  }
+
   /* 큐브는 아이콘이 없어서 셀렉트. 실제로 장착된 것만 추린다. */
   function cubeSelect() {
     const seen = new Map();
@@ -433,7 +478,7 @@ export function renderImport(root, ctx) {
     for (const e of data ? data.nikkes : []) {
       if (!e.cube.level) { none = true; continue; }
       const tid = String(e.cube.tid || 0);
-      if (!seen.has(tid)) seen.set(tid, (ctx.cubes && ctx.cubes[tid]) ? ctx.cubes[tid].short : '#' + tid);
+      if (!seen.has(tid)) seen.set(tid, cubeInfo(tid)?.short || '#' + tid);
     }
     const s = el('select', 'cp-cubeSel');
     const opt = (value, label) => {
@@ -455,8 +500,7 @@ export function renderImport(root, ctx) {
   function icons(n) {
     const box = el('div', 'cp-rIcons');
     for (const axis of AXES) {
-      const ic = ctx.iconEl(axis, n[axis],
-        axis === 'corporation' ? { overspec: n.corporation_sub_type === 'OVERSPEC' } : {});
+      const ic = ctx.iconEl(axis, n[axis]);
       if (ic) box.appendChild(ic);
     }
     return box;
@@ -471,9 +515,10 @@ export function renderImport(root, ctx) {
       const g = gear.find(x => x.slot === slot) || {};
       const cell = el('span', 'cp-gearCell' + (TIER_CLS[g.tier] || ''),
         g.tier ? String(g.enhance) : '·');
-      cell.title = `${slot} — ${g.tier || t('cp.none')}`
+      // 부위·옵션 이름은 데이터 키가 한국어라, 보여줄 때는 화면 언어로 옮긴다
+      cell.title = `${t('cp.slot_' + slot)} — ${g.tier ? tierLabel(g.tier, t) : t('cp.none')}`
         + (g.options && g.options.length
-          ? ' · ' + g.options.map(o => `${o.name} Lv.${o.level}`).join(', ') : '');
+          ? ' · ' + g.options.map(o => `${optionLabel(o.name, ctx.lang)} Lv.${o.level}`).join(', ') : '');
       box.appendChild(cell);
     }
     return box;
@@ -484,7 +529,8 @@ export function renderImport(root, ctx) {
      않도록 hover 에 원래 표기(3돌·5코강·SR15…)를 그대로 붙인다. */
   function badge(cls, text, title) {
     const b = el('span', 'cp-badge ' + cls);
-    b.appendChild(el('b', null, text));
+    // 두 자리(소장품 15 · 호감도 20…)는 도형 폭을 넘겨서 한 단계 작게 쓴다
+    b.appendChild(el('b', text.length > 1 ? 'is-2' : null, text));
     b.title = title;
     return b;
   }
@@ -496,8 +542,9 @@ export function renderImport(root, ctx) {
     const td = el('td', 'cp-rBadge');
     const core = /^([1-7])코강$/.exec(grade);
     const brk = /^([0-3])돌$/.exec(grade);
-    if (core) td.appendChild(badge('is-round is-core', core[1], grade));
-    else if (brk) td.appendChild(badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], grade));
+    const label = gradeLabel(grade, t);      // 데이터 키('3돌')를 화면 언어로
+    if (core) td.appendChild(badge('is-round is-core', core[1], label));
+    else if (brk) td.appendChild(badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], label));
     else td.textContent = grade;
     return td;
   }
@@ -508,7 +555,8 @@ export function renderImport(root, ctx) {
     const td = el('td', 'cp-rBadge');
     if (!c || c.kind === 'none') { td.textContent = '–'; return td; }
     const lv = parseInt(c.level, 10) || 0;
-    const title = c.kind === '애장품' ? `${c.kind} ${lv}${t('im.step')}` : `${c.kind}${lv}`;
+    const title = c.kind === '애장품'
+      ? `${t('cp.favorite')} ${lv}${t('im.step')}` : `${c.kind}${lv}`;
     td.appendChild(badge('is-round ' + COLL_CLS[c.kind], String(lv), title));
     return td;
   }
@@ -520,15 +568,40 @@ export function renderImport(root, ctx) {
     return td;
   }
 
-  /* 하모니 큐브. 종류는 data/cubes.json 의 tid 표로 옮기고, 정식 명칭과 효과는
-     hover 로 넘긴다. 전투력에는 레벨만 들어가서 종류는 표시 전용이다. */
+  /* 우공합 — 오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력).
+     이 둘이 실전 화력을 가르는 옵션이라 목록에서 한 숫자로 보고 싶다. 종합값은
+     계산기 상세 카드와 같은 규칙으로 뽑아야 하므로(같은 단계는 합산 후 반올림)
+     집계 함수를 calc.js 에서 그대로 받아 쓴다 — 여기서 다시 짜면 두 화면이 어긋난다. */
+  const OL_ATK = ['우코', '공증'];
+  function olAtkCell(gear) {
+    const td = el('td', 'num cp-rOlAtk');
+    const picked = (ctx.olTotals ? ctx.olTotals(gear) : []).filter(o => OL_ATK.includes(o.name));
+    if (!picked.length) { td.textContent = '–'; return td; }
+    const pc = o => Math.round(o.total * 100);
+    td.textContent = picked.reduce((a, o) => a + pc(o), 0) + '%';
+    td.title = picked.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o)}%`).join(' + ');
+    return td;
+  }
+
+  const cpCell = (v, cls) => {
+    const td = el('td', cls, kfmt(v));
+    if (v != null) td.title = fmt(v);          // 줄인 표기라 정확한 값은 hover 로
+    return td;
+  };
+
+  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨. 종류 이름과 효과는
+     data/cubes.json 에서 가져와 hover 로 넘긴다 — 이름을 글자로 쓰면 이 열 하나가
+     표 전체를 밀어낸다. 전투력에는 레벨만 들어가서 종류는 표시 전용이다. */
   function cubeCell(cube) {
-    const info = cube.tid && ctx.cubes ? ctx.cubes[cube.tid] : null;
-    if (!cube.level) return el('td', 'cp-rCube', '—');
+    const info = cubeInfo(cube.tid);
+    if (!cube.level) return el('td', 'cp-rCube', '–');
     const td = el('td', 'cp-rCube');
-    if (info) td.appendChild(el('span', 'cp-cubeName', info.short));
+    const ic = cube.tid && ctx.iconEl('cube', cube.tid);
+    if (ic) td.appendChild(ic);
+    else if (info) td.appendChild(el('span', 'cp-cubeName', info.short));
     td.appendChild(el('span', 'cp-cubeLv', String(cube.level)));
-    td.title = info ? `${info.name} — ${info.effect}` : (cube.tid ? '#' + cube.tid : '');
+    td.title = info ? `${info.short} · ${info.name} — ${info.effect}`
+      : (cube.tid ? '#' + cube.tid : '');
     return td;
   }
 
@@ -540,19 +613,22 @@ export function renderImport(root, ctx) {
     const q = el('input');
     q.type = 'search';
     q.placeholder = t('im.filter');
+    q.title = t('ui.search');        // 칸이 좁아 초성·별명이 된다는 안내는 hover 로
     q.value = filter;
     q.oninput = () => { filter = q.value; redrawRows(); };
     bar.append(q, chips(), cubeSelect());
     box.appendChild(bar);
 
-    /* 전투력 세 개를 이름 바로 뒤에 붙인다 — 이 표를 보는 이유가 그거다.
-       나머지(돌파·스킬·장비·큐브·호감도)는 뒤로 민다. */
+    /* 왼쪽은 '무엇을 얼마나 키웠나'(돌파·소장품·호감도·스킬·장비·큐브·우공합),
+       오른쪽은 '그래서 전투력이 얼마인가'(레벨·현재·Lv.40·Lv.400). 키운 것들을
+       훑다가 오른쪽 끝에서 결과를 읽는 순서다. */
     const cols = [
       [t('im.colNikke'), ''], [t('im.colBasic'), ''],
+      [t('im.colGrade'), ''], [t('im.colColl'), ''], [t('im.colBond'), ''],
+      [t('im.colSkills'), ''], [t('im.colGear'), ''], [t('im.colCube'), 'num'],
+      [t('im.colOlAtk'), 'num'],
       [t('im.colLevel'), 'num'], [t('cp.cp'), 'num'],
       ...ctx.levels.map(lv => [t('cp.lv', lv), 'num']),
-      [t('im.colGrade'), ''], [t('im.colSkills'), ''], [t('im.colGear'), ''],
-      [t('im.colCube'), 'num'], [t('im.colColl'), ''], [t('im.colBond'), ''],
     ];
     const tbl = el('table', 'grid cp-rosterTable');
     const thead = el('thead'), hr = el('tr');
@@ -561,6 +637,7 @@ export function renderImport(root, ctx) {
       // 2×2 장비 칸 읽는 법은 상시 노출할 내용이 아니라 열 머리 hover 로만
       if (label === t('im.colGear')) th.title = t('im.gearNote');
       if (label === t('im.colColl')) th.title = t('cp.collection');
+      if (label === t('im.colOlAtk')) th.title = t('im.colOlAtkNote');
       hr.appendChild(th);
     }
     thead.appendChild(hr);
@@ -588,8 +665,15 @@ export function renderImport(root, ctx) {
           };
         }
 
-        const name = el('td', 'cp-rName', r.name);
-        name.title = r.name;          // 긴 이름은 잘리므로 hover 로 전체를 본다
+        /* 이름은 열 폭에 맞춰 잘리지만(hover 로 전체), 오버스펙 도장은 그 바깥에
+           두어 이름이 길어도 잘려 나가지 않게 한다. */
+        const name = el('td', 'cp-rName');
+        name.title = r.name;
+        const nameBox = el('span', 'cp-rNameBox');
+        nameBox.appendChild(el('span', 'cp-rNameTxt', r.name));
+        const mark = ctx.overspecMark && ctx.overspecMark(r.nikke.corporation_sub_type);
+        if (mark) nameBox.appendChild(mark);
+        name.appendChild(nameBox);
         tr.appendChild(name);
         tr.appendChild(el('td')).appendChild(icons(r.nikke));
 
@@ -600,15 +684,16 @@ export function renderImport(root, ctx) {
           continue;
         }
         const sk = r.entry.skills;
-        tr.appendChild(el('td', 'num', String(r.entry.level)));
-        tr.appendChild(el('td', 'num cp-rCp', fmt(r.cp)));
-        for (const a of r.adj) tr.appendChild(el('td', 'num', a ? fmt(a.cp) : '–'));
         tr.appendChild(gradeCell(r.entry.grade));
+        tr.appendChild(collCell(r.entry.collection));
+        tr.appendChild(bondCell(r.entry.bond));
         tr.appendChild(el('td', 'cp-rSkill', `${sk.s1}/${sk.s2}/${sk.burst}`));
         tr.appendChild(el('td')).appendChild(gearGrid(r.entry.gear));
         tr.appendChild(cubeCell(r.entry.cube));
-        tr.appendChild(collCell(r.entry.collection));
-        tr.appendChild(bondCell(r.entry.bond));
+        tr.appendChild(olAtkCell(r.entry.gear));
+        tr.appendChild(el('td', 'num', String(r.entry.level)));
+        tr.appendChild(cpCell(r.cp, 'num cp-rCp'));
+        for (const a of r.adj) tr.appendChild(cpCell(a ? a.cp : null, 'num'));
         tb.appendChild(tr);
       }
       if (!shown.length) {

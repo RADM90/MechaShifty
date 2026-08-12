@@ -235,7 +235,7 @@
   "element": "Wind",
   "class": "Defender",
   "availability": "standard",
-  "tag": null
+  "tag": "bunny"
  },
  {
   "no": 18,
@@ -249,7 +249,7 @@
   "element": "Wind",
   "class": "Attacker",
   "availability": "standard",
-  "tag": null
+  "tag": "bunny"
  },
  {
   "no": 19,
@@ -2106,11 +2106,11 @@
   "rerun_of": null,
   "rid": null,
   "name_ko": "퀸(니지마 마코토)",
-  "corporation": null,
+  "corporation": "ABNORMAL",
   "corporation_sub_type": null,
-  "element": null,
-  "class": null,
-  "availability": null,
+  "element": "Fire",
+  "class": "Attacker",
+  "availability": "limited",
   "tag": "collab"
  },
  {
@@ -2120,11 +2120,11 @@
   "rerun_of": null,
   "rid": null,
   "name_ko": "아마기 유키코",
-  "corporation": null,
+  "corporation": "ABNORMAL",
   "corporation_sub_type": null,
-  "element": null,
-  "class": null,
-  "availability": null,
+  "element": "Fire",
+  "class": "Attacker",
+  "availability": "limited",
   "tag": "collab"
  }
 ]

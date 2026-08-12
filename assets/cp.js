@@ -22,13 +22,41 @@ export const K = {
   CUBE_LOW: 1, CUBE_HIGH: 4,             // 큐브 Lv<5 / Lv>=5 가산
 };
 
-/* Increase Elemental Damage(우월코드 데미지 증가) 만 계수가 다르다.
-   나머지 8종(명중·장탄·공격력·차지데미지·차지속도·크리확률·크리피해·방어력)은
+/* Increase Elemental Damage(우월코드 대미지 증가) 만 계수가 다르다.
+   나머지 8종(명중·장탄·공격력·차지대미지·차지속도·크리확률·크리대미지·방어력)은
    전부 0.0069. 데이터 쪽 값은 시트 표기인 '우코' 그대로 쓴다.
    blablalink 옵션 id 에서는 코드 05. */
 export const ELEM_DAMAGE = '우코';
 export const SLOTS = ['머리', '몸', '팔', '다리'];
 export const TIERS = ['9티어_기업', '오버로드'];
+
+/* 오버로드 옵션 이름의 다른 언어 표기.
+   데이터의 키는 언제나 한국어 약어(`equip_option.json` 의 열 라벨)이고, 게임 정식
+   명칭은 칩·표 머리에 넣기엔 너무 길다("Increase Elemental Damage"). 한국어 약어가
+   정식명의 앞 글자를 딴 것처럼(우월코드 → 우코) 같은 방식으로 줄인 표기를 둔다.
+   niparago·계산기·목록이 이 표 하나를 함께 쓴다 — 화면마다 다르게 부르면 안 된다. */
+const OPTION_SHORT = {
+  en: {
+    우코: 'Elem.DMG', 공증: 'ATK', 장탄: 'Ammo', 크댐: 'Crit.DMG', 크확: 'Crit.Rate',
+    차속: 'Chg.Speed', 명중: 'Hit', 방어: 'DEF', 차댐: 'Chg.DMG',
+  },
+  ja: {
+    우코: '有利ダメ', 공증: '攻撃', 장탄: '弾数', 크댐: 'クリダメ', 크확: 'クリ率',
+    차속: 'チャ速', 명중: '命中', 방어: '防御', 차댐: 'チャダメ',
+  },
+};
+export const optionLabel = (name, lang) => (OPTION_SHORT[lang] || {})[name] || name;
+
+/* 돌파·코강 등급과 장비 등급도 데이터 키가 한국어 문자열이다('3돌'·'오버로드').
+   키 자체는 원본 표에서 오는 값이라 못 바꾸니, 화면에 낼 때만 라벨로 옮긴다.
+   i18n 표는 app.js 에 있으므로 t 를 받아 쓴다 (이 모듈은 DOM 도 STR 도 모른다). */
+export function gradeLabel(key, t) {
+  const core = /^([1-7])코강$/.exec(key);
+  if (core) return t('cp.core', core[1]);
+  const brk = /^([0-3])돌$/.exec(key);
+  return brk ? t('cp.break', brk[1]) : key;
+}
+export const tierLabel = (key, t) => (key ? t('cp.tier_' + key) : '');
 
 /* ── 원본 표 -> 조회용 인덱스 ────────────────────────────────
    data/raw/*.json 은 {columns, rows} 배열 형태라 그대로 쓰면 매번 컬럼을

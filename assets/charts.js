@@ -224,7 +224,7 @@ function columnChart(points, fmtTip) {
 
 /* ── 통계 렌더 ────────────────────────────────────────────── */
 export function renderStats(root, nikkes, pickups, ctx) {
-  const { L, AXES, ELEMENT_COLOR, statusOf, axisLabel } = ctx;
+  const { L, AXES, ELEMENT_COLOR, axisLabel } = ctx;
   makeIcon = ctx.iconEl || null;
   t = ctx.t;
   root.textContent = '';
@@ -273,9 +273,11 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
 
-  /* 2. 교차표 */
+  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. 예전에는 한 줄을 통째로
+     썼는데(`wide`), 5×3 · 5×5 짜리 표라 남는 자리가 표보다 넓었다. */
   {
-    const c = card(t('st.cross', axisLabel('element'), axisLabel('class')), t('st.crossHint'), true);
+    const c = card(t('st.cross', axisLabel('element'), axisLabel('class')), t('st.crossHint'));
+    c.classList.add('card-cross');
     c.appendChild(heatmap(
       AXES.element.order, AXES.class.order,
       (r, col) => nikkes.filter(n => n.element === r && n.class === col).length,
@@ -284,7 +286,8 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
   {
-    const c = card(t('st.cross', axisLabel('corporation'), axisLabel('weapon_type')), t('st.crossHint'), true);
+    const c = card(t('st.cross', axisLabel('corporation'), axisLabel('weapon_type')), t('st.crossHint'));
+    c.classList.add('card-cross');
     c.appendChild(heatmap(
       AXES.corporation.order, AXES.weapon_type.order,
       (r, col) => nikkes.filter(n => n.corporation === r && n.weapon_type === col).length,
@@ -345,17 +348,8 @@ export function renderStats(root, nikkes, pickups, ctx) {
     c.appendChild(barList(items, pickups.length));
     cards.appendChild(c);
   }
-  {
-    const m = countBy(pickups, p => statusOf(p));
-    const items = ['ongoing', 'upcoming', 'ended'].filter(k => m.has(k)).map(k => ({
-      key: k, label: ctx.statusLabel(k), value: m.get(k),
-    }));
-    const c = card(t('st.status'), t('st.statusHint'));
-    c.appendChild(barList(items, pickups.length,
-      it => it.key === 'ongoing' ? 'var(--st-good)'
-        : it.key === 'upcoming' ? 'var(--st-warn)' : 'var(--ink-muted)'));
-    cards.appendChild(c);
-  }
+  /* '배너 진행 상태' 카드는 없앴다 — 배너 수백 개 중 진행중이 한둘, 예정이 0~1 개고
+     나머지가 전부 종료라, 시간이 갈수록 '종료가 거의 100%' 라는 말만 하는 칸이었다. */
 
   /* 5. 복각 주기 */
   {

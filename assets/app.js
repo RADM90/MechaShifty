@@ -39,7 +39,6 @@ const STR = {
   'tab.nikkes': ['니케 리스트', 'Nikkes', 'ニケ一覧'],
   'tab.pickups': ['픽업일정', 'Banners', 'ピックアップ'],
   'tab.stats': ['통계', 'Stats', '統計'],
-  'tab.raw': ['원본 데이터', 'Raw data', '元データ'],
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オーバーロード'],
@@ -62,6 +61,12 @@ const STR = {
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
   'cp.collectionLv': ['등급', 'Grade', '等級'],
   'cp.favorite': ['애장품', 'Favorite item', '愛蔵品'],
+  /* 돌파·코강·장비 등급은 데이터 키가 한국어라('3돌'·'오버로드') 그대로 쓰면 EN/JA
+     화면에 한국어가 남는다. cp.js 의 gradeLabel/tierLabel 이 이 키들로 옮긴다. */
+  'cp.break': [n => `${n}돌`, n => `Break ${n}`, n => `${n}凸`],
+  'cp.core': [n => `${n}코강`, n => `Core ${n}`, n => `コア強化${n}`],
+  'cp.tier_오버로드': ['오버로드', 'Overload', 'オーバーロード'],
+  'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', '9ティア企業'],
   'cp.none': ['미착용', 'None', '未装着'],
   'cp.console': ['리사이클 룸 - 콘솔', 'Recycling Room — Console', 'リサイクルルーム - コンソール'],
   'cp.consoleHint': [
@@ -69,7 +74,6 @@ const STR = {
     'Research levels in the Outpost Recycling Room. Only the ones matching this Nikke\'s class and corporation apply.',
     '前哨基地リサイクルルームの研究レベル。そのニケのクラス・企業に対応する研究のみ適用されます。',
   ],
-  'cp.consoleShort': ['콘솔', 'Console', 'コンソール'],
   'cp.consoleOf': [
     n => `${n} 연구 레벨`,
     n => `${n} research level`,
@@ -105,13 +109,11 @@ const STR = {
   'cp.b5': ['(5) 큐브 + 소장품 계수', '(5) Cube + collection coef.', '(5) キューブ＋コレクション係数'],
   'cp.b6': ['((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100'],
   'cp.breakHint': [
-    (s, u, n) => `스킬계수 ${s} · 우코(우월코드 데미지) 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
+    (s, u, n) => `스킬계수 ${s} · 우코(우월코드 대미지) 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
     (s, u, n) => `スキル係数 ${s} · 優越コードダメージ ${u} · その他のOP ${n}`,
   ],
-  'cp.finalCp': ['최종 전투력', 'Combat power', '最終戦闘力'],
-  'cp.nowLv': [n => `현재 Lv.${n}`, n => `Now · Lv.${n}`, n => `現在 Lv.${n}`],
-  'cp.edit': ['입력 수정', 'Edit inputs', '入力を編集'],
+  'cp.edit':['입력 수정', 'Edit inputs', '入力を編集'],
   'cp.editTitle': ['입력 수정', 'Edit inputs', '入力を編集'],
   'cp.done': ['완료', 'Done', '完了'],
   'cp.olTotal': ['오버로드 옵션 종합', 'Overload options — total', 'オーバーロードOP 合計'],
@@ -137,13 +139,6 @@ const STR = {
   'cp.marginOther': ['그 외 옵션 +1', 'Other option +1', 'その他OP +1'],
   'cp.lv': [n => `Lv.${n}`, n => `Lv.${n}`, n => `Lv.${n}`],
   'cp.cp': ['전투력', 'CP', '戦闘力'],
-  'cp.compare': ['니케 비교', 'Compare Nikkes', 'ニケ比較'],
-  'cp.addCompare': ['현재 설정 추가', 'Add current', '現在の設定を追加'],
-  'cp.compareHint': [
-    '현재 설정을 추가하면 여러 니케의 보정 전투력을 나란히 비교할 수 있습니다.',
-    'Add the current setup to line several Nikkes up side by side.',
-    '現在の設定を追加すると、複数のニケを並べて比較できます。',
-  ],
   'cp.noBase': [
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
     'No base stats available for this combination — check rarity, class and level.',
@@ -160,11 +155,16 @@ const STR = {
       + '収集は Tampermonkey ユーザースクリプト（またはブックマークレット）が行い、読み込んだ内容はこのブラウザの外に出ません。',
   ],
   'im.guide': ['수집 스크립트 설치 방법 →', 'How to install the collector →', '収集スクリプトの導入手順 →'],
-  'im.file': ['JSON 파일 열기', 'Open JSON file', 'JSONファイルを開く'],
+  'im.file': ['JSON 열기', 'Open JSON', 'JSONを開く'],
   'im.paste': ['붙여넣기', 'Paste', '貼り付け'],
   'im.pasteHint': ['복사한 JSON 을 붙여 넣으세요', 'Paste the copied JSON here', 'コピーしたJSONを貼り付け'],
   'im.pasteOk': ['불러오기', 'Import', '読み込む'],
-  'im.clear': ['불러온 자료 지우기', 'Clear imported data', '読み込んだデータを消す'],
+  'im.clear': ['지우기', 'Clear', '消去'],
+  'im.clearTitle': [
+    '이 브라우저에 저장한 계정 자료를 지웁니다',
+    'Delete the roster stored in this browser',
+    'このブラウザに保存したアカウント資料を消します',
+  ],
   'im.fromScript': ['수집 스크립트', 'the collector', '収集スクリプト'],
   'im.fromPaste': ['붙여넣기', 'paste', '貼り付け'],
   'im.received': [
@@ -183,7 +183,6 @@ const STR = {
     '読み込んだデータはこのブラウザにのみ保存され、サーバーには送信されません。',
   ],
   'im.synchro': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
-  'im.created': ['계정 생성', 'Account created', 'アカウント作成'],
   'im.collected': ['수집 시각', 'Collected', '収集日時'],
   'im.colBasic': ['기본', 'Basics', '基本'],
   'im.colSkills': ['스킬', 'Skills', 'スキル'],
@@ -201,9 +200,16 @@ const STR = {
   ],
   'im.pick': ['클릭하면 이 니케를 계산기에 넣습니다', 'Click to load this Nikke into the form', 'クリックで計算機に読み込みます'],
   'im.noMatch': ['조건에 맞는 니케가 없습니다.', 'No Nikke matches.', '条件に合うニケがありません。'],
-  'im.colNikke': ['니케', 'Nikke', 'ニケ'],
+  'im.colNikke': ['이름', 'Name', '名前'],
   'im.colLevel': ['레벨', 'Level', 'レベル'],
   'im.colGrade': ['돌파', 'Break', '突破'],
+  // 오버로드 옵션 중 우코 + 공증 종합값의 합. 실전 성능을 한 숫자로 가늠하는 자리다
+  'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
+  'im.colOlAtkNote': [
+    '오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력) 합계',
+    'Sum of the Elemental Damage and ATK overload option totals',
+    'オーバーロードOP総合のうち 有利コードダメージ + 攻撃力 の合計',
+  ],
   'im.unknown': [
     n => `사이트가 모르는 니케 ${n}명은 건너뛰었습니다.`,
     n => `Skipped ${n} Nikkes this site does not know yet.`,
@@ -248,9 +254,50 @@ const STR = {
     l => `タクティクスアカデミーは常に最大レッスン(${l})前提です。指揮官EXPにはブーストが付きません。`,
   ],
   'op.shifty': [
-    'Shiftypad 연동이 붙으면 이 진행도는 프로필에서 자동으로 채워집니다.',
-    'Once Shiftypad is wired up, this progress will be filled in from your profile.',
-    'Shiftypad 連携後は、この進行度がプロフィールから自動入力されます。',
+    '전투력 계산기 탭에서 계정 자료를 불러오면 이 진행도가 자동으로 채워집니다. 직접 고른 값은 다음 수집까지 그대로 둡니다.',
+    'Import your account in the CP calculator tab and this progress fills in automatically. Stages you pick by hand stay until the next import.',
+    '戦闘力計算機タブでアカウント資料を読み込むと、この進行度が自動で入ります。手動で選んだ値は次の収集まで保たれます。',
+  ],
+  /* 기업 타워 카드 — 계정 생성일 기준 '막힘 없이 올랐다면' 도달 가능한 최대 층 */
+  'op.tower': ['기업 타워', 'Corp towers', '企業タワー'],
+  'op.created': ['계정 생성', 'Account created', 'アカウント作成'],
+  'op.sinceDays': [n => `· ${n.toLocaleString()}일째`, n => `· day ${n.toLocaleString()}`, n => `· ${n.toLocaleString()}日目`],
+  'op.towerHint': [
+    n => `한 번도 막히지 않고 열릴 때마다 ${n}층씩 올랐다고 볼 때 도달 가능한 층입니다.`,
+    n => `Ceiling if you cleared ${n} floors every time the tower opened, never blocked.`,
+    n => `一度も詰まらず、開くたびに${n}階ずつ登った場合の到達可能な階です。`,
+  ],
+  'op.towerNeedAcct': [
+    '전투력 계산기 탭에서 계정 자료를 불러오면 계정 생성일 기준으로 계산합니다.',
+    'Import your account in the CP calculator tab to compute this from your account age.',
+    '戦闘力計算機タブでアカウント資料を読み込むと、作成日を基準に計算します。',
+  ],
+  'op.towerPilgrim': ['필그림 / 오버스펙', 'Pilgrim / Overspec', 'ピルグリム / オーバースペック'],
+  'op.towerCol': ['타워', 'Tower', 'タワー'],
+  'op.towerFloor': ['최대 층', 'Max floor', '最大階'],
+  'op.towerMold': ['몰드 50', 'Mold 50', 'モールド50'],
+  'op.towerPerfect': ['퍼펙트 50', 'Perfect 50', 'パーフェクト50'],
+  'op.floorN': [n => `${n.toLocaleString()}층`, n => `F${n.toLocaleString()}`, n => `${n.toLocaleString()}階`],
+  'op.runN': [n => `${n}회`, n => `${n} runs`, n => `${n}回`],
+  'op.weekN': [n => `${n}주`, n => `${n} wk`, n => `${n}週`],
+  'op.towerDays': [d => `열리는 요일 ${d}`, d => `opens ${d}`, d => `開放 ${d}`],
+  'op.wd0': ['일', 'Sun', '日'], 'op.wd1': ['월', 'Mon', '月'], 'op.wd2': ['화', 'Tue', '火'],
+  'op.wd3': ['수', 'Wed', '水'], 'op.wd4': ['목', 'Thu', '木'], 'op.wd5': ['금', 'Fri', '金'],
+  'op.wd6': ['토', 'Sat', '土'],
+  'op.towerHave': [
+    (o, m, p) => `지금까지 ${o}회 열림 · 몰드 ${m}개 · 퍼펙트 ${p}개`,
+    (o, m, p) => `${o} openings so far · ${m} molds · ${p} perfect`,
+    (o, m, p) => `これまで${o}回開放・モールド${m}個・パーフェクト${p}個`,
+  ],
+  'op.towerMoldNote': [
+    (a, b, c, d, u) => `${a}층마다 기업 몰드 ${b}개, ${c}층마다 퍼펙트 몰드 ${d}개. ${u}개를 모아야 한 번 엽니다 — 위 두 칸은 ${u}개까지 필요한 등반 횟수와 주 수입니다.`,
+    (a, b, c, d, u) => `${b} corp molds every ${a} floors, ${d} perfect molds every ${c}. You need ${u} to open once — the last two columns are the runs and weeks to get there.`,
+    (a, b, c, d, u) => `${a}階ごとに企業モールド${b}個、${c}階ごとにパーフェクト${d}個。${u}個で1回開封 — 右の2列はそこまでの登攀回数と週数です。`,
+  ],
+  'op.fromAccount': [
+    '불러온 계정 자료에서 채웠습니다.',
+    'Filled in from your imported account data.',
+    '読み込んだアカウント資料から入力しました。',
   ],
   'op.level': ['전초기지 레벨', 'Outpost level', '前哨基地レベル'],
   'op.toNext': [
@@ -556,27 +603,6 @@ const STR = {
     '今の条件のまま段階だけ変えた1日期待値。段階の数字を押すとその段階に切り替わる。',
   ],
 
-  'raw.loading': ['표를 불러오는 중…', 'Loading table…', 'テーブルを読み込み中…'],
-  'raw.rows': [n => `${n.toLocaleString()}행`, n => `${n.toLocaleString()} rows`, n => `${n.toLocaleString()}行`],
-  'raw.search': ['표 안에서 검색', 'Search this table', 'この表を検索'],
-  'raw.count': [n => `<b>${n.toLocaleString()}</b>행`, n => `<b>${n.toLocaleString()}</b> rows`, n => `<b>${n.toLocaleString()}</b>行`],
-  'raw.countFiltered': [
-    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()}행`,
-    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()} rows`,
-    (n, t) => `<b>${n.toLocaleString()}</b> / ${t.toLocaleString()}行`,
-  ],
-  'raw.page': [(a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`],
-  'raw.csv': ['CSV 내려받기', 'Download CSV', 'CSVダウンロード'],
-  'raw.stages': [n => `${n}스테이지`, n => `${n} stages`, n => `${n}ステージ`],
-  'raw.areaCount': [
-    (a, s) => `<b>${a}</b>개 지역 · <b>${s.toLocaleString()}</b>스테이지`,
-    (a, s) => `<b>${a}</b> areas · <b>${s.toLocaleString()}</b> stages`,
-    (a, s) => `<b>${a}</b>地域 · <b>${s.toLocaleString()}</b>ステージ`,
-  ],
-  'raw.bossNode': ['보스', 'Boss', 'ボス'],
-  'raw.branch': ['분기 스테이지', 'Side branch', '分岐ステージ'],
-  'raw.empty': ['조건에 맞는 행이 없습니다.', 'No rows match.', '条件に合う行がありません。'],
-
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
   'ui.reset': ['필터 초기화', 'Reset filters', 'フィルタ初期化'],
   'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
@@ -634,6 +660,8 @@ const STR = {
   ],
   'msg.rerunOf': [n => `#${n} 복각`, n => `Rerun of #${n}`, n => `#${n} 復刻`],
   'msg.dday': [n => `D-${n}`, n => `in ${n}d`, n => `あと${n}日`],
+  /* 진행 중인 배너는 '진행중' 보다 언제 닫히는지가 쓸모 있다 (24시간 미만이면 D-0) */
+  'msg.ddayEnd': [n => `마감 D-${n}`, n => `ends in ${n}d`, n => `終了まであと${n}日`],
   'msg.year': [y => `${y}년`, y => `${y}`, y => `${y}年`],
 
   'cnt.nikkes': [
@@ -694,8 +722,6 @@ const STR = {
   ],
   'st.avail': ['한정 / 상시 비율', 'Limited vs standard', '限定 / 常設の比率'],
   'st.tagDist': ['픽업 구분별 분포', 'Banners by type', '区分別の分布'],
-  'st.status': ['배너 진행 상태', 'Banner status', 'バナーの状態'],
-  'st.statusHint': ['브라우저 현재 시각 기준', 'Based on your current time', 'ブラウザの現在時刻基準'],
   'st.gap': ['복각 주기', 'Time until rerun', '復刻までの期間'],
   'st.gapHint': [
     (n, med) => `복각 ${n}건 · 첫 픽업 이후 경과 개월 (중앙값 ${med}개월)`,
@@ -760,28 +786,24 @@ export const ELEMENT_COLOR = {
 };
 
 /* ── 아이콘 ────────────────────────────────────────────────────
-   assets/icons/ 아래 게임 아이콘. 파일명은 데이터 코드를 소문자로 내린 것.
-   기업은 'simple' 계열을 쓰고, 오버스펙 니케는 전용 변형이 있으면 그쪽을 쓴다. */
+   assets/icons/ 아래 게임 아이콘. 파일명은 데이터 코드를 소문자로 내린 것. */
 const ICON_DIR = {
   element: 'element', class: 'class', weapon_type: 'weapon',
   burst: 'burst', rarity: 'rarity',
+  // 하모니 큐브만 파일명이 코드가 아니라 게임 tid 다 (assets/icons/cube/1000303.webp)
+  cube: 'cube',
 };
-/* overspec 변형이 존재하는 기업만. 실제 OVERSPEC 니케 4명도 이 셋 안에 있다. */
-const CORP_OVERSPEC = new Set(['ELYSION', 'MISSILIS', 'TETRA']);
 
 /* 테두리를 뺀 판(_wob)과 단순화한 판(_simple)이 작은 크기에서 훨씬 잘 읽힌다.
-   무기 쪽만 파일명이 대문자다 (AR_simple.webp). overspec 변형은 _simple 계열로만
-   있어서, 그때는 그 파일을 쓴다 — 기업을 구분하는 것보다 오버스펙 표시가 중요하다. */
+   무기 쪽만 파일명이 대문자다 (AR_simple.webp). */
 const ICON_VARIANT = { burst: '_simple', weapon_type: '_simple' };
 
-export function iconSrc(axis, code, overspec) {
+export function iconSrc(axis, code) {
   if (!code) return null;
-  if (axis === 'corporation') {
-    const file = String(code).toLowerCase();
-    return overspec && CORP_OVERSPEC.has(code)
-      ? `assets/icons/company/${file}_simple_overspec.png`
-      : `assets/icons/company/${file}_wob.webp`;
-  }
+  /* 기업은 소속을 그대로 보이고, 오버스펙은 소속을 덮지 않는 별개의 도장이라
+     기업 아이콘에 섞지 않고 이름 옆에 따로 찍는다 (overspec_simple.webp). */
+  if (axis === 'corporation') return `assets/icons/company/${String(code).toLowerCase()}_wob.webp`;
+  if (axis === 'corporation_sub_type') return `assets/icons/company/${String(code).toLowerCase()}_simple.webp`;
   const dir = ICON_DIR[axis];
   if (!dir) return null;
   const variant = ICON_VARIANT[axis] || '';
@@ -793,7 +815,7 @@ export function iconSrc(axis, code, overspec) {
 /* 아이콘은 항상 텍스트 라벨 옆에 붙는 장식이라 alt 는 비운다.
    코드가 새로 생겨 파일이 없으면 조용히 사라지게 한다(화면이 깨지지 않게). */
 export function iconEl(axis, code, opts = {}) {
-  const src = iconSrc(axis, code, opts.overspec);
+  const src = iconSrc(axis, code);
   if (!src) return null;
   const img = document.createElement('img');
   img.className = 'ic' + (opts.cls ? ' ' + opts.cls : '');
@@ -804,6 +826,15 @@ export function iconEl(axis, code, opts = {}) {
   img.decoding = 'async';
   img.onerror = () => img.remove();
   return img;
+}
+
+/* 오버스펙 도장. 기업 아이콘에 섞지 않고 니케 이름 옆에 붙인다 — 소속을 대체하는
+   값이 아니라 그 위에 얹히는 표시라서다. 글자 라벨은 hover 로 남긴다. */
+export function overspecMark(sub) {
+  if (!sub) return null;
+  const ic = iconEl('corporation_sub_type', sub, { cls: 'ic-ovr' });
+  if (ic) ic.title = L('corporation_sub_type', sub);
+  return ic;
 }
 
 /* 아이콘 + 텍스트 한 덩어리 */
@@ -964,6 +995,14 @@ function hitsNikke(m, n) {
     || (n.aliases || []).some(m.plain);
 }
 
+/* 계산기 목록(roster.js)도 같은 규칙으로 찾게 한다 — 탭마다 검색이 다르게 굴면
+   'ㄹㅍ' 이 여기선 되고 저기선 안 되는 이유를 알 길이 없다. 검색어가 바뀔 때만
+   부르고 결과 함수를 행마다 돌린다(정규식을 행마다 새로 짜지 않게). */
+export function nikkeMatcher(q) {
+  const m = buildMatcher(q);
+  return m ? n => hitsNikke(m, n) : null;
+}
+
 /* ── 필터 ─────────────────────────────────────────────────────
    except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용.     */
 function matchNikke(n, except) {
@@ -1030,9 +1069,12 @@ function writeHash() {
   history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
 }
 
+/* 없어진 탭(#tab=raw 같은 옛 북마크)으로 들어오면 패널이 없어 렌더가 깨진다 */
+const TABS = ['nikkes', 'pickups', 'stats', 'calc', 'outpost', 'nipago', 'intercept'];
+
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
-  if (p.get('tab')) state.tab = p.get('tab');
+  if (TABS.includes(p.get('tab'))) state.tab = p.get('tab');
   for (const k of Object.keys(state.sel)) {
     const v = p.get(k);
     if (v) state.sel[k] = new Set(v.split(','));
@@ -1075,7 +1117,7 @@ function buildChips() {
       b.dataset.axis = '_overspec';
       b.dataset.code = 'OVERSPEC';
       b.setAttribute('aria-pressed', state.overspec);
-      const ic = iconEl('corporation', 'ELYSION', { overspec: true });
+      const ic = iconEl('corporation_sub_type', 'OVERSPEC');
       if (ic) b.appendChild(ic);
       b.appendChild(el('span', null, L('corporation_sub_type', 'OVERSPEC')));
       b.appendChild(el('span', 'n'));
@@ -1185,12 +1227,12 @@ function renderNikkes() {
 
     const tdName = el('td', 'name');
     tdName.appendChild(el('span', null, nameOf(n)));
-    if (n.corporation_sub_type) tdName.appendChild(el('span', 'tag ovr', L('corporation_sub_type', n.corporation_sub_type)));
+    const mark = overspecMark(n.corporation_sub_type);
+    if (mark) tdName.appendChild(mark);
     tr.appendChild(tdName);
 
     tr.appendChild(iconCell('rarity', n.rarity));
-    tr.appendChild(iconCell('corporation', n.corporation,
-      { overspec: n.corporation_sub_type === 'OVERSPEC' }));
+    tr.appendChild(iconCell('corporation', n.corporation));
     tr.appendChild(iconCell('element', n.element));
     tr.appendChild(iconCell('class', n.class));
     tr.appendChild(iconCell('weapon_type', n.weapon_type));
@@ -1219,13 +1261,20 @@ function iconCell(axis, code, opts) {
 const fmtDate = iso => iso.slice(0, 10);
 const fmtRange = p => `${fmtDate(p.start)} ~ ${fmtDate(p.end)}`;
 const dday = p => Math.ceil((p._start.getTime() - Date.now()) / 86400000);
+/* 남은 날은 올림이 아니라 내림이다 — 스물세 시간 남았으면 '하루 남음'이 아니라
+   '오늘 닫힘'(D-0) 이어야 한다. 진행 중인 배너에만 쓴다. */
+const ddayEnd = p => Math.max(0, Math.floor((p._end.getTime() - Date.now()) / 86400000));
 
 function statusTag(p) {
   const s = statusOf(p);
-  const text = s === 'upcoming'
-    ? `${statusLabel('upcoming')} ${t('msg.dday', dday(p))}`
-    : statusLabel(s);
-  return el('span', 'tag ' + (s === 'ongoing' ? 'on' : s === 'upcoming' ? 'soon' : 'off'), text);
+  /* 진행 중이면 '진행중' 대신 마감까지 남은 날. 지금 뽑을지 말지를 가르는 건
+     진행 여부가 아니라 남은 시간이다. 정확한 마감 일시는 hover 로. */
+  const text = s === 'upcoming' ? `${statusLabel('upcoming')} ${t('msg.dday', dday(p))}`
+    : s === 'ongoing' ? t('msg.ddayEnd', ddayEnd(p))
+      : statusLabel(s);
+  const tag = el('span', 'tag ' + (s === 'ongoing' ? 'on' : s === 'upcoming' ? 'soon' : 'off'), text);
+  if (s === 'ongoing') tag.title = `${statusLabel('ongoing')} · ~ ${fmtDate(p.end)}`;
+  return tag;
 }
 
 const PICKUP_COLS = [
@@ -1257,10 +1306,11 @@ function renderPickups() {
     const tdName = el('td', 'name');
     tdName.appendChild(el('span', null, n ? nameOf(n) : p.name_ko));
     if (!n) tdName.appendChild(el('span', 'sub', ' ' + t('msg.unlisted')));
+    const pMark = overspecMark(p.corporation_sub_type);
+    if (pMark) tdName.appendChild(pMark);
     tr.appendChild(tdName);
 
-    tr.appendChild(iconCell('corporation', p.corporation,
-      { overspec: p.corporation_sub_type === 'OVERSPEC' }));
+    tr.appendChild(iconCell('corporation', p.corporation));
     tr.appendChild(iconCell('element', p.element));
     tr.appendChild(iconCell('class', p.class));
 
@@ -1299,10 +1349,12 @@ function renderTimeline(rows) {
     row.appendChild(el('div', 'when', `${p.start.slice(5, 10)} ~ ${p.end.slice(5, 10)}`));
     const who = el('div', 'who');
     for (const [axis, code] of [['corporation', p.corporation], ['element', p.element], ['class', p.class]]) {
-      const ic = iconEl(axis, code, { overspec: p.corporation_sub_type === 'OVERSPEC' });
+      const ic = iconEl(axis, code);
       if (ic) who.appendChild(ic);
     }
     who.appendChild(el('span', null, n ? nameOf(n) : p.name_ko));
+    const tlMark = overspecMark(p.corporation_sub_type);
+    if (tlMark) who.appendChild(tlMark);
     if (p.availability === 'limited') who.appendChild(el('span', 'tag lim', L('availability', 'limited')));
     if (p.tag) who.appendChild(el('span', 'tag', L('tag', p.tag)));
     if (p.rerun_of != null) who.appendChild(el('span', 'tag', t('msg.rerunOf', p.rerun_of)));
@@ -1316,10 +1368,12 @@ function renderTimeline(rows) {
 function openSheet(n) {
   const c = $('#sheetContent');
   c.textContent = '';
-  c.appendChild(el('h2', null, nameOf(n)));
+  const h2 = el('h2', null, nameOf(n));
+  const mark = overspecMark(n.corporation_sub_type);
+  if (mark) { mark.classList.add('ic-lg'); h2.appendChild(mark); }
+  c.appendChild(h2);
   c.appendChild(el('p', 'aka', [n.name.ko, n.name.en, n.name.ja].filter(Boolean).join(' · ')));
 
-  const ov = n.corporation_sub_type === 'OVERSPEC';
   const dl = el('dl', 'kv');
   const put = (k, v) => {
     dl.appendChild(el('dt', null, k));
@@ -1327,18 +1381,16 @@ function openSheet(n) {
     dd.append(typeof v === 'string' ? v : v);
     dl.appendChild(dd);
   };
-  const putIcon = (k, axis, code, extra) => {
+  const putIcon = (k, axis, code) => {
     dl.appendChild(el('dt', null, k));
     const dd = el('dd');
     if (!code) dd.textContent = '—';
-    else {
-      dd.appendChild(labelWith(axis, code, L(axis, code) + (extra || ''), { overspec: ov, cls: 'ic-lg' }));
-    }
+    else dd.appendChild(labelWith(axis, code, L(axis, code), { cls: 'ic-lg' }));
     dl.appendChild(dd);
   };
   putIcon(axisLabel('rarity'), 'rarity', n.rarity);
-  putIcon(axisLabel('corporation'), 'corporation', n.corporation,
-    ov ? ` (${L('corporation_sub_type', 'OVERSPEC')})` : '');
+  /* 기업 줄에 '(오버스펙)' 을 덧붙이지 않는다 — 이름 옆 도장이 그 자리다 */
+  putIcon(axisLabel('corporation'), 'corporation', n.corporation);
   put(t('col.squad'), L('squad', n.squad));
   putIcon(axisLabel('element'), 'element', n.element);
   putIcon(axisLabel('class'), 'class', n.class);
@@ -1384,14 +1436,13 @@ function render() {
   $('#panel-nikkes').hidden = state.tab !== 'nikkes';
   $('#panel-pickups').hidden = state.tab !== 'pickups';
   $('#panel-stats').hidden = state.tab !== 'stats';
-  $('#panel-raw').hidden = state.tab !== 'raw';
   $('#panel-calc').hidden = state.tab !== 'calc';
   $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['raw', 'calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
 
   if (state.tab === 'nipago') {
     writeHash();
@@ -1405,19 +1456,13 @@ function render() {
   }
   if (state.tab === 'outpost') {
     writeHash();
-    import('./outpost.js').then(m => m.renderOutpost($('#outpost'), { t, L, lang: lang() }));
-    return;
-  }
-  if (state.tab === 'raw') {
-    writeHash();
-    // 참조 테이블은 이 탭을 처음 열 때만 받아온다
-    import('./rawdata.js').then(m => m.renderRaw($('#rawdata'), { t, L, lang: lang() }));
+    import('./outpost.js').then(m => m.renderOutpost($('#outpost'), { t, L, lang: lang(), iconEl }));
     return;
   }
   if (state.tab === 'calc') {
     writeHash();
     import('./calc.js').then(m => m.renderCalc($('#calc'),
-      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl }));
+      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl, overspecMark, nikkeMatcher }));
     return;
   }
 
