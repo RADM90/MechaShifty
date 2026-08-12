@@ -128,18 +128,19 @@ const STR = {
   ],
   'op.normal': ['노멀', 'Normal', 'ノーマル'],
   'op.hard': ['하드', 'Hard', 'ハード'],
-  'op.region': ['지역', 'Region', '地域'],
+  'op.region': ['지역', 'Area', '地域'],
   'op.stage': ['스테이지', 'Stage', 'ステージ'],
   'op.notCleared': ['미클리어', 'Not cleared', '未クリア'],
   'op.reset': ['입력 초기화', 'Reset', '入力リセット'],
   'op.rules': ['계산 기준', 'How this is calculated', '計算の前提'],
   'op.formula': [
-    (skip, step) => `전초기지 레벨 = (노멀 클리어 − 앞 ${skip}개 지역) + 하드 클리어를 `
-      + `${step}으로 나눈 몫 + 1. 노멀 지역0~2는 레벨에 반영되지 않습니다.`,
-    (skip, step) => `Outpost level = ⌊((normal clears − first ${skip} regions) + hard clears) / ${step}⌋ + 1. `
-      + `Normal regions 0–2 do not count.`,
-    (skip, step) => `前哨基地レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア を`
-      + `${step}で割った商 + 1。ノーマルの地域0〜2は加算されません。`,
+    (skip, step) => `전초기지 레벨 = (노멀 클리어 − 앞 ${skip}개 지역) + 하드 클리어 + 1 을 `
+      + `${step}으로 나눈 몫 + 1. 노멀 지역0~2는 레벨에 반영되지 않고, 지역3이 열릴 때 `
+      + `1스테이지분이 먼저 붙습니다.`,
+    (skip, step) => `Outpost level = ⌊((normal clears − first ${skip} areas) + hard clears + 1) / ${step}⌋ + 1. `
+      + `Normal areas 0–2 do not count, and one stage is credited up front when area 3 opens.`,
+    (skip, step) => `前哨基地レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア + 1 を`
+      + `${step}で割った商 + 1。ノーマルの地域0〜2は加算されず、地域3の開放時に1ステージ分が先に加算されます。`,
   ],
   'op.academyNote': [
     l => `전술 아카데미는 항상 최대 레슨(${l}) 기준으로 계산합니다. 지휘관 경험치에는 부스트가 붙지 않습니다.`,
@@ -235,6 +236,14 @@ const STR = {
   ],
   'raw.page': [(a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`, (a, b) => `${a} / ${b}`],
   'raw.csv': ['CSV 내려받기', 'Download CSV', 'CSVダウンロード'],
+  'raw.stages': [n => `${n}스테이지`, n => `${n} stages`, n => `${n}ステージ`],
+  'raw.areaCount': [
+    (a, s) => `<b>${a}</b>개 지역 · <b>${s.toLocaleString()}</b>스테이지`,
+    (a, s) => `<b>${a}</b> areas · <b>${s.toLocaleString()}</b> stages`,
+    (a, s) => `<b>${a}</b>地域 · <b>${s.toLocaleString()}</b>ステージ`,
+  ],
+  'raw.bossNode': ['보스', 'Boss', 'ボス'],
+  'raw.branch': ['분기 스테이지', 'Side branch', '分岐ステージ'],
   'raw.empty': ['조건에 맞는 행이 없습니다.', 'No rows match.', '条件に合う行がありません。'],
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],

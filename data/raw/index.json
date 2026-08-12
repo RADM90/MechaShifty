@@ -267,11 +267,28 @@
    },
    "note": {
     "ko": "지역 0~46의 스테이지 순서와 보스 구간.",
-    "en": "Stage order and boss nodes for regions 0–46.",
+    "en": "Stage order and boss nodes for areas 0–46.",
     "ja": "地域0〜46のステージ順とボス区間。"
    },
    "rows": 1699,
    "columns": 4
+  },
+  {
+   "key": "campaign_boss",
+   "file": "campaign_boss.json",
+   "group": "outpost",
+   "title": {
+    "ko": "챕터별 보스",
+    "en": "Chapter bosses",
+    "ja": "チャプター別ボス"
+   },
+   "note": {
+    "ko": "챕터 1~46 보스의 약점 속성과 권장 전투력. 챕터 N 은 캠페인 스테이지 목록의 '지역N' 과 같다. 보스 이름은 한국어·영어 표기만 있다.",
+    "en": "Weak element and recommended CP for the boss of chapters 1–46. Chapter N is the same as 'area N' in the campaign stage list; boss names are given in Korean and English only.",
+    "ja": "チャプター1〜46のボスの弱点属性と推奨戦闘力。チャプターNはキャンペーンステージ一覧の「地域N」に対応する。ボス名は韓国語・英語表記のみ。"
+   },
+   "rows": 46,
+   "columns": 5
   },
   {
    "key": "cp_penalty",

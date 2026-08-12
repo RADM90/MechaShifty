@@ -1,8 +1,9 @@
 /* 전초기지 탭 — 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
 
-   레벨 산식은 워크북 `재화_계산기` 시트에서 그대로 가져왔고, 실계정
-   덤프(`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)로
-   한 번 더 맞춰봤다. 아래 LEVEL_STEP / SKIP_REGIONS 주석 참조.
+   레벨 산식은 워크북 `재화_계산기` 시트를 바탕으로 하되, 시트에 없는
+   선지급 1스테이지(BONUS_STAGES)를 실측으로 더했다. 실계정 덤프
+   (`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)와
+   레벨 내 진행도로 맞춰봤다. 아래 LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 주석 참조.
 
    전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
 
@@ -16,6 +17,11 @@ const LEVEL_STEP = 5;
 /* 노멀 지역0~2(총 19스테이지)는 레벨에 반영되지 않는다. 하드는 전부 반영된다.
    시트의 `- sum(Stage_Data!$A$2:$C$2)` 를 지역 개수로 일반화한 것. */
 const SKIP_REGIONS = 3;
+/* 지역3 이 열릴 때 1스테이지분이 미리 붙는다. 워크북에는 없는 항이라 실측으로
+   확인했다: 노멀 46-40(보스)·하드 46-39 클리어 = 클리어 3,378스테이지인 계정이
+   게임에서 676레벨 4/5 로 뜬다. 이 항이 없으면 3/5 가 되어 한 칸 어긋난다.
+   (앞서 맞춰본 606레벨 덤프는 3,026 → 나머지 1 이라 두 산식이 같은 값이었다.) */
+const BONUS_STAGES = 1;
 /* '다음 코어더스트 구간' 카드에 보여줄 정수 구간 개수. */
 const NEXT_TARGETS = 5;
 
@@ -135,18 +141,20 @@ function derive() {
   const normal = Math.max(0, nIdx - D.skip);
   const hard = hIdx;
   const total = normal + hard;
-  const raw = Math.floor(total / LEVEL_STEP) + 1;
+  // 레벨을 세는 카운터에는 지역3 개방분 1이 얹힌다. total 은 실제 클리어 수 그대로 둔다.
+  const counter = total + BONUS_STAGES;
+  const raw = Math.floor(counter / LEVEL_STEP) + 1;
   const level = Math.min(D.maxLevel, raw);
   return {
     nIdx, hIdx, normal, hard, total, level,
     capped: raw > D.maxLevel,
-    into: total % LEVEL_STEP,                // 이번 레벨에서 넘긴 스테이지 수
+    into: counter % LEVEL_STEP,              // 이번 레벨에서 넘긴 스테이지 수
     row: D.levels.get(level),
   };
 }
 
-/* 목표 레벨에 필요한 누적 스테이지 수 */
-const totalFor = level => (level - 1) * LEVEL_STEP;
+/* 목표 레벨에 필요한 누적 클리어 스테이지 수 (선지급분을 뺀 실제 클리어 기준) */
+const totalFor = level => Math.max(0, (level - 1) * LEVEL_STEP - BONUS_STAGES);
 
 /* 현재 위치에서 n 스테이지 더 밀었을 때 도달하는 스테이지. 범위를 넘으면 null. */
 const advance = (fromIdx, n) => D.flat[fromIdx + n - 1] || null;

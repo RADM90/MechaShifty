@@ -236,6 +236,75 @@ function renderTable(data, rows, root) {
   return wrap;
 }
 
+/* ── 데이터셋 전용 뷰 ─────────────────────────────────────────
+   기본은 검색·정렬되는 표지만, 캠페인 스테이지처럼 '한 줄이 한 건' 인
+   의미가 거의 없는 표는 표로 보면 1699행을 넘겨야 구성이 잡힌다.
+   지역 카드로 묶으면 스테이지 개수·분기 위치·보스 자리가 한눈에 보인다. */
+
+function renderStageCards(data) {
+  const at = key => data.columns.findIndex(c => c.key === key);
+  const iRegion = at('region'), iStage = at('stage'), iKind = at('kind');
+  const areaWord = label(data.columns[iRegion].label);
+
+  // 지역 -> 행 목록. data.rows 가 이미 스테이지 순서라 그대로 담는다.
+  const areas = new Map();
+  for (const r of data.rows) {
+    const n = Number(String(r[iRegion]).replace(/\D/g, ''));
+    if (!areas.has(n)) areas.set(n, []);
+    areas.get(n).push(r);
+  }
+
+  const wrap = el('div', 'ds-cards');
+  for (const [n, rows] of [...areas].sort((a, b) => a[0] - b[0])) {
+    const card = el('section', 'ds-card');
+    const head = el('header', 'ds-card-head');
+    head.appendChild(el('h4', null, `${areaWord} ${n}`));
+    head.appendChild(el('span', 'ds-card-n', t('raw.stages', rows.length)));
+    card.appendChild(head);
+
+    const chips = el('div', 'st-chips');
+    for (const r of rows) {
+      const code = String(r[iStage]);          // 스테이지 코드는 원본 그대로 (6-6A-1)
+      const boss = r[iKind] === 'BOSS';
+      // 6-6A-1 처럼 본선에서 갈라져 나온 분기 스테이지
+      const branch = /[A-Za-z]/.test(code);
+      const chip = el('span', `st-chip${boss ? ' boss' : ''}${branch ? ' branch' : ''}`, code);
+      if (boss) chip.appendChild(el('b', null, 'BOSS'));
+      chips.appendChild(chip);
+    }
+    card.appendChild(chips);
+    wrap.appendChild(card);
+  }
+  return { node: wrap, groups: areas.size };
+}
+
+const VIEWS = { stage_list: renderStageCards };
+
+/* 카드 뷰용 상단 바 — 검색·패싯 대신 개수와 범례만 둔다. */
+function renderCardControls(data, groups) {
+  const bar = el('div', 'ds-controls');
+
+  const count = el('span', 'ds-count');
+  count.innerHTML = t('raw.areaCount', groups, data.rows.length);
+  bar.appendChild(count);
+
+  const legend = el('span', 'ds-legend');
+  const sample = (cls, text, name) => {
+    legend.appendChild(el('span', `st-chip ${cls}`, text));
+    legend.appendChild(el('span', null, name));
+  };
+  sample('boss', 'BOSS', t('raw.bossNode'));
+  sample('branch', '6-6A-1', t('raw.branch'));
+  bar.appendChild(legend);
+
+  const dl = el('button', 'btn-reset ds-dl', t('raw.csv'));
+  dl.type = 'button';
+  dl.onclick = () => downloadCSV(data, data.rows);
+  bar.appendChild(dl);
+
+  return bar;
+}
+
 function renderPager(rows, root) {
   const pages = Math.ceil(rows.length / PAGE);
   if (pages <= 1) return null;
@@ -284,6 +353,14 @@ function paint(root) {
   head.appendChild(el('h2', null, label(data.title)));
   head.appendChild(el('p', 'ds-note', label(data.note)));
   main.appendChild(head);
+
+  const view = VIEWS[state.key];
+  if (view) {
+    const { node, groups } = view(data);
+    main.appendChild(renderCardControls(data, groups));
+    main.appendChild(node);
+    return;
+  }
 
   const rows = visibleRows(data);
   main.appendChild(renderControls(data, rows, root));
