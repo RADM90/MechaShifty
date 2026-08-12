@@ -53,7 +53,7 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='31151e74d4703e349c3e991d3fa7f73713e8c24a3eee6d6db90c08efc79bfb2e';try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert('MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.');return}(0,eval)(s)}catch(e){alert('MechaShifty: 불러오지 못했습니다 - '+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='b407534f863c8805205c8aedc4b36503d9c8af22fe33f0b26e34ec9ba7577ac1';try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert('MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.');return}(0,eval)(s)}catch(e){alert('MechaShifty: 불러오지 못했습니다 - '+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
@@ -74,12 +74,12 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 - **MechaShifty 계산기로 보내기** — 새 탭이 열리고 바로 들어갑니다.
   탭 사이 전달은 받는 쪽 주소를 `https://radm90.github.io` 로 못 박아서 보내므로,
   다른 사이트가 가로챌 수 없습니다.
-- **JSON 파일로 저장** — 계산기의 *내 계정 → JSON 파일 열기* 에서 고르면 됩니다.
+- **JSON 파일로 저장** — 계산기의 *내 계정 → JSON 열기* 에서 고르면 됩니다.
   네트워크를 아예 타지 않는 방법입니다.
 - **클립보드로 복사** — *붙여넣기* 칸에 붙여 넣습니다. 모바일에서 편합니다.
 
 불러온 자료는 **이 브라우저의 localStorage 에만** 남습니다. 서버로 보내지 않습니다.
-지우려면 계산기의 *불러온 자료 지우기* 를 누르세요.
+지우려면 계산기의 *지우기* 를 누르세요.
 
 ---
 
@@ -89,7 +89,11 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
 - 니케별: 레벨 · 돌파/코어강화 · 스킬 3종 레벨 · 장비 4부위와 오버로드 옵션 ·
   하모니 큐브(종류·레벨) · 소장품/애장품 · 호감도
-- 계정: 싱크로 레벨 · 전초기지 리사이클 룸 연구 레벨 · 계정 생성 시각, 캠페인 스테이지 진행 정도
+- 계정: 싱크로 레벨 · 전초기지 리사이클 룸 연구 레벨 · 계정 생성 시각 ·
+  캠페인 진행도(노멀/하드 최종 클리어 스테이지) · 전초기지 레벨
+
+계정 값은 계산기 말고 **전초기지 탭**도 씁니다 — 캠페인 진행도로 전초기지 레벨과 재화
+수급량을 채우고, 계정 생성 시각으로 기업 타워를 몇 층까지 오를 수 있었는지 계산합니다.
 
 계산기 화면에 나오거나 전투력 계산에 들어가는 값만 담습니다. 그 밖의 값은 수집 단계에서
 버려서 애초에 파일에 들어가지 않습니다.

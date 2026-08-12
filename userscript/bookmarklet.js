@@ -17,7 +17,7 @@
  */
 javascript: (async () => {
   const URL_ = 'https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js';
-  const EXPECT = '31151e74d4703e349c3e991d3fa7f73713e8c24a3eee6d6db90c08efc79bfb2e';
+  const EXPECT = 'b407534f863c8805205c8aedc4b36503d9c8af22fe33f0b26e34ec9ba7577ac1';
   try {
     const src = await (await fetch(URL_, { cache: 'no-store' })).text();
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(src));

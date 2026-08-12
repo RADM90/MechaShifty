@@ -2,7 +2,7 @@
 // @name         MechaShifty — 내 니케 데이터 내보내기
 // @name:en      MechaShifty — Export my Nikke roster
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.1.0
+// @version      1.2.0
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @author       MechaShifty (RADM90)
@@ -18,8 +18,9 @@
 /* 이 스크립트가 하는 일과 하지 않는 일 — 설치 전에 직접 확인하세요.
  *
  *  하는 일
- *   - blablalink.com 에 로그인된 상태에서 *내* 계정의 니케 목록/상세/전초기지 정보를
- *     game API 로 읽는다 (아래 API_* 상수가 호출하는 주소의 전부다).
+ *   - blablalink.com 에 로그인된 상태에서 *내* 계정의 니케 목록/상세/전초기지 정보와
+ *     프로필 기본 정보(계정 생성 시각·캠페인 진행도)를 game API 로 읽는다
+ *     (아래 API_* 상수가 호출하는 주소의 전부다).
  *   - 읽은 값을 MechaShifty 계산기가 쓰는 형태로 바꿔서, 파일 저장 · 클립보드 복사 ·
  *     탭 간 postMessage 중 사용자가 누른 방법으로만 내보낸다.
  *
@@ -67,7 +68,7 @@
      종류 코드는 MechaShifty 의 옵션 약어로 옮긴다 (data/raw/equip_option.json 기준). */
   const OPTION = {
     '05': '우코', '06': '명중', '07': '장탄', '08': '공증',
-    '09': '차뎀', '10': '차속', '11': '크확', '12': '크피', '13': '방어',
+    '09': '차댐', '10': '차속', '11': '크확', '12': '크댐', '13': '방어',
   };
 
   /* 게임 API 의 부위 이름 -> 계산기의 슬롯 이름 */
@@ -128,12 +129,33 @@
     return null;
   }
 
-  async function createdAt(openId, area) {
+  /* 캠페인 진행도. 7자리 정수 하나로 [모드][지역3][순번3] 이 들어 있다
+     (6044044 = 노멀·지역44·44번째). 응답 어디에 실리는지가 판마다 조금씩
+     달라서 이름으로 훑는다 — 전초기지 탭이 이 값으로 레벨을 낸다. */
+  function findByKey(obj, re, depth = 0) {
+    if (!obj || typeof obj !== 'object' || depth > 4) return null;
+    for (const [k, v] of Object.entries(obj)) {
+      if (v && typeof v === 'object') {
+        const hit = findByKey(v, re, depth + 1);
+        if (hit != null) return hit;
+        continue;
+      }
+      if (re.test(k) && num(v)) return num(v);
+    }
+    return null;
+  }
+
+  /* 계정 생성 시각과 캠페인 진행도는 같은 응답에서 온다 — 한 번만 부른다. */
+  async function basicInfo(openId, area) {
     try {
       const j = await post(API_BASIC,
         { intl_open_id: openId, nikke_area_id: area, target_open_id: openId });
-      return findCreatedAt(j);
-    } catch { return null; }
+      return {
+        created_at: findCreatedAt(j),
+        progress_normal_campaign: findByKey(j, /^progress_normal_campaign$/i),
+        progress_hard_campaign: findByKey(j, /^progress_hard_campaign$/i),
+      };
+    } catch { return {}; }
   }
 
   // ── 변환 ───────────────────────────────────────────────────
@@ -267,12 +289,18 @@
     }
 
     say('계정 정보를 확인하는 중…');
+    const basic = await basicInfo(openId, area);
     return scrub({
       schema: SCHEMA,
       generated_at: new Date().toISOString(),
       account: {
         synchro_level: num(outpost && outpost.synchro_level) || null,
-        created_at: await createdAt(openId, area),      // Unix 초
+        created_at: basic.created_at || null,           // Unix 초
+        /* 전초기지 탭용. 진행도 두 개로 레벨을 계산하고, 게임이 알려준
+           outpost_battle_level 과 대조해 어긋나면 경고를 띄운다. */
+        progress_normal_campaign: basic.progress_normal_campaign || null,
+        progress_hard_campaign: basic.progress_hard_campaign || null,
+        outpost_battle_level: num(outpost && outpost.outpost_battle_level) || null,
       },
       research: researchOf(outpost),
       nikkes,
