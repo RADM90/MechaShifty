@@ -30,6 +30,13 @@
   --accent-ink:   #ffffff;
   --amber:        #8a5a00;
 
+  /* 목록 배지 — 돌파(별)·코어강화·소장품 등급의 시그니처 색 */
+  --bd-none:  #9aa0ad;  --bd-break: #dda211;  --bd-core: #a132d6;
+  --bd-r:     #2a78d6;  --bd-sr:    #7c3aed;  --bd-fav:  #e2670f;
+  --bd-ink:   #12131a;
+  /* 장비 등급 시그니처 색 — 분홍 오버로드 / 주황 9티어 기업 */
+  --gr-ol:    #ea5a97;  --gr-t9:    #e2913a;
+
   --series-1:     #2a78d6;   /* 단일 시리즈 막대 */
   --series-2:     #d9531f;   /* 2분류(한정/상시) 대비색 */
   --series-2-ink: #ffffff;
@@ -86,6 +93,11 @@
   --accent:       #00c8c8;
   --accent-ink:   #04121b;
   --amber:        #f0a020;
+
+  --bd-none:  #79808f;  --bd-break: #f0b429;  --bd-core: #c069f0;
+  --bd-r:     #4a93ea;  --bd-sr:    #a186f2;  --bd-fav:  #f2802e;
+  --bd-ink:   #0d0d12;
+  --gr-ol:    #f472ac;  --gr-t9:    #eda049;
 
   --series-1:     #3987e5;
   --series-2:     #d95926;
@@ -279,18 +291,20 @@ td.name { font-weight: 600; white-space: normal; min-width: 180px; }
 .ic-lg { height: 20px; }
 .iconlbl { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 
-/* 실루엣 아이콘 보정 — 원본이 한쪽 테마만 상정하고 만들어져 있다.
-   class·burst 는 순백(측정 lum 255 / 채도 0)이라 라이트 표면에서 사라지고,
-   weapon 은 짙은 회색(lum 76 / 채도 4)이라 다크 표면에서 묻힌다.
-   셋 다 채도가 사실상 0 이라 밝기 반전으로 색을 잃을 게 없다.
-   element·rarity·company 는 유채색이거나 중간 회색이라 양쪽에서 그대로 읽힌다. */
+/* 실루엣 아이콘 보정 — 네 축(class·burst·weapon·company)은 순백 실루엣이라
+   (측정 lum 255 / 채도 0) 라이트 표면에서 그대로 사라진다. 채도가 0 이라
+   검게 눕혀도 잃을 색이 없다. element·rarity 는 유채색이라 손대지 않는다.
+   기업의 overspec 변형만 중간 회색(lum ~95)인데, 검게 눕혀도 읽힌다. */
 :root:not([data-theme="dark"]) .ic[data-axis="class"],
-:root:not([data-theme="dark"]) .ic[data-axis="burst"] {
+:root:not([data-theme="dark"]) .ic[data-axis="burst"],
+:root:not([data-theme="dark"]) .ic[data-axis="weapon_type"],
+:root:not([data-theme="dark"]) .ic[data-axis="corporation"] {
   filter: brightness(0) opacity(.72);
 }
-:root[data-theme="dark"] .ic[data-axis="weapon_type"] {
-  filter: brightness(0) invert(1) opacity(.8);
-}
+/* 눌린 칩은 배경이 액센트라 위 규칙을 그대로 두면 대비가 무너진다 —
+   라이트는 액센트가 짙은 청록(흰 글자), 다크는 밝은 청록(검은 글자)이다. */
+:root:not([data-theme="dark"]) .chip[aria-pressed="true"] .ic { filter: none; }
+:root[data-theme="dark"] .chip[aria-pressed="true"] .ic { filter: brightness(0) opacity(.85); }
 
 .chip .ic { height: 15px; margin-right: -1px; }
 .bar-row .k .ic { height: 14px; }
@@ -415,10 +429,13 @@ svg.chart rect.hit { fill: transparent; }
 .hist-item .when { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 
 /* ── 전투력 계산기 탭 ───────────────────────────────────────── */
+/* 왼쪽(계정 카드 + 니케 목록 + 입력 폼)이 열 열한 개짜리 표를 안고 있어서
+   오른쪽 결과 칸보다 훨씬 넓어야 한다. 오른쪽은 고른 니케 하나만 보여준다. */
 .cp-wrap {
-  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 18px; align-items: start;
+  display: grid; grid-template-columns: minmax(0, 2.55fr) minmax(0, 1fr);
+  gap: 16px; align-items: start; font-size: 13px;
 }
+.cp-left { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; min-width: 0; }
 .cp-form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .cp-group {
   background: var(--bg-panel); border: 1px solid var(--line);
@@ -455,15 +472,6 @@ svg.chart rect.hit { fill: transparent; }
 }
 
 .cp-out { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; min-width: 0; }
-.cp-hero {
-  background: var(--bg-panel); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 16px; box-shadow: var(--shadow);
-}
-.cp-heroLbl { font-size: 12px; color: var(--ink-muted); }
-.cp-heroNum {
-  font-size: 40px; font-weight: 700; line-height: 1.1; margin: 2px 0 8px;
-  color: var(--accent); font-variant-numeric: tabular-nums;
-}
 .cp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .cp-tag {
   padding: 2px 8px; border-radius: 999px; font-size: 12px;
@@ -472,16 +480,6 @@ svg.chart rect.hit { fill: transparent; }
 .cp-tag-warn {
   background: var(--st-bad-bg); border-color: var(--st-bad-line); color: var(--st-bad-ink);
 }
-.cp-adj { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
-.cp-adjLbl { font-size: 12px; color: var(--ink-muted); margin-bottom: 6px; }
-.cp-adjRow { display: flex; flex-wrap: wrap; gap: 10px 24px; }
-.cp-adjItem { display: grid; gap: 1px; }
-.cp-adjLv { font-size: 11px; color: var(--ink-muted); }
-.cp-adjNum {
-  font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
-}
-
 .cp-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .cp-stat {
   background: var(--bg-panel); border: 1px solid var(--line); border-radius: var(--r);
@@ -505,6 +503,250 @@ svg.chart rect.hit { fill: transparent; }
   font-size: 15px; line-height: 1; padding: 2px 6px; border-radius: var(--r-s);
 }
 .cp-x:hover { background: var(--hover); color: var(--ink); }
+
+/* ── 내 계정 줄 ───────────────────────────────────────────────
+   카드가 아니라 두 줄짜리 머리글이다. 위: 계정 요약 + 불러오기 버튼,
+   아래: 콘솔 아홉 칸. 표에 세로 공간을 최대한 넘긴다. */
+.cp-account {
+  display: grid; gap: 6px;
+  background: var(--bg-panel); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 8px 10px; box-shadow: var(--shadow);
+}
+.cp-acctLine { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.cp-acctFacts {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; flex: 1; min-width: 0;
+}
+.cp-acctEmpty { font-size: 12px; color: var(--ink-muted); }
+.cp-fact { display: inline-flex; align-items: baseline; gap: 5px; font-size: 12px; }
+.cp-factLbl { color: var(--ink-muted); font-size: 11px; }
+.cp-factVal { font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* 콘솔 아홉 칸. 입력칸이지만 평소에는 테두리를 지워 숫자 줄로 보이게 한다. */
+.cp-consoleRow {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px;
+  padding-top: 6px; border-top: 1px solid var(--line);
+}
+.cp-consoleGroup { display: inline-flex; align-items: center; gap: 2px 8px; flex-wrap: wrap; }
+.cp-consoleGroup + .cp-consoleGroup {
+  padding-left: 10px; border-left: 1px solid var(--line);
+}
+.cp-consoleLbl {
+  font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink-muted); margin-right: 2px;
+}
+.cp-consoleField { display: inline-flex; align-items: center; gap: 3px; cursor: text; }
+.cp-consoleName { font-size: 11px; color: var(--ink-muted); }
+.cp-consoleField .ic { height: 14px; }
+.cp-consoleField input {
+  width: 3.2em; padding: 1px 2px; background: transparent; color: var(--ink);
+  border: 1px solid transparent; border-radius: var(--r-s);
+  font: inherit; font-size: 12px; font-weight: 700; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.cp-consoleField input:hover { border-color: var(--line-strong); }
+.cp-consoleField input:focus { border-color: var(--accent); background: var(--bg-panel); }
+/* 스피너를 지워야 숫자만 남는다 */
+.cp-consoleField input::-webkit-outer-spin-button,
+.cp-consoleField input::-webkit-inner-spin-button { appearance: none; margin: 0; }
+.cp-consoleField input { -moz-appearance: textfield; }
+
+.cp-importLink { font-size: 12px; align-self: center; white-space: nowrap; }
+.cp-importBtns { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.cp-importBtns .btn-reset { padding: 4px 9px; font-size: 12px; }
+.cp-importPaste { display: grid; gap: 6px; margin-top: 4px; }
+.cp-importPaste textarea {
+  width: 100%; padding: 8px 9px; background: var(--bg-panel); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  font: inherit; font-size: 12px; resize: vertical;
+}
+.cp-importPaste button { justify-self: start; }
+.cp-importStatus { margin: 10px 0 0; font-size: 12.5px; font-weight: 600; }
+.cp-account .cp-note { margin: 10px 0 0; }
+
+/* ── 보유 니케 목록 ───────────────────────────────────────────
+   열이 많아 표 자체를 한 단계 작게 쓴다. 정렬은 전투력 고정이라 헤더는 클릭 안 됨. */
+.cp-roster { display: grid; gap: 6px; }
+.cp-rosterBar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.cp-rosterBar input[type="search"] {
+  padding: 4px 8px; background: var(--bg-panel); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  font: inherit; font-size: 12px; width: 130px;
+}
+.cp-cubeSel {
+  padding: 4px 6px; background: var(--bg-panel); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s);
+  font: inherit; font-size: 12px; max-width: 130px;
+}
+/* 아이콘만 남긴 칩 — 니케 리스트 탭의 .chip 을 그대로 쓰되 라벨을 뺀다 */
+.cp-chipBar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.cp-chipGroup { display: inline-flex; gap: 2px; }
+.cp-chipGroup + .cp-chipGroup { padding-left: 8px; border-left: 1px solid var(--line); }
+.chip-ic { padding: 2px 5px; gap: 0; }
+.chip-ic .ic { height: 15px; margin: 0; }
+.cp-rosterFoot {
+  margin: 0; font-size: 11px; color: var(--ink-muted); font-variant-numeric: tabular-nums;
+}
+/* 미보유는 이름과 아이콘만 의미가 있다 */
+.cp-rosterRow.is-unowned { cursor: default; color: var(--ink-muted); }
+.cp-rosterRow.is-unowned:hover td { background: transparent; }
+.cp-rosterRow.is-unowned .ic { opacity: .45; }
+.cp-roster .cp-scroll { max-height: 460px; overflow-y: auto; }
+.cp-rosterTable { font-size: 11.5px; }
+.cp-rosterTable th, .cp-rosterTable td { padding: 3px 3px; }
+/* 머리글은 줄바꿈을 허용한다 — EN/JA 는 라벨이 길어(Collection·コレクション)
+   한 줄로 두면 배지 한 칸짜리 열이 라벨 폭에 끌려 표가 넘친다. */
+.cp-rosterTable thead th {
+  cursor: default; font-size: 10.5px; white-space: normal; line-height: 1.2;
+}
+.cp-rosterRow { cursor: pointer; }
+.cp-rosterRow:hover td, .cp-rosterRow:focus-visible td { background: var(--hover); }
+.cp-rName {
+  font-weight: 600; max-width: 102px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cp-rSkill { font-variant-numeric: tabular-nums; color: var(--ink-2); }
+/* ── 한 칸짜리 배지 ───────────────────────────────────────────
+   돌파(별)·코어강화(원)·소장품(원)·호감도(하트). 모양과 색이 종류를, 가운데
+   숫자가 단계를 나타낸다. 색만으로 뜻이 갈리지 않게 hover 에 원래 표기를 붙인다.
+   숫자는 도형 바깥으로 조금 삐져나오므로 도형 색으로 후광을 둘러 붙여 둔다. */
+.cp-badge {
+  position: relative; display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; vertical-align: -5px;
+}
+.cp-badge::before { content: ''; position: absolute; inset: 0; background: currentColor; }
+.cp-badge > b {
+  position: relative; font-size: 10px; font-weight: 800; line-height: 1;
+  color: var(--bd-ink); font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 2px currentColor, 0 0 3px currentColor, 0 0 4px currentColor;
+}
+.cp-badge.is-star::before {
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+}
+.cp-badge.is-round::before { border-radius: 50%; }
+.cp-badge.is-heart::before {
+  --heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.2 3.7 12.9a5.6 5.6 0 1 1 7.9-7.9l.4.4.4-.4a5.6 5.6 0 1 1 7.9 7.9z'/%3E%3C/svg%3E");
+  -webkit-mask: var(--heart) center / contain no-repeat;
+  mask: var(--heart) center / contain no-repeat;
+}
+.cp-badge.is-heart > b { transform: translateY(-1px); }
+
+.cp-badge.is-none  { color: var(--bd-none); }
+.cp-badge.is-break { color: var(--bd-break); }
+.cp-badge.is-core  { color: var(--bd-core); }
+.cp-badge.is-r     { color: var(--bd-r); }
+.cp-badge.is-sr    { color: var(--bd-sr); }
+.cp-badge.is-fav   { color: var(--bd-fav); }
+.cp-badge.is-bond  { color: #e0243c; }
+.cp-rBadge { text-align: center; padding-left: 2px; padding-right: 2px; }
+.cp-rosterRow.is-unowned .cp-badge { opacity: .4; }
+
+.cp-rCube { text-align: right; white-space: nowrap; }
+.cp-cubeName {
+  display: inline-block; max-width: 46px; margin-right: 4px;
+  overflow: hidden; text-overflow: ellipsis; vertical-align: bottom;
+}
+.cp-cubeLv { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.cp-rCp { font-weight: 700; }
+.cp-rIcons { display: flex; align-items: center; gap: 3px; }
+.cp-rIcons .ic { height: 14px; }
+
+/* 장비 4부위 2×2. 위가 머리·몸, 아래가 팔·다리라 구분자를 두지 않는다. */
+.cp-gearGrid {
+  display: grid; grid-template-columns: repeat(2, 15px); gap: 1px;
+  font-variant-numeric: tabular-nums;
+}
+.cp-gearCell {
+  text-align: center; font-size: 10.5px; line-height: 15px; border-radius: 2px;
+  color: var(--ink-muted); background: var(--bg-raise);
+}
+.cp-gearCell.is-ol { font-weight: 700; color: var(--bd-ink); background: var(--gr-ol); }
+.cp-gearCell.is-t9 { font-weight: 700; color: var(--bd-ink); background: var(--gr-t9); }
+
+/* ── 상세정보 카드 (오른쪽 위) ────────────────────────────────
+   행 넷: 최종 전투력 3종 / 오버로드 종합 / 부위별 상세 / 1단계당 증가. */
+.cp-detail {
+  background: var(--bg-panel); border: 1px solid var(--line);
+  border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden;
+}
+.cp-detailHead {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: 10px 12px; border-bottom: 1px solid var(--line); background: var(--bg-raise);
+}
+.cp-detailWho { display: grid; gap: 5px; min-width: 0; flex: 1; }
+.cp-detailName { font-size: 14px; font-weight: 700; }
+.cp-editBtn {
+  flex: none; border: 1px solid var(--line-strong); background: var(--bg-panel);
+  color: var(--ink-2); border-radius: var(--r-s); cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 6px 8px;
+}
+.cp-editBtn:hover { background: var(--hover); color: var(--ink); border-color: var(--accent); }
+
+.cp-detailRow { padding: 10px 12px; border-top: 1px solid var(--line); }
+.cp-detailRow:first-of-type { border-top: 0; }
+.cp-rowLbl {
+  margin: 0 0 8px; font-size: 11px; font-weight: 700; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--ink-muted);
+}
+.cp-detailRow .cp-note { margin: 8px 0 0; }
+
+/* 1행 — 최종 전투력 3종 */
+.cp-cpRow { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: flex-end; }
+.cp-cpCell { display: grid; gap: 1px; }
+.cp-cpLbl { font-size: 11px; color: var(--ink-muted); }
+.cp-cpNum { font-size: 17px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.cp-cpCell.is-now .cp-cpNum { font-size: 24px; font-weight: 800; color: var(--accent); }
+
+/* 2행 — 오버로드 옵션 종합 */
+.cp-olList { display: grid; gap: 3px; }
+.cp-olItem {
+  display: grid; grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: baseline; gap: 8px; font-size: 12px;
+}
+.cp-olName { font-weight: 600; }
+.cp-olVal { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; }
+.cp-olParts { font-size: 11px; color: var(--ink-muted); justify-self: end; }
+
+/* 3행 — 부위별 상세. 칩이 줄바꿈해서 좁은 단에서도 넘치지 않는다. */
+.cp-olSlotRow {
+  display: flex; align-items: baseline; gap: 8px; padding: 3px 0; font-size: 11.5px;
+}
+.cp-olSlotRow + .cp-olSlotRow { border-top: 1px dotted var(--line); }
+.cp-olSlot { flex: none; width: 30px; color: var(--ink-muted); font-size: 11px; }
+.cp-olChips { display: flex; flex-wrap: wrap; gap: 4px 6px; }
+.cp-olChip {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  padding: 1px 6px; border-radius: 999px;
+  background: var(--bg-raise); border: 1px solid var(--line);
+}
+
+/* 4행 — 한 단계당 전투력 증가 */
+.cp-marginTbl { font-size: 12px; }
+.cp-marginTbl th, .cp-marginTbl td { padding: 4px 7px; }
+.cp-marginTbl thead th { cursor: default; }
+.cp-marginTbl tbody tr { cursor: default; }
+
+/* ── 입력 폼 팝업 ───────────────────────────────────────────── */
+.cp-modal {
+  position: fixed; inset: 0; z-index: 60; display: flex;
+  align-items: center; justify-content: center; padding: 20px;
+  background: rgba(0, 0, 0, .55);
+}
+.cp-modalBox {
+  background: var(--bg-panel); border: 1px solid var(--line-strong);
+  border-radius: var(--r); box-shadow: 0 18px 48px rgba(0, 0, 0, .4);
+  width: min(680px, 100%); max-height: 88vh; display: flex; flex-direction: column;
+}
+.cp-modalBox:focus { outline: none; }
+.cp-modalHead {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 12px 14px; border-bottom: 1px solid var(--line);
+}
+.cp-modalHead h3 { margin: 0; font-size: 14px; }
+.cp-modalBody { padding: 14px; overflow-y: auto; }
+.cp-modalFoot {
+  padding: 10px 14px; border-top: 1px solid var(--line);
+  display: flex; justify-content: flex-end;
+}
 
 @media (max-width: 900px) {
   .cp-wrap { grid-template-columns: minmax(0, 1fr); }

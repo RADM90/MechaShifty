@@ -43,7 +43,7 @@ const STR = {
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オーバーロード'],
-  'tab.intercept': ['특특요 확률', 'Anomaly drops', '異常個体迎撃'],
+  'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体迎撃'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -69,6 +69,12 @@ const STR = {
     'Research levels in the Outpost Recycling Room. Only the ones matching this Nikke\'s class and corporation apply.',
     '前哨基地リサイクルルームの研究レベル。そのニケのクラス・企業に対応する研究のみ適用されます。',
   ],
+  'cp.consoleShort': ['콘솔', 'Console', 'コンソール'],
+  'cp.consoleOf': [
+    n => `${n} 연구 레벨`,
+    n => `${n} research level`,
+    n => `${n} 研究レベル`,
+  ],
   'cp.console_공용': ['공용', 'Shared', '共用'],
   'cp.console_클래스': ['클래스', 'Class', 'クラス'],
   'cp.console_기업': ['기업', 'Corporation', '企業'],
@@ -86,7 +92,6 @@ const STR = {
   ],
   'cp.noOption': ['옵션 없음', 'No option', 'オプションなし'],
   'cp.reset': ['입력 초기화', 'Reset inputs', '入力初期化'],
-  'cp.current': [n => `현재 전투력 (레벨 ${n})`, n => `Combat power (level ${n})`, n => `戦闘力（レベル ${n}）`],
   'cp.atk': ['공격력', 'ATK', '攻撃力'],
   'cp.def': ['방어력', 'DEF', '防御力'],
   'cp.defOverride': [
@@ -104,7 +109,32 @@ const STR = {
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
     (s, u, n) => `スキル係数 ${s} · 優越コードダメージ ${u} · その他のOP ${n}`,
   ],
-  'cp.adjusted': ['보정 전투력', 'Adjusted CP', '補正戦闘力'],
+  'cp.finalCp': ['최종 전투력', 'Combat power', '最終戦闘力'],
+  'cp.nowLv': [n => `현재 Lv.${n}`, n => `Now · Lv.${n}`, n => `現在 Lv.${n}`],
+  'cp.edit': ['입력 수정', 'Edit inputs', '入力を編集'],
+  'cp.editTitle': ['입력 수정', 'Edit inputs', '入力を編集'],
+  'cp.done': ['완료', 'Done', '完了'],
+  'cp.olTotal': ['오버로드 옵션 종합', 'Overload options — total', 'オーバーロードOP 合計'],
+  'cp.olBySlot': ['장비별 오버로드 옵션', 'Overload options by slot', '装備別オーバーロードOP'],
+  'cp.olExact': [
+    v => `반올림 전 ${v}`,
+    v => `${v} before rounding`,
+    v => `四捨五入前 ${v}`,
+  ],
+  'cp.olNone': [
+    '오버로드 장비가 없습니다.',
+    'No overload gear equipped.',
+    'オーバーロード装備がありません。',
+  ],
+  'cp.margin': ['1단계당 전투력 증가', 'CP gain per step', '1段階あたりの戦闘力増加'],
+  'cp.marginHint': [
+    '콘솔은 1레벨, 오버로드 옵션은 1단계 올렸을 때 늘어나는 전투력입니다.',
+    'How much CP one more console level — or one more overload option step — adds.',
+    'コンソールは1レベル、オーバーロードOPは1段階上げたときに増える戦闘力です。',
+  ],
+  'cp.marginWhat': ['항목', 'Item', '項目'],
+  'cp.marginElem': ['우코 옵션 +1', 'Elemental option +1', '有利コードOP +1'],
+  'cp.marginOther': ['그 외 옵션 +1', 'Other option +1', 'その他OP +1'],
   'cp.lv': [n => `Lv.${n}`, n => `Lv.${n}`, n => `Lv.${n}`],
   'cp.cp': ['전투력', 'CP', '戦闘力'],
   'cp.compare': ['니케 비교', 'Compare Nikkes', 'ニケ比較'],
@@ -118,6 +148,74 @@ const STR = {
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
     'No base stats available for this combination — check rarity, class and level.',
     'この組み合わせの基本ステータス資料がありません（レア・クラス・レベルを確認してください）。',
+  ],
+
+  /* 내 계정 불러오기 (roster.js 에서 ctx.t 로 받아 쓴다) */
+  'im.desc': [
+    'Blablalink 에서 뽑아 온 내 니케 데이터를 넣으면 보유 니케의 전투력을 한 번에 볼 수 있습니다. '
+      + '수집은 Tampermonkey 유저스크립트(또는 북마클릿)가 하고, 받은 자료는 이 브라우저 밖으로 나가지 않습니다.',
+    'Drop in the roster exported from Blablalink to see the combat power of every Nikke you own. '
+      + 'A Tampermonkey userscript (or a bookmarklet) does the collecting, and what you import never leaves this browser.',
+    'Blablalink から書き出した自分のニケデータを読み込むと、所持ニケの戦闘力をまとめて確認できます。'
+      + '収集は Tampermonkey ユーザースクリプト（またはブックマークレット）が行い、読み込んだ内容はこのブラウザの外に出ません。',
+  ],
+  'im.guide': ['수집 스크립트 설치 방법 →', 'How to install the collector →', '収集スクリプトの導入手順 →'],
+  'im.file': ['JSON 파일 열기', 'Open JSON file', 'JSONファイルを開く'],
+  'im.paste': ['붙여넣기', 'Paste', '貼り付け'],
+  'im.pasteHint': ['복사한 JSON 을 붙여 넣으세요', 'Paste the copied JSON here', 'コピーしたJSONを貼り付け'],
+  'im.pasteOk': ['불러오기', 'Import', '読み込む'],
+  'im.clear': ['불러온 자료 지우기', 'Clear imported data', '読み込んだデータを消す'],
+  'im.fromScript': ['수집 스크립트', 'the collector', '収集スクリプト'],
+  'im.fromPaste': ['붙여넣기', 'paste', '貼り付け'],
+  'im.received': [
+    (n, from) => `${from}에서 니케 ${n}명을 불러왔습니다.`,
+    (n, from) => `Imported ${n} Nikkes from ${from}.`,
+    (n, from) => `${from}からニケ${n}体を読み込みました。`,
+  ],
+  'im.bad': [
+    '읽을 수 없는 자료입니다. 수집 스크립트가 만든 JSON 이 맞는지 확인해 주세요.',
+    'Could not read that. Make sure it is the JSON produced by the collector.',
+    '読み込めませんでした。収集スクリプトが作成したJSONか確認してください。',
+  ],
+  'im.local': [
+    '불러온 자료는 이 브라우저에만 저장됩니다. 서버로 보내지 않습니다.',
+    'Imported data is stored in this browser only — nothing is sent to a server.',
+    '読み込んだデータはこのブラウザにのみ保存され、サーバーには送信されません。',
+  ],
+  'im.synchro': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
+  'im.created': ['계정 생성', 'Account created', 'アカウント作成'],
+  'im.collected': ['수집 시각', 'Collected', '収集日時'],
+  'im.colBasic': ['기본', 'Basics', '基本'],
+  'im.colSkills': ['스킬', 'Skills', 'スキル'],
+  'im.colGear': ['장비', 'Gear', '装備'],
+  'im.colCube': ['큐브', 'Cube', 'キューブ'],
+  // 영어 'Collection' 은 한 단어라 줄바꿈이 안 돼 배지 한 칸짜리 열을 넓힌다
+  'im.colColl': ['소장품', 'Coll.', 'コレクション'],
+  'im.colBond': ['호감도', 'Bond', '好感度'],
+  'im.step': ['단계', ' stage', '段階'],
+  'im.filter': ['니케 검색', 'Search Nikkes', 'ニケを検索'],
+  'im.shown': [
+    (n, owned, all) => `${n}명 표시 · 보유 ${owned} / 전체 ${all}`,
+    (n, owned, all) => `${n} shown · ${owned} owned of ${all}`,
+    (n, owned, all) => `${n}体表示・所持 ${owned} / 全 ${all}`,
+  ],
+  'im.pick': ['클릭하면 이 니케를 계산기에 넣습니다', 'Click to load this Nikke into the form', 'クリックで計算機に読み込みます'],
+  'im.noMatch': ['조건에 맞는 니케가 없습니다.', 'No Nikke matches.', '条件に合うニケがありません。'],
+  'im.colNikke': ['니케', 'Nikke', 'ニケ'],
+  'im.colLevel': ['레벨', 'Level', 'レベル'],
+  'im.colGrade': ['돌파', 'Break', '突破'],
+  'im.unknown': [
+    n => `사이트가 모르는 니케 ${n}명은 건너뛰었습니다.`,
+    n => `Skipped ${n} Nikkes this site does not know yet.`,
+    n => `サイトが未収録のニケ${n}体はスキップしました。`,
+  ],
+  'im.gearNote': [
+    '장비 칸은 위가 머리·몸, 아래가 팔·다리이고 숫자는 강화 단계입니다. 분홍이 오버로드, 주황이 9티어 기업. '
+      + '오버로드 옵션이 하나도 없는 장비는 9티어로 잡히니 다르면 입력 수정에서 고치세요.',
+    'In the gear cell the top row is head and body, the bottom row arm and leg; the number is the enhance step. '
+      + 'Pink is overload, orange is tier-9 manufacturer. Gear with no overload option reads as tier-9 — fix it in Edit inputs if that is wrong.',
+    '装備欄は上段が頭・胴、下段が腕・脚で、数字は強化段階です。ピンクがオーバーロード、オレンジが9ティア企業。'
+      + 'OPが一つも無い装備は9ティアとして扱われるので、違う場合は入力を編集してください。',
   ],
 
   /* 전초기지 탭 (outpost.js 에서 ctx.t 로 받아 쓴다) */
@@ -345,14 +443,14 @@ const STR = {
     'Every boss except Kraken drops the manufacturer-gear box',
     'クラーケン以外のボスは企業装備ランダムボックスが出る',
   ],
-  'ic.burst': ['풀버스트', 'Full Burst', 'フルバースト'],
-  'ic.burstOff': ['미사용', 'No', 'なし'],
-  'ic.burstOn': ['사용', 'Yes', 'あり'],
+  'ic.burst': ['풀버스트 이벤트', 'Full Burst event', 'フルバーストイベント'],
+  'ic.burstOff': ['평상시', 'Normal day', '通常日'],
+  'ic.burstOn': ['적용일', 'Event day', '適用日'],
   'ic.step': ['단계', 'Step', '段階'],
   'ic.gamesNote': [
-    (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 풀버스트를 띄우면 진입당 2게임이 된다.`,
-    (e, g) => `${e} entries a day → ${g} games. Full Burst doubles the games per entry.`,
-    (e, g) => `1日${e}回進入・${g}ゲーム。フルバースト成立で進入あたり2ゲームになる。`,
+    (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 풀버스트는 골라 쓰는 게 아니라 이벤트로 적용되는 날이 따로 있고, 그날은 진입당 2게임이 된다.`,
+    (e, g) => `${e} entries a day → ${g} games. Full Burst is not something you switch on — it applies on event days, and those days give 2 games per entry.`,
+    (e, g) => `1日${e}回進入・${g}ゲーム。フルバーストは自分で選ぶものではなくイベントとして適用される日があり、その日は進入あたり2ゲームになる。`,
   ],
 
   'ic.view': ['보기', 'View', '表示'],
@@ -671,15 +769,25 @@ const ICON_DIR = {
 /* overspec 변형이 존재하는 기업만. 실제 OVERSPEC 니케 4명도 이 셋 안에 있다. */
 const CORP_OVERSPEC = new Set(['ELYSION', 'MISSILIS', 'TETRA']);
 
+/* 테두리를 뺀 판(_wob)과 단순화한 판(_simple)이 작은 크기에서 훨씬 잘 읽힌다.
+   무기 쪽만 파일명이 대문자다 (AR_simple.webp). overspec 변형은 _simple 계열로만
+   있어서, 그때는 그 파일을 쓴다 — 기업을 구분하는 것보다 오버스펙 표시가 중요하다. */
+const ICON_VARIANT = { burst: '_simple', weapon_type: '_simple' };
+
 export function iconSrc(axis, code, overspec) {
   if (!code) return null;
-  const file = String(code).toLowerCase();
   if (axis === 'corporation') {
-    const ov = overspec && CORP_OVERSPEC.has(code) ? '_simple_overspec' : '_simple';
-    return `assets/icons/company/${file}${ov}.png`;
+    const file = String(code).toLowerCase();
+    return overspec && CORP_OVERSPEC.has(code)
+      ? `assets/icons/company/${file}_simple_overspec.png`
+      : `assets/icons/company/${file}_wob.webp`;
   }
   const dir = ICON_DIR[axis];
-  return dir ? `assets/icons/${dir}/${file}.webp` : null;
+  if (!dir) return null;
+  const variant = ICON_VARIANT[axis] || '';
+  const file = variant && axis === 'weapon_type'
+    ? String(code).toUpperCase() : String(code).toLowerCase();
+  return `assets/icons/${dir}/${file}${variant}.webp`;
 }
 
 /* 아이콘은 항상 텍스트 라벨 옆에 붙는 장식이라 alt 는 비운다.
@@ -1309,7 +1417,7 @@ function render() {
   if (state.tab === 'calc') {
     writeHash();
     import('./calc.js').then(m => m.renderCalc($('#calc'),
-      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf }));
+      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl }));
     return;
   }
 
