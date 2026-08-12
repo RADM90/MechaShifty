@@ -312,14 +312,31 @@
    "file": "module_settings.json",
    "group": "content",
    "title": {
-    "ko": "이상 개체 모듈 확률 설정값",
-    "en": "Anomaly module drop rates",
-    "ja": "異常個体モジュール確率"
+    "ko": "특특요 수급량 (3.5주년 이후)",
+    "en": "Anomaly Interception drop rates (post-3.5th)",
+    "ja": "異常個体迎撃 排出率（3.5周年以降）"
    },
    "note": {
-    "ko": "단계 1~9의 모듈피스 개수와 랜덤박스 확률. 확률분포 계산의 원천값이다.",
-    "en": "Module pieces and random-box probabilities for steps 1–9 — the base values behind the distribution.",
-    "ja": "段階1〜9のピース数とランダムボックス確率。分布計算のもとになる値。"
+    "ko": "이상 개체 요격전(특특요) 단계 1~9의 모듈피스 개수와 랜덤박스 확률. 확률분포 계산의 원천값이다.",
+    "en": "Module pieces and random-box probabilities for Anomaly Interception steps 1–9 — the base values behind the distribution.",
+    "ja": "異常個体迎撃戦 段階1〜9のピース数とランダムボックス確率。分布計算のもとになる値。"
+   },
+   "rows": 9,
+   "columns": 8
+  },
+  {
+   "key": "module_settings_pre35",
+   "file": "module_settings_pre35.json",
+   "group": "content",
+   "title": {
+    "ko": "특특요 수급량 (3.5주년 이전)",
+    "en": "Anomaly Interception drop rates (pre-3.5th)",
+    "ja": "異常個体迎撃 排出率（3.5周年以前）"
+   },
+   "note": {
+    "ko": "3.5주년 상향 전의 같은 표. 위 표와 비교하면 무엇이 얼마나 올랐는지 알 수 있다.",
+    "en": "The same table before the 3.5th-anniversary buff — compare with the one above to see what changed.",
+    "ja": "3.5周年の上方修正前の同じ表。上の表と比べると何がどれだけ増えたか分かる。"
    },
    "rows": 9,
    "columns": 8

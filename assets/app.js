@@ -32,9 +32,9 @@ export const axisLabel = axis => t('ax.' + axis);
    검색 안내 예시도 언어별로 다르다.                                  */
 const LANGS = ['ko', 'en', 'ja'];
 const STR = {
-  'app.title': ['니케 리스트 · 픽업일정', 'NIKKE List · Banner Schedule', 'ニケリスト・ピックアップ日程'],
-  'app.brand': ['니케 리스트', 'NIKKE List', 'ニケリスト'],
-  'app.brandSub': ['· 픽업일정', '· Banners', '・ピックアップ'],
+  'app.title': ['메카시프티 · Mecha Shifty', 'Mecha Shifty', 'メカシフティ · Mecha Shifty'],
+  'app.brand': ['메카시프티', 'Mecha Shifty', 'メカシフティ'],
+  'app.brandSub': ['· Mecha Shifty', '', '· Mecha Shifty'],
 
   'tab.nikkes': ['니케 리스트', 'Nikkes', 'ニケ一覧'],
   'tab.pickups': ['픽업일정', 'Banners', 'ピックアップ'],
@@ -43,6 +43,7 @@ const STR = {
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オーバーロード'],
+  'tab.intercept': ['특특요 확률', 'Anomaly drops', '異常個体迎撃'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -327,7 +328,136 @@ const STR = {
   'np.keep': ['효과 유지', 'Keep', '維持'],
   'np.apply': ['효과 변경', 'Change', '変更'],
 
-  /* 원본 데이터 탭 (rawdata.js 에서 ctx.t 로 받아 쓴다) */
+  /* 특특요 탭 (intercept.js 에서 ctx.t 로 받아 쓴다) */
+  'ic.loading': ['수급량 표를 불러오는 중…', 'Loading drop-rate tables…', '排出率表を読み込み中…'],
+
+  'ic.conditions': ['조건', 'Conditions', '条件'],
+  'ic.mode': ['진입 모드', 'Boss', '進入モード'],
+  'ic.modeModule': ['모듈 (크라켄)', 'Modules (Kraken)', 'モジュール (クラーケン)'],
+  'ic.modeModuleFull': [
+    '크라켄에 들어가면 모듈 랜덤박스가 뜬다',
+    'Kraken drops the module random box',
+    'クラーケンに入るとモジュールランダムボックスが出る',
+  ],
+  'ic.modeEquip': ['기업장비 (그 외)', 'Gear (other bosses)', '企業装備 (その他)'],
+  'ic.modeEquipFull': [
+    '크라켄을 뺀 나머지 보스는 기업장비 랜덤박스가 뜬다',
+    'Every boss except Kraken drops the manufacturer-gear box',
+    'クラーケン以外のボスは企業装備ランダムボックスが出る',
+  ],
+  'ic.burst': ['풀버스트', 'Full Burst', 'フルバースト'],
+  'ic.burstOff': ['미사용', 'No', 'なし'],
+  'ic.burstOn': ['사용', 'Yes', 'あり'],
+  'ic.step': ['단계', 'Step', '段階'],
+  'ic.gamesNote': [
+    (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 풀버스트를 띄우면 진입당 2게임이 된다.`,
+    (e, g) => `${e} entries a day → ${g} games. Full Burst doubles the games per entry.`,
+    (e, g) => `1日${e}回進入・${g}ゲーム。フルバースト成立で進入あたり2ゲームになる。`,
+  ],
+
+  'ic.view': ['보기', 'View', '表示'],
+  'ic.axis': ['확률 종류', 'Probability', '確率の種類'],
+  'ic.axisPmf': ['정확히 k개', 'Exactly k', 'ちょうどk個'],
+  'ic.axisCum': ['k개 이상', 'k or more', 'k個以上'],
+  'ic.withPieces': ['모듈피스 확정분 포함', 'Include guaranteed pieces', 'ピース確定分を含む'],
+  'ic.withPiecesHint': [
+    '모듈피스는 확률이 아니라 매 게임 확정으로 들어온다. 켜면 피스 100개마다 완성되는 모듈 수만큼 분포가 통째로 오른쪽으로 밀린다 — 하루에 실제로 늘어나는 모듈 총 개수가 된다. (남는 피스가 다음날로 이월되는 것은 반영하지 않는다)',
+    'Module pieces are guaranteed, not rolled. Turning this on shifts the whole distribution right by the modules those pieces complete, giving the total modules gained in a day. Leftover pieces carrying into the next day are not modelled.',
+    'モジュールピースは確率ではなく毎ゲーム確定で入る。オンにするとピース100個ごとに完成するモジュール数だけ分布が右にずれ、1日に実際に増える総数になる。余ったピースの翌日繰り越しは考慮しない。',
+  ],
+
+  'ic.about': ['이 표에 대해', 'About', 'この表について'],
+  'ic.aboutModel': [
+    '모듈 모드는 게임 1회 분포를 게임 수만큼 합성곱한 정확한 값이고, 장비 모드는 이항분포 B(게임 수, 장비박스 출현율)다. 근사가 아니다.',
+    'Module mode is the exact distribution — one game convolved with itself once per game. Gear mode is the binomial B(games, gear-box rate). Neither is an approximation.',
+    'モジュールモードは1ゲーム分布をゲーム数だけ畳み込んだ厳密値、装備モードは二項分布 B(ゲーム数, 装備箱出現率)。近似ではない。',
+  ],
+  'ic.aboutSource': [
+    '수급량 표 두 개(3.5주년 이전 / 이후)에서 그때그때 계산한다. 워크북에 들어 있는 완성 분포표와 소수점 아래 9자리까지 일치하는 것을 확인했다.',
+    'Computed on the fly from the two drop-rate tables (pre / post 3.5th anniversary). Matches the pre-computed tables in the workbook to nine decimal places.',
+    '2つの排出率表（3.5周年以前／以降）からその都度計算する。ワークブックの完成済み分布表と小数9桁まで一致することを確認済み。',
+  ],
+
+  'ic.pre': ['3.5주년 이전', 'Pre-3.5th', '3.5周年以前'],
+  'ic.post': ['3.5주년 이후', 'Post-3.5th', '3.5周年以降'],
+  'ic.delta': ['변화', 'Change', '変化'],
+  'ic.deltaPp': ['차이 (%p)', 'Diff (pp)', '差 (%p)'],
+  'ic.ratio': ['배율', 'Ratio', '倍率'],
+  'ic.item': ['항목', 'Item', '項目'],
+  'ic.shape': ['분포', 'Shape', '分布'],
+  'ic.wasValue': [v => `이전 ${v}`, v => `was ${v}`, v => `以前 ${v}`],
+
+  'ic.summary': ['3.5주년 전후 비교', 'Before vs after the 3.5th', '3.5周年の前後比較'],
+  'ic.summaryModule': [
+    (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄에서 나오는 하루치 모듈.`,
+    (s, g) => `Step ${s}, ${g} games a day — modules from Kraken in one day.`,
+    (s, g) => `${s}段階・1日${g}ゲーム。クラーケンから1日に出るモジュール。`,
+  ],
+  'ic.summaryEquip': [
+    (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄을 뺀 보스에서 나오는 하루치 기업장비 박스.`,
+    (s, g) => `Step ${s}, ${g} games a day — gear boxes from the non-Kraken bosses in one day.`,
+    (s, g) => `${s}段階・1日${g}ゲーム。クラーケン以外のボスから1日に出る企業装備箱。`,
+  ],
+  'ic.mean': ['하루 기대값 E[X]', 'Daily mean E[X]', '1日期待値 E[X]'],
+  'ic.sd': ['표준편차 σ', 'Std. dev. σ', '標準偏差 σ'],
+  'ic.piecesTotal': ['하루 모듈피스', 'Pieces a day', '1日のピース'],
+  'ic.totalModules': ['하루 총 완성 모듈', 'Total modules a day', '1日の完成モジュール'],
+  'ic.eachKind': ['노리는 1종 기대값', 'One specific piece', '狙った1種の期待値'],
+  'ic.perMonth': ['30일 누적 기대값', 'Over 30 days', '30日累計'],
+  'ic.piecesNote': [
+    (ad, al, bd, bl, per) => `모듈피스는 ${per}개마다 모듈 1개가 된다 — 이전 ${ad}개(+${al}피스 남음), 이후 ${bd}개(+${bl}피스 남음). 이 몫은 확률이 아니라 확정이라 아래 분포에는 들어가지 않는다.`,
+    (ad, al, bd, bl, per) => `Every ${per} pieces complete one module — pre ${ad} (+${al} left over), post ${bd} (+${bl} left over). That part is guaranteed, so it is not part of the distribution below.`,
+    (ad, al, bd, bl, per) => `ピースは${per}個ごとにモジュール1個になる — 以前 ${ad}個(+${al}余り)、以降 ${bd}個(+${bl}余り)。確定分なので下の分布には含まれない。`,
+  ],
+  'ic.eachNote': [
+    n => `장비 랜덤박스에서 나오는 종류는 ${n}가지(4부위 × 5기업)이고 전부 같은 확률이다.`,
+    n => `The gear box rolls one of ${n} kinds (4 slots × 5 manufacturers), all equally likely.`,
+    n => `装備箱から出る種類は${n}通り（4部位×5企業）で、すべて同確率。`,
+  ],
+
+  'ic.params': [s => `${s}단계 수급량`, s => `Step ${s} drop rates`, s => `${s}段階の排出率`],
+  'ic.paramsHint': [
+    '아래 분포는 전부 이 값들에서 나온다.',
+    'Everything below is derived from these values.',
+    '以下の分布はすべてこの値から出る。',
+  ],
+  'ic.paramsFoot': [
+    '흐린 줄은 지금 보고 있는 모드에서 쓰이지 않는 값이다.',
+    'Dimmed rows are not used by the mode you are viewing.',
+    '薄い行は今のモードでは使われない値。',
+  ],
+  'ic.pPieces': ['모듈피스 / 게임', 'Module pieces / game', 'ピース / ゲーム'],
+  'ic.pBox': ['모듈박스 출현율 (%)', 'Module box rate (%)', 'モジュール箱 出現率 (%)'],
+  'ic.pP1': ['박스에서 1개 (%)', '1 module from box (%)', '箱から1個 (%)'],
+  'ic.pP2': ['박스에서 2개 (%)', '2 modules from box (%)', '箱から2個 (%)'],
+  'ic.pP3': ['박스에서 3개 (%)', '3 modules from box (%)', '箱から3個 (%)'],
+  'ic.pEquip': ['장비박스 출현율 (%)', 'Gear box rate (%)', '装備箱 出現率 (%)'],
+
+  'ic.distPmf': ['일일 획득 확률 분포', 'Daily distribution', '1日の獲得確率分布'],
+  'ic.distCum': ['일일 누적 확률 분포', 'Daily cumulative distribution', '1日の累積確率分布'],
+  'ic.distPmfHint': [
+    u => `하루에 ${u} 정확히 k개 얻을 확률(%).`,
+    u => `Chance (%) of getting exactly k ${u} in a day.`,
+    u => `1日にちょうどk個の${u}を得る確率(%)。`,
+  ],
+  'ic.distCumHint': [
+    u => `하루에 ${u} k개 이상 얻을 확률(%). '적어도 몇 개는 나온다'를 보려면 이쪽.`,
+    u => `Chance (%) of getting at least k ${u} in a day — use this to read "at least N".`,
+    u => `1日にk個以上の${u}を得る確率(%)。「最低でも何個」を見るならこちら。`,
+  ],
+  /* 한국어는 목적격 조사까지 붙여 둔다 (모듈'을' / 장비 박스'를') */
+  'ic.unitModule': ['모듈을', 'modules', 'モジュール'],
+  'ic.unitEquip': ['장비 박스를', 'gear boxes', '装備箱'],
+  'ic.k': ['획득 수 k', 'Count k', '獲得数 k'],
+  'ic.kAtLeast': ['k개 이상', 'k or more', 'k個以上'],
+
+  'ic.bySteps': ['단계별 기대값', 'Mean by step', '段階別の期待値'],
+  'ic.byStepsHint': [
+    '지금 조건 그대로 단계만 바꿔가며 본 하루 기대값. 단계 숫자를 누르면 그 단계로 옮겨간다.',
+    'Daily mean at every step under the current settings. Click a step number to switch to it.',
+    '今の条件のまま段階だけ変えた1日期待値。段階の数字を押すとその段階に切り替わる。',
+  ],
+
   'raw.loading': ['표를 불러오는 중…', 'Loading table…', 'テーブルを読み込み中…'],
   'raw.rows': [n => `${n.toLocaleString()}행`, n => `${n.toLocaleString()} rows`, n => `${n.toLocaleString()}行`],
   'raw.search': ['표 안에서 검색', 'Search this table', 'この表を検索'],
@@ -1150,13 +1280,19 @@ function render() {
   $('#panel-calc').hidden = state.tab !== 'calc';
   $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#panel-nipago').hidden = state.tab !== 'nipago';
+  $('#panel-intercept').hidden = state.tab !== 'intercept';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['raw', 'calc', 'outpost', 'nipago'].includes(state.tab);
+  $('.filters').hidden = ['raw', 'calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
 
   if (state.tab === 'nipago') {
     writeHash();
     import('./nipago.js').then(m => m.renderNipago($('#nipago'), { t, L, lang: lang() }));
+    return;
+  }
+  if (state.tab === 'intercept') {
+    writeHash();
+    import('./intercept.js').then(m => m.renderIntercept($('#intercept'), { t, L, lang: lang() }));
     return;
   }
   if (state.tab === 'outpost') {

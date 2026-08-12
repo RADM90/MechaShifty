@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>니케 리스트 · 픽업일정</title>
-<meta name="description" content="승리의 여신: 니케 캐릭터 목록과 역대·예정 픽업 배너 일정을 필터링해서 보는 도구">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230f1e35'/%3E%3Cpath d='M8 23V9h3.4l6 8.6V9H21v14h-3.4l-6-8.6V23z' fill='%2300c8c8'/%3E%3C/svg%3E">
+<title>메카시프티 · Mecha Shifty</title>
+<meta name="description" content="승리의 여신: 니케 도구 모음 — 캐릭터 목록·픽업일정·통계·전투력 계산기·전초기지·오버로드 옵션작·특특요 확률">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/title/MechaShifty-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/title/MechaShifty-192.png">
+<link rel="apple-touch-icon" href="assets/icons/title/MechaShifty-180.png">
 <link rel="stylesheet" href="assets/style.css">
 <script>
   /* 모듈 스크립트는 defer 라 늦게 뜬다. 첫 페인트 전에 테마를 확정해서
@@ -19,8 +21,8 @@
 <header class="topbar">
   <div class="topbar-in">
     <h1 class="brand">
-      <span data-i18n="app.brand">니케 리스트</span>
-      <span class="brand-sub" data-i18n="app.brandSub">· 픽업일정</span>
+      <span data-i18n="app.brand">메카시프티</span>
+      <span class="brand-sub" data-i18n="app.brandSub">· Mecha Shifty</span>
     </h1>
     <div class="topbar-right">
       <div class="langswitch" role="group" data-i18n-aria="ui.langGroup" aria-label="표시 언어">
@@ -41,6 +43,7 @@
     <button type="button" role="tab" data-tab="calc" aria-selected="false" data-i18n="tab.calc">전투력 계산기</button>
     <button type="button" role="tab" data-tab="outpost" aria-selected="false" data-i18n="tab.outpost">전초기지</button>
     <button type="button" role="tab" data-tab="nipago" aria-selected="false" data-i18n="tab.nipago">오버로드 옵션작</button>
+    <button type="button" role="tab" data-tab="intercept" aria-selected="false" data-i18n="tab.intercept">특특요 확률</button>
     <button type="button" role="tab" data-tab="raw" aria-selected="false" data-i18n="tab.raw">원본 데이터</button>
   </nav>
 </header>
@@ -136,7 +139,12 @@
       <div id="nipago" class="npwrap"></div>
     </section>
 
-    <!-- ── 탭 7: 원본 데이터 ──────────────────────────────── -->
+    <!-- ── 탭 7: 특특요 확률분포 ──────────────────────────── -->
+    <section id="panel-intercept" class="panel" hidden>
+      <div id="intercept"></div>
+    </section>
+
+    <!-- ── 탭 8: 원본 데이터 ──────────────────────────────── -->
     <section id="panel-raw" class="panel" hidden>
       <div id="rawdata" class="rawwrap"></div>
     </section>

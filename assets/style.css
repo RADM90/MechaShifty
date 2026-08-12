@@ -826,6 +826,74 @@ svg.chart rect.hit { fill: transparent; }
   .np-panel { right: 0; }
 }
 
+/* ── 특특요 탭 (확률 분포 · 3.5주년 전후 비교) ────────────────
+   두 시대를 비교하는 탭이라 색이 두 개만 필요하다. dataviz 검증기를 통과한
+   2분류 대비쌍(series-1 / series-2)을 이전/이후에 배정하고, 색만으로 구분되지
+   않도록 표에는 항상 이전/이후 열과 부호(+/−)를 함께 둔다.
+   틀(.op-wrap/.op-group/.op-note/.op-scroll)은 전초기지 탭 것을 그대로 쓴다.  */
+.ic-pre { background: var(--series-1); }
+.ic-post { background: var(--series-2); }
+
+.ic-field { display: grid; gap: 5px; margin-bottom: 10px; }
+.ic-seg { display: flex; flex-wrap: wrap; gap: 4px; }
+.ic-segbtn {
+  padding: 5px 10px; cursor: pointer; font: inherit; font-size: 12px;
+  background: var(--bg-panel); color: var(--ink-2);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s);
+}
+.ic-segbtn:hover { background: var(--hover); }
+.ic-segbtn.on {
+  background: var(--accent); border-color: var(--accent);
+  color: var(--accent-ink); font-weight: 600;
+}
+.ic-check { margin-bottom: 6px; }
+
+.ic-cmpgrid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 10px; margin: 12px 0;
+}
+.ic-cmp {
+  background: var(--bg-raise); border: 1px solid var(--line);
+  border-radius: var(--r); padding: 10px 12px;
+}
+.ic-cmpLbl { font-size: 11px; color: var(--ink-muted); }
+.ic-cmpNum {
+  font-size: 22px; font-weight: 600; line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+.ic-cmpBars { display: grid; gap: 3px; margin: 7px 0 6px; }
+.ic-cmpTrack, .ic-track {
+  height: 6px; border-radius: 999px; background: var(--track); overflow: hidden;
+}
+.ic-cmpFill, .ic-fill { height: 100%; border-radius: 999px; min-width: 1px; }
+.ic-cmpFoot {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; font-size: 11px;
+}
+.ic-cmpPre { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+.ic-legend { display: flex; gap: 12px; font-size: 11px; color: var(--ink-muted); }
+.ic-legItem { display: flex; align-items: center; gap: 5px; }
+.ic-swatch { width: 10px; height: 10px; border-radius: 3px; }
+
+/* 분포 표 — 막대 칸이 남는 폭을 전부 먹고, 숫자 칸은 내용 폭만 쓴다 */
+.ic-dist { table-layout: auto; width: 100%; }
+.ic-barcell { width: 45%; min-width: 90px; }
+.ic-bars { display: grid; gap: 3px; }
+
+.ic-em { font-weight: 700; }
+.ic-delta { font-variant-numeric: tabular-nums; }
+.ic-up { color: var(--st-good); }
+.ic-dn { color: var(--st-bad-ink); }
+/* 분포 표의 Δ 는 좋다/나쁘다가 아니라 '어느 쪽이 큰가'라서 범례와 같은 계열색 */
+.ic-more { color: var(--series-2); }
+.ic-less { color: var(--series-1); }
+.ic-flat { color: var(--ink-muted); }
+.ic-off td { color: var(--ink-muted); opacity: .65; }
+.ic-cur td { background: var(--hover); }
+.ic-steplink {
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px;
+}
+
 /* ── 원본 데이터 탭 ─────────────────────────────────────────── */
 .rawwrap {
   display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 18px; align-items: start;
