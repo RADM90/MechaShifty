@@ -529,6 +529,21 @@
    "ko": "찻집 리코리코",
    "en": "Café LycoReco",
    "ja": "喫茶リコリコ"
+  },
+  "CE009_01": {
+   "ko": "마음의 괴도단",
+   "en": "Phantom Thieves of Hearts",
+   "ja": "心の怪盗団"
+  },
+  "CE009_02": {
+   "ko": "자칭 특별수사대",
+   "en": "Self-Proclaimed Special Investigation Team",
+   "ja": "自称特別捜査隊"
+  },
+  "CE009_03": {
+   "ko": "특별과외활동부",
+   "en": "Specialized Extracurricular Execution Squad",
+   "ja": "特別課外活動部"
   }
  }
 }

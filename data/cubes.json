@@ -64,6 +64,10 @@
   "1000316": {
    "ko": { "short": "시엄체", "name": "렐릭 커버 큐브", "effect": "시전자 최대 체력 비례 엄폐물 최대 체력 증가" },
    "en": { "short": "Stealth", "name": "Stealth Cube", "effect": "Cover Max HP" }
+  },
+  "1000317" : {
+    "ko": { "short": "분배댐", "name": "렐릭 디바이드 큐브", "effect": "분배 대미지 증가" },
+    "en": { "short": "Diffusion", "name" : "Diffusion Cube", "effect": "Distributed Damage"}
   }
  }
 }

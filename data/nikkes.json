@@ -319,7 +319,7 @@
   "name_code": 5171,
   "name": {
    "ko": "아비스타",
-   "en": "Avista",
+   "en": "Avistar",
    "ja": "アビスタ"
   },
   "aliases": [
@@ -4909,5 +4909,71 @@
   "attack_type": "Metal",
   "burst": "Step1",
   "release_date": "2026-02-12"
+ },
+ {
+  "rid": "c870",
+  "resource_id": 870,
+  "id": 587001,
+  "name_code": 5179,
+  "name": {
+   "ko": "퀸(마코토)",
+   "en": "Queen (Makoto)",
+   "ja": "クイーン（真）"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "ABNORMAL",
+  "corporation_sub_type": null,
+  "squad": "CE009_01",
+  "element": "Fire",
+  "weapon_type": "SG",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-08-13"
+ },
+ {
+  "rid": "c871",
+  "resource_id": 871,
+  "id": 587101,
+  "name_code": 5180,
+  "name": {
+   "ko": "유키코",
+   "en": "Yukiko",
+   "ja": "雪子"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "ABNORMAL",
+  "corporation_sub_type": null,
+  "squad": "CE009_02",
+  "element": "Fire",
+  "weapon_type": "MG",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-08-20"
+ },
+ {
+  "rid": "c872",
+  "resource_id": 872,
+  "id": 587201,
+  "name_code": 3019,
+  "name": {
+   "ko": "아이기스",
+   "en": "Aigis",
+   "ja": "アイギス"
+  },
+  "aliases": [],
+  "rarity": "SR",
+  "class": "Supporter",
+  "corporation": "ABNORMAL",
+  "corporation_sub_type": null,
+  "squad": "CE009_03",
+  "element": "Iron",
+  "weapon_type": "SMG",
+  "attack_type": "Metal",
+  "burst": "Step2",
+  "release_date": "2026-08-13"
  }
 ]
