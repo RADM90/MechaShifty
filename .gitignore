@@ -11,8 +11,10 @@ nikke_alias_v1.csv
 tools/
 
 # 프로젝트 문서 — 아직 리포지토리에 올리지 않은 로컬 작업 노트.
+# UPDATE_METHOD.md 는 tools/ 사용법이라 tools/ 와 같이 움직인다.
 README.md
 TODO.md
+UPDATE_METHOD.md
 
 # Claude Code 로컬 설정
 .claude/

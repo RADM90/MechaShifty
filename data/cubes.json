@@ -1,73 +1,90 @@
 {
- "note": "하모니 큐브. 게임 API 가 주는 harmony_cube_tid 를 이름으로 옮기기 위한 표다. 전투력에는 큐브 종류가 아니라 레벨만 들어가므로(cp.js) 이 표는 표시 전용이다. 언어별로 ko/en 을 두고, 일본어는 정식 명칭이 확인되지 않아 en 으로 떨어뜨린다(roster.js cubeInfo). 영문 이름은 한국어 이름의 번역이 아니라 게임 안에서 따로 붙은 이름이라 대응이 어긋난다 — 효과로 맞춰 둔 것이다.",
+ "note": "하모니 큐브. 게임 API 가 주는 harmony_cube_tid 를 이름으로 옮기기 위한 표다. 전투력에는 큐브 종류가 아니라 레벨만 들어가므로(cp.js) 이 표는 표시 전용이다. 이름은 세 언어 모두 라이브 데이터에서 온 정식 명칭이고, 약칭(short)·효과(effect)는 우리가 붙인 표시용 문구라 ko/en 만 있다 — 일본어는 항목 단위로 en 에 떨어진다(roster.js cubeInfo). 영문 이름은 한국어 이름의 번역이 아니라 게임 안에서 따로 붙은 이름이라 대응이 어긋난다 — 효과로 맞춰 둔 것이다. tools/update_data.py --cubes 가 라이브와 대조해 갱신한다 (아이콘은 assets/icons/cube/<tid>.webp).",
  "cubes": {
   "1000301": {
    "ko": { "short": "명중", "name": "렐릭 어설트 큐브", "effect": "명중률 증가" },
-   "en": { "short": "Assault", "name": "Assault Cube", "effect": "Hit Rate" }
+   "en": { "short": "Assault", "name": "Assault Cube", "effect": "Hit Rate" },
+   "ja": { "name": "レリックアサルトキューブ" }
   },
   "1000302": {
    "ko": { "short": "차댐", "name": "택티컬 어설트 큐브", "effect": "차지 대미지 증가" },
-   "en": { "short": "Onslaught", "name": "Onslaught Cube", "effect": "Charge Damage" }
+   "en": { "short": "Onslaught", "name": "Onslaught Cube", "effect": "Charge Damage" },
+   "ja": { "name": "タクティカルアサルトキューブ" }
   },
   "1000303": {
    "ko": { "short": "재장전", "name": "렐릭 베어 큐브", "effect": "재장전 속도 증가" },
-   "en": { "short": "Resilience", "name": "Resilience Cube", "effect": "Reload Speed" }
+   "en": { "short": "Resilience", "name": "Resilience Cube", "effect": "Reload Speed" },
+   "ja": { "name": "レリックベアーキューブ" }
   },
   "1000304": {
    "ko": { "short": "탄충", "name": "택티컬 베어 큐브", "effect": "10발 사격시 탄환 충전" },
-   "en": { "short": "Bastion", "name": "Bastion Cube", "effect": "Ammo Refund" }
+   "en": { "short": "Bastion", "name": "Bastion Cube", "effect": "Ammo Refund" },
+   "ja": { "name": "タクティカルベアーキューブ" }
   },
   "1000305": {
    "ko": { "short": "차속", "name": "렐릭 부스트 큐브", "effect": "차지 속도 증가" },
-   "en": { "short": "Adjutant", "name": "Adjutant Cube", "effect": "Charge Speed" }
+   "en": { "short": "Adjutant", "name": "Adjutant Cube", "effect": "Charge Speed" },
+   "ja": { "name": "レリックブーストキューブ" }
   },
   "1000306": {
    "ko": { "short": "장탄", "name": "택티컬 부스트 큐브", "effect": "최대 장탄 수 증가" },
-   "en": { "short": "Wingman", "name": "Wingman Cube", "effect": "Max Ammo" }
+   "en": { "short": "Wingman", "name": "Wingman Cube", "effect": "Max Ammo" },
+   "ja": { "name": "タクティカルブーストキューブ" }
   },
   "1000307": {
    "ko": { "short": "버충", "name": "렐릭 퀀텀 큐브", "effect": "버스트 게이지 충전 속도 증가" },
-   "en": { "short": "Quantum", "name": "Quantum Cube", "effect": "Burst Generation" }
+   "en": { "short": "Quantum", "name": "Quantum Cube", "effect": "Burst Generation" },
+   "ja": { "name": "レリッククオンタムキューブ" }
   },
   "1000308": {
    "ko": { "short": "체력", "name": "렐릭 비고르 큐브", "effect": "최대 체력 증가" },
-   "en": { "short": "Vigor", "name": "Vigor Cube", "effect": "Max HP" }
+   "en": { "short": "Vigor", "name": "Vigor Cube", "effect": "Max HP" },
+   "ja": { "name": "レリックビガーキューブ" }
   },
   "1000309": {
    "ko": { "short": "방어력", "name": "렐릭 인듀어 큐브", "effect": "방어력 증가" },
-   "en": { "short": "Endurance", "name": "Endurance Cube", "effect": "DEF" }
+   "en": { "short": "Endurance", "name": "Endurance Cube", "effect": "DEF" },
+   "ja": { "name": "レリックエンデュアーキューブ" }
   },
   "1000310": {
    "ko": { "short": "힐량", "name": "렐릭 힐링 큐브", "effect": "주는 회복량 증가" },
-   "en": { "short": "Healing", "name": "Healing Cube", "effect": "HP Potency" }
+   "en": { "short": "Healing", "name": "Healing Cube", "effect": "HP Potency" },
+   "ja": { "name": "レリックヒーリングキューブ" }
   },
   "1000311": {
    "ko": { "short": "받댐감", "name": "렐릭 템퍼링 큐브", "effect": "받는 대미지 감소" },
-   "en": { "short": "Tempering", "name": "Tempering Cube", "effect": "Damage Taken Reduced" }
+   "en": { "short": "Tempering", "name": "Tempering Cube", "effect": "Damage Taken Reduced" },
+   "ja": { "name": "レリックテンパリングキューブ" }
   },
   "1000312": {
-   "ko": { "short": "(20%↓)체력", "name": "렐릭 어시스트 큐브", "effect": "사용자의 체력이 20% 이하일 때 최대 체력 증가" },
-   "en": { "short": "Assist", "name": "Assist Cube", "effect": "Max HP (activates below 20% HP)" }
+   "ko": { "short": "(20%↓)체력", "name": "렐릭 어시스터 큐브", "effect": "사용자의 체력이 20% 이하일 때 최대 체력 증가" },
+   "en": { "short": "Assist", "name": "Assist Cube", "effect": "Max HP (activates below 20% HP)" },
+   "ja": { "name": "レリックアシストキューブ" }
   },
   "1000313": {
    "ko": { "short": "파츠댐", "name": "렐릭 디스트로이 큐브", "effect": "파츠 대미지 증가" },
-   "en": { "short": "Destruction", "name": "Destruction Cube", "effect": "Damage to parts" }
+   "en": { "short": "Destruction", "name": "Destruction Cube", "effect": "Damage to parts" },
+   "ja": { "name": "レリックデストロイキューブ" }
   },
   "1000314": {
    "ko": { "short": "관통댐", "name": "렐릭 피어싱 큐브", "effect": "관통 대미지 증가" },
-   "en": { "short": "Piercing", "name": "Piercing Cube", "effect": "Pierce Damage" }
+   "en": { "short": "Piercing", "name": "Piercing Cube", "effect": "Pierce Damage" },
+   "ja": { "name": "レリックピアシングキューブ" }
   },
   "1000315": {
    "ko": { "short": "방무댐", "name": "렐릭 크래시 큐브", "effect": "방어력 무시 대미지 증가" },
-   "en": { "short": "Rupture", "name": "Rupture Cube", "effect": "True Damage" }
+   "en": { "short": "Rupture", "name": "Rupture Cube", "effect": "True Damage" },
+   "ja": { "name": "レリッククラッシュキューブ" }
   },
   "1000316": {
    "ko": { "short": "시엄체", "name": "렐릭 커버 큐브", "effect": "시전자 최대 체력 비례 엄폐물 최대 체력 증가" },
-   "en": { "short": "Stealth", "name": "Stealth Cube", "effect": "Cover Max HP" }
+   "en": { "short": "Stealth", "name": "Stealth Cube", "effect": "Cover Max HP" },
+   "ja": { "name": "レリックカバーキューブ" }
   },
-  "1000317" : {
-    "ko": { "short": "분배댐", "name": "렐릭 디바이드 큐브", "effect": "분배 대미지 증가" },
-    "en": { "short": "Diffusion", "name" : "Diffusion Cube", "effect": "Distributed Damage"}
+  "1000317": {
+   "ko": { "short": "분배댐", "name": "렐릭 디바이드 큐브", "effect": "분배 대미지 증가" },
+   "en": { "short": "Diffusion", "name": "Diffusion Cube", "effect": "Distributed Damage" },
+   "ja": { "name": "レリックディバイドキューブ" }
   }
  }
 }

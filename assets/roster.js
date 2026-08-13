@@ -464,11 +464,12 @@ export function renderImport(root, ctx) {
     return bar;
   }
 
-  /* data/cubes.json 은 큐브마다 ko/en 을 들고 있다. 일본어 정식 명칭은 확인되지
-     않아 en 으로 떨어뜨린다 — 일본어 화면에 한국어 이름을 남기는 것보다 낫다. */
+  /* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인
+     문구라 ko/en 만 있다. 그래서 블록째가 아니라 항목 단위로 떨어뜨린다 —
+     일본어는 정식 이름 + 영문 약칭·효과가 된다. */
   function cubeInfo(tid) {
     const c = tid && ctx.cubes ? ctx.cubes[tid] : null;
-    return c ? (c[ctx.lang] || c.en || c.ko) : null;
+    return c ? { ...c.ko, ...c.en, ...c[ctx.lang] } : null;
   }
 
   /* 큐브는 아이콘이 없어서 셀렉트. 실제로 장착된 것만 추린다. */
