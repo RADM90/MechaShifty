@@ -37,6 +37,29 @@ const el = (tag, cls, text) => {
   if (text != null) n.textContent = text;
   return n;
 };
+
+/* ── 정렬 등수 ────────────────────────────────────────────────
+   배지로 찍는 칸들은 화면 값이 글자('3돌'·'SR15')라 그대로는 못 센다.
+   열마다 '많이 키운 쪽이 큰 수' 가 되는 등수를 따로 매긴다. */
+
+/* 돌파와 코어강화는 한 줄로 이어진 단계다 — 코강은 3돌 다음이라
+   0돌(0) … 3돌(3) … 1코강(4) … 7코강(10) 순으로 커진다. */
+function gradeRank(g) {
+  const core = /^([1-7])코강$/.exec(g);
+  if (core) return 3 + Number(core[1]);
+  const brk = /^([0-3])돌$/.exec(g);
+  return brk ? Number(brk[1]) : -1;
+}
+/* 소장품은 종류가 먼저(R < SR < 애장품), 같은 종류 안에서 단계. */
+const COLL_RANK = { R: 1, SR: 2, 애장품: 3 };
+function collRank(c) {
+  if (!c || c.kind === 'none') return 0;
+  return (COLL_RANK[c.kind] || 0) * 100 + (parseInt(c.level, 10) || 0);
+}
+/* 장비는 네 부위를 합쳐 한 수로. 등급 한 칸이 강화 단계 전부보다 무겁게
+   (오버로드 0강 > 9티어 만강) — 실제로 그쪽이 훨씬 세다. */
+const gearRank = gear => gear.reduce(
+  (s, g) => s + Math.max(0, TIERS.indexOf(g.tier)) * 20 + (g.enhance || 0), 0);
 const int = (v, lo, hi, dflt) => {
   const n = Math.round(Number(v));
   return Number.isFinite(n) && n >= lo && n <= hi ? n : dflt;
@@ -211,6 +234,7 @@ export function renderImport(root, ctx) {
   let cubePick = '';          // '' 전체 · '0' 미착용 · 그 외 tid
   let status = null;          // {text, bad}
   let redrawRows = null;      // 목록 본문만 다시 그리는 함수
+  let sort = { key: 'cp', dir: -1 };   // 처음 모습은 전투력 내림차순
   const sel = Object.fromEntries(Object.keys(CHIP_AXES).map(a => [a, new Set()]));
 
   const paint = () => {
@@ -380,7 +404,8 @@ export function renderImport(root, ctx) {
   /* ── 니케 목록 ────────────────────────────────────────────── */
 
   /* 전체 니케를 한 줄씩. 보유한 것은 전투력을 계산하고, 미보유는 CP 자리를 비운다.
-     정렬이 전투력 내림차순이라 미보유는 자연히 맨 아래로 밀린다.
+     정렬은 그리는 쪽(redrawRows)이 맡고 여기서는 이름순으로만 놓는다 — 정렬이
+     안정적이라, 값이 같은 줄끼리는 이 순서가 그대로 남는다.
      사이트가 모르는 name_code(갓 나온 니케)는 계산할 근거가 없어 세어서 알린다. */
   function rows() {
     const owned = new Map();
@@ -393,9 +418,12 @@ export function renderImport(root, ctx) {
     const out = [];
     for (const n of ctx.nikkes) {
       const e = owned.get(n.rid);
-      const row = { nikke: n, entry: e || null, name: ctx.nameOf(n), cp: null, adj: [] };
+      const row = { nikke: n, entry: e || null, name: ctx.nameOf(n), cp: null, adj: [], ol: null };
       if (e) {
         row.input = toInput(e, n, data.research, ctx.bondMax);
+        /* 우공합은 칸에도 정렬에도 쓰인다. 비교할 때마다 다시 뽑으면 낭비라
+           여기서 한 번만 모아 둔다. */
+        row.ol = (ctx.olTotals ? ctx.olTotals(e.gear) : []).filter(o => OL_ATK.includes(o.name));
         const cur = ctx.cpOf(row.input);
         if (cur) {
           row.cp = cur.cp;
@@ -404,9 +432,7 @@ export function renderImport(root, ctx) {
       }
       out.push(row);
     }
-    // 보유(CP 있음) 먼저 내림차순, 미보유는 뒤에서 이름순
-    out.sort((a, b) => (b.cp ?? -1) - (a.cp ?? -1)
-      || a.name.localeCompare(b.name, ctx.lang));
+    out.sort((a, b) => a.name.localeCompare(b.name, ctx.lang));
     return { out, owned: owned.size, unknown };
   }
 
@@ -538,13 +564,13 @@ export function renderImport(root, ctx) {
 
   /* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 3돌 이후 단계라
      attraction_grade 의 코강 줄은 전부 돌파 3이다) → 배지 하나로 충분하다.
-       회색 별 0 · 금색 별 1~3 · 보라 원 코강 1~7                            */
+       회색 별 0 · 금색 별 1~3 · 보라 별 코강 1~7                            */
   function gradeCell(grade) {
     const td = el('td', 'cp-rBadge');
     const core = /^([1-7])코강$/.exec(grade);
     const brk = /^([0-3])돌$/.exec(grade);
     const label = gradeLabel(grade, t);      // 데이터 키('3돌')를 화면 언어로
-    if (core) td.appendChild(badge('is-round is-core', core[1], label));
+    if (core) td.appendChild(badge('is-star is-core', core[1], label));
     else if (brk) td.appendChild(badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], label));
     else td.textContent = grade;
     return td;
@@ -574,13 +600,14 @@ export function renderImport(root, ctx) {
      계산기 상세 카드와 같은 규칙으로 뽑아야 하므로(같은 단계는 합산 후 반올림)
      집계 함수를 calc.js 에서 그대로 받아 쓴다 — 여기서 다시 짜면 두 화면이 어긋난다. */
   const OL_ATK = ['우코', '공증'];
-  function olAtkCell(gear) {
+  const pc = o => Math.round(o.total * 100);
+  const olSum = ol => (ol && ol.length ? ol.reduce((a, o) => a + pc(o), 0) : null);
+  function olAtkCell(ol) {
     const td = el('td', 'num cp-rOlAtk');
-    const picked = (ctx.olTotals ? ctx.olTotals(gear) : []).filter(o => OL_ATK.includes(o.name));
-    if (!picked.length) { td.textContent = '–'; return td; }
-    const pc = o => Math.round(o.total * 100);
-    td.textContent = picked.reduce((a, o) => a + pc(o), 0) + '%';
-    td.title = picked.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o)}%`).join(' + ');
+    const v = olSum(ol);
+    if (v == null) { td.textContent = '–'; return td; }
+    td.textContent = v + '%';
+    td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o)}%`).join(' + ');
     return td;
   }
 
@@ -622,34 +649,81 @@ export function renderImport(root, ctx) {
 
     /* 왼쪽은 '무엇을 얼마나 키웠나'(돌파·소장품·호감도·스킬·장비·큐브·우공합),
        오른쪽은 '그래서 전투력이 얼마인가'(레벨·현재·Lv.40·Lv.400). 키운 것들을
-       훑다가 오른쪽 끝에서 결과를 읽는 순서다. */
+       훑다가 오른쪽 끝에서 결과를 읽는 순서다.
+
+       val(r) 은 그 열로 정렬할 때 비교할 수. 미보유 줄은 null 을 돌려주는데,
+       어차피 미보유는 열·방향과 무관하게 아래에 고정된다(redrawRows).
+       dir0 는 그 열을 처음 눌렀을 때의 방향 — 키운 정도는 큰 쪽부터,
+       이름은 가나다순부터 보는 게 자연스럽다. */
+    const rank = (axis, v) => CHIP_AXES[axis].indexOf(v);
     const cols = [
-      [t('im.colNikke'), ''], [t('im.colBasic'), ''],
-      [t('im.colGrade'), ''], [t('im.colColl'), ''], [t('im.colBond'), ''],
-      [t('im.colSkills'), ''], [t('im.colGear'), ''], [t('im.colCube'), 'num'],
-      [t('im.colOlAtk'), 'num'],
-      [t('im.colLevel'), 'num'], [t('cp.cp'), 'num'],
-      ...ctx.levels.map(lv => [t('cp.lv', lv), 'num']),
+      { key: 'name', label: t('im.colNikke'), dir0: 1, val: r => r.name },
+      { key: 'basic', label: t('im.colBasic'), dir0: 1,
+        val: r => rank('element', r.nikke.element) * 10 + rank('burst', r.nikke.burst) },
+      { key: 'grade', label: t('im.colGrade'), title: t('im.colGradeNote'),
+        val: r => r.entry && gradeRank(r.entry.grade) },
+      { key: 'coll', label: t('im.colColl'), title: t('cp.collection'),
+        val: r => r.entry && collRank(r.entry.collection) },
+      { key: 'bond', label: t('im.colBond'), val: r => r.entry && r.entry.bond },
+      { key: 'skills', label: t('im.colSkills'),
+        val: r => r.entry && (r.entry.skills.s1 + r.entry.skills.s2 + r.entry.skills.burst) },
+      // 2×2 장비 칸 읽는 법은 상시 노출할 내용이 아니라 열 머리 hover 로만
+      { key: 'gear', label: t('im.colGear'), title: t('im.gearNote'),
+        val: r => r.entry && gearRank(r.entry.gear) },
+      { key: 'cube', label: t('im.colCube'), cls: 'num',
+        val: r => r.entry && r.entry.cube.level },
+      /* 우코·공증이 하나도 없으면 칸은 '–' 지만 정렬로는 0 이다 — 가장 약한
+         쪽이라 오름차순 맨 앞이 맞다. 값을 못 구한 것(전투력)과는 다르다. */
+      { key: 'olatk', label: t('im.colOlAtk'), cls: 'num', title: t('im.colOlAtkNote'),
+        val: r => r.entry && (olSum(r.ol) || 0) },
+      { key: 'level', label: t('im.colLevel'), cls: 'num', val: r => r.entry && r.entry.level },
+      { key: 'cp', label: t('cp.cp'), cls: 'num', val: r => r.cp },
+      ...ctx.levels.map((lv, i) => ({
+        key: 'adj' + lv, label: t('cp.lv', lv), cls: 'num',
+        val: r => (r.adj[i] ? r.adj[i].cp : null),
+      })),
     ];
     const tbl = el('table', 'grid cp-rosterTable');
     const thead = el('thead'), hr = el('tr');
-    for (const [label, cls] of cols) {
-      const th = el('th', cls, label);
-      // 2×2 장비 칸 읽는 법은 상시 노출할 내용이 아니라 열 머리 hover 로만
-      if (label === t('im.colGear')) th.title = t('im.gearNote');
-      if (label === t('im.colColl')) th.title = t('cp.collection');
-      if (label === t('im.colOlAtk')) th.title = t('im.colOlAtkNote');
-      hr.appendChild(th);
-    }
     thead.appendChild(hr);
     tbl.appendChild(thead);
+
+    /* 머리글은 정렬 화살표를 달고 있어 정렬이 바뀌면 다시 그린다. */
+    const drawHead = () => {
+      hr.textContent = '';
+      for (const c of cols) {
+        const th = el('th', c.cls, c.label);
+        if (c.title) th.title = c.title;
+        const on = sort.key === c.key;
+        th.setAttribute('aria-sort', on ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none');
+        if (on) th.appendChild(el('span', 'arrow', sort.dir > 0 ? ' ▲' : ' ▼'));
+        th.onclick = () => {
+          sort = on ? { key: c.key, dir: -sort.dir } : { key: c.key, dir: c.dir0 || -1 };
+          drawHead();
+          redrawRows();
+        };
+        hr.appendChild(th);
+      }
+    };
+    drawHead();
     const tb = el('tbody');
     tbl.appendChild(tb);
 
     const foot = el('p', 'cp-rosterFoot');
     redrawRows = () => {
       tb.textContent = '';
-      const shown = out.filter(keep);
+      const col = cols.find(c => c.key === sort.key) || cols[0];
+      /* 미보유는 어느 열로 정렬하든 맨 아래에 둔다 — 값이 하나도 없는 줄이
+         위로 올라오면 목록을 읽을 수 없다. 값이 빈 칸(null)도 같은 이유로
+         방향과 무관하게 뒤로. 같은 값끼리는 정렬이 안정적이라 out 의
+         이름순이 그대로 남는다. */
+      const shown = out.filter(keep).sort((a, b) => {
+        if (!a.entry !== !b.entry) return a.entry ? -1 : 1;
+        const x = col.val(a), y = col.val(b);
+        if (x == null || y == null) return x == null ? (y == null ? 0 : 1) : -1;
+        const c = typeof x === 'number' ? x - y : String(x).localeCompare(String(y), ctx.lang);
+        return c * sort.dir;
+      });
       for (const r of shown) {
         const has = !!r.entry;
         const tr = el('tr', 'cp-rosterRow' + (has ? '' : ' is-unowned'));
@@ -691,7 +765,7 @@ export function renderImport(root, ctx) {
         tr.appendChild(el('td', 'cp-rSkill', `${sk.s1}/${sk.s2}/${sk.burst}`));
         tr.appendChild(el('td')).appendChild(gearGrid(r.entry.gear));
         tr.appendChild(cubeCell(r.entry.cube));
-        tr.appendChild(olAtkCell(r.entry.gear));
+        tr.appendChild(olAtkCell(r.ol));
         tr.appendChild(el('td', 'num', String(r.entry.level)));
         tr.appendChild(cpCell(r.cp, 'num cp-rCp'));
         for (const a of r.adj) tr.appendChild(cpCell(a ? a.cp : null, 'num'));

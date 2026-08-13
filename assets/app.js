@@ -203,6 +203,12 @@ const STR = {
   'im.colNikke': ['이름', 'Name', '名前'],
   'im.colLevel': ['레벨', 'Level', 'レベル'],
   'im.colGrade': ['돌파', 'Break', '突破'],
+  // 코강은 3돌 다음 단계라 돌파와 한 줄로 이어 센다
+  'im.colGradeNote': [
+    '정렬 순서: 0돌 → 3돌 → 1코강 → 7코강',
+    'Sort order: Break 0 → Break 3 → Core 1 → Core 7',
+    '並び順: 0凸 → 3凸 → コア強化1 → コア強化7',
+  ],
   // 오버로드 옵션 중 우코 + 공증 종합값의 합. 실전 성능을 한 숫자로 가늠하는 자리다
   'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
   'im.colOlAtkNote': [
@@ -606,6 +612,34 @@ const STR = {
     '지금 조건 그대로 단계만 바꿔가며 본 하루 기대값. 단계 숫자를 누르면 그 단계로 옮겨간다.',
     'Daily mean at every step under the current settings. Click a step number to switch to it.',
     '今の条件のまま段階だけ変えた1日期待値。段階の数字を押すとその段階に切り替わる。',
+  ],
+
+  /* 싱크로 레벨 상한 (synccap.js 에서 ctx.t 로 받아 쓴다) */
+  'sc.title': ['일자별 싱크로 레벨 상한치', 'Synchro level cap by date', '日付別シンクロレベル上限'],
+  'sc.date': ['기준일', 'Date', '基準日'],
+  'sc.count': ['니케 수', 'Nikkes', 'ニケ数'],
+  'sc.break': ['돌파', 'Break', '突破'],
+  'sc.mult': ['배수', 'Mult.', '倍率'],
+  'sc.add': ['증가량', 'Added', '増加量'],
+  'sc.addFull': [
+    '싱크로 최대렙 증가량', 'Synchro max level added', 'シンクロ最大レベル増加量',
+  ],
+  'sc.subtotal': ['소계', 'Subtotal', '小計'],
+  'sc.addTotal': ['증가량계', 'Total added', '増加量計'],
+  'sc.base': [
+    '니케가 도달 가능한 최대 레벨', 'Max level a Nikke can reach', 'ニケが到達可能な最大レベル',
+  ],
+  'sc.total': ['합계', 'Total', '合計'],
+  /* 카드가 좁아 설명은 제목 hover 로 뺀다 */
+  'sc.how': [
+    (b, s) => `기준일까지 출시된 니케를 등급별로 세어 «니케 수 × (1 + 돌파 × ${s})» 를 더하고, 니케 최대 레벨 ${b} 을 얹은 값. 돌파·배수는 게임 상수라 고정이다.`,
+    (b, s) => `Counts Nikkes released on or before the date, adds «count × (1 + limit break × ${s})» per rarity, plus the Nikke level cap of ${b}. Limit break and multiplier are fixed game constants.`,
+    (b, s) => `基準日までに実装されたニケをレア度別に数え、«ニケ数 × (1 + 突破 × ${s})» を足し、ニケ最大レベル ${b} を加えた値。突破と倍率はゲーム定数で固定。`,
+  ],
+  'sc.unknown': [
+    n => `출시일이 없는 ${n}명은 세지 않았습니다.`,
+    n => `${n} Nikke(s) without a release date are not counted.`,
+    n => `実装日が不明な${n}体は数えていません。`,
   ],
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
@@ -1435,6 +1469,16 @@ function openSheet(n) {
 }
 const closeSheet = () => { $('#sheet').hidden = true; };
 
+/* 필터 오른쪽 칸(싱크로 상한). 니케 리스트 탭에서만 붙이고, 모듈은 처음 켤 때
+   한 번만 받아 온다. 언어·데이터가 바뀌면 그리는 쪽에서 다시 칠한다. */
+function syncCap(on) {
+  const side = $('#synccap');
+  side.hidden = !on;
+  $('.filters').classList.toggle('split', on);
+  if (!on) return;
+  import('./synccap.js').then(m => m.renderSyncCap(side, { t, lang: lang(), nikkes: D.nikkes }));
+}
+
 /* ── 렌더 ─────────────────────────────────────────────────── */
 function render() {
   $$('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === state.tab));
@@ -1448,6 +1492,9 @@ function render() {
   $('#pickupfilters').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
   $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  /* 싱크로 상한 계산기는 니케 리스트 탭에서만. 필터가 좁아지므로 다른 탭에서는
+     칸째로 빼서 폭을 돌려준다. 언어가 바뀌면 다시 그려야 해서 매번 호출한다. */
+  syncCap(state.tab === 'nikkes');
 
   if (state.tab === 'nipago') {
     writeHash();

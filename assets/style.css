@@ -196,10 +196,23 @@ main { max-width: 1180px; margin: 0 auto; padding: var(--pad); }
 .notice-error code { color: var(--ink-2); word-break: break-all; }
 
 /* ── 필터 ───────────────────────────────────────────────────── */
-.filters {
+/* 필터 영역은 카드가 아니라 카드를 담는 칸이다. 니케 리스트 탭에서는 오른쪽에
+   싱크로 상한 카드가 하나 더 붙고, 다른 탭에서는 .split 이 빠져 검색 카드가
+   폭을 다 쓴다. 오른쪽 카드는 내용이 적으니 폭을 최소로 잡는다. */
+.filters { margin-bottom: 14px; }
+.filters-main, .filters-side {
   background: var(--bg-panel); border: 1px solid var(--line);
-  border-radius: var(--r); padding: 12px; margin-bottom: 14px; box-shadow: var(--shadow);
+  border-radius: var(--r); padding: 12px; box-shadow: var(--shadow); min-width: 0;
 }
+/* 두 카드는 높이를 맞춰 세운다 (그리드 기본 stretch). 싱크로 쪽이 짧아 남는
+   자리는 표를 아래로 붙여 균형을 잡는다. */
+.filters.split { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr) 272px; }
+/* 표는 자연 높이로 두고, 검색 카드와 높이를 맞추느라 남는 자리는 맨 아래
+   설명이 받는다 — 행을 늘리거나 빈칸을 두는 것보다 낫다. */
+.filters-side { display: flex; flex-direction: column; }
+.filters-side .sc-note { margin-top: auto; padding-top: 8px; }
+@media (max-width: 780px) { .filters.split { grid-template-columns: minmax(0, 1fr); } }
+
 .filter-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 #q {
   flex: 1 1 220px; min-width: 0;
@@ -616,9 +629,8 @@ table.cp-rosterTable { font-size: 11.5px; }
 table.cp-rosterTable th, table.cp-rosterTable td { padding: 1px 3px; line-height: 1.25; }
 /* 머리글은 줄바꿈을 허용한다 — EN/JA 는 라벨이 길어(Collection·コレクション)
    한 줄로 두면 배지 한 칸짜리 열이 라벨 폭에 끌려 표가 넘친다. */
-table.cp-rosterTable thead th {
-  cursor: default; font-size: 10.5px; white-space: normal; line-height: 1.2;
-}
+/* 머리글을 누르면 그 열로 정렬한다 (table.grid 의 pointer 를 그대로 쓴다). */
+table.cp-rosterTable thead th { font-size: 10.5px; white-space: normal; line-height: 1.2; }
 .cp-rosterRow { cursor: pointer; }
 .cp-rosterRow:hover td, .cp-rosterRow:focus-visible td { background: var(--hover); }
 .cp-rName { font-weight: 600; max-width: 102px; }
@@ -647,10 +659,12 @@ table.cp-rosterTable thead th {
   text-shadow: 0 0 1px var(--bd-bg), 0 0 2px var(--bd-bg), 0 0 2px var(--bd-bg);
 }
 .cp-badge > b.is-2 { font-size: 9.5px; letter-spacing: -.2px; }
-/* 팔이 굵은 오각별 — 얇은 별은 가운데 폭이 숫자보다 좁아 글자가 잘려 보인다 */
+/* 네 꼭짓점이 모서리를 향하는 사각별 (게임 돌파 표기와 같은 모양).
+   꼭짓점은 상자 네 귀퉁이까지 뻗고, 변 가운데는 20% 만 파인다 — 더 깊게 파면
+   허리가 숫자보다 좁아져 글자가 도형 밖으로 걸친다 (18px 에 10.5px 글자). */
 .cp-badge.is-star::before {
-  clip-path: polygon(50% 0, 63% 34%, 100% 38%, 76% 60%, 84% 100%, 50% 78%,
-                     16% 100%, 24% 60%, 0 38%, 37% 34%);
+  clip-path: polygon(0 0, 50% 20%, 100% 0, 80% 50%,
+                     100% 100%, 50% 80%, 0 100%, 20% 50%);
 }
 .cp-badge.is-round::before { border-radius: 50%; }
 /* 하트는 호감도라 두 자리가 기본이다. 세로는 그대로 두고 가로만 넓혀
@@ -1184,6 +1198,31 @@ table.op-towerTbl tbody tr { cursor: default; }
 .ic-steplink {
   cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px;
 }
+
+/* ── 싱크로 레벨 상한 (필터 오른쪽 카드) ────────────────────── */
+.sc-title { margin: 0 0 8px; font-size: 12px; font-weight: 700; line-height: 1.35; }
+/* 날짜 칸은 필터의 '출시일' 과 같은 물건이라 .field 를 그대로 쓴다.
+   여기서만 다른 건 좁은 카드라 입력이 남은 폭을 다 먹는다는 것뿐. */
+.sc-date { margin-bottom: 10px; }
+.sc-date input[type="date"] { flex: 1 1 auto; min-width: 0; }
+/* 워크북 시트의 표를 그대로 옮긴 모양 — 등급 3행 · 소계 · 최대 레벨 · 합계 */
+table.sc-tbl { width: 100%; border-collapse: collapse; font-size: 11px; }
+table.sc-tbl th, table.sc-tbl td {
+  padding: 3px 4px; text-align: right; border: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+table.sc-tbl thead th {
+  font-weight: 600; font-size: 10px; color: var(--ink-muted);
+  background: var(--bg-raise); text-align: center;
+}
+table.sc-tbl thead th:first-child { border-top: 0; border-left: 0; }
+table.sc-tbl tbody th, table.sc-tbl tfoot th { text-align: left; font-weight: 700; }
+table.sc-tbl .dim { color: var(--ink-muted); }
+table.sc-tbl .sc-sub th, table.sc-tbl .sc-sub td { background: var(--hover); }
+table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
+  background: var(--hover); color: var(--accent); font-weight: 800; font-size: 12px;
+}
+.sc-note { margin: 8px 0 0; font-size: 10px; color: var(--ink-muted); line-height: 1.5; }
 
 /* ── 푸터 ───────────────────────────────────────────────────── */
 .foot {
