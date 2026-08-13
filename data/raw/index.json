@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-08-12",
+ "generated_at": "2026-08-13",
  "groups": [
   {
    "key": "combat",
@@ -232,11 +232,11 @@
     "ja": "前哨基地の収入"
    },
    "note": {
-    "ko": "전초기지 레벨 1~700의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상.",
-    "en": "Per-minute and per-hour income for outpost levels 1–700. Values are converted from a 20-second tick, so the decimals are not round.",
-    "ja": "前哨基地レベル1〜700の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。"
+    "ko": "전초기지 레벨 1~800의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상. 전초기지 레벨은 캠페인 스테이지 5개를 깰 때마다 1 오른다. 701~800은 워크북에 없어 표의 마지막 구간(534~) 생성식으로 이었다.",
+    "en": "Per-minute and per-hour income for outpost levels 1–800. Values are converted from a 20-second tick, so the decimals are not round. The outpost level rises by 1 for every 5 campaign stages cleared. Levels 701–800 are not in the workbook and were continued with the table's own last-segment formula (534+).",
+    "ja": "前哨基地レベル1〜800の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。前哨基地レベルはキャンペーンステージ5つクリアごとに1上がる。701〜800はワークブックにないため、表の最終区間(534〜)の生成式で延長した。"
    },
-   "rows": 700,
+   "rows": 800,
    "columns": 10
   },
   {
