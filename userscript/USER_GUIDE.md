@@ -1,5 +1,7 @@
 # 내 니케 데이터 가져오기
 
+**한국어** · [English](USER_GUIDE.en.md) · [日本語](USER_GUIDE.ja.md)
+
 Blablalink(Shiftypad)에 로그인해서 볼 수 있는 **내 계정의 니케 데이터**를 읽어,
 [MechaShifty 전투력 계산기](https://radm90.github.io/MechaShifty/#tab=calc)에 넣는 방법입니다.
 넣고 나면 보유 니케 전원의 보정 전투력이 한 번에 나오고, 아무 니케나 눌러 계산기 폼에
@@ -8,6 +10,8 @@ Blablalink(Shiftypad)에 로그인해서 볼 수 있는 **내 계정의 니케 �
 Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이 프로젝트의 출발점이었으므로,
 **계산은 수집 스크립트가 하지 않습니다.** 스크립트는 게임이 주는 값을 그대로 옮기기만 하고,
 전투력은 MechaShifty 가 워크북 대조로 검증한 공식(`COMBAT_POWER.md`)으로 계산합니다.
+
+수집 창의 문구는 브라우저 언어를 따라 한국어·영어·일본어로 나옵니다.
 
 ---
 
@@ -27,13 +31,56 @@ Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이
 
 ## 1. Tampermonkey (권장)
 
-1. [Tampermonkey](https://www.tampermonkey.net/) 를 설치합니다.
-2. **[mechashifty.user.js](https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js)**
+### 1-1. 확장 프로그램 설치
+
+[tampermonkey.net](https://www.tampermonkey.net/) 에서 쓰는 브라우저용을 설치합니다.
+Chrome · Edge · Firefox · Safari · Opera 를 지원합니다.
+
+### 1-2. ⚠️ '사용자 스크립트 허용' 켜기 — Chrome / Edge 계열은 필수
+
+Chrome 이 확장 프로그램을 MV3 로 옮기면서, **유저스크립트를 돌리려면 권한을 한 번 더
+켜 줘야 합니다.** 이걸 안 켜면 Tampermonkey 는 설치돼 있고 아이콘도 보이는데
+**스크립트가 아예 실행되지 않습니다.** "설치했는데 메뉴에 아무것도 없다"는 대부분 이것입니다.
+
+**Chrome 138 이상 · Edge 최신판**
+
+1. 주소창에 `chrome://extensions` (Edge 는 `edge://extensions`) 를 입력합니다.
+   — Tampermonkey 아이콘을 우클릭 → *확장 프로그램 관리* 로 가도 같습니다.
+2. 목록에서 **Tampermonkey** 를 찾아 **세부정보(Details)** 를 누릅니다.
+3. **사용자 스크립트 허용 (Allow user scripts)** 토글을 **켭니다.**
+4. Tampermonkey 대시보드를 한 번 새로 고칩니다.
+
+**Chrome 138 미만**
+
+같은 `chrome://extensions` 화면 **오른쪽 위의 개발자 모드(Developer mode)** 를 켭니다.
+켠 뒤 브라우저를 한 번 재시작하세요.
+
+> 헷갈리는 지점: Tampermonkey 가 "개발자 모드가 필요합니다" 라고 띄우는데, 실제로 필요한
+> 건 **개발자 모드가 아니라 '사용자 스크립트 허용' 토글**인 경우가 많습니다. 개발자 모드만
+> 켜고 안 되면 3번을 다시 확인하세요.
+
+**Firefox · Safari** 는 이 단계가 필요 없습니다. Safari 는 대신 Tampermonkey 확장에
+`blablalink.com` 접근 권한을 **항상 허용**으로 줘야 합니다.
+
+### 1-3. 스크립트 설치
+
+1. **[mechashifty.user.js](https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js)**
    를 엽니다. Tampermonkey 가 설치 화면을 띄웁니다.
-3. **설치 전에 코드를 한 번 읽어 보세요.** 이 스크립트가 하는 일 전부가 그 화면에 있습니다.
+2. **설치 전에 코드를 한 번 읽어 보세요.** 이 스크립트가 하는 일 전부가 그 화면에 있습니다.
    특히 `API_` 로 시작하는 상수 다섯 개가 이 스크립트가 접속하는 주소의 전부입니다.
-4. 설치한 뒤 [blablalink.com](https://www.blablalink.com/) 에 **로그인**합니다.
-5. 확장 프로그램 Tampermonkey 아이콘 클릭 → **내 니케 데이터 내보내기** 를 누릅니다.
+3. **설치** 를 누릅니다.
+
+### 1-4. 실행
+
+1. [blablalink.com](https://www.blablalink.com/) 에 **로그인**합니다.
+   (다른 탭 말고, 로그인한 그 탭에서 실행해야 합니다.)
+2. 툴바의 Tampermonkey 아이콘을 누릅니다. 아이콘이 안 보이면 브라우저의 확장 프로그램
+   퍼즐 조각 아이콘 → **고정(Pin)** 해 두세요.
+3. 메뉴의 **내 니케 데이터 내보내기** 를 누릅니다.
+
+> 메뉴에 그 항목이 없다면: (a) 1-2 의 토글, (b) 지금 보고 있는 주소가 `www.blablalink.com`
+> 인지, (c) Tampermonkey 대시보드에서 스크립트가 **사용(Enabled)** 상태인지 —
+> 이 세 가지를 순서대로 확인하세요.
 
 ### 자동 업데이트에 대해
 
@@ -53,7 +100,7 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='b407534f863c8805205c8aedc4b36503d9c8af22fe33f0b26e34ec9ba7577ac1';try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert('MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.');return}(0,eval)(s)}catch(e){alert('MechaShifty: 불러오지 못했습니다 - '+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='dd5b95a45fb85dab008da5c83fd8a80505eb94565990dab478f22a67ae82b2c0',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
@@ -130,10 +177,14 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
 | 증상 | 확인할 것 |
 |---|---|
+| Tampermonkey 메뉴에 항목이 아예 없음 | **1-2 의 '사용자 스크립트 허용' 토글.** 가장 흔한 원인입니다 |
+| "개발자 모드가 필요합니다" 라고 뜸 | 개발자 모드가 아니라 '사용자 스크립트 허용' 쪽일 수 있습니다. 1-2 참고 |
+| 아이콘은 보이는데 메뉴가 비어 있음 | 지금 주소가 `www.blablalink.com` 인지, 스크립트가 *사용* 상태인지 |
 | "로그인 상태가 아니거나…" | blablalink 에 로그인했는지, 로그인한 탭에서 실행했는지 |
 | "게임 서버를 찾지 못했습니다" | 계정 연동과 전적 공개 설정. 비공개면 API 가 응답하지 않습니다 |
 | "팝업이 차단됐습니다" | 팝업 허용, 또는 JSON 파일로 저장해서 불러오기 |
 | "응답이 없습니다" | 열린 탭에서 **전투력 계산기** 탭이 떠 있어야 합니다. 안 되면 파일로 |
+| 북마클릿이 "배포본과 다릅니다" | 스크립트가 갱신된 것입니다. 위의 한 줄을 다시 복사하세요 |
 | 목록에 없는 니케가 있음 | 갓 출시된 니케는 사이트 데이터가 아직 모릅니다. 그 니케만 건너뜁니다 |
 | 장비 등급이 틀림 | 오버로드 옵션이 하나도 없는 장비는 9티어 기업 장비로 잡힙니다. 폼에서 고치세요 |
 
@@ -147,9 +198,11 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 shasum -a 256 userscript/mechashifty.user.js
 ```
 
-나온 해시를 `bookmarklet.js` 의 `EXPECT` 와 이 문서의 북마클릿 한 줄에 모두 반영하고,
-`@version` 을 올립니다. 안 하면 기존 북마클릿 사용자는 실행이 거부됩니다(의도된 동작).
+나온 해시를 `bookmarklet.js` 의 `EXPECT` 와 **세 언어 가이드 모두**의 북마클릿 한 줄에
+반영하고, `@version` 을 올립니다. 안 하면 기존 북마클릿 사용자는 실행이 거부됩니다(의도된 동작).
 
 payload 형식(`mechashifty.roster/2`)을 바꾸면 `assets/roster.js` 의 `parseRoster` 도
 같이 고쳐야 합니다. 니케를 짝짓는 열쇠는 `data/nikkes.json` 의 `name_code` 이고,
 이 값은 `tools/update_data.py --nikkes` 가 라이브 CDN 에서 채웁니다.
+
+화면 문구를 늘릴 때는 `mechashifty.user.js` 의 `STR` 표에 ko/en/ja 세 칸을 모두 채웁니다.

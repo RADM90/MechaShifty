@@ -11,24 +11,38 @@
  * Tampermonkey 를 쓸 수 있으면 그쪽이 낫다. 코드가 브라우저에 저장돼 있어서
  * 실행할 때마다 네트워크로 받아 오지 않는다.
  *
+ * 실행되고 나면 화면 문구는 mechashifty.user.js 가 한/영/일로 알아서 낸다.
+ * 여기 두 개의 alert 은 그 스크립트가 뜨기 *전에* 실패했을 때만 보이는 것이라
+ * 이 파일에서 따로 세 언어를 들고 있는다.
+ *
+ * EN: this bookmarklet only fetches mechashifty.user.js and runs it if the
+ *     SHA-256 matches EXPECT below — pinning you to the exact code you reviewed.
+ * JA: このブックマークレットは mechashifty.user.js を取得し、SHA-256 が下の
+ *     EXPECT と一致した場合にのみ実行します（確認済みのコードに固定されます）。
+ *
  * 해시 갱신:
  *   shasum -a 256 userscript/mechashifty.user.js
  * 한 줄짜리 북마클릿은 USER_GUIDE.md 에 있다.
  */
 javascript: (async () => {
   const URL_ = 'https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js';
-  const EXPECT = 'b407534f863c8805205c8aedc4b36503d9c8af22fe33f0b26e34ec9ba7577ac1';
+  const EXPECT = 'dd5b95a45fb85dab008da5c83fd8a80505eb94565990dab478f22a67ae82b2c0';
+  const l = (navigator.language || 'en').toLowerCase();
+  const M = l.startsWith('ko')
+    ? { bad: 'MechaShifty: 스크립트가 저장해 둔 것과 다릅니다.\n실행하지 않았습니다.\nUSER_GUIDE 에서 최신 북마클릿을 다시 복사해 주세요.',
+        err: 'MechaShifty: 불러오지 못했습니다 — ' }
+    : l.startsWith('ja')
+      ? { bad: 'MechaShifty: スクリプトが保存時のものと異なります。\n実行しませんでした。\nUSER_GUIDE から最新のブックマークレットをコピーし直してください。',
+          err: 'MechaShifty: 読み込めませんでした — ' }
+      : { bad: 'MechaShifty: the script differs from the one you saved.\nNothing was run.\nCopy the current bookmarklet again from the USER_GUIDE.',
+          err: 'MechaShifty: could not load — ' };
   try {
     const src = await (await fetch(URL_, { cache: 'no-store' })).text();
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(src));
     const got = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
-    if (got !== EXPECT) {
-      alert('MechaShifty: 스크립트가 저장해 둔 것과 다릅니다.\n실행하지 않았습니다.\n'
-        + 'USER_GUIDE.md 에서 최신 북마클릿을 다시 복사해 주세요.');
-      return;
-    }
+    if (got !== EXPECT) { alert(M.bad); return; }
     (0, eval)(src);
   } catch (e) {
-    alert('MechaShifty: 불러오지 못했습니다 — ' + e.message);
+    alert(M.err + e.message);
   }
 })();

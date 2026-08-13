@@ -47,7 +47,7 @@
    "note": {
     "ko": "등급·클래스·레벨(1~1200)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. SR 쪽 빈칸은 해당 조합의 니케가 없다는 뜻.",
     "en": "Base HP/ATK/DEF by rarity, class and level (1–1200). DEF differs per weapon type; blank SR cells mean no Nikke has that combination.",
-    "ja": "レア・クラス・レベル(1〜1200)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、SRの空欄はその組み合わせが存在しないことを示す。"
+    "ja": "等級・クラス・レベル(1〜1200)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、SRの空欄はその組み合わせが存在しないことを示す。"
    },
    "rows": 7200,
    "columns": 11
@@ -76,12 +76,12 @@
    "title": {
     "ko": "돌파 / 코어강화 단계표",
     "en": "Limit break & core levels",
-    "ja": "突破・コア強化段階表"
+    "ja": "限界突破・コア強化段階表"
    },
    "note": {
     "ko": "0돌~3돌, 1코강~7코강이 각각 돌파 수·코어강화 수로 어떻게 대응되는지.",
     "en": "How each grade maps to a limit-break count and a core-enhance count.",
-    "ja": "各段階が突破数・コア強化数にどう対応するか。"
+    "ja": "各段階が限界突破数・コア強化数にどう対応するか。"
    },
    "rows": 11,
    "columns": 3
@@ -115,7 +115,7 @@
    "note": {
     "ko": "소장품 R0~SR15, 애장품 단계별 스탯.",
     "en": "Collection item stats from R0 to SR15, plus favourite items.",
-    "ja": "コレクション R0〜SR15 と愛蔵品の段階別ステータス。"
+    "ja": "コレクション R0〜SR15 と宝ものの段階別ステータス。"
    },
    "rows": 35,
    "columns": 7
@@ -234,7 +234,7 @@
    "note": {
     "ko": "전초기지 레벨 1~800의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상. 전초기지 레벨은 캠페인 스테이지 5개를 깰 때마다 1 오른다. 701~800은 워크북에 없어 표의 마지막 구간(534~) 생성식으로 이었다.",
     "en": "Per-minute and per-hour income for outpost levels 1–800. Values are converted from a 20-second tick, so the decimals are not round. The outpost level rises by 1 for every 5 campaign stages cleared. Levels 701–800 are not in the workbook and were continued with the table's own last-segment formula (534+).",
-    "ja": "前哨基地レベル1〜800の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。前哨基地レベルはキャンペーンステージ5つクリアごとに1上がる。701〜800はワークブックにないため、表の最終区間(534〜)の生成式で延長した。"
+    "ja": "基地防御レベル1〜800の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。基地防御レベルはキャンペーンステージ5つクリアごとに1上がる。701〜800はワークブックにないため、表の最終区間(534〜)の生成式で延長した。"
    },
    "rows": 800,
    "columns": 10
@@ -246,7 +246,7 @@
    "title": {
     "ko": "전술 아카데미",
     "en": "Tactics Academy",
-    "ja": "タクティクスアカデミー"
+    "ja": "タクティクアカデミー"
    },
    "note": {
     "ko": "레슨별 재화 획득량 부스트와 해금 효과.",

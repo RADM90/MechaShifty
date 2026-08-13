@@ -1,10 +1,12 @@
 // ==UserScript==
 // @name         MechaShifty — 내 니케 데이터 내보내기
 // @name:en      MechaShifty — Export my Nikke roster
+// @name:ja      MechaShifty — 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.2.0
+// @version      1.3.0
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
+// @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
 // @author       MechaShifty (RADM90)
 // @license      MIT
 // @homepageURL  https://github.com/RADM90/MechaShifty
@@ -15,7 +17,8 @@
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
-/* 이 스크립트가 하는 일과 하지 않는 일 — 설치 전에 직접 확인하세요.
+/* ─────────────────────────────────────────────────────────────────────────────
+ * 한국어 — 이 스크립트가 하는 일과 하지 않는 일. 설치 전에 직접 확인하세요.
  *
  *  하는 일
  *   - blablalink.com 에 로그인된 상태에서 *내* 계정의 니케 목록/상세/전초기지 정보와
@@ -35,10 +38,182 @@
  *  참고: 원본 아이디어는 트로니사랑해 님의 북마클릿(NIKKE Data Downloader)이다.
  *  원본과 달리 (1) 원격 코드 주입을 없앴고 (2) 전투력 계산을 스크립트가 하지 않는다.
  *  계산은 MechaShifty 쪽에서 워크북 검증을 거친 공식으로 한다.
- */
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * English — what this script does and does not do. Please read before installing.
+ *
+ *  What it does
+ *   - While you are logged in to blablalink.com, reads *your own* account's Nikke
+ *     list / details / outpost info and profile basics (account creation time,
+ *     campaign progress) through the game API. The API_* constants below are the
+ *     complete list of addresses it ever contacts.
+ *   - Reshapes what it read into the form the MechaShifty calculator expects, and
+ *     exports it only by the route you click: save a file, copy to clipboard, or
+ *     postMessage to the calculator tab.
+ *
+ *  What it does not do
+ *   - It never fetches and runs external code. There is no eval, no new Function,
+ *     no <script src>, no import() in this file. Read it once and its behaviour
+ *     cannot be changed remotely afterwards.
+ *   - It never puts cookies, sessions or your openid into the output. The openid
+ *     is used only as an API argument and is stripped before export (see scrub).
+ *   - It never uploads anything on its own. There is no code here that posts to a
+ *     server.
+ *
+ *  Credit: the original idea is the NIKKE Data Downloader bookmarklet by
+ *  트로니사랑해. Unlike the original, this one (1) removes remote code injection
+ *  and (2) does not compute combat power itself — MechaShifty does that with a
+ *  formula verified against the reference workbook.
+ *
+ * ─────────────────────────────────────────────────────────────────────────────
+ * 日本語 — このスクリプトがすること・しないこと。導入前にご自身で確認してください。
+ *
+ *  すること
+ *   - blablalink.com にログインした状態で、*自分の* アカウントのニケ一覧・詳細・
+ *     前哨基地情報と、プロフィールの基本情報（アカウント作成時刻・キャンペーン
+ *     進行度）を game API から読み取る。下の API_* 定数が、接続先アドレスのすべて。
+ *   - 読み取った値を MechaShifty 計算機が使う形に変換し、ファイル保存・クリップ
+ *     ボードコピー・タブ間 postMessage のうち、利用者が押した方法だけで書き出す。
+ *
+ *  しないこと
+ *   - 外部スクリプト／ライブラリを取得して実行しない。eval・new Function・
+ *     <script src>・import() はこのファイルに存在しない。一度読んでおけば、後から
+ *     遠隔で挙動が変わることはない。
+ *   - Cookie・セッション・openid を成果物に含めない。openid は API 呼び出しの引数
+ *     としてのみ使い、payload には入れない（scrub を参照）。
+ *   - どこにも自動送信しない。サーバーへアップロードするコード自体が無い。
+ *
+ *  出典: 元のアイデアは 트로니사랑해 氏のブックマークレット（NIKKE Data
+ *  Downloader）。本スクリプトは (1) 遠隔コード注入を廃し、(2) 戦闘力計算を
+ *  スクリプト側で行わない点が異なる。計算はワークブックで検証済みの式を用いて
+ *  MechaShifty 側が行う。
+ * ───────────────────────────────────────────────────────────────────────────── */
 
 (function () {
   'use strict';
+
+  /* ── 화면 문구 (ko / en / ja) ────────────────────────────────
+     이 창을 보는 사람은 blablalink 를 쓰는 한·영·일 유저다. 브라우저가 말하는
+     언어를 그대로 따르고, 모르는 언어면 영어로 떨어뜨린다. 값이 함수면 인자를
+     받아 문장을 만든다. 코드 쪽 주석은 유지보수용이라 한국어로 둔다. */
+  const LANG = (() => {
+    const want = navigator.languages && navigator.languages.length
+      ? navigator.languages : [navigator.language || 'en'];
+    for (const raw of want) {
+      const w = String(raw).toLowerCase();
+      if (w.startsWith('ko')) return 'ko';
+      if (w.startsWith('ja')) return 'ja';
+      if (w.startsWith('en')) return 'en';
+    }
+    return 'en';
+  })();
+
+  const STR = {
+    menu: ['내 니케 데이터 내보내기', 'Export my Nikke roster', '所持ニケデータを書き出す'],
+    title: ['MechaShifty 내보내기', 'MechaShifty export', 'MechaShifty 書き出し'],
+    /* 예전 문구는 '닉네임·서버 외의 식별자는 담지 않는다' 였는데, 실제로는 닉네임도
+       서버도 결과물에 넣지 않는다 (entryOf/account 참고). 문구를 코드에 맞췄다. */
+    sub: [
+      '내 계정의 니케 데이터만 읽습니다. 닉네임·서버·계정 식별자는 담지 않습니다.',
+      'Reads only your own roster. Nickname, server and account identifiers are not included.',
+      '自分のアカウントのニケデータだけを読み取ります。ニックネーム・サーバー・アカウント識別子は含みません。',
+    ],
+    close: ['닫기', 'Close', '閉じる'],
+
+    stepLogin: ['로그인 계정을 확인하는 중…', 'Checking your login…', 'ログイン中のアカウントを確認しています…'],
+    stepArea: ['게임 서버를 찾는 중…', 'Looking for your game server…', 'ゲームサーバーを探しています…'],
+    stepFound: [
+      (n, area) => `보유 니케 ${n}명 · ${area} 서버`,
+      (n, area) => `${n} Nikkes · ${area} server`,
+      (n, area) => `所持ニケ ${n}体・${area} サーバー`,
+    ],
+    stepDetails: [
+      (done, all) => `상세 정보 ${done} / ${all}…`,
+      (done, all) => `Details ${done} / ${all}…`,
+      (done, all) => `詳細情報 ${done} / ${all}…`,
+    ],
+    stepAccount: ['계정 정보를 확인하는 중…', 'Checking account info…', 'アカウント情報を確認しています…'],
+
+    errLogin: [
+      '로그인 상태가 아니거나 계정 정보를 읽지 못했습니다.',
+      'You are not logged in, or the account info could not be read.',
+      'ログインしていないか、アカウント情報を読み取れませんでした。',
+    ],
+    errArea: [
+      '게임 서버를 찾지 못했습니다. 계정 공개 설정을 확인해 주세요.',
+      'Could not find your game server — check that your account is set to public.',
+      'ゲームサーバーが見つかりません。アカウントの公開設定を確認してください。',
+    ],
+    errScrub: [
+      '내보낼 데이터에 계정 식별자가 남아 있어 중단했습니다.',
+      'Stopped: an account identifier was still present in the data to export.',
+      '書き出すデータにアカウント識別子が残っていたため中止しました。',
+    ],
+    failed: [e => `실패: ${e}`, e => `Failed: ${e}`, e => `失敗: ${e}`],
+
+    done: [
+      (n, syn) => `니케 ${n}명${syn ? ` · 싱크로 Lv.${syn}` : ''} 을(를) 읽었습니다.\n내보낼 방법을 고르세요.`,
+      (n, syn) => `Read ${n} Nikkes${syn ? ` · synchro Lv.${syn}` : ''}.\nPick how to export.`,
+      (n, syn) => `ニケ ${n}体${syn ? `・シンクロ Lv.${syn}` : ''} を読み取りました。\n書き出し方法を選んでください。`,
+    ],
+    btnSend: ['MechaShifty 계산기로 보내기', 'Send to the MechaShifty calculator', 'MechaShifty 計算機に送る'],
+    btnFile: ['JSON 파일로 저장', 'Save as a JSON file', 'JSONファイルとして保存'],
+    btnCopy: ['클립보드로 복사', 'Copy to clipboard', 'クリップボードにコピー'],
+    okFile: [
+      '저장했습니다. 계산기의 "내 계정 불러오기"에서 이 파일을 여세요.',
+      'Saved. Open it from "Import my account" in the calculator.',
+      '保存しました。計算機の「アカウント読み込み」からこのファイルを開いてください。',
+    ],
+    okCopy: [
+      '복사했습니다. 계산기의 붙여넣기 칸에 붙여 넣으세요.',
+      'Copied. Paste it into the paste box in the calculator.',
+      'コピーしました。計算機の貼り付け欄に貼り付けてください。',
+    ],
+    errCopy: [
+      '복사에 실패했습니다. 파일 저장을 써 주세요.',
+      'Copy failed — use the file option instead.',
+      'コピーに失敗しました。ファイル保存をご利用ください。',
+    ],
+
+    errPopup: [
+      '팝업이 차단됐습니다. 허용하거나 파일로 저장해 주세요.',
+      'The popup was blocked. Allow popups, or save a file instead.',
+      'ポップアップがブロックされました。許可するか、ファイル保存をご利用ください。',
+    ],
+    waiting: [
+      'MechaShifty 탭이 준비되기를 기다리는 중…',
+      'Waiting for the MechaShifty tab to be ready…',
+      'MechaShifty タブの準備を待っています…',
+    ],
+    sent: [
+      'MechaShifty 로 보냈습니다. 열린 탭에서 확인하세요.',
+      'Sent to MechaShifty — check the tab that just opened.',
+      'MechaShifty へ送りました。開いたタブで確認してください。',
+    ],
+    noReply: [
+      '응답이 없습니다. 파일로 저장한 뒤 계산기에서 불러와 주세요.',
+      'No reply. Save a file and import it in the calculator instead.',
+      '応答がありません。ファイルとして保存し、計算機から読み込んでください。',
+    ],
+
+    note: [
+      '담기는 값: 니케별 레벨·돌파·스킬·장비·큐브·소장품·호감도, 전초기지 연구 레벨, '
+        + '싱크로 레벨, 계정 생성 시각. 계산기가 쓰지 않는 값(닉네임·서버·계정 식별자)은 담기지 않습니다.',
+      'Included: per-Nikke level, limit break, skills, gear, cube, collection and bond; '
+        + 'outpost research levels; synchro level; account creation time. Anything the calculator '
+        + 'does not use — nickname, server, account identifiers — is not included.',
+      '含まれる値: ニケごとのレベル・凸・スキル・装備・キューブ・コレクション・好感度、'
+        + '前哨基地の研究レベル、シンクロレベル、アカウント作成時刻。計算機が使わない値'
+        + '（ニックネーム・サーバー・アカウント識別子）は含まれません。',
+    ],
+  };
+
+  const LANGS = ['ko', 'en', 'ja'];
+  const S = (key, ...args) => {
+    const row = STR[key];
+    const v = row[LANGS.indexOf(LANG)] ?? row[1];
+    return typeof v === 'function' ? v(...args) : v;
+  };
 
   /* 전투력 계산기 탭으로 바로 열어야 한다 — 받는 쪽 코드가 그 탭에서 뜬다. */
   const SITE = 'https://radm90.github.io/MechaShifty/#tab=calc';
@@ -249,20 +424,20 @@
   function scrub(payload) {
     const json = JSON.stringify(payload);
     if (/intl_open_?id|open_?id|cookie|session|token/i.test(json)) {
-      throw new Error('내보낼 데이터에 계정 식별자가 남아 있어 중단했습니다.');
+      throw new Error(S('errScrub'));
     }
     return payload;
   }
 
   // ── 수집 ───────────────────────────────────────────────────
   async function collect(say) {
-    say('로그인 계정을 확인하는 중…');
+    say(S('stepLogin'));
     const openId = await myOpenId();
-    if (!openId) throw new Error('로그인 상태가 아니거나 계정 정보를 읽지 못했습니다.');
+    if (!openId) throw new Error(S('errLogin'));
 
-    say('게임 서버를 찾는 중…');
+    say(S('stepArea'));
     const found = await findArea(openId);
-    if (!found) throw new Error('게임 서버를 찾지 못했습니다. 계정 공개 설정을 확인해 주세요.');
+    if (!found) throw new Error(S('errArea'));
     const { area, list } = found;
 
     const levels = {};
@@ -273,7 +448,7 @@
       codes.push(code);
       levels[code] = num(c.lv) || 1;
     }
-    say(`보유 니케 ${codes.length}명 · ${AREAS[area]} 서버`);
+    say(S('stepFound', codes.length, AREAS[area]));
 
     const outpost = await post(API_OUTPOST, { intl_open_id: openId, nikke_area_id: area })
       .then(j => (j.data || {}).outpost_info || null).catch(() => null);
@@ -281,14 +456,14 @@
     const nikkes = [];
     for (let i = 0; i < codes.length; i += CHUNK) {
       const chunk = codes.slice(i, i + CHUNK);
-      say(`상세 정보 ${Math.min(i + CHUNK, codes.length)} / ${codes.length}…`);
+      say(S('stepDetails', Math.min(i + CHUNK, codes.length), codes.length));
       const j = await post(API_DETAILS,
         { intl_open_id: openId, nikke_area_id: area, name_codes: chunk });
       for (const d of (j.data || {}).character_details || []) nikkes.push(entryOf(d, levels));
       await sleep(120);           // 연속 호출 간격 (서버 부담 줄이기)
     }
 
-    say('계정 정보를 확인하는 중…');
+    say(S('stepAccount'));
     const basic = await basicInfo(openId, area);
     return scrub({
       schema: SCHEMA,
@@ -339,16 +514,16 @@
     root.append(style, box);
 
     const h = document.createElement('h2');
-    h.textContent = 'MechaShifty 내보내기';
+    h.textContent = S('title');
     const sub = document.createElement('p');
     sub.className = 'ms-sub';
-    sub.textContent = '내 계정의 니케 데이터를 읽습니다. 닉네임·서버 외의 계정 식별자는 담지 않습니다.';
+    sub.textContent = S('sub');
     const status = document.createElement('p');
     status.className = 'ms-status';
     const actions = document.createElement('div');
     const close = document.createElement('button');
     close.className = 'ms-x';
-    close.textContent = '닫기';
+    close.textContent = S('close');
     close.onclick = () => root.remove();
     box.append(h, sub, status, actions, close);
 
@@ -389,7 +564,7 @@
      받아 갈 수 있어서 그렇게 하지 않는다. */
   function handoff(payload, say) {
     const win = window.open(SITE, '_blank');
-    if (!win) { say('팝업이 차단됐습니다. 허용하거나 파일로 저장해 주세요.', true); return; }
+    if (!win) { say(S('errPopup'), true); return; }
 
     let sent = false;
     const onMessage = e => {
@@ -397,16 +572,16 @@
       if (!e.data || e.data.type !== 'MECHASHIFTY_READY') return;
       win.postMessage({ type: 'MECHASHIFTY_ROSTER', payload }, SITE_ORIGIN);
       sent = true;
-      say('MechaShifty 로 보냈습니다. 열린 탭에서 확인하세요.');
+      say(S('sent'));
       window.removeEventListener('message', onMessage);
     };
     window.addEventListener('message', onMessage);
-    say('MechaShifty 탭이 준비되기를 기다리는 중…');
+    say(S('waiting'));
 
     setTimeout(() => {
       if (sent) return;
       window.removeEventListener('message', onMessage);
-      say('응답이 없습니다. 파일로 저장한 뒤 계산기에서 불러와 주세요.', true);
+      say(S('noReply'), true);
     }, 20000);
   }
 
@@ -416,34 +591,32 @@
     try {
       payload = await collect(ui.say);
     } catch (e) {
-      ui.say('실패: ' + e.message, true);
+      ui.say(S('failed', e.message), true);
       return;
     }
 
     const n = payload.nikkes.length;
     const syn = payload.account.synchro_level;
-    ui.say(`니케 ${n}명${syn ? ` · 싱크로 Lv.${syn}` : ''} 을(를) 읽었습니다.\n내보낼 방법을 고르세요.`);
+    ui.say(S('done', n, syn));
     ui.clear();
-    ui.button('MechaShifty 계산기로 보내기', 'ms-go', () => handoff(payload, ui.say));
-    ui.button('JSON 파일로 저장', 'ms-alt', () => {
+    ui.button(S('btnSend'), 'ms-go', () => handoff(payload, ui.say));
+    ui.button(S('btnFile'), 'ms-alt', () => {
       download(payload);
-      ui.say('저장했습니다. 계산기의 "내 계정 불러오기"에서 이 파일을 여세요.');
+      ui.say(S('okFile'));
     });
-    ui.button('클립보드로 복사', 'ms-alt', async () => {
+    ui.button(S('btnCopy'), 'ms-alt', async () => {
       try {
         await navigator.clipboard.writeText(JSON.stringify(payload));
-        ui.say('복사했습니다. 계산기의 붙여넣기 칸에 붙여 넣으세요.');
-      } catch { ui.say('복사에 실패했습니다. 파일 저장을 써 주세요.', true); }
+        ui.say(S('okCopy'));
+      } catch { ui.say(S('errCopy'), true); }
     });
-    ui.note('담기는 값: 니케별 레벨·돌파·스킬·장비·큐브·소장품·호감도, 전초기지 연구 레벨, '
-      + '싱크로 레벨, 계정 생성 시각. 계산기가 쓰지 않는 값(닉네임·서버·계정 식별자)은 '
-      + '담기지 않습니다.');
+    ui.note(S('note'));
   }
 
   /* 유저스크립트로 설치했으면 Tampermonkey 메뉴에 걸고, 북마클릿으로 실행했으면
      (메뉴 API 가 없으므로) 바로 연다. 같은 파일을 두 방식이 함께 쓴다. */
   if (typeof GM_registerMenuCommand === 'function') {
-    GM_registerMenuCommand('내 니케 데이터 내보내기', run);
+    GM_registerMenuCommand(S('menu'), run);
   } else {
     run();
   }

@@ -31,6 +31,9 @@ export const axisLabel = axis => t('ax.' + axis);
    여기는 순수 UI 문구만 둔다. 초성 검색은 한국어에서만 의미가 있어서
    검색 안내 예시도 언어별로 다르다.                                  */
 const LANGS = ['ko', 'en', 'ja'];
+/* 오버로드 슬롯은 일본 커뮤니티에서 번호가 아니라 칸 위치로 부른다
+   (슬롯1=上段 … 슬롯3=下段). 잠금 순서 설명도 이 말로 굴러간다. */
+const JA_SLOT = n => ['', '上段', '中段', '下段'][n] || `${n}枠目`;
 const STR = {
   'app.title': ['메카시프티 · Mecha Shifty', 'Mecha Shifty', 'メカシフティ · Mecha Shifty'],
   'app.brand': ['메카시프티', 'Mecha Shifty', 'メカシフティ'],
@@ -41,8 +44,8 @@ const STR = {
   'tab.stats': ['통계', 'Stats', '統計'],
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
-  'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オーバーロード'],
-  'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体迎撃'],
+  'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オバロ厳選'],
+  'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -50,23 +53,23 @@ const STR = {
   'cp.pick': ['대상', 'Target', '対象'],
   'cp.level': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
   'cp.levelHint': [n => `1 ~ ${n}`, n => `1 – ${n}`, n => `1 ~ ${n}`],
-  'cp.grade': ['돌파 / 코강', 'Break / Core', '突破・コア'],
+  'cp.grade': ['돌파 / 코강', 'Break / Core', '凸・コア強化'],
   'cp.bond': ['호감도', 'Bond', '好感度'],
   'cp.skills': ['스킬 레벨', 'Skill levels', 'スキルレベル'],
   'cp.skill1': ['스킬 1', 'Skill 1', 'スキル1'],
   'cp.skill2': ['스킬 2', 'Skill 2', 'スキル2'],
   'cp.burst': ['버스트', 'Burst', 'バースト'],
-  'cp.items': ['장착품', 'Equipped items', '装着品'],
+  'cp.items': ['장착품', 'Equipped items', '装着アイテム'],
   'cp.cube': ['큐브', 'Cube', 'キューブ'],
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
   'cp.collectionLv': ['등급', 'Grade', '等級'],
-  'cp.favorite': ['애장품', 'Favorite item', '愛蔵品'],
+  'cp.favorite': ['애장품', 'Favorite item', '宝もの'],
   /* 돌파·코강·장비 등급은 데이터 키가 한국어라('3돌'·'오버로드') 그대로 쓰면 EN/JA
      화면에 한국어가 남는다. cp.js 의 gradeLabel/tierLabel 이 이 키들로 옮긴다. */
   'cp.break': [n => `${n}돌`, n => `Break ${n}`, n => `${n}凸`],
-  'cp.core': [n => `${n}코강`, n => `Core ${n}`, n => `コア強化${n}`],
+  'cp.core': [n => `${n}코강`, n => `Core ${n}`, n => `コア${n}`],
   'cp.tier_오버로드': ['오버로드', 'Overload', 'オーバーロード'],
-  'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', '9ティア企業'],
+  'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', 'T9企業'],
   'cp.none': ['미착용', 'None', '未装着'],
   'cp.console': ['리사이클 룸 - 콘솔', 'Recycling Room — Console', 'リサイクルルーム - コンソール'],
   'cp.consoleHint': [
@@ -87,12 +90,12 @@ const STR = {
   'cp.slot_머리': ['머리', 'Head', '頭'],
   'cp.slot_몸': ['몸', 'Body', '胴'],
   'cp.slot_팔': ['팔', 'Arm', '腕'],
-  'cp.slot_다리': ['다리', 'Leg', '脚'],
+  'cp.slot_다리': ['다리', 'Leg', '足'],
   'cp.enhance': ['강화', 'Enhance', '強化'],
   'cp.gearLimit': [
     '기업 장비(9티어) · 오버로드만 계산할 수 있습니다. 기업 소속이 아닌 일반 T9 장비는 스탯 자료가 아직 없습니다.',
     'Only corporation T9 gear and Overload can be calculated — stat data for non-corporation T9 gear is not available yet.',
-    '企業装備(9ティア)とオーバーロードのみ計算できます。企業所属でない通常T9装備のステータス資料はまだありません。',
+    'T9企業装備とオーバーロード(T10)のみ計算できます。企業所属でない通常のT9装備のステータス資料はまだありません。',
   ],
   'cp.noOption': ['옵션 없음', 'No option', 'オプションなし'],
   'cp.reset': ['입력 초기화', 'Reset inputs', '入力初期化'],
@@ -111,7 +114,7 @@ const STR = {
   'cp.breakHint': [
     (s, u, n) => `스킬계수 ${s} · 우코(우월코드 대미지) 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
-    (s, u, n) => `スキル係数 ${s} · 優越コードダメージ ${u} · その他のOP ${n}`,
+    (s, u, n) => `スキル係数 ${s} · 有利コードダメージ ${u} · その他のOP ${n}`,
   ],
   'cp.edit':['입력 수정', 'Edit inputs', '入力を編集'],
   'cp.editTitle': ['입력 수정', 'Edit inputs', '入力を編集'],
@@ -142,7 +145,7 @@ const STR = {
   'cp.noBase': [
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
     'No base stats available for this combination — check rarity, class and level.',
-    'この組み合わせの基本ステータス資料がありません（レア・クラス・レベルを確認してください）。',
+    'この組み合わせの基本ステータス資料がありません（等級・クラス・レベルを確認してください）。',
   ],
 
   /* 내 계정 불러오기 (roster.js 에서 ctx.t 로 받아 쓴다) */
@@ -154,7 +157,8 @@ const STR = {
     'Blablalink から書き出した自分のニケデータを読み込むと、所持ニケの戦闘力をまとめて確認できます。'
       + '収集は Tampermonkey ユーザースクリプト（またはブックマークレット）が行い、読み込んだ内容はこのブラウザの外に出ません。',
   ],
-  'im.guide': ['수집 스크립트 설치 방법 →', 'How to install the collector →', '収集スクリプトの導入手順 →'],
+  /* 화살표는 문장을 펼쳐 놓을 때만 붙는다 (roster.js) — 접힌 '?' 의 툴팁에는 걸리적거린다 */
+  'im.guide': ['수집 스크립트 설치 방법', 'How to install the collector', '収集スクリプトの導入手順'],
   'im.file': ['JSON 열기', 'Open JSON', 'JSONを開く'],
   'im.paste': ['붙여넣기', 'Paste', '貼り付け'],
   'im.pasteHint': ['복사한 JSON 을 붙여 넣으세요', 'Paste the copied JSON here', 'コピーしたJSONを貼り付け'],
@@ -202,19 +206,19 @@ const STR = {
   'im.noMatch': ['조건에 맞는 니케가 없습니다.', 'No Nikke matches.', '条件に合うニケがありません。'],
   'im.colNikke': ['이름', 'Name', '名前'],
   'im.colLevel': ['레벨', 'Level', 'レベル'],
-  'im.colGrade': ['돌파', 'Break', '突破'],
+  'im.colGrade': ['돌파', 'Break', '凸'],
   // 코강은 3돌 다음 단계라 돌파와 한 줄로 이어 센다
   'im.colGradeNote': [
     '정렬 순서: 0돌 → 3돌 → 1코강 → 7코강',
     'Sort order: Break 0 → Break 3 → Core 1 → Core 7',
-    '並び順: 0凸 → 3凸 → コア強化1 → コア強化7',
+    '並び順: 0凸 → 3凸 → コア1 → コア7',
   ],
   // 오버로드 옵션 중 우코 + 공증 종합값의 합. 실전 성능을 한 숫자로 가늠하는 자리다
   'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
   'im.colOlAtkNote': [
     '오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력) 합계',
     'Sum of the Elemental Damage and ATK overload option totals',
-    'オーバーロードOP総合のうち 有利コードダメージ + 攻撃力 の合計',
+    'オーバーロードOP合計のうち 有利コードダメージ + 攻撃力 の合計',
   ],
   'im.unknown': [
     n => `사이트가 모르는 니케 ${n}명은 건너뛰었습니다.`,
@@ -226,8 +230,8 @@ const STR = {
       + '오버로드 옵션이 하나도 없는 장비는 9티어로 잡히니 다르면 입력 수정에서 고치세요.',
     'In the gear cell the top row is head and body, the bottom row arm and leg; the number is the enhance step. '
       + 'Pink is overload, orange is tier-9 manufacturer. Gear with no overload option reads as tier-9 — fix it in Edit inputs if that is wrong.',
-    '装備欄は上段が頭・胴、下段が腕・脚で、数字は強化段階です。ピンクがオーバーロード、オレンジが9ティア企業。'
-      + 'OPが一つも無い装備は9ティアとして扱われるので、違う場合は入力を編集してください。',
+    '装備欄は上段が頭・胴、下段が腕・足で、数字は強化段階です。ピンクがオーバーロード、オレンジがT9企業装備。'
+      + 'OPが一つも無い装備はT9として扱われるので、違う場合は入力を編集してください。',
   ],
 
   /* 전초기지 탭 (outpost.js 에서 ctx.t 로 받아 쓴다) */
@@ -251,13 +255,13 @@ const STR = {
       + `1스테이지분이 먼저 붙습니다.`,
     (skip, step) => `Outpost level = ⌊((normal clears − first ${skip} areas) + hard clears + 1) / ${step}⌋ + 1. `
       + `Normal areas 0–2 do not count, and one stage is credited up front when area 3 opens.`,
-    (skip, step) => `前哨基地レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア + 1 を`
+    (skip, step) => `基地防御レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア + 1 を`
       + `${step}で割った商 + 1。ノーマルの地域0〜2は加算されず、地域3の開放時に1ステージ分が先に加算されます。`,
   ],
   'op.academyNote': [
     l => `전술 아카데미는 항상 최대 레슨(${l}) 기준으로 계산합니다. 지휘관 경험치에는 부스트가 붙지 않습니다.`,
     l => `The Tactics Academy is always assumed maxed (${l}). Commander EXP gets no boost.`,
-    l => `タクティクスアカデミーは常に最大レッスン(${l})前提です。指揮官EXPにはブーストが付きません。`,
+    l => `タクティクアカデミーは常に最大レッスン(${l})前提です。指揮官EXPにはブーストが付きません。`,
   ],
   'op.shifty': [
     '전투력 계산기 탭에서 계정 자료를 불러오면 이 진행도가 자동으로 채워집니다. 직접 고른 값은 다음 수집까지 그대로 둡니다.',
@@ -265,7 +269,7 @@ const STR = {
     '戦闘力計算機タブでアカウント資料を読み込むと、この進行度が自動で入ります。手動で選んだ値は次の収集まで保たれます。',
   ],
   /* 기업 타워 카드 — 계정 생성일 기준 '막힘 없이 올랐다면' 도달 가능한 최대 층 */
-  'op.tower': ['기업 타워', 'Corp towers', '企業タワー'],
+  'op.tower': ['기업 타워', 'Corp towers', 'トライブタワー'],
   'op.created': ['계정 생성', 'Account created', 'アカウント作成'],
   'op.sinceDays': [n => `· ${n.toLocaleString()}일째`, n => `· day ${n.toLocaleString()}`, n => `· ${n.toLocaleString()}日目`],
   'op.towerHint': [
@@ -310,7 +314,7 @@ const STR = {
     'Filled in from your imported account data.',
     '読み込んだアカウント資料から入力しました。',
   ],
-  'op.level': ['전초기지 레벨', 'Outpost level', '前哨基地レベル'],
+  'op.level': ['전초기지 레벨', 'Outpost level', '基地防御レベル'],
   'op.toNext': [
     (left, into, step) => `다음 레벨까지 ${left}스테이지 (${into}/${step})`,
     (left, into, step) => `${left} stages to next level (${into}/${step})`,
@@ -327,7 +331,7 @@ const STR = {
     (a, b) => `Normal ${a.toLocaleString()} + Hard ${b.toLocaleString()}`,
     (a, b) => `ノーマル ${a.toLocaleString()} + ハード ${b.toLocaleString()}`,
   ],
-  'op.academyTag': [l => `전술 아카데미 ${l}`, l => `Academy ${l}`, l => `アカデミー ${l}`],
+  'op.academyTag': [l => `전술 아카데미 ${l}`, l => `Academy ${l}`, l => `タクティク ${l}`],
   'op.mismatch': [
     (a, b) => `프로필이 알려준 레벨(${a})과 계산값(${b})이 다릅니다. 스테이지 선택을 확인하세요.`,
     (a, b) => `The level reported by your profile (${a}) differs from the computed one (${b}).`,
@@ -379,7 +383,7 @@ const STR = {
   'op.tableHint': [
     '전술 아카데미 최대 레벨 기준. 굵은 줄이 지금 노리는 구간입니다.',
     'Assumes a maxed Tactics Academy. The highlighted row is the step you are working toward.',
-    'タクティクスアカデミー最大前提。強調行が現在狙っている区間です。',
+    'タクティクアカデミー最大前提。強調行が現在狙っている区間です。',
   ],
 
   /* 니파고 탭 — 오버로드 옵션작 (nipago.js 에서 ctx.t 로 받아 쓴다) */
@@ -388,17 +392,18 @@ const STR = {
   'np.goalsHint': [
     '노리는 옵션을 고르세요. 2·3슬롯 체크는 그 옵션이 해당 슬롯에 떴을 때 잠금을 권할지입니다.',
     'Pick what you are aiming for. The slot 2 / slot 3 checkboxes decide whether a lock is recommended when that option lands there.',
-    '狙うOPを選びます。2・3スロットのチェックは、そのスロットに出たときロックを勧めるかどうかです。',
+    '狙うOPを選びます。中段・下段のチェックは、その枠に出たときロックを勧めるかどうかです。',
   ],
   'np.modeOpt': ['옵션 종류만', 'Option only', 'OP種類のみ'],
   'np.modeLv': ['옵션 + 최소 레벨', 'Option + min level', 'OP + 最小レベル'],
   'np.minLv': ['최소 lv', 'Min lv', '最小lv'],
-  'np.slotN': [n => `슬롯 ${n}`, n => `Slot ${n}`, n => `スロット${n}`],
-  'np.slotP': [(n, p) => `슬롯 ${n} (${p}%)`, (n, p) => `Slot ${n} (${p}%)`, (n, p) => `スロット${n} (${p}%)`],
+  'np.slotN': [n => `슬롯 ${n}`, n => `Slot ${n}`, n => JA_SLOT(n)],
+  'np.slotP': [(n, p) => `슬롯 ${n} (${p}%)`, (n, p) => `Slot ${n} (${p}%)`, (n, p) => `${JA_SLOT(n)} (${p}%)`],
   'np.appear': [p => `${p}% 등장`, p => `${p}% appear`, p => `${p}% 出現`],
 
+  /* 칩·카운터는 커뮤니티 약어(カスモ), 설명문은 정식 명칭(カスタムモジュール) */
   'np.cost': ['예상 소모량', 'Expected cost', '想定消費量'],
-  'np.module': ['🔵 모듈', '🔵 Modules', '🔵 モジュール'],
+  'np.module': ['🔵 모듈', '🔵 Modules', '🔵 カスモ'],
   'np.lockkey': ['🔑 락키', '🔑 Lock keys', '🔑 ロックキー'],
   'np.expected': ['기대 소모', 'Expected', '期待消費'],
   'np.spent': ['누적 소모', 'Spent', '累計消費'],
@@ -409,27 +414,27 @@ const STR = {
 
   'np.goalProb': ['효과변경 1회 목표 등장 확률', 'Target chance per option change', '効果変更1回の目標出現率'],
   'np.noGoal': ['목표 옵션을 먼저 고르세요.', 'Pick a target option first.', 'まず目標OPを選んでください。'],
-  'np.freeAll': ['자유 슬롯 전체', 'Any free slot', '自由スロット全体'],
+  'np.freeAll': ['자유 슬롯 전체', 'Any free slot', '空き枠全体'],
 
-  'np.gear': ['개조 장비 효과', 'Overload gear', '改造装備効果'],
-  'np.emptySlot': [n => `슬롯 ${n} — 효과 미획득`, n => `Slot ${n} — no effect`, n => `スロット${n} — 効果なし`],
+  'np.gear': ['개조 장비 효과', 'Overload gear', 'オバロ装備の効果'],
+  'np.emptySlot': [n => `슬롯 ${n} — 효과 미획득`, n => `Slot ${n} — no effect`, n => `${JA_SLOT(n)} — 効果なし`],
   'np.option': ['옵션', 'Option', 'OP'],
   'np.level': ['레벨', 'Level', 'レベル'],
   'np.set': ['설정', 'Set', '設定'],
-  'np.emptyOpt': ['— 빈 슬롯 —', '— empty —', '— 空きスロット —'],
+  'np.emptyOpt': ['— 빈 슬롯 —', '— empty —', '— 空き枠 —'],
   'np.btnChange': ['효과 변경', 'Change options', '効果変更'],
   'np.btnReset': ['수치 재설정', 'Reroll values', '数値再設定'],
   'np.clear': ['입력·누적 초기화', 'Reset everything', '入力・累計リセット'],
 
   'np.lockTitle': ['잠금', 'Lock', 'ロック'],
-  'np.lockMod': [n => `모듈 ${n}개로 잠금`, n => `Lock with ${n} modules`, n => `モジュール${n}個でロック`],
+  'np.lockMod': [n => `모듈 ${n}개로 잠금`, n => `Lock with ${n} modules`, n => `カスモ${n}個でロック`],
   'np.lockKey': [n => `락키 ${n}개로 잠금`, n => `Lock with ${n} keys`, n => `ロックキー${n}個でロック`],
-  'np.lockModS': ['모듈잠금', 'Module lock', 'モジュールロック'],
+  'np.lockModS': ['모듈잠금', 'Module lock', 'カスモロック'],
   'np.lockKeyS': ['락키잠금', 'Key lock', 'キーロック'],
   'np.unlock': ['잠금 해제', 'Unlock', 'ロック解除'],
   'np.cancelLock': [c => `잠금 취소 (${c} 반환)`, c => `Undo lock (${c} back)`, c => `ロック取消 (${c} 返却)`],
 
-  'np.probTable': ['슬롯별 옵션 등장 확률', 'Option chance by slot', 'スロット別OP出現率'],
+  'np.probTable': ['슬롯별 옵션 등장 확률', 'Option chance by slot', '枠別のOP出現率'],
   'np.rec': ['추천 행동', 'What to do next', '推奨アクション'],
   'np.tag_hot': ['지금', 'Now', '今'],
   'np.tag_rec': ['권장', 'Suggested', '推奨'],
@@ -437,17 +442,17 @@ const STR = {
   'np.recLock': [
     (n, opt, lv, kind) => `슬롯 ${n} · ${opt} lv${lv} — ${kind} 권장`,
     (n, opt, lv, kind) => `Slot ${n} · ${opt} lv${lv} — ${kind} suggested`,
-    (n, opt, lv, kind) => `スロット${n} · ${opt} lv${lv} — ${kind}推奨`,
+    (n, opt, lv, kind) => `${JA_SLOT(n)} · ${opt} lv${lv} — ${kind}推奨`,
   ],
   'np.recLv': [
     (n, opt, min) => `슬롯 ${n} · ${opt} 수치재설정 → lv${min}+`,
     (n, opt, min) => `Slot ${n} · reroll ${opt} to lv${min}+`,
-    (n, opt, min) => `スロット${n} · ${opt}の数値再設定 → lv${min}+`,
+    (n, opt, min) => `${JA_SLOT(n)} · ${opt}の数値再設定 → lv${min}+`,
   ],
   'np.recLvDesc': [
     (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). 달성 확률 ${p}, 기대 ${exp}모듈.`,
     (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). ${p} chance, ~${exp} modules.`,
-    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want})。達成率 ${p}、期待 ${exp}モジュール。`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want})。達成率 ${p}、期待 ${exp}カスモ。`,
   ],
   'np.recRoll': [
     s => `효과변경 — ${s} 탐색`,
@@ -457,25 +462,25 @@ const STR = {
   'np.recRollDesc': [
     (p, cost, exp) => `목표 등장 확률 ${p} · 리롤당 ${cost}모듈 · 기대 ${exp}모듈. 잠금 순서는 슬롯3 → 슬롯2 → 슬롯1.`,
     (p, cost, exp) => `${p} chance · ${cost} modules per roll · ~${exp} modules total. Lock in the order slot 3 → 2 → 1.`,
-    (p, cost, exp) => `目標出現率 ${p}・1回あたり${cost}モジュール・期待${exp}モジュール。ロック順はスロット3→2→1。`,
+    (p, cost, exp) => `目標出現率 ${p}・1回あたり${cost}カスモ・期待${exp}カスモ。ロック順は下段→中段→上段。`,
   ],
   'np.recDone': ['목표 달성!', 'Goal reached!', '目標達成！'],
   'np.recDoneDesc': [
     '모든 슬롯이 목표를 충족했습니다.',
     'Every slot meets the target.',
-    'すべてのスロットが目標を満たしています。',
+    'すべての枠が目標を満たしています。',
   ],
   'np.whyBlack': [
     '블랙라벨 lv15 — 슬롯1이라도 모듈잠금 권장',
     'Black label lv15 — worth a module lock even in slot 1',
-    'ブラックラベル lv15 — スロット1でもモジュールロック推奨',
+    'ブラックラベル lv15 — 上段でもカスモロック推奨',
   ],
   'np.whyLoss': [
     n => `재탐색 기대손실 ~${n}개 > 잠금비용`,
     n => `expected loss ~${n} > lock cost`,
     n => `再抽選の期待損失 ~${n}個 > ロック費用`,
   ],
-  'np.whySlot3': ['슬롯3 목표 달성', 'Slot 3 target met', 'スロット3の目標達成'],
+  'np.whySlot3': ['슬롯3 목표 달성', 'Slot 3 target met', '下段の目標達成'],
 
   'np.modalTitle': ['효과 변경 미리보기', 'Option change preview', '効果変更プレビュー'],
   'np.cur': ['현재 효과', 'Current', '現在の効果'],
@@ -489,11 +494,11 @@ const STR = {
 
   'ic.conditions': ['조건', 'Conditions', '条件'],
   'ic.mode': ['진입 모드', 'Boss', '進入モード'],
-  'ic.modeModule': ['모듈 (크라켄)', 'Modules (Kraken)', 'モジュール (クラーケン)'],
+  'ic.modeModule': ['모듈 (크라켄)', 'Modules (Kraken)', 'カスモ (クラーケン)'],
   'ic.modeModuleFull': [
     '크라켄에 들어가면 모듈 랜덤박스가 뜬다',
     'Kraken drops the module random box',
-    'クラーケンに入るとモジュールランダムボックスが出る',
+    'クラーケンに入るとカスタムモジュールのランダムボックスが出る',
   ],
   'ic.modeEquip': ['기업장비 (그 외)', 'Gear (other bosses)', '企業装備 (その他)'],
   'ic.modeEquipFull': [
@@ -501,14 +506,14 @@ const STR = {
     'Every boss except Kraken drops the manufacturer-gear box',
     'クラーケン以外のボスは企業装備ランダムボックスが出る',
   ],
-  'ic.burst': ['풀버스트 이벤트', 'Full Burst event', 'フルバーストイベント'],
+  'ic.burst': ['풀버스트 이벤트', 'Full Burst event', 'フルバーストデイ'],
   'ic.burstOff': ['평상시', 'Normal day', '通常日'],
   'ic.burstOn': ['적용일', 'Event day', '適用日'],
   'ic.step': ['단계', 'Step', '段階'],
   'ic.gamesNote': [
     (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 풀버스트는 골라 쓰는 게 아니라 이벤트로 적용되는 날이 따로 있고, 그날은 진입당 2게임이 된다.`,
     (e, g) => `${e} entries a day → ${g} games. Full Burst is not something you switch on — it applies on event days, and those days give 2 games per entry.`,
-    (e, g) => `1日${e}回進入・${g}ゲーム。フルバーストは自分で選ぶものではなくイベントとして適用される日があり、その日は進入あたり2ゲームになる。`,
+    (e, g) => `1日${e}回進入・${g}ゲーム。フルバーストデイは自分で選ぶものではなく適用される日が決まっていて、その日は進入あたり2ゲームになる。`,
   ],
 
   'ic.view': ['보기', 'View', '表示'],
@@ -519,14 +524,14 @@ const STR = {
   'ic.withPiecesHint': [
     '모듈피스는 확률이 아니라 매 게임 확정으로 들어온다. 켜면 피스 100개마다 완성되는 모듈 수만큼 분포가 통째로 오른쪽으로 밀린다 — 하루에 실제로 늘어나는 모듈 총 개수가 된다. (남는 피스가 다음날로 이월되는 것은 반영하지 않는다)',
     'Module pieces are guaranteed, not rolled. Turning this on shifts the whole distribution right by the modules those pieces complete, giving the total modules gained in a day. Leftover pieces carrying into the next day are not modelled.',
-    'モジュールピースは確率ではなく毎ゲーム確定で入る。オンにするとピース100個ごとに完成するモジュール数だけ分布が右にずれ、1日に実際に増える総数になる。余ったピースの翌日繰り越しは考慮しない。',
+    'カスタムモジュールピースは確率ではなく毎ゲーム確定で入る。オンにするとピース100個ごとに完成する分だけ分布が右にずれ、1日に実際に増える総数になる。余ったピースの翌日繰り越しは考慮しない。',
   ],
 
   'ic.about': ['이 표에 대해', 'About', 'この表について'],
   'ic.aboutModel': [
     '모듈 모드는 게임 1회 분포를 게임 수만큼 합성곱한 정확한 값이고, 장비 모드는 이항분포 B(게임 수, 장비박스 출현율)다. 근사가 아니다.',
     'Module mode is the exact distribution — one game convolved with itself once per game. Gear mode is the binomial B(games, gear-box rate). Neither is an approximation.',
-    'モジュールモードは1ゲーム分布をゲーム数だけ畳み込んだ厳密値、装備モードは二項分布 B(ゲーム数, 装備箱出現率)。近似ではない。',
+    'カスモモードは1ゲーム分布をゲーム数だけ畳み込んだ厳密値、装備モードは二項分布 B(ゲーム数, 装備箱出現率)。近似ではない。',
   ],
   'ic.aboutSource': [
     '수급량 표 두 개(3.5주년 이전 / 이후)에서 그때그때 계산한다. 워크북에 들어 있는 완성 분포표와 소수점 아래 9자리까지 일치하는 것을 확인했다.',
@@ -547,7 +552,7 @@ const STR = {
   'ic.summaryModule': [
     (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄에서 나오는 하루치 모듈.`,
     (s, g) => `Step ${s}, ${g} games a day — modules from Kraken in one day.`,
-    (s, g) => `${s}段階・1日${g}ゲーム。クラーケンから1日に出るモジュール。`,
+    (s, g) => `${s}段階・1日${g}ゲーム。クラーケンから1日に出るカスタムモジュール。`,
   ],
   'ic.summaryEquip': [
     (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄을 뺀 보스에서 나오는 하루치 기업장비 박스.`,
@@ -557,7 +562,7 @@ const STR = {
   'ic.mean': ['하루 기대값 E[X]', 'Daily mean E[X]', '1日期待値 E[X]'],
   'ic.sd': ['표준편차 σ', 'Std. dev. σ', '標準偏差 σ'],
   'ic.piecesTotal': ['하루 모듈피스', 'Pieces a day', '1日のピース'],
-  'ic.totalModules': ['하루 총 완성 모듈', 'Total modules a day', '1日の完成モジュール'],
+  'ic.totalModules': ['하루 총 완성 모듈', 'Total modules a day', '1日の完成カスモ'],
   'ic.eachKind': ['노리는 1종 기대값', 'One specific piece', '狙った1種の期待値'],
   'ic.perMonth': ['30일 누적 기대값', 'Over 30 days', '30日累計'],
   'ic.piecesNote': [
@@ -583,7 +588,7 @@ const STR = {
     '薄い行は今のモードでは使われない値。',
   ],
   'ic.pPieces': ['모듈피스 / 게임', 'Module pieces / game', 'ピース / ゲーム'],
-  'ic.pBox': ['모듈박스 출현율 (%)', 'Module box rate (%)', 'モジュール箱 出現率 (%)'],
+  'ic.pBox': ['모듈박스 출현율 (%)', 'Module box rate (%)', 'カスモ箱 出現率 (%)'],
   'ic.pP1': ['박스에서 1개 (%)', '1 module from box (%)', '箱から1個 (%)'],
   'ic.pP2': ['박스에서 2개 (%)', '2 modules from box (%)', '箱から2個 (%)'],
   'ic.pP3': ['박스에서 3개 (%)', '3 modules from box (%)', '箱から3個 (%)'],
@@ -602,7 +607,7 @@ const STR = {
     u => `1日にk個以上の${u}を得る確率(%)。「最低でも何個」を見るならこちら。`,
   ],
   /* 한국어는 목적격 조사까지 붙여 둔다 (모듈'을' / 장비 박스'를') */
-  'ic.unitModule': ['모듈을', 'modules', 'モジュール'],
+  'ic.unitModule': ['모듈을', 'modules', 'カスモ'],
   'ic.unitEquip': ['장비 박스를', 'gear boxes', '装備箱'],
   'ic.k': ['획득 수 k', 'Count k', '獲得数 k'],
   'ic.kAtLeast': ['k개 이상', 'k or more', 'k個以上'],
@@ -618,7 +623,7 @@ const STR = {
   'sc.title': ['일자별 싱크로 레벨 상한치', 'Synchro level cap by date', '日付別シンクロレベル上限'],
   'sc.date': ['기준일', 'Date', '基準日'],
   'sc.count': ['니케 수', 'Nikkes', 'ニケ数'],
-  'sc.break': ['돌파', 'Break', '突破'],
+  'sc.break': ['돌파', 'Break', '凸'],
   'sc.mult': ['배수', 'Mult.', '倍率'],
   'sc.add': ['증가량', 'Added', '増加量'],
   'sc.addFull': [
@@ -634,7 +639,7 @@ const STR = {
   'sc.how': [
     (b, s) => `기준일까지 출시된 니케를 등급별로 세어 «니케 수 × (1 + 돌파 × ${s})» 를 더하고, 니케 최대 레벨 ${b} 을 얹은 값. 돌파·배수는 게임 상수라 고정이다.`,
     (b, s) => `Counts Nikkes released on or before the date, adds «count × (1 + limit break × ${s})» per rarity, plus the Nikke level cap of ${b}. Limit break and multiplier are fixed game constants.`,
-    (b, s) => `基準日までに実装されたニケをレア度別に数え、«ニケ数 × (1 + 突破 × ${s})» を足し、ニケ最大レベル ${b} を加えた値。突破と倍率はゲーム定数で固定。`,
+    (b, s) => `基準日までに実装されたニケを等級別に数え、«ニケ数 × (1 + 凸 × ${s})» を足し、ニケ最大レベル ${b} を加えた値。限界突破と倍率はゲーム定数で固定。`,
   ],
   'sc.unknown': [
     n => `출시일이 없는 ${n}명은 세지 않았습니다.`,
@@ -643,25 +648,25 @@ const STR = {
   ],
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
-  'ui.reset': ['필터 초기화', 'Reset filters', 'フィルタ初期化'],
+  'ui.reset': ['필터 초기화', 'Reset filters', '絞り込みクリア'],
   'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
   'ui.close': ['닫기', 'Close', '閉じる'],
   'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
   'ui.toDark': ['다크 모드로 전환', 'Switch to dark mode', 'ダークモードに切替'],
-  'ui.filters': ['필터', 'Filters', 'フィルタ'],
+  'ui.filters': ['필터', 'Filters', '絞り込み'],
   'ui.langGroup': ['표시 언어', 'Display language', '表示言語'],
   'ui.search': [
     '이름 · 별명 · 초성 검색 (예: ㄹㅍ, 스화, 흑염룡)',
     'Search by name, squad or Korean nickname (e.g. Rapi, Counters)',
-    '名前・スカッド・あだ名で検索（例: ラピ、カウンターズ）',
+    '名前・部隊・あだ名で検索（例: ラピ、カウンターズ）',
   ],
   'ui.meta': [
     m => `데이터 기준일 ${m.updated_at} · 니케 ${m.counts.nikkes}명 · 배너 ${m.counts.pickups}개`,
     m => `Data as of ${m.updated_at} · ${m.counts.nikkes} Nikkes · ${m.counts.pickups} banners`,
-    m => `データ基準日 ${m.updated_at} · ニケ ${m.counts.nikkes}体 · バナー ${m.counts.pickups}件`,
+    m => `データ基準日 ${m.updated_at} · ニケ ${m.counts.nikkes}体 · ピックアップ ${m.counts.pickups}件`,
   ],
 
-  'f.squad': ['스쿼드', 'Squad', 'スカッド'],
+  'f.squad': ['스쿼드', 'Squad', '部隊'],
   'f.release': ['출시일', 'Released', '実装日'],
   'f.releaseFrom': ['출시일 시작', 'Released from', '実装日 開始'],
   'f.releaseTo': ['출시일 종료', 'Released to', '実装日 終了'],
@@ -671,19 +676,19 @@ const STR = {
   'f.timeline': ['타임라인 보기', 'Timeline view', 'タイムライン表示'],
   'f.all': ['전체', 'All', 'すべて'],
 
-  'ax.corporation': ['기업', 'Corp', '製造'],
+  'ax.corporation': ['기업', 'Corp', '企業'],
   'ax.element': ['속성', 'Element', '属性'],
   'ax.class': ['클래스', 'Class', 'クラス'],
   'ax.weapon_type': ['무기', 'Weapon', '武器'],
   'ax.burst': ['버스트', 'Burst', 'バースト'],
-  'ax.rarity': ['등급', 'Rarity', 'レア'],
+  'ax.rarity': ['등급', 'Rarity', '等級'],
   'ax.status': ['진행', 'Status', '状態'],
   'ax.availability': ['픽업', 'Pool', '排出'],
   'ax.tag': ['구분', 'Type', '区分'],
   'ax.attack_type': ['공격타입', 'Attack type', '攻撃タイプ'],
 
   'col.name': ['이름', 'Name', '名前'],
-  'col.squad': ['스쿼드', 'Squad', 'スカッド'],
+  'col.squad': ['스쿼드', 'Squad', '部隊'],
   'col.release': ['출시일', 'Released', '実装日'],
   'col.pickups': ['픽업', 'Banners', 'PU'],
   'col.no': ['연번', '#', '番号'],
@@ -716,7 +721,7 @@ const STR = {
   'cnt.both': [
     (a, b) => `니케 <b>${a}</b> · 배너 <b>${b}</b>`,
     (a, b) => `<b>${a}</b> Nikkes · <b>${b}</b> banners`,
-    (a, b) => `ニケ <b>${a}</b> · バナー <b>${b}</b>`,
+    (a, b) => `ニケ <b>${a}</b> · PU <b>${b}</b>`,
   ],
 
   'sheet.aliases': [n => `별명 (${n})`, n => `Nicknames (${n})`, n => `あだ名 (${n})`],
@@ -733,15 +738,15 @@ const STR = {
   'st.head': [
     (a, b) => `현재 필터 기준 · 니케 ${a}명 · 픽업 배너 ${b}개 — 필터를 바꾸면 아래 모든 차트가 함께 좁혀집니다.`,
     (a, b) => `Current filters · ${a} Nikkes · ${b} banners — every chart below narrows with the filters.`,
-    (a, b) => `現在のフィルタ · ニケ ${a}体 · バナー ${b}件 — フィルタを変えると下のチャートも一緒に絞られます。`,
+    (a, b) => `現在の絞り込み · ニケ ${a}体 · ピックアップ ${b}件 — 絞り込みを変えると下のチャートも一緒に絞られます。`,
   ],
   'st.byAxis': [
     a => `${a}별 분포`, a => `By ${a}`, a => `${a}別の分布`,
   ],
   'st.basis': [n => `${n}명 기준`, n => `of ${n} Nikkes`, n => `${n}体 基準`],
-  'st.basisBanner': [n => `${n}개 배너 기준`, n => `of ${n} banners`, n => `${n}件のバナー基準`],
-  'st.squadTop': [n => `스쿼드 TOP 12`, n => `Top 12 squads`, n => `スカッド TOP 12`],
-  'st.squadTotal': [n => `총 ${n}개 스쿼드`, n => `${n} squads total`, n => `全 ${n} スカッド`],
+  'st.basisBanner': [n => `${n}개 배너 기준`, n => `of ${n} banners`, n => `${n}件のピックアップ基準`],
+  'st.squadTop': [n => `스쿼드 TOP 12`, n => `Top 12 squads`, n => `部隊 TOP 12`],
+  'st.squadTotal': [n => `총 ${n}개 스쿼드`, n => `${n} squads total`, n => `全 ${n} 部隊`],
   'st.cross': [(a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`],
   'st.crossHint': [
     '칸의 숫자는 해당 조합의 니케 수',
@@ -760,7 +765,7 @@ const STR = {
     '横軸は四半期、縦軸は実装されたニケ数',
   ],
   'st.avail': ['한정 / 상시 비율', 'Limited vs standard', '限定 / 常設の比率'],
-  'st.tagDist': ['픽업 구분별 분포', 'Banners by type', '区分別の分布'],
+  'st.tagDist': ['픽업 구분별 분포', 'Banners by type', 'ピックアップ区分別の分布'],
   'st.gap': ['복각 주기', 'Time until rerun', '復刻までの期間'],
   'st.gapHint': [
     (n, med) => `복각 ${n}건 · 첫 픽업 이후 경과 개월 (중앙값 ${med}개월)`,
@@ -770,7 +775,7 @@ const STR = {
   'st.gapNone': [
     '현재 조건에 복각 배너가 없습니다',
     'No reruns match the current filters',
-    '現在の条件に復刻バナーがありません',
+    '現在の条件に復刻ピックアップがありません',
   ],
   'st.months': [
     (a, b) => b == null ? `${a}개월+` : `${a}~${b}개월`,
@@ -781,7 +786,7 @@ const STR = {
   'st.noBannerHint': [
     '런칭 유닛이거나 가챠 배너를 받은 적 없는 니케',
     'Launch units, or Nikkes that never had a banner',
-    '実装時ユニット、またはバナーを持たないニケ',
+    '実装時ユニット、またはピックアップを持たないニケ',
   ],
   'st.hasBanner': ['픽업 있음', 'Featured', 'ピックアップあり'],
   'st.hasNoBanner': ['픽업 없음', 'Never featured', 'ピックアップなし'],

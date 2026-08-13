@@ -384,11 +384,18 @@ export function renderImport(root, ctx) {
     };
     btns.appendChild(paste);
 
-    const guide = el('a', 'cp-importLink', t('im.guide'));
-    guide.href = 'https://github.com/RADM90/MechaShifty/blob/main/userscript/USER_GUIDE.md';
+    /* 자료를 한 번이라도 불러온 사람은 이미 설치를 끝낸 사람이다. 그 뒤로 설치
+       안내를 문장으로 계속 세워 두면 자리만 차지하니 물음표 한 칸으로 접는다.
+       아직 자료가 없을 때 — 즉 그 안내가 정말 필요한 때 — 만 펼쳐 둔다. */
+    const guide = el('a', data ? 'cp-importHelp' : 'cp-importLink',
+      data ? '?' : `${t('im.guide')} →`);
+    /* 안내서는 언어별로 파일이 갈려 있다 (한국어가 USER_GUIDE.md, 나머지는 접미사). */
+    const guideFile = ctx.lang === 'ko' ? 'USER_GUIDE.md' : `USER_GUIDE.${ctx.lang}.md`;
+    guide.href = `https://github.com/RADM90/MechaShifty/blob/main/userscript/${guideFile}`;
     guide.target = '_blank';
     guide.rel = 'noopener noreferrer';
-    guide.title = t('im.local');
+    guide.title = data ? `${t('im.guide')}\n${t('im.local')}` : t('im.local');
+    guide.setAttribute('aria-label', t('im.guide'));
     btns.appendChild(guide);
 
     if (data) {
