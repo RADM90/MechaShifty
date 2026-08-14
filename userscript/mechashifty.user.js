@@ -3,7 +3,7 @@
 // @name:en      MechaShifty — Export my Nikke roster
 // @name:ja      MechaShifty — 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.3.0
+// @version      1.3.1
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -15,6 +15,8 @@
 // @run-at       document-idle
 // @noframes
 // @grant        GM_registerMenuCommand
+// @grant        GM_getValue
+// @grant        GM_setValue
 // ==/UserScript==
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -93,10 +95,15 @@
   'use strict';
 
   /* ── 화면 문구 (ko / en / ja) ────────────────────────────────
-     이 창을 보는 사람은 blablalink 를 쓰는 한·영·일 유저다. 브라우저가 말하는
-     언어를 그대로 따르고, 모르는 언어면 영어로 떨어뜨린다. 값이 함수면 인자를
+     이 창을 보는 사람은 blablalink 를 쓰는 한·영·일 유저다. 값이 함수면 인자를
      받아 문장을 만든다. 코드 쪽 주석은 유지보수용이라 한국어로 둔다. */
-  const LANG = (() => {
+  const LANGS = ['ko', 'en', 'ja'];
+  const LANG_KEY = 'mechashifty.lang';
+
+  /* 브라우저가 내놓는 언어 목록의 '순서'는 UI 언어와 별개다 — 크롬 설정에서 영어가
+     한국어보다 위에 있으면 화면이 한글이어도 en-US 가 먼저 온다. 그래서 자동 감지는
+     첫 추측일 뿐이고, 창의 언어 버튼으로 고른 값이 있으면 그쪽이 항상 이긴다. */
+  function detectLang() {
     const want = navigator.languages && navigator.languages.length
       ? navigator.languages : [navigator.language || 'en'];
     for (const raw of want) {
@@ -106,7 +113,25 @@
       if (w.startsWith('en')) return 'en';
     }
     return 'en';
-  })();
+  }
+
+  /* 고른 언어는 Tampermonkey 자체 저장소에 둔다. 북마클릿으로 돌렸을 때는 그게
+     없으므로 localStorage 로 떨어지는데, 그때만 blablalink 쪽에 키 하나가 남는다. */
+  function loadLang() {
+    try {
+      const v = typeof GM_getValue === 'function'
+        ? GM_getValue(LANG_KEY, '') : localStorage.getItem(LANG_KEY);
+      return LANGS.includes(v) ? v : null;
+    } catch { return null; }
+  }
+  function saveLang(v) {
+    try {
+      if (typeof GM_setValue === 'function') GM_setValue(LANG_KEY, v);
+      else localStorage.setItem(LANG_KEY, v);
+    } catch { /* 저장 못 해도 이번 실행에는 적용된다 */ }
+  }
+
+  let lang = loadLang() || detectLang();
 
   const STR = {
     menu: ['내 니케 데이터 내보내기', 'Export my Nikke roster', '所持ニケデータを書き出す'],
@@ -149,7 +174,8 @@
       'Stopped: an account identifier was still present in the data to export.',
       '書き出すデータにアカウント識別子が残っていたため中止しました。',
     ],
-    failed: [e => `실패: ${e}`, e => `Failed: ${e}`, e => `失敗: ${e}`],
+    /* 인자로 STR 키가 들어온다 — 언어를 바꿨을 때 안쪽 사유까지 같이 바뀌게. */
+    failed: [e => `실패: ${S(e)}`, e => `Failed: ${S(e)}`, e => `失敗: ${S(e)}`],
 
     done: [
       (n, syn) => `니케 ${n}명${syn ? ` · 싱크로 Lv.${syn}` : ''} 을(를) 읽었습니다.\n내보낼 방법을 고르세요.`,
@@ -208,10 +234,10 @@
     ],
   };
 
-  const LANGS = ['ko', 'en', 'ja'];
   const S = (key, ...args) => {
     const row = STR[key];
-    const v = row[LANGS.indexOf(LANG)] ?? row[1];
+    if (!row) return key;                       // 키가 아닌 원문(네트워크 에러 등)은 그대로
+    const v = row[LANGS.indexOf(lang)] ?? row[1];
     return typeof v === 'function' ? v(...args) : v;
   };
 
@@ -423,21 +449,22 @@
      openid 는 API 인자로만 쓰고 여기서 걸러진다. */
   function scrub(payload) {
     const json = JSON.stringify(payload);
+    /* 던지는 값은 문구가 아니라 STR 키다 — 창의 언어를 바꿔도 다시 그려지도록. */
     if (/intl_open_?id|open_?id|cookie|session|token/i.test(json)) {
-      throw new Error(S('errScrub'));
+      throw new Error('errScrub');
     }
     return payload;
   }
 
   // ── 수집 ───────────────────────────────────────────────────
   async function collect(say) {
-    say(S('stepLogin'));
+    say('stepLogin');
     const openId = await myOpenId();
-    if (!openId) throw new Error(S('errLogin'));
+    if (!openId) throw new Error('errLogin');
 
-    say(S('stepArea'));
+    say('stepArea');
     const found = await findArea(openId);
-    if (!found) throw new Error(S('errArea'));
+    if (!found) throw new Error('errArea');
     const { area, list } = found;
 
     const levels = {};
@@ -448,7 +475,7 @@
       codes.push(code);
       levels[code] = num(c.lv) || 1;
     }
-    say(S('stepFound', codes.length, AREAS[area]));
+    say('stepFound', codes.length, AREAS[area]);
 
     const outpost = await post(API_OUTPOST, { intl_open_id: openId, nikke_area_id: area })
       .then(j => (j.data || {}).outpost_info || null).catch(() => null);
@@ -456,14 +483,14 @@
     const nikkes = [];
     for (let i = 0; i < codes.length; i += CHUNK) {
       const chunk = codes.slice(i, i + CHUNK);
-      say(S('stepDetails', Math.min(i + CHUNK, codes.length), codes.length));
+      say('stepDetails', Math.min(i + CHUNK, codes.length), codes.length);
       const j = await post(API_DETAILS,
         { intl_open_id: openId, nikke_area_id: area, name_codes: chunk });
       for (const d of (j.data || {}).character_details || []) nikkes.push(entryOf(d, levels));
       await sleep(120);           // 연속 호출 간격 (서버 부담 줄이기)
     }
 
-    say(S('stepAccount'));
+    say('stepAccount');
     const basic = await basicInfo(openId, area);
     return scrub({
       schema: SCHEMA,
@@ -490,7 +517,11 @@
     #ms-export .ms-box{background:#fff;color:#1b1b1f;border-radius:12px;padding:22px;
       width:min(92vw,420px);box-shadow:0 18px 48px rgba(0,0,0,.45)}
     #ms-export h2{margin:0 0 4px;font-size:16px}
-    #ms-export .ms-sub{margin:0 0 16px;font-size:12px;color:#6b7280}
+    #ms-export .ms-sub{margin:0 0 12px;font-size:12px;color:#6b7280}
+    #ms-export .ms-langs{display:flex;gap:4px;margin:0 0 14px}
+    #ms-export .ms-langs button{width:auto;flex:1;margin:0;padding:5px 6px;font-size:12px;
+      font-weight:500;background:#eef0f4;color:#4b5563}
+    #ms-export .ms-langs button[aria-pressed="true"]{background:#0f766e;color:#fff;font-weight:700}
     #ms-export .ms-status{margin:0 0 16px;font-weight:600;min-height:42px;white-space:pre-line}
     #ms-export .ms-note{margin:14px 0 0;font-size:11.5px;color:#6b7280}
     #ms-export button{display:block;width:100%;margin:8px 0 0;padding:11px;border:0;
@@ -514,22 +545,56 @@
     root.append(style, box);
 
     const h = document.createElement('h2');
-    h.textContent = S('title');
     const sub = document.createElement('p');
     sub.className = 'ms-sub';
-    sub.textContent = S('sub');
     const status = document.createElement('p');
     status.className = 'ms-status';
     const actions = document.createElement('div');
+    const note = document.createElement('p');
+    note.className = 'ms-note';
+    note.hidden = true;
     const close = document.createElement('button');
     close.className = 'ms-x';
-    close.textContent = S('close');
     close.onclick = () => root.remove();
-    box.append(h, sub, status, actions, close);
+
+    /* 언어 버튼. 브라우저가 내놓는 언어 순서가 UI 언어와 다른 경우가 흔해서
+       (한글 크롬인데 en-US 가 먼저 오는 등) 자동 감지만 믿지 않고 직접 고르게 둔다.
+       고른 값은 저장돼서 다음 실행부터는 감지를 건너뛴다. */
+    const langs = document.createElement('div');
+    langs.className = 'ms-langs';
+    const langBtns = LANGS.map((code, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.textContent = ['한국어', 'English', '日本語'][i];
+      b.onclick = () => { lang = code; saveLang(code); relabel(); };
+      langs.appendChild(b);
+      return b;
+    });
+
+    box.append(h, sub, langs, status, actions, note, close);
+
+    /* 마지막으로 낸 문구를 키로 들고 있다가 언어가 바뀌면 그대로 다시 그린다. */
+    let last = null;
+    let redraw = null;
+    const show = (bad, key, args) => {
+      last = { bad, key, args };
+      status.textContent = S(key, ...args);
+      status.className = 'ms-status' + (bad ? ' ms-err' : '');
+    };
+    function relabel() {
+      h.textContent = S('title');
+      sub.textContent = S('sub');
+      close.textContent = S('close');
+      langBtns.forEach((b, i) => b.setAttribute('aria-pressed', String(LANGS[i] === lang)));
+      if (redraw) redraw();
+      if (last) show(last.bad, last.key, last.args);
+    }
+    relabel();
 
     document.body.appendChild(root);
     return {
-      say: (text, bad) => { status.textContent = text; status.className = 'ms-status' + (bad ? ' ms-err' : ''); },
+      say: (key, ...args) => show(false, key, args),
+      bad: (key, ...args) => show(true, key, args),
       button: (label, cls, fn) => {
         const b = document.createElement('button');
         b.className = cls;
@@ -538,13 +603,10 @@
         actions.appendChild(b);
         return b;
       },
-      note: text => {
-        const p = document.createElement('p');
-        p.className = 'ms-note';
-        p.textContent = text;
-        box.insertBefore(p, close);
-      },
+      note: text => { note.textContent = text; note.hidden = false; },
       clear: () => { actions.textContent = ''; },
+      /* 결과 화면은 버튼까지 다시 그려야 해서 run() 이 그리는 함수를 넘겨 준다. */
+      onLang: fn => { redraw = fn; },
     };
   }
 
@@ -562,9 +624,9 @@
   /* 탭 간 전달. 여는 쪽이 먼저 말을 걸지 않고, MechaShifty 가 보낸 준비 신호를
      받은 다음 그 출처(origin)로만 보낸다. 대상 origin 을 '*' 로 두면 아무 사이트나
      받아 갈 수 있어서 그렇게 하지 않는다. */
-  function handoff(payload, say) {
+  function handoff(payload, ui) {
     const win = window.open(SITE, '_blank');
-    if (!win) { say(S('errPopup'), true); return; }
+    if (!win) { ui.bad('errPopup'); return; }
 
     let sent = false;
     const onMessage = e => {
@@ -572,16 +634,16 @@
       if (!e.data || e.data.type !== 'MECHASHIFTY_READY') return;
       win.postMessage({ type: 'MECHASHIFTY_ROSTER', payload }, SITE_ORIGIN);
       sent = true;
-      say(S('sent'));
+      ui.say('sent');
       window.removeEventListener('message', onMessage);
     };
     window.addEventListener('message', onMessage);
-    say(S('waiting'));
+    ui.say('waiting');
 
     setTimeout(() => {
       if (sent) return;
       window.removeEventListener('message', onMessage);
-      say(S('noReply'), true);
+      ui.bad('noReply');
     }, 20000);
   }
 
@@ -591,26 +653,31 @@
     try {
       payload = await collect(ui.say);
     } catch (e) {
-      ui.say(S('failed', e.message), true);
+      /* collect/scrub 이 던지는 건 STR 키다. 그 밖의 예외(네트워크 등)는 원문 그대로. */
+      ui.bad('failed', e.message);
       return;
     }
 
-    const n = payload.nikkes.length;
-    const syn = payload.account.synchro_level;
-    ui.say(S('done', n, syn));
-    ui.clear();
-    ui.button(S('btnSend'), 'ms-go', () => handoff(payload, ui.say));
-    ui.button(S('btnFile'), 'ms-alt', () => {
-      download(payload);
-      ui.say(S('okFile'));
-    });
-    ui.button(S('btnCopy'), 'ms-alt', async () => {
-      try {
-        await navigator.clipboard.writeText(JSON.stringify(payload));
-        ui.say(S('okCopy'));
-      } catch { ui.say(S('errCopy'), true); }
-    });
-    ui.note(S('note'));
+    /* 언어를 바꾸면 버튼 문구까지 다시 그려야 하므로 결과 화면을 함수로 둔다.
+       상태줄은 여기서 건드리지 않는다 — 저장·복사 뒤의 안내가 지워지면 안 된다. */
+    const showResult = () => {
+      ui.clear();
+      ui.button(S('btnSend'), 'ms-go', () => handoff(payload, ui));
+      ui.button(S('btnFile'), 'ms-alt', () => {
+        download(payload);
+        ui.say('okFile');
+      });
+      ui.button(S('btnCopy'), 'ms-alt', async () => {
+        try {
+          await navigator.clipboard.writeText(JSON.stringify(payload));
+          ui.say('okCopy');
+        } catch { ui.bad('errCopy'); }
+      });
+      ui.note(S('note'));
+    };
+    ui.onLang(showResult);
+    ui.say('done', payload.nikkes.length, payload.account.synchro_level);
+    showResult();
   }
 
   /* 유저스크립트로 설치했으면 Tampermonkey 메뉴에 걸고, 북마클릿으로 실행했으면

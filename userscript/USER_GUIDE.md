@@ -11,7 +11,10 @@ Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이
 **계산은 수집 스크립트가 하지 않습니다.** 스크립트는 게임이 주는 값을 그대로 옮기기만 하고,
 전투력은 MechaShifty 가 워크북 대조로 검증한 공식(`COMBAT_POWER.md`)으로 계산합니다.
 
-수집 창의 문구는 브라우저 언어를 따라 한국어·영어·일본어로 나옵니다.
+수집 창의 문구는 한국어·영어·일본어를 지원합니다. 처음에는 브라우저 언어로 맞추지만,
+**창 위쪽의 한국어 / English / 日本語 버튼으로 언제든 바꿀 수 있고 그 선택은 저장됩니다.**
+브라우저의 언어 *순서* 는 화면 언어와 별개라(한글 크롬인데 목록 맨 위가 영어인 경우가 흔합니다)
+자동 감지가 어긋날 수 있어서, 직접 고른 값이 항상 이깁니다.
 
 ---
 
@@ -100,7 +103,7 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='dd5b95a45fb85dab008da5c83fd8a80505eb94565990dab478f22a67ae82b2c0',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='559c8589e0d06ad0035cabcf094d8ceab25c5978254ce359491ab3529b04b41d',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
@@ -185,6 +188,7 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 | "팝업이 차단됐습니다" | 팝업 허용, 또는 JSON 파일로 저장해서 불러오기 |
 | "응답이 없습니다" | 열린 탭에서 **전투력 계산기** 탭이 떠 있어야 합니다. 안 되면 파일로 |
 | 북마클릿이 "배포본과 다릅니다" | 스크립트가 갱신된 것입니다. 위의 한 줄을 다시 복사하세요 |
+| 창이 원하는 언어가 아님 | 창 위쪽의 언어 버튼으로 고르세요. 선택은 저장됩니다 |
 | 목록에 없는 니케가 있음 | 갓 출시된 니케는 사이트 데이터가 아직 모릅니다. 그 니케만 건너뜁니다 |
 | 장비 등급이 틀림 | 오버로드 옵션이 하나도 없는 장비는 9티어 기업 장비로 잡힙니다. 폼에서 고치세요 |
 

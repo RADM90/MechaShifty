@@ -11,7 +11,10 @@ Shiftypad が表示する戦闘力とゲーム内の値がずれている——�
 **収集スクリプトは計算を一切行いません。** スクリプトはゲームが返す値をそのまま運ぶだけで、
 戦闘力は MechaShifty 側がワークブックで検証した式（`COMBAT_POWER.md`）で計算します。
 
-収集ウィンドウの文言は、ブラウザの言語設定に従って日本語・英語・韓国語で表示されます。
+収集ウィンドウの文言は日本語・英語・韓国語に対応しています。最初はブラウザの言語に合わせますが、
+**ウィンドウ上部の 한국어 / English / 日本語 ボタンでいつでも切り替えられ、その選択は保存されます。**
+ブラウザの言語の*並び順*は表示言語とは別で（日本語表示なのに一覧の先頭が英語、ということがよくあります）、
+自動判定が外れることがあるため、自分で選んだ値が常に優先されます。
 
 ---
 
@@ -101,7 +104,7 @@ Tampermonkey が使えない環境（社用 PC、一部のスマホブラウザ�
 新しい **ブックマーク（お気に入り）** を作り、**URL** 欄に下の1行をそのまま貼り付けます。名前は任意。
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='dd5b95a45fb85dab008da5c83fd8a80505eb94565990dab478f22a67ae82b2c0',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='559c8589e0d06ad0035cabcf094d8ceab25c5978254ce359491ab3529b04b41d',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink にログインした状態で、このブックマークを押すだけです。
@@ -186,6 +189,7 @@ blablalink にログインした状態で、このブックマークを押すだ
 | 「ポップアップがブロックされました」 | ポップアップを許可するか、JSONファイルとして保存して読み込む |
 | 「応答がありません」 | 開いたタブが **戦闘力計算機** タブである必要があります。駄目ならファイル経由で |
 | ブックマークレットが「配布物と異なります」 | スクリプトが更新されています。上の1行を貼り直してください |
+| ウィンドウの言語が違う | 上部の言語ボタンで選んでください。選択は保存されます |
 | 一覧に出ないニケがいる | 実装直後のニケはサイトのデータが未収録です。そのニケだけスキップされます |
 | 装備の等級が違う | オーバーロードOPが一つも無い装備は T9企業装備として扱われます。入力欄で直してください |
 

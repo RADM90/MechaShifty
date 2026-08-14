@@ -13,7 +13,11 @@ in-game value, so **the collector script does no maths of its own.** It only car
 across the values the game hands it; the combat power is computed by MechaShifty with
 a formula verified against the reference workbook (`COMBAT_POWER.md`).
 
-The collector window speaks Korean, English or Japanese, following your browser's language.
+The collector window speaks Korean, English and Japanese. It starts from your browser language,
+but **the 한국어 / English / 日本語 buttons at the top of the window switch it at any time, and the
+choice is remembered.** A browser's language *order* is separate from its display language — an
+English entry often sits above Korean or Japanese — so auto-detection can land on the wrong one,
+and an explicit choice always wins.
 
 ---
 
@@ -103,7 +107,7 @@ For places where Tampermonkey is not an option (work machines, some mobile brows
 Create a new **bookmark** and paste the whole line below into its **URL** field. Any name will do.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='dd5b95a45fb85dab008da5c83fd8a80505eb94565990dab478f22a67ae82b2c0',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='559c8589e0d06ad0035cabcf094d8ceab25c5978254ce359491ab3529b04b41d',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 Click the bookmark while you are logged in to blablalink.
@@ -192,6 +196,7 @@ already matched.)
 | "The popup was blocked" | Allow popups, or save a JSON file and import that instead |
 | "No reply" | The tab that opened has to be on the **CP calculator**. Otherwise use the file route |
 | Bookmarklet says it "differs from the release" | The script was updated — copy the line above again |
+| The window is in the wrong language | Pick one with the language buttons at the top. It is remembered |
 | A Nikke is missing from the list | Freshly released Nikkes are not in the site data yet; only those are skipped |
 | Gear tier is wrong | Gear with no overload options at all reads as T9 corporation gear. Fix it in the form |
 
