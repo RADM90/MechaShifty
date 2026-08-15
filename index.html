@@ -61,9 +61,16 @@
         <input type="search" id="q" autocomplete="off" spellcheck="false"
                data-i18n-placeholder="ui.search">
         <span id="count" class="count"></span>
+        <!-- 타임라인은 필터가 아니라 보기 방식이라 접히는 칸 밖에 둔다 -->
+        <label class="check" id="tlwrap" hidden>
+          <input type="checkbox" id="tlview"> <span data-i18n="f.timeline">타임라인 보기</span>
+        </label>
+        <button type="button" id="filterToggle" class="btn-reset"
+                aria-expanded="true" aria-controls="filterBody">필터 접기</button>
         <button type="button" id="reset" class="btn-reset" data-i18n="ui.reset">필터 초기화</button>
       </div>
 
+      <div id="filterBody">
       <div id="chipfilters" class="chipgrid"></div>
 
       <div class="filter-row" id="extrafilters">
@@ -90,9 +97,7 @@
             <option value="rerun" data-i18n="f.rerunOnly">복각만</option>
           </select>
         </label>
-        <label class="check">
-          <input type="checkbox" id="tlview"> <span data-i18n="f.timeline">타임라인 보기</span>
-        </label>
+      </div>
       </div>
      </div>
 

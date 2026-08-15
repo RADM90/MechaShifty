@@ -49,29 +49,11 @@ const STR = {
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
-  'cp.nikke': ['니케', 'Nikke', 'ニケ'],
-  'cp.pick': ['대상', 'Target', '対象'],
-  'cp.level': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
-  'cp.levelHint': [n => `1 ~ ${n}`, n => `1 – ${n}`, n => `1 ~ ${n}`],
   'cp.grade': ['돌파 / 코강', 'Break / Core', '凸・コア強化'],
-  'cp.gradeNone': ['이 등급은 돌파가 없습니다', 'No limit break at this rarity', 'この等級に凸はありません'],
   'cp.bond': ['호감도', 'Bond', '好感度'],
-  'cp.skills': ['스킬 레벨', 'Skill levels', 'スキルレベル'],
-  'cp.skill1': ['스킬 1', 'Skill 1', 'スキル1'],
-  'cp.skill2': ['스킬 2', 'Skill 2', 'スキル2'],
-  'cp.burst': ['버스트', 'Burst', 'バースト'],
-  'cp.items': ['장착품', 'Equipped items', '装着アイテム'],
   'cp.cube': ['큐브', 'Cube', 'キューブ'],
   // 큐브 종류는 전투력에 안 들어가지만(레벨만 쓴다) 상태 줄에 이름을 내려면 필요하다
-  'cp.cubeType': ['큐브 종류', 'Cube type', 'キューブ種類'],
-  'cp.cubeTypeHint': [
-    '전투력에는 레벨만 들어갑니다',
-    'Only the level affects CP',
-    '戦闘力にはレベルのみ影響します',
-  ],
-  'cp.unset': ['미지정', 'Unspecified', '未指定'],
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
-  'cp.collectionLv': ['등급', 'Grade', '等級'],
   'cp.favorite': ['애장품', 'Favorite item', '宝もの'],
   /* 돌파·코강·장비 등급은 데이터 키가 한국어라('3돌'·'오버로드') 그대로 쓰면 EN/JA
      화면에 한국어가 남는다. cp.js 의 gradeLabel/tierLabel 이 이 키들로 옮긴다. */
@@ -80,12 +62,6 @@ const STR = {
   'cp.tier_오버로드': ['오버로드', 'Overload', 'オーバーロード'],
   'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', 'T9企業'],
   'cp.none': ['미착용', 'None', '未装着'],
-  'cp.console': ['리사이클 룸 - 콘솔', 'Recycling Room — Console', 'リサイクルルーム - コンソール'],
-  'cp.consoleHint': [
-    '전초기지 리사이클 룸의 연구 레벨. 니케의 클래스·기업에 해당하는 연구만 적용됩니다.',
-    'Research levels in the Outpost Recycling Room. Only the ones matching this Nikke\'s class and corporation apply.',
-    '前哨基地リサイクルルームの研究レベル。そのニケのクラス・企業に対応する研究のみ適用されます。',
-  ],
   'cp.consoleOf': [
     n => `${n} 연구 레벨`,
     n => `${n} research level`,
@@ -94,20 +70,10 @@ const STR = {
   'cp.console_공용': ['공용', 'Shared', '共用'],
   'cp.console_클래스': ['클래스', 'Class', 'クラス'],
   'cp.console_기업': ['기업', 'Corporation', '企業'],
-  'cp.gear': ['장비', 'Gear', '装備'],
-  'cp.slot': ['등급', 'Tier', '等級'],
   'cp.slot_머리': ['머리', 'Head', '頭'],
   'cp.slot_몸': ['몸', 'Torso', '胴'],
   'cp.slot_팔': ['팔', 'Arm', '腕'],
   'cp.slot_다리': ['다리', 'Leg', '足'],
-  'cp.enhance': ['강화', 'Enhance', '強化'],
-  'cp.gearLimit': [
-    '기업 장비(9티어) · 오버로드만 계산할 수 있습니다. 기업 소속이 아닌 일반 T9 장비는 스탯 자료가 아직 없습니다.',
-    'Only corporation T9 gear and Overload can be calculated — stat data for non-corporation T9 gear is not available yet.',
-    'T9企業装備とオーバーロード(T10)のみ計算できます。企業所属でない通常のT9装備のステータス資料はまだありません。',
-  ],
-  'cp.noOption': ['옵션 없음', 'No option', 'オプションなし'],
-  'cp.reset': ['입력 초기화', 'Reset inputs', '入力初期化'],
   'cp.atk': ['공격력', 'ATK', '攻撃力'],
   'cp.def': ['방어력', 'DEF', '防御力'],
   'cp.defOverride': [
@@ -132,9 +98,6 @@ const STR = {
     'クリックで計算式と HP・攻撃力・防御力を表示',
   ],
   'cp.close': ['닫기', 'Close', '閉じる'],
-  'cp.edit':['입력 수정', 'Edit inputs', '入力を編集'],
-  'cp.editTitle': ['입력 수정', 'Edit inputs', '入力を編集'],
-  'cp.done': ['완료', 'Done', '完了'],
   'cp.olTotal': ['오버로드 옵션 종합', 'Overload options — total', 'オーバーロードOP 合計'],
   'cp.olBySlot': ['장비별 오버로드 옵션', 'Overload options by slot', '装備別オーバーロードOP'],
   'cp.olExact': [
@@ -705,6 +668,8 @@ const STR = {
   'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
   'ui.toDark': ['다크 모드로 전환', 'Switch to dark mode', 'ダークモードに切替'],
   'ui.filters': ['필터', 'Filters', '絞り込み'],
+  'ui.filterOpen': ['필터 열기', 'Show filters', '絞り込みを開く'],
+  'ui.filterClose': ['필터 접기', 'Hide filters', '絞り込みを閉じる'],
   'ui.langGroup': ['표시 언어', 'Display language', '表示言語'],
   'ui.search': [
     '이름 · 별명 · 초성 검색 (예: ㄹㅍ, 스화, 흑염룡)',
@@ -956,6 +921,10 @@ const state = {
   rerun: 'all', timeline: false,
   sort: { key: 'release_date', dir: -1 },
   sel: Object.fromEntries([...Object.keys(AXES), ...Object.keys(PICKUP_AXES)].map(k => [k, new Set()])),
+  /* 칩 필터를 펼쳐 둘지 — 탭마다 따로 기억한다. 픽업/통계는 표와 차트가
+     주인공이라 접은 채로 시작해서 첫 화면에 내용이 더 들어가게 한다.
+     검색창은 접히는 칸 밖이라 언제나 보인다. */
+  filtersOpen: { nikkes: true, pickups: false, stats: false },
 };
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -1180,6 +1149,8 @@ function readHash() {
   state.relFrom = p.get('from') || '';
   state.relTo = p.get('to') || '';
   state.rerun = p.get('rerun') || 'all';
+  // 필터가 걸린 링크로 들어왔으면 접힌 칸에 숨기지 않고 펼쳐서 보여준다
+  if (activeFilters()) state.filtersOpen[state.tab] = true;
 }
 
 /* ── 칩 필터 ───────────────────────────────────────────────── */
@@ -1535,6 +1506,29 @@ function syncCap(on) {
   import('./synccap.js').then(m => m.renderSyncCap(side, { t, lang: lang(), nikkes: D.nikkes }));
 }
 
+/* 접힌 채로도 무엇이 걸려 있는지는 알아야 하므로 단추에 개수를 붙인다.
+   검색어는 접히는 칸 밖에 그대로 보이니 세지 않는다. */
+function activeFilters() {
+  let n = Object.values(state.sel).reduce((s, v) => s + v.size, 0);
+  if (state.overspec) n++;
+  if (state.squad) n++;
+  if (state.relFrom) n++;
+  if (state.relTo) n++;
+  if (state.rerun !== 'all') n++;
+  return n;
+}
+
+function paintFold() {
+  const open = state.filtersOpen[state.tab] !== false;
+  const n = activeFilters();
+  $('#filterBody').hidden = !open;
+  $('.filters-main').classList.toggle('is-folded', !open);
+  const btn = $('#filterToggle');
+  btn.setAttribute('aria-expanded', String(open));
+  btn.textContent = open ? t('ui.filterClose')
+    : n ? `${t('ui.filterOpen')} (${n})` : t('ui.filterOpen');
+}
+
 /* ── 렌더 ─────────────────────────────────────────────────── */
 function render() {
   $$('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === state.tab));
@@ -1546,8 +1540,10 @@ function render() {
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
+  $('#tlwrap').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
   $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  paintFold();
   /* 싱크로 상한 계산기는 니케 리스트 탭에서만. 필터가 좁아지므로 다른 탭에서는
      칸째로 빼서 폭을 돌려준다. 언어가 바뀌면 다시 그려야 해서 매번 호출한다. */
   syncCap(state.tab === 'nikkes');
@@ -1678,6 +1674,11 @@ function wire() {
   $('#rerun').value = state.rerun;
   $('#rerun').onchange = e => { state.rerun = e.target.value; render(); };
   $('#tlview').onchange = e => { state.timeline = e.target.checked; render(); };
+
+  $('#filterToggle').onclick = () => {
+    state.filtersOpen[state.tab] = state.filtersOpen[state.tab] === false;
+    paintFold();
+  };
 
   $('#reset').onclick = () => {
     Object.keys(state.sel).forEach(k => state.sel[k].clear());

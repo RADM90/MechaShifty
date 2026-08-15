@@ -571,10 +571,16 @@ function renderNext(d) {
   const cur = d.row ? d.row.dustAcademy : 0;
   card.appendChild(el('p', 'op-note', t('op.nextHint', dec(cur, 4))));
 
+  /* 한 레벨에서 정수 여러 칸을 한꺼번에 넘기는 구간이 있다 (예: 532→533 이
+     93.4 → 102.2 라 94~102 가 모두 533). 필요 레벨이 같으면 줄을 나눠봐야
+     같은 말이므로 그중 가장 높은 값 하나만 남긴다. */
   const targets = [];
-  for (let v = Math.floor(cur) + 1; targets.length < NEXT_TARGETS; v++) {
+  for (let v = Math.floor(cur) + 1; ; v++) {
     const lv = levelForDust(v);
     if (lv == null) break;
+    const prev = targets.at(-1);
+    if (prev && prev.level === lv) { prev.value = v; continue; }
+    if (targets.length === NEXT_TARGETS) break;
     targets.push({ value: v, level: lv });
   }
   if (!targets.length) {

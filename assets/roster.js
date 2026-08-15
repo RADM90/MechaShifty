@@ -133,6 +133,18 @@ export function cubeBadge(cube, info, iconEl) {
   return box;
 }
 
+/* 수집 시각. 유저스크립트가 ISO(UTC)로 찍으므로 보는 사람의 지역 시간으로
+   되돌려 분까지 보여준다. 날짜만으로는 오늘 두 번째로 받은 자료인지 알 수 없다.
+   못 읽는 값이면 앞부분을 그대로 내보낸다 (형식이 바뀌어도 화면은 살아 있게). */
+export function stampText(s) {
+  if (!s) return '—';
+  const d = new Date(s);
+  if (isNaN(d)) return String(s).slice(0, 16).replace('T', ' ');
+  const p = n => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`
+    + ` ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+
 /* ── 검증 ─────────────────────────────────────────────────────
    바깥에서 들어온 JSON 이라 형태를 믿지 않는다. 모르는 값은 버리고 기본값으로
    메운다. 여기서 통과한 것만 계산기 입력으로 쓴다. */
@@ -280,8 +292,9 @@ function listen(onData) {
 }
 
 /* ── 화면 ─────────────────────────────────────────────────── */
-/* 아이콘 칩으로 거를 축. 순서는 app.js 의 AXES 와 맞춘다. */
-const CHIP_AXES = {
+/* 아이콘 칩으로 거를 축. 순서는 app.js 의 AXES 와 맞춘다.
+   계산기의 지휘관 줄도 콘솔 아홉 칸을 이 순서로 세운다 (calc.js renderCommander). */
+export const CHIP_AXES = {
   class: ['Attacker', 'Defender', 'Supporter'],
   element: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'],
   burst: ['Step1', 'Step2', 'Step3', 'AllStep'],
@@ -313,15 +326,15 @@ export function renderImport(root, ctx) {
        그러지 않으면 카드가 0/0/0 으로 남아 불러온 게 반영 안 된 것처럼 보인다. */
     ctx.applyResearch(fresh.research);
     paint();
+    ctx.onAccount();          // 지휘관 줄(싱크로·콘솔)도 새 계정 값으로
   };
 
   listen(fresh => accept(fresh, t('im.fromScript')));
   if (data) ctx.applyResearch(data.research);
 
   /* ── 계정 줄 ────────────────────────────────────────────────
-     두 줄이면 충분하다 — 계정 요약 + 불러오기 버튼 한 줄, 콘솔 아홉 칸 한 줄.
-     콘솔은 공용 1 · 클래스 3 · 기업 5 를 통째로 두고, 어느 줄이 적용되는지는
-     고른 니케에 따라 계산기가 알아서 고른다. */
+     불러오기 버튼과 수집 시각 한 줄. 싱크로 레벨과 콘솔 아홉 칸은 계산 결과
+     바로 위(계산기의 지휘관 줄)로 옮겼다 — 여기는 자료를 넣고 빼는 자리다. */
   function account() {
     const box = el('section', 'cp-account');
 
@@ -336,8 +349,7 @@ export function renderImport(root, ctx) {
     if (data) {
       /* 계정 생성 시각은 여기서 뺐다 — 이 탭에서는 아무 계산에도 안 쓰이고,
          전초기지 탭의 타워 카드가 그 값으로 등반 가능 층을 낸다. */
-      add(t('im.synchro'), data.account.synchro_level || '—');
-      add(t('im.collected'), data.generated_at ? data.generated_at.slice(0, 10) : '—');
+      add(t('im.collected'), stampText(data.generated_at));
     } else {
       facts.appendChild(el('span', 'cp-acctEmpty', t('im.desc')));
     }
@@ -345,68 +357,12 @@ export function renderImport(root, ctx) {
     top.appendChild(buttons());
     box.appendChild(top);
 
-    box.appendChild(consoleRow());
     if (status) {
       box.appendChild(el('p', 'cp-importStatus' + (status.bad ? ' cp-warn' : ''), status.text));
     }
     return box;
   }
 
-
-  /* 콘솔(리사이클 룸) 아홉 칸. 값은 계산기가 계정 단위로 들고 있고 여기서는
-     읽고 쓰기만 한다. 테두리 없는 입력이라 눈으로는 숫자 줄로 보인다. */
-  function consoleRow() {
-    const wrap = el('div', 'cp-consoleRow');
-    wrap.title = `${t('cp.console')} — ${t('cp.consoleHint')}`;
-    /* 클래스·기업은 아이콘으로 찍는다. 글자로 쓰면(엘리시온·미실리스…) 아홉 칸이
-       한 줄에 안 들어가고, EN/JA 는 더 길어진다. 이름은 hover 로. */
-    const group = (label, cells) => {
-      const g = el('span', 'cp-consoleGroup');
-      if (label) g.appendChild(el('span', 'cp-consoleLbl', label));
-      for (const [key, axis, code, get, set] of cells) {
-        const name = axis ? ctx.L(axis, code) : t('cp.console_공용');
-        const f = el('label', 'cp-consoleField');
-        f.title = t('cp.consoleOf', name);
-        const ic = axis && ctx.iconEl(axis, code);
-        f.appendChild(ic || el('span', 'cp-consoleName', name));
-        const i = el('input');
-        i.type = 'number';
-        i.min = 0; i.max = 999;
-        i.value = get() || 0;
-        i.dataset.key = key;
-        i.setAttribute('aria-label', name);
-        i.onchange = () => {
-          const v = Math.max(0, Math.min(999, Number(i.value) || 0));
-          i.value = v;
-          set(v);
-        };
-        f.appendChild(i);
-        g.appendChild(f);
-      }
-      return g;
-    };
-    /* '콘솔' 이라는 머리말은 달지 않는다 — 첫 칸이 이미 '공용' 이라 줄의 뜻이
-       읽히고, 머리말이 있으면 아홉 칸이 오른쪽으로 밀려 숫자 줄이 어긋난다. */
-    wrap.appendChild(group(null, [
-      ['common', null, null,
-        () => ctx.research().common, v => ctx.setResearch('common', null, v)],
-    ]));
-    for (const axis of ['class', 'corporation']) {
-      wrap.appendChild(group(null, CHIP_AXES[axis].map(code =>
-        [`${axis}.${code}`, axis, code,
-          () => ctx.research()[axis][code], v => ctx.setResearch(axis, code, v)])));
-    }
-    return wrap;
-  }
-
-  /* 계정 데이터를 새로 받으면 콘솔 칸 값만 갈아 준다 (표를 다시 그리지 않고). */
-  const syncConsole = () => {
-    const R = ctx.research();
-    for (const i of root.querySelectorAll('.cp-consoleField input')) {
-      const [kind, code] = i.dataset.key.split('.');
-      i.value = (kind === 'common' ? R.common : R[kind][code]) || 0;
-    }
-  };
 
   function buttons() {
     const btns = el('div', 'cp-importBtns');
@@ -463,7 +419,7 @@ export function renderImport(root, ctx) {
       const clear = el('button', 'btn-reset', t('im.clear'));
       clear.type = 'button';
       clear.title = t('im.clearTitle');
-      clear.onclick = () => { drop(); data = null; status = null; paint(); };
+      clear.onclick = () => { drop(); data = null; status = null; paint(); ctx.onAccount(); };
       btns.appendChild(clear);
     }
     return btns;
@@ -760,10 +716,8 @@ export function renderImport(root, ctx) {
         if (has) {
           tr.tabIndex = 0;
           tr.title = t('im.pick');
-          const pick = () => {
-            ctx.onPick(JSON.parse(JSON.stringify(r.input)));
-            syncConsole();        // 고른 니케에 맞는 연구 줄로 콘솔 갱신
-          };
+          // 고른 니케에 맞는 콘솔 줄은 계산기가 다시 그리면서 같이 갈린다
+          const pick = () => ctx.onPick(JSON.parse(JSON.stringify(r.input)));
           tr.onclick = pick;
           tr.onkeydown = e => {
             if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(); }
@@ -821,6 +775,6 @@ export function renderImport(root, ctx) {
   }
 
   paint();
-  /* 계산기가 니케를 바꿨을 때 카드의 콘솔 칸을 맞추라고 부를 수 있게. */
-  return { syncConsole };
+  /* 계산기의 지휘관 줄이 싱크로 레벨을 여기서 읽어 간다 (자료가 없으면 null). */
+  return { account: () => (data ? data.account : null) };
 }

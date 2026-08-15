@@ -1,14 +1,15 @@
 /* 보정 전투력 계산기 탭.
 
-   계산은 cp.js 가 전부 하고 여기는 입력 폼과 결과 표만 그린다.
+   계산은 cp.js 가 전부 하고 여기는 결과 표만 그린다. 입력은 손으로 넣지 않고
+   불러온 계정(roster.js)에서 온다.
    원본 스탯 표(data/raw/*.json)와 도메인 규칙(data/cp_rules.json)은
    이 탭을 처음 열 때만 받아온다 — syncro_stat 하나가 500KB라 첫 화면에
    같이 얹지 않는다. */
 
-import { buildTables, compute, optionLabel, optionFullLabel, gradeLabel, tierLabel,
-  K, SLOTS, TIERS } from './cp.js';
-import { renderImport, OPTION_ALIAS, badge, gradeBadge, collBadge, bondBadge, cubeBadge }
-  from './roster.js';
+import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
+  K, SLOTS } from './cp.js';
+import { renderImport, OPTION_ALIAS, CHIP_AXES, badge, gradeBadge, collBadge, bondBadge,
+  cubeBadge } from './roster.js';
 
 const NEED = ['syncro_stat', 'attraction_stat', 'attraction_grade', 'equip_stat',
   'equip_option', 'cube_stat', 'collection_stat', 'collection_bonus', 'cp_penalty'];
@@ -142,179 +143,6 @@ function resolved(src = input) {
     defWeapon: rules.def_weapon_override?.[n.rid] || n.weapon_type,
     _nikke: n,
   };
-}
-
-/* ── 폼 조각 ──────────────────────────────────────────────── */
-function field(labelText, control, hint) {
-  const w = el('label', 'cp-field');
-  w.appendChild(el('span', 'cp-lbl', labelText));
-  w.appendChild(control);
-  if (hint) w.appendChild(el('span', 'cp-hint', hint));
-  return w;
-}
-
-function select(options, value, onChange) {
-  const s = el('select');
-  for (const o of options) {
-    const opt = el('option', null, o.label);
-    opt.value = String(o.value);
-    s.appendChild(opt);
-  }
-  s.value = String(value);
-  s.onchange = () => onChange(s.value);
-  return s;
-}
-
-function number(value, min, max, onChange) {
-  const i = el('input');
-  i.type = 'number';
-  i.min = min; i.max = max; i.value = value;
-  i.onchange = () => {
-    const v = Math.max(min, Math.min(max, Number(i.value) || min));
-    i.value = v;
-    onChange(v);
-  };
-  return i;
-}
-
-const range = (a, b) => Array.from({ length: b - a + 1 }, (_, i) => ({ value: a + i, label: String(a + i) }));
-
-/* ── 폼 ───────────────────────────────────────────────────── */
-function renderForm(root) {
-  const form = el('div', 'cp-form');
-  const set = (fn) => { fn(); save(); paint(root); };
-
-  // 니케
-  const g1 = el('div', 'cp-group');
-  g1.appendChild(el('h3', null, t('cp.nikke')));
-  const row1 = el('div', 'cp-row');
-  const nikkes = ctx.nikkes.slice().sort((a, b) =>
-    ctx.nameOf(a).localeCompare(ctx.nameOf(b), ctx.lang));
-  row1.appendChild(field(t('cp.pick'),
-    select(nikkes.map(n => ({ value: n.rid, label: ctx.nameOf(n) })), input.rid,
-      v => set(() => {
-        input.rid = v;
-        // 등급이 바뀌면(SSR -> SR) 갈 수 없는 돌파 단계가 남을 수 있다
-        input.grade = clampGrade(input.grade, ctx.byRid.get(v)?.rarity);
-        // 니케가 바뀌면 적용되는 클래스·기업 연구 줄도 바뀐다
-        applyResearch();
-        importApi?.syncConsole();
-      }))));
-  row1.appendChild(field(t('cp.level'),
-    number(input.level, T.levels[0], T.levels.at(-1), v => set(() => { input.level = v; })),
-    t('cp.levelHint', T.levels.at(-1))));
-  // 고른 니케가 갈 수 있는 단계만 (R 은 0돌 하나뿐이라 칸이 한 줄로 굳는다)
-  const grades = gradesFor(ctx.byRid.get(input.rid)?.rarity);
-  row1.appendChild(field(t('cp.grade'),
-    select(grades.map(g => ({ value: g.key, label: gradeLabel(g.key, t) })), input.grade,
-      v => set(() => { input.grade = v; })),
-    grades.length > 1 ? null : t('cp.gradeNone')));
-  row1.appendChild(field(t('cp.bond'),
-    number(input.bond, 1, T.bondMax, v => set(() => { input.bond = v; }))));
-  g1.appendChild(row1);
-  form.appendChild(g1);
-
-  // 스킬
-  const g2 = el('div', 'cp-group');
-  g2.appendChild(el('h3', null, t('cp.skills')));
-  const row2 = el('div', 'cp-row');
-  for (const [key, lab] of [['s1', t('cp.skill1')], ['s2', t('cp.skill2')], ['burst', t('cp.burst')]]) {
-    row2.appendChild(field(lab, select(range(1, 10), input.skills[key],
-      v => set(() => { input.skills[key] = Number(v); }))));
-  }
-  g2.appendChild(row2);
-  form.appendChild(g2);
-
-  // 장착품
-  const g3 = el('div', 'cp-group');
-  g3.appendChild(el('h3', null, t('cp.items')));
-  const row3 = el('div', 'cp-row');
-  row3.appendChild(field(t('cp.cube'),
-    select(T.cubeLevels.map(l => ({ value: l, label: l === '미착용' ? t('cp.none') : 'Lv.' + l })),
-      input.cube, v => set(() => { input.cube = v; if (v === '미착용') input.cubeTid = null; }))));
-  /* 종류는 계산에 안 쓰이지만 상태 줄에 이름이 나오므로 여기서 고칠 수 있어야 한다.
-     불러온 계정에서는 이미 채워져 오고, 손으로 넣을 때만 쓰는 칸이다. */
-  if (input.cube !== '미착용') {
-    const list = Object.keys(cubes)
-      .map(tid => ({ value: tid, label: cubeInfo(tid)?.short || '#' + tid }))
-      .sort((a, b) => a.label.localeCompare(b.label, ctx.lang));
-    row3.appendChild(field(t('cp.cubeType'),
-      select([{ value: '', label: t('cp.unset') }, ...list], input.cubeTid == null ? '' : String(input.cubeTid),
-        v => set(() => { input.cubeTid = v || null; })),
-      t('cp.cubeTypeHint')));
-  }
-
-  const kinds = [{ value: 'none', label: t('cp.none') }, { value: 'R', label: 'R' },
-    { value: 'SR', label: 'SR' }, { value: '애장품', label: t('cp.favorite') }];
-  row3.appendChild(field(t('cp.collection'),
-    select(kinds, input.collection.kind, v => set(() => {
-      input.collection.kind = v;
-      input.collection.level = v === '애장품' ? T.favoriteLevels[0] : '0';
-    }))));
-  if (input.collection.kind !== 'none') {
-    /* range() 는 이미 {value,label} 을 돌려주므로 그 위에 다시 map 을 걸면 안 된다 —
-       그러면 라벨이 'SR[object Object]' 가 되고 값이 안 맞아 칸이 통째로 비어 보인다. */
-    const lvs = input.collection.kind === '애장품'
-      ? T.favoriteLevels.map(l => ({ value: l, label: 'Lv.' + l }))
-      : range(0, 15).map(o => ({ value: String(o.value), label: input.collection.kind + o.value }));
-    row3.appendChild(field(t('cp.collectionLv'),
-      select(lvs, input.collection.level, v => set(() => { input.collection.level = v; }))));
-  }
-  g3.appendChild(row3);
-  form.appendChild(g3);
-
-  /* 콘솔(리사이클 룸)은 니케마다 다시 고를 값이 아니라 계정 단위 값이라
-     맨 위 계정 카드로 옮겼다 (roster.js). */
-
-  // 장비 4부위
-  const g5 = el('div', 'cp-group');
-  g5.appendChild(el('h3', null, t('cp.gear')));
-  // 기업 소속이 아닌 일반 T9 장비는 원본에 스탯 표가 없다 (DEVIATIONS.md)
-  g5.appendChild(el('p', 'cp-note cp-warn', t('cp.gearLimit')));
-  for (const g of input.gear) {
-    const box = el('div', 'cp-gear');
-    const head = el('div', 'cp-row');
-    head.appendChild(field(t('cp.slot'), select(
-      [{ value: '', label: t('cp.none') }, ...TIERS.map(x => ({ value: x, label: tierLabel(x, t) }))],
-      g.tier, v => set(() => { g.tier = v; if (!v) g.options = []; })),
-      t('cp.slot_' + g.slot)));
-    if (g.tier) {
-      head.appendChild(field(t('cp.enhance'),
-        select(range(0, 5), g.enhance, v => set(() => { g.enhance = Number(v); }))));
-    }
-    box.appendChild(head);
-
-    if (g.tier === '오버로드') {
-      const opts = el('div', 'cp-opts');
-      for (let i = 0; i < 3; i++) {
-        const o = g.options[i] || { name: '', level: 0 };
-        const pair = el('div', 'cp-optpair');
-        pair.appendChild(select(
-          [{ value: '', label: t('cp.noOption') }, ...T.optionNames.map(n => ({ value: n, label: n }))],
-          o.name, v => set(() => {
-            g.options[i] = { name: v, level: v ? (o.level || 1) : 0 };
-          })));
-        if (o.name) {
-          pair.appendChild(select(T.optionLevels.map(l => ({ value: l, label: 'Lv.' + l })),
-            o.level || 1, v => set(() => { g.options[i] = { name: o.name, level: Number(v) }; })));
-          const val = T.optionValue.get(`${o.name}|${o.level || 1}`);
-          if (val != null) pair.appendChild(el('span', 'cp-optval',
-            (Math.round(val * 1e6) / 1e4) + '%'));
-        }
-        opts.appendChild(pair);
-      }
-      box.appendChild(opts);
-    }
-    g5.appendChild(box);
-  }
-  form.appendChild(g5);
-
-  const reset = el('button', 'btn-reset', t('cp.reset'));
-  reset.type = 'button';
-  reset.onclick = () => { input = defaults(); save(); paint(root); };
-  form.appendChild(reset);
-
-  return form;
 }
 
 /* ── 한 단계당 전투력 증가 ─────────────────────────────────────
@@ -706,9 +534,8 @@ function cpBreakdown(r) {
 }
 
 /* ── 키운 상태 배지 ──────────────────────────────────────────
-   돌파·소장품·호감도·큐브는 전투력을 크게 가르는데도 입력 팝업을 열어야만
-   보였다. 등급·기업·속성처럼 고정된 축을 찍는 아이콘 줄에 구분선을 긋고 이어
-   붙인다 — 왼쪽은 '이 니케가 무엇인가', 오른쪽은 '얼마나 키웠나'다.
+   돌파·소장품·호감도·큐브는 전투력을 크게 가르는 값이다. 등급·기업·속성처럼
+   고정된 축을 찍는 아이콘 줄에 구분선을 긋고 이어 붙인다 — 왼쪽은 '이 니케가 무엇인가', 오른쪽은 '얼마나 키웠나'다.
 
    도형은 목록 표와 같은 것(roster.js)을 쓴다. 다만 목록에는 열 머리글이 있어
    배지만 봐도 뜻이 서지만 여기는 그게 없으므로, hover 에 항목 이름을 앞에 붙인다.
@@ -743,8 +570,10 @@ function growthBadges(n) {
 }
 
 /* ── 상세정보 카드 ────────────────────────────────────────────
-   1행 최종 전투력 3종(+편집) · 2행 오버로드 종합 · 3행 부위별 상세 ·
-   4행 콘솔/옵션 1단계당 증가분.                                  */
+   1행 최종 전투력 3종 · 2행 오버로드 종합 · 3행 부위별 상세 ·
+   4행 콘솔/옵션 1단계당 증가분.
+
+   손으로 입력하는 창(✎)은 없앴다 — 값은 전부 불러온 계정에서 온다.  */
 function renderDetail(root, n, r) {
   const card = el('div', 'cp-detail');
 
@@ -777,12 +606,6 @@ function renderDetail(root, n, r) {
   who.appendChild(tags);
   head.appendChild(who);
 
-  const edit = el('button', 'cp-editBtn', '✎');
-  edit.type = 'button';
-  edit.title = t('cp.edit');
-  edit.setAttribute('aria-label', t('cp.edit'));
-  edit.onclick = () => { modalOpen = true; paint(root); };
-  head.appendChild(edit);
   card.appendChild(head);
 
   /* 1행 — 최종 전투력 3종 (현재 레벨 / Lv.40 / Lv.400).
@@ -819,52 +642,50 @@ function renderDetail(root, n, r) {
   return card;
 }
 
-/* ── 입력 폼 팝업 ─────────────────────────────────────────────
-   폼은 값이 바뀔 때마다 통째로 다시 그려지므로, 열려 있는 동안에는 paint 가
-   모달까지 같이 다시 만든다. 열림 여부만 밖에 들고 있으면 된다. */
-let modalOpen = false;
+/* ── 지휘관 정보 ──────────────────────────────────────────────
+   싱크로 레벨과 콘솔(리사이클 룸) 아홉 칸은 니케가 아니라 계정에 붙는 값이다.
+   불러오기 카드 안에 있던 것을 결과 칸 맨 위로 올렸다 — 전투력에 그대로 들어가는
+   수치라 결과 옆에 있어야 읽힌다. 고칠 일이 없으니 입력칸 없이 글자로만 둔다.
+   두 줄: 싱크로 + 공용·클래스 셋 / 기업 다섯.
+   지금 고른 니케에 실제로 적용되는 칸(그 니케의 클래스·기업)은 진하게 둔다 —
+   아홉 칸 중 셋만 계산에 들어가는데 다 같은 굵기면 그게 안 보인다. */
+function renderCommander(n) {
+  const box = el('section', 'cp-cmdr');
+  const acc = importApi && importApi.account();
 
-function renderModal(root) {
-  const back = el('div', 'cp-modal');
-  back.onclick = e => { if (e.target === back) close(); };
-  back.onkeydown = e => { if (e.key === 'Escape') { e.stopPropagation(); close(); } };
+  const cell = (name, axis, code, value, on) => {
+    const c = el('span', 'cp-cmdrCell' + (on ? ' is-on' : ''));
+    c.title = t('cp.consoleOf', name);
+    const ic = axis && ctx.iconEl(axis, code);
+    c.appendChild(ic || el('span', 'cp-cmdrName', name));
+    c.appendChild(el('b', null, String(value || 0)));
+    return c;
+  };
+  const line = axis => {
+    const row = el('div', 'cp-cmdrRow');
+    for (const code of CHIP_AXES[axis]) {
+      row.appendChild(cell(ctx.L(axis, code), axis, code, research[axis][code], n && n[axis] === code));
+    }
+    return row;
+  };
 
-  const box = el('div', 'cp-modalBox');
-  box.setAttribute('role', 'dialog');
-  box.setAttribute('aria-modal', 'true');
-  box.tabIndex = -1;
-  queueMicrotask(() => box.focus());        // ESC 를 받으려면 안쪽에 초점이 있어야 한다
-
-  const head = el('div', 'cp-modalHead');
-  head.appendChild(el('h3', null, t('cp.editTitle')));
-  const x = el('button', 'sheet-x', '×');
-  x.type = 'button';
-  x.setAttribute('aria-label', t('cp.done'));
-  x.onclick = close;
-  head.appendChild(x);
-  box.appendChild(head);
-
-  const body = el('div', 'cp-modalBody');
-  body.appendChild(renderForm(root));
-  box.appendChild(body);
-
-  const foot = el('div', 'cp-modalFoot');
-  const done = el('button', 'btn-reset', t('cp.done'));
-  done.type = 'button';
-  done.onclick = close;
-  foot.appendChild(done);
-  box.appendChild(foot);
-
-  back.appendChild(box);
-  return back;
-
-  function close() { modalOpen = false; paint(root); }
+  const row1 = line('class');
+  const sync = el('span', 'cp-fact');
+  sync.appendChild(el('span', 'cp-factLbl', t('im.synchro')));
+  sync.appendChild(el('span', 'cp-factVal',
+    acc && acc.synchro_level ? String(acc.synchro_level) : '—'));
+  row1.prepend(sync, el('span', 'cp-tagSep'),
+    cell(t('cp.console_공용'), null, null, research.common, true));
+  box.appendChild(row1);
+  box.appendChild(line('corporation'));
+  return box;
 }
 
 /* ── 결과 ─────────────────────────────────────────────────── */
 function renderResult(root) {
   const out = el('div', 'cp-out');
   const n = resolved();
+  out.appendChild(renderCommander(n));
   const r = n && compute(T, n);
   if (!r) {
     out.appendChild(el('p', 'notice notice-error', t('cp.noBase')));
@@ -896,20 +717,34 @@ function importPanel(root) {
       iconEl: ctx.iconEl, overspecMark: ctx.overspecMark, nikkeMatcher: ctx.nikkeMatcher,
       nikkes: ctx.nikkes, byCode: byCode(),
       bondMax: T.bondMax, levels: ADJ_LEVELS, cpOf, cubes, olTotals: overloadTotals,
-      research: () => research,
-      setResearch: (kind, code, v) => { setResearch(kind, code, v); save(); paint(root); },
       applyResearch: fresh => { applyResearch(fresh); save(); },
-      onPick: picked => { input = adopt(picked); save(); paint(root); },
+      // 계정이 갈리면 지휘관 줄(싱크로·콘솔)도 갈아 끼워야 한다
+      onAccount: () => paint(root),
+      onPick: picked => { input = adopt(picked); save(); paint(root); reveal(root); },
     });
   }
   return importEl;
 }
 
-/* 왼쪽에 계정 카드 -> 니케 목록 -> 입력 폼을 쌓고, 오른쪽은 고른 니케의 결과만.
+/* 한 단으로 접히는 폭(모바일)에서는 목록과 결과가 위아래로 떨어져 있다. 줄을 눌러
+   니케를 골라도 결과는 화면 밖이라, 고른 순간 결과 칸으로 데려다준다. 두 단으로
+   서는 폭에서는 결과가 이미 옆에 보이므로 건드리지 않는다. */
+const NARROW = '(max-width: 1125px)';
+function reveal(root) {
+  if (!matchMedia(NARROW).matches) return;
+  const card = root.querySelector('.cp-out');
+  if (!card) return;
+  card.scrollIntoView({
+    block: 'start',
+    behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+  });
+}
+
+/* 왼쪽에 계정 줄 -> 니케 목록, 오른쪽에 지휘관 줄 -> 고른 니케의 결과.
    목록이 열 열세 개라 왼쪽을 넓게 잡는다 (비율은 style.css). */
 function paint(root) {
   /* 툴팁은 body 에 붙어 있어 root 를 비워도 남는다. 가리키던 버튼이 사라지므로
-     여기서 같이 닫는다 (모달을 열거나 다른 니케를 고를 때). */
+     여기서 같이 닫는다 (다른 니케를 고르거나 자료를 새로 불러올 때). */
   closeTip();
   root.textContent = '';
   const wrap = el('div', 'cp-wrap');
@@ -917,8 +752,10 @@ function paint(root) {
   left.appendChild(importPanel(root));
   wrap.appendChild(left);
   wrap.appendChild(renderResult(root));
+  /* 한 단으로 접혔을 때 결과를 목록 위로 올릴지 (style.css). 자료를 아직 안 불러온
+     사람에게는 불러오기 카드가 먼저여야 하므로, 계정이 있을 때만 뒤집는다. */
+  wrap.classList.toggle('has-roster', !!(importApi && importApi.account()));
   root.appendChild(wrap);
-  if (modalOpen) root.appendChild(renderModal(root));
 
   fitOlGrid(root);
   // 폰트가 늦게 오면 글자 폭이 달라진다 — 오고 나서 한 번 더 잰다
@@ -933,11 +770,9 @@ function paint(root) {
 }
 let mounted = null, fitBound = false;
 
-/* 불러온 계정의 리사이클 룸 연구 레벨을, 지금 고른 니케의 클래스·기업에 맞춰
-   콘솔 입력에 얹는다. 니케를 바꿀 때마다 해당하는 연구 줄이 달라진다. */
-/* 리사이클 룸 연구 레벨은 계정 단위 값이라 니케 입력(cp.input)과 따로 둔다.
-   계정 카드의 아홉 칸이 이걸 직접 고치고, 계산기는 고른 니케의 클래스·기업에
-   해당하는 줄만 뽑아 input.console 에 얹는다. */
+/* 리사이클 룸 연구(콘솔) 레벨은 계정 단위 값이라 니케 입력(cp.input)과 따로 둔다.
+   값은 불러온 계정에서만 오고(applyResearch), 계산기는 고른 니케의 클래스·기업에
+   해당하는 줄만 뽑아 input.console 에 얹는다. 아홉 칸 전부는 지휘관 줄이 보여준다. */
 const RESEARCH_STORE = 'cp.research';
 let research = loadResearch();
 
@@ -963,13 +798,6 @@ function applyResearch(fresh) {
   };
 }
 
-function setResearch(kind, code, v) {
-  if (kind === 'common') research.common = v;
-  else research[kind][code] = v;
-  saveResearch();
-  applyResearch();
-}
-
 /* 게임 API 는 니케를 name_code 로 부른다. data/nikkes.json 의 같은 이름 필드가
    유일한 연결 고리다 (없는 니케는 roster.js 가 건너뛴다). */
 let codeMap = null;
@@ -987,7 +815,6 @@ export async function renderCalc(root, context) {
   importEl = null;          // 언어가 바뀌면 라벨을 다시 만들어야 한다
   importApi = null;
   codeMap = null;
-  modalOpen = false;
   if (!T) {
     root.textContent = '';
     root.appendChild(el('p', 'notice', t('cp.loading')));
