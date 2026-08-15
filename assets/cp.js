@@ -49,6 +49,31 @@ const OPTION_SHORT = {
 };
 export const optionLabel = (name, lang) => (OPTION_SHORT[lang] || {})[name] || name;
 
+/* 게임 정식 명칭. 좁은 칸에는 위의 약어를 쓰지만, 종합처럼 한 줄을 통째로 쓰는
+   자리에서는 인게임에 적힌 그대로 보여 주는 쪽이 대조하기 좋다.
+   일본어는 임의 번역이 아니라 일본판 인게임 표기를 따른다 (약어는 좁은 칸 전용). */
+const OPTION_FULL = {
+  ko: {
+    우코: '우월코드 대미지 증가', 공증: '공격력 증가', 장탄: '최대 장탄 수 증가',
+    크댐: '크리티컬 대미지 증가', 크확: '크리티컬 확률 증가', 차속: '차지 속도 증가',
+    명중: '명중률 증가', 방어: '방어력 증가', 차댐: '차지 대미지 증가',
+  },
+  en: {
+    우코: 'Increase Elemental Damage', 공증: 'Increase ATK', 장탄: 'Increase Ammo',
+    크댐: 'Increase Critical Damage', 크확: 'Increase Critical Rate',
+    차속: 'Increase Charge Speed', 명중: 'Increase Hit Rate', 방어: 'Increase DEF',
+    차댐: 'Increase Charge Damage',
+  },
+  ja: {
+    우코: '有利コードダメージ増加', 공증: '攻撃力増加', 장탄: '最大装弾数増加',
+    크댐: 'クリティカルダメージ増加', 크확: 'クリティカル確率増加',
+    차속: 'チャージ速度増加', 명중: '命中率増加', 방어: '防御力増加',
+    차댐: 'チャージダメージ増加',
+  },
+};
+export const optionFullLabel = (name, lang) =>
+  (OPTION_FULL[lang] || OPTION_FULL.ko)[name] || optionLabel(name, lang);
+
 /* 돌파·코강 등급과 장비 등급도 데이터 키가 한국어 문자열이다('3돌'·'오버로드').
    키 자체는 원본 표에서 오는 값이라 못 바꾸니, 화면에 낼 때만 라벨로 옮긴다.
    i18n 표는 app.js 에 있으므로 t 를 받아 쓴다 (이 모듈은 DOM 도 STR 도 모른다). */

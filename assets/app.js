@@ -54,6 +54,7 @@ const STR = {
   'cp.level': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
   'cp.levelHint': [n => `1 ~ ${n}`, n => `1 – ${n}`, n => `1 ~ ${n}`],
   'cp.grade': ['돌파 / 코강', 'Break / Core', '凸・コア強化'],
+  'cp.gradeNone': ['이 등급은 돌파가 없습니다', 'No limit break at this rarity', 'この等級に凸はありません'],
   'cp.bond': ['호감도', 'Bond', '好感度'],
   'cp.skills': ['스킬 레벨', 'Skill levels', 'スキルレベル'],
   'cp.skill1': ['스킬 1', 'Skill 1', 'スキル1'],
@@ -61,6 +62,14 @@ const STR = {
   'cp.burst': ['버스트', 'Burst', 'バースト'],
   'cp.items': ['장착품', 'Equipped items', '装着アイテム'],
   'cp.cube': ['큐브', 'Cube', 'キューブ'],
+  // 큐브 종류는 전투력에 안 들어가지만(레벨만 쓴다) 상태 줄에 이름을 내려면 필요하다
+  'cp.cubeType': ['큐브 종류', 'Cube type', 'キューブ種類'],
+  'cp.cubeTypeHint': [
+    '전투력에는 레벨만 들어갑니다',
+    'Only the level affects CP',
+    '戦闘力にはレベルのみ影響します',
+  ],
+  'cp.unset': ['미지정', 'Unspecified', '未指定'],
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
   'cp.collectionLv': ['등급', 'Grade', '等級'],
   'cp.favorite': ['애장품', 'Favorite item', '宝もの'],
@@ -88,7 +97,7 @@ const STR = {
   'cp.gear': ['장비', 'Gear', '装備'],
   'cp.slot': ['등급', 'Tier', '等級'],
   'cp.slot_머리': ['머리', 'Head', '頭'],
-  'cp.slot_몸': ['몸', 'Body', '胴'],
+  'cp.slot_몸': ['몸', 'Torso', '胴'],
   'cp.slot_팔': ['팔', 'Arm', '腕'],
   'cp.slot_다리': ['다리', 'Leg', '足'],
   'cp.enhance': ['강화', 'Enhance', '強化'],
@@ -105,6 +114,7 @@ const STR = {
     w => `방어력 ${w} 계열 적용`, w => `Uses ${w} DEF table`, w => `防御力は ${w} 系統`,
   ],
   'cp.breakdown': ['계산 분해', 'Breakdown', '計算の内訳'],
+  'cp.stats': ['스탯', 'Stats', 'ステータス'],
   'cp.b1': ['(1) HP × 0.7', '(1) HP × 0.7', '(1) HP × 0.7'],
   'cp.b2': ['(2) 공격력 × 19.35', '(2) ATK × 19.35', '(2) 攻撃力 × 19.35'],
   'cp.b3': ['(3) 방어력 × 70', '(3) DEF × 70', '(3) 防御力 × 70'],
@@ -116,6 +126,12 @@ const STR = {
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
     (s, u, n) => `スキル係数 ${s} · 有利コードダメージ ${u} · その他のOP ${n}`,
   ],
+  'cp.cpTipHint': [
+    '클릭하면 계산식과 HP · 공격력 · 방어력을 봅니다',
+    'Click for the formula and HP / ATK / DEF',
+    'クリックで計算式と HP・攻撃力・防御力を表示',
+  ],
+  'cp.close': ['닫기', 'Close', '閉じる'],
   'cp.edit':['입력 수정', 'Edit inputs', '入力を編集'],
   'cp.editTitle': ['입력 수정', 'Edit inputs', '入力を編集'],
   'cp.done': ['완료', 'Done', '完了'],
@@ -126,18 +142,53 @@ const STR = {
     v => `${v} before rounding`,
     v => `四捨五入前 ${v}`,
   ],
+  // 부위별 표의 빈 칸 — 오버로드인데 그 자리에 옵션이 안 붙은 경우 (인게임 표기)
+  'cp.olNoEffect': ['효과 없음', 'No effect', '効果なし'],
   'cp.olNone': [
     '오버로드 장비가 없습니다.',
     'No overload gear equipped.',
     'オーバーロード装備がありません。',
   ],
+  // 오버로드 옵션을 니파고(옵션작) 탭으로 넘겨 이어서 굴려 보는 버튼
+  'cp.olSim': ['옵션 시뮬레이션', 'Option simulation', '厳選シミュレーション'],
+  'cp.olSimHint': [
+    '이 니케의 오버로드 옵션을 옵션작 탭으로 가져갑니다.',
+    'Take this Nikke’s overload options over to the rolls tab.',
+    'このニケのオーバーロードOPを厳選タブに引き継ぎます。',
+  ],
+  'cp.olSimPick': ['어느 부위로 이어서 할까요?', 'Which slot do you want to continue with?', 'どの部位で続けますか？'],
   'cp.margin': ['1단계당 전투력 증가', 'CP gain per step', '1段階あたりの戦闘力増加'],
   'cp.marginHint': [
-    '콘솔은 1레벨, 오버로드 옵션은 1단계 올렸을 때 늘어나는 전투력입니다.',
-    'How much CP one more console level — or one more overload option step — adds.',
-    'コンソールは1レベル、オーバーロードOPは1段階上げたときに増える戦闘力です。',
+    '돌파·코어강화는 다음 단계, 콘솔은 1레벨, 오버로드 옵션은 1단계 올렸을 때 늘어나는 전투력입니다.',
+    'How much CP the next limit break / core enhance step — or one more console level, '
+      + 'or one more overload option step — adds.',
+    '凸・コア強化は次の段階、コンソールは1レベル、オーバーロードOPは1段階上げたときに増える戦闘力です。',
   ],
   'cp.marginWhat': ['항목', 'Item', '項目'],
+  'cp.marginBreak': ['돌파 +1', 'Limit break +1', '凸 +1'],
+  'cp.marginCore': ['코어강화 +1', 'Core enhance +1', 'コア強化 +1'],
+  // 마지막 단계(3돌 · 7코강)에서는 더 올릴 수 없으니 빈칸이 아니라 0 이다
+  'cp.marginMaxed': [
+    '이미 마지막 단계라 더 올릴 수 없습니다.',
+    'Already at the last step — nothing more to raise.',
+    'すでに最終段階のため、これ以上は上げられません。',
+  ],
+  'cp.marginLocked': [
+    '코어강화는 최대 돌파부터 열립니다.',
+    'Core enhance opens once limit break is maxed.',
+    'コア強化は最大凸から解放されます。',
+  ],
+  // 돌파 한계는 등급이 가른다 — SR 은 2돌까지, R 은 돌파가 없고, 코강은 SSR 전용
+  'cp.marginNoBreak': [
+    'R 등급 니케는 돌파가 없습니다.',
+    'R Nikkes have no limit break.',
+    'R等級のニケには凸がありません。',
+  ],
+  'cp.marginNoCore': [
+    '코어강화는 SSR 등급만 가능합니다.',
+    'Core enhance is SSR only.',
+    'コア強化はSSR等級のみです。',
+  ],
   'cp.marginElem': ['우코 옵션 +1', 'Elemental option +1', '有利コードOP +1'],
   'cp.marginOther': ['그 외 옵션 +1', 'Other option +1', 'その他OP +1'],
   'cp.lv': [n => `Lv.${n}`, n => `Lv.${n}`, n => `Lv.${n}`],
@@ -1519,7 +1570,9 @@ function render() {
   if (state.tab === 'calc') {
     writeHash();
     import('./calc.js').then(m => m.renderCalc($('#calc'),
-      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl, overspecMark, nikkeMatcher }));
+      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl, overspecMark, nikkeMatcher,
+        // 계산기에서 오버로드 옵션을 니파고 탭으로 넘길 때 탭을 갈아 준다
+        goTab }));
     return;
   }
 
@@ -1536,13 +1589,17 @@ function render() {
   writeHash();
 }
 
+/* 탭 갈아 끼우기 — 탭 단추와, 탭끼리 자료를 넘기는 쪽(계산기 -> 니파고)이 같이 쓴다. */
+function goTab(tab) {
+  if (!TABS.includes(tab)) return;
+  state.tab = tab;
+  buildChips();
+  render();
+}
+
 /* ── 초기화 ───────────────────────────────────────────────── */
 function wire() {
-  $$('.tabs button').forEach(b => b.onclick = () => {
-    state.tab = b.dataset.tab;
-    buildChips();
-    render();
-  });
+  $$('.tabs button').forEach(b => b.onclick = () => goTab(b.dataset.tab));
 
   let fillSquads;   // 스쿼드 옵션 재생성 (아래에서 채워짐)
 

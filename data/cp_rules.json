@@ -32,6 +32,13 @@
   {"key": "champion_arena", "mode": "fix", "level": 400, "penalty": false,
    "label": {"ko": "챔피언 아레나", "en": "Champion Arena", "ja": "チャンピオンアリーナ"}}
  ],
+ "limit_break": {
+  "SSR": {"break": 3, "core": 7},
+  "SR":  {"break": 2, "core": 0},
+  "R":   {"break": 0, "core": 0}
+ },
+ "limit_break_note": "등급별로 갈 수 있는 최대 돌파·코어강화. attraction_grade 표는 SSR 기준이라 0돌~3돌·1~7코강을 전부 담고 있지만, SR 은 2돌에서 끝나고 R 은 돌파 자체가 없다. 코어강화는 SSR 전용이며 최대 돌파(3돌) 이후에 열린다.",
+
  "def_weapon_override": {
   "c230": "AR"
  },

@@ -5,8 +5,10 @@
    이 탭을 처음 열 때만 받아온다 — syncro_stat 하나가 500KB라 첫 화면에
    같이 얹지 않는다. */
 
-import { buildTables, compute, optionLabel, gradeLabel, tierLabel, K, SLOTS, TIERS } from './cp.js';
-import { renderImport, OPTION_ALIAS } from './roster.js';
+import { buildTables, compute, optionLabel, optionFullLabel, gradeLabel, tierLabel,
+  K, SLOTS, TIERS } from './cp.js';
+import { renderImport, OPTION_ALIAS, badge, gradeBadge, collBadge, bondBadge, cubeBadge }
+  from './roster.js';
 
 const NEED = ['syncro_stat', 'attraction_stat', 'attraction_grade', 'equip_stat',
   'equip_option', 'cube_stat', 'collection_stat', 'collection_bonus', 'cp_penalty'];
@@ -27,6 +29,14 @@ const el = (tag, cls, text) => {
 };
 const t = (k, ...a) => ctx.t(k, ...a);
 const fmt = v => v == null ? '—' : Math.round(v).toLocaleString();
+
+/* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인 문구라
+   ko/en 만 있다. 블록째가 아니라 항목 단위로 떨어뜨려 일본어는 정식 이름 + 영문
+   약칭이 되게 한다 (roster.js 의 같은 이름 함수와 규칙을 맞춘다). */
+function cubeInfo(tid) {
+  const c = tid != null && cubes ? cubes[String(tid)] : null;
+  return c ? { ...c.ko, ...c.en, ...c[ctx.lang] } : null;
+}
 
 /* 표는 좁은 화면에서 자기 상자 안에서만 가로 스크롤해야 한다 (페이지가 밀리지 않게) */
 function scrollBox(table) {
@@ -58,16 +68,35 @@ async function loadAll() {
   T = buildTables(Object.fromEntries(NEED.map((k, i) => [k, tables[i]])));
 }
 
+/* ── 등급별 돌파 한계 ──────────────────────────────────────────
+   attraction_grade 표는 SSR 기준이라 0돌~3돌·1~7코강을 전부 담고 있지만, 실제로
+   갈 수 있는 데까지는 니케 등급이 가른다 — SR 은 2돌에서 끝나고, R 은 돌파 자체가
+   없으며, 코어강화는 SSR 전용이다 (data/cp_rules.json 의 limit_break).       */
+const limits = rarity => (rules.limit_break || {})[rarity] || { break: 3, core: 7 };
+const gradesFor = rarity => {
+  const lim = limits(rarity);
+  return T.grades.filter(g => g.breaks <= lim.break && g.cores <= lim.core);
+};
+/* 못 가는 등급이 입력에 남아 있으면(SR 로 바꿨는데 7코강) 갈 수 있는 가장 높은
+   단계로 내린다 — 셀렉트에 없는 값이 남으면 칸이 통째로 비어 보이고, 계산은
+   그 니케가 도달할 수 없는 전투력을 낸다. */
+function clampGrade(grade, rarity) {
+  const ok = gradesFor(rarity);
+  if (ok.some(g => g.key === grade)) return grade;
+  return ok.length ? ok.at(-1).key : T.grades[0].key;
+}
+
 /* ── 입력 기본값 ───────────────────────────────────────────── */
 function defaults() {
   const n = ctx.nikkes.find(x => x.rid === 'c010') || ctx.nikkes[0];
   return {
     rid: n.rid,
     level: 400,
-    grade: T.grades.at(-1)?.key || '0돌',
+    grade: clampGrade(T.grades.at(-1)?.key || '0돌', n.rarity),
     bond: T.bondMax,
     skills: { s1: 10, s2: 10, burst: 10 },
     cube: '미착용',
+    cubeTid: null,          // 표시 전용 — 계수는 레벨만 본다
     collection: { kind: 'none', level: '0' },
     console: { 공용: 0, 클래스: 0, 기업: 0 },
     gear: SLOTS.map(slot => ({ slot, tier: '', enhance: 0, options: [] })),
@@ -77,10 +106,19 @@ function defaults() {
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE));
-    if (saved && saved.rid && ctx.nikkes.some(n => n.rid === saved.rid)) return renameOptions(saved);
+    if (saved && saved.rid && ctx.nikkes.some(n => n.rid === saved.rid)) return adopt(saved);
   } catch { /* 저장값이 깨졌으면 기본값으로 */ }
   return defaults();
 }
+
+/* 밖에서 들어온 입력(저장값·목록에서 고른 니케)을 지금 규칙에 맞춘다.
+   등급 한계가 생기기 전에 저장된 값에는 SR 니케에 7코강 같은 조합이 남아 있다 —
+   예전 기본값이 '표의 마지막 단계' 였고 기본 니케(라피)가 SR 이라 흔하다. */
+const adopt = v => {
+  const r = renameOptions(v);
+  r.grade = clampGrade(r.grade, ctx.byRid.get(r.rid)?.rarity);
+  return r;
+};
 
 /* 옛 약어로 저장된 폼 입력(크피·차뎀)을 지금 이름으로 눕힌다 — 그냥 두면 옵션
    셀렉트가 값을 못 찾아 조용히 '없음' 으로 떨어진다. roster.js 와 같은 표. */
@@ -156,6 +194,8 @@ function renderForm(root) {
     select(nikkes.map(n => ({ value: n.rid, label: ctx.nameOf(n) })), input.rid,
       v => set(() => {
         input.rid = v;
+        // 등급이 바뀌면(SSR -> SR) 갈 수 없는 돌파 단계가 남을 수 있다
+        input.grade = clampGrade(input.grade, ctx.byRid.get(v)?.rarity);
         // 니케가 바뀌면 적용되는 클래스·기업 연구 줄도 바뀐다
         applyResearch();
         importApi?.syncConsole();
@@ -163,9 +203,12 @@ function renderForm(root) {
   row1.appendChild(field(t('cp.level'),
     number(input.level, T.levels[0], T.levels.at(-1), v => set(() => { input.level = v; })),
     t('cp.levelHint', T.levels.at(-1))));
+  // 고른 니케가 갈 수 있는 단계만 (R 은 0돌 하나뿐이라 칸이 한 줄로 굳는다)
+  const grades = gradesFor(ctx.byRid.get(input.rid)?.rarity);
   row1.appendChild(field(t('cp.grade'),
-    select(T.grades.map(g => ({ value: g.key, label: gradeLabel(g.key, t) })), input.grade,
-      v => set(() => { input.grade = v; }))));
+    select(grades.map(g => ({ value: g.key, label: gradeLabel(g.key, t) })), input.grade,
+      v => set(() => { input.grade = v; })),
+    grades.length > 1 ? null : t('cp.gradeNone')));
   row1.appendChild(field(t('cp.bond'),
     number(input.bond, 1, T.bondMax, v => set(() => { input.bond = v; }))));
   g1.appendChild(row1);
@@ -188,7 +231,18 @@ function renderForm(root) {
   const row3 = el('div', 'cp-row');
   row3.appendChild(field(t('cp.cube'),
     select(T.cubeLevels.map(l => ({ value: l, label: l === '미착용' ? t('cp.none') : 'Lv.' + l })),
-      input.cube, v => set(() => { input.cube = v; }))));
+      input.cube, v => set(() => { input.cube = v; if (v === '미착용') input.cubeTid = null; }))));
+  /* 종류는 계산에 안 쓰이지만 상태 줄에 이름이 나오므로 여기서 고칠 수 있어야 한다.
+     불러온 계정에서는 이미 채워져 오고, 손으로 넣을 때만 쓰는 칸이다. */
+  if (input.cube !== '미착용') {
+    const list = Object.keys(cubes)
+      .map(tid => ({ value: tid, label: cubeInfo(tid)?.short || '#' + tid }))
+      .sort((a, b) => a.label.localeCompare(b.label, ctx.lang));
+    row3.appendChild(field(t('cp.cubeType'),
+      select([{ value: '', label: t('cp.unset') }, ...list], input.cubeTid == null ? '' : String(input.cubeTid),
+        v => set(() => { input.cubeTid = v || null; })),
+      t('cp.cubeTypeHint')));
+  }
 
   const kinds = [{ value: 'none', label: t('cp.none') }, { value: 'R', label: 'R' },
     { value: 'SR', label: 'SR' }, { value: '애장품', label: t('cp.favorite') }];
@@ -198,9 +252,11 @@ function renderForm(root) {
       input.collection.level = v === '애장품' ? T.favoriteLevels[0] : '0';
     }))));
   if (input.collection.kind !== 'none') {
+    /* range() 는 이미 {value,label} 을 돌려주므로 그 위에 다시 map 을 걸면 안 된다 —
+       그러면 라벨이 'SR[object Object]' 가 되고 값이 안 맞아 칸이 통째로 비어 보인다. */
     const lvs = input.collection.kind === '애장품'
       ? T.favoriteLevels.map(l => ({ value: l, label: 'Lv.' + l }))
-      : range(0, 15).map(n => ({ value: String(n), label: input.collection.kind + n }));
+      : range(0, 15).map(o => ({ value: String(o.value), label: input.collection.kind + o.value }));
     row3.appendChild(field(t('cp.collectionLv'),
       select(lvs, input.collection.level, v => set(() => { input.collection.level = v; }))));
   }
@@ -265,9 +321,16 @@ function renderForm(root) {
    "콘솔을 1레벨 더 올리면 얼마나 오르나"를 컨텐츠 레벨(40·400)에서 보여 준다.
 
    콘솔은 스탯에 더해진 뒤 코강 계수와 반올림을 거치므로 선형이 아니다 —
-   그래서 1레벨 올린 입력으로 다시 계산해 차이를 낸다.
+   그래서 1레벨 올린 입력으로 다시 계산해 차이를 낸다. 돌파·코강도 같은 이유로
+   (계수 자체가 바뀐다) 한 단계 올린 등급으로 다시 계산한다.
    오버로드 옵션은 (4)항의 계수에만 들어가서 정확히 선형이다:
-     ΔCP = ((1)+(2)+(3)) × 계수 / 100.                            */
+     ΔCP = ((1)+(2)+(3)) × 계수 / 100.
+
+   돌파와 코강은 한 줄로 이어진 단계다 (0돌…3돌 → 1코강…7코강). 어디까지 갈 수
+   있는지는 니케 등급이 가르므로(limits), 지금 자리에 따라 셋 중 하나가 된다:
+     올릴 수 있다        -> 다음 등급으로 다시 계산한 차이
+     끝까지 올렸다        -> 0   (SSR 3돌·7코강 · SR 2돌 · R 은 처음부터)
+     그 등급에 없다      -> null (SR·R 의 코강, 최대 돌파 전의 코강)      */
 function marginRows(n, lv) {
   const base = compute(T, n, lv);
   if (!base) return null;
@@ -276,8 +339,22 @@ function marginRows(n, lv) {
     const r = compute(T, alt, lv);
     return r ? r.cp - base.cp : null;
   };
+  const lim = limits(n.rarity);
+  const bumpGrade = kind => {
+    const g = T.grades.find(x => x.key === n.grade) || T.grades[0];
+    // 코강은 그 등급에 있고(SSR 만) 최대 돌파를 찍은 뒤에야 열린다
+    if (kind === 'core' && (!lim.core || g.breaks < lim.break)) return null;
+    if (kind === 'break' ? g.breaks >= lim.break : g.cores >= lim.core) return 0;
+    const next = T.grades.find(x => (kind === 'break'
+      ? x.breaks === g.breaks + 1 && x.cores === g.cores
+      : x.breaks === g.breaks && x.cores === g.cores + 1));
+    if (!next) return null;
+    const r = compute(T, { ...n, grade: next.key }, lv);
+    return r ? r.cp - base.cp : null;
+  };
   const parts = base.parts.hp + base.parts.atk + base.parts.def;
   return {
+    brk: bumpGrade('break'), core: bumpGrade('core'),
     공용: bump('공용'), 클래스: bump('클래스'), 기업: bump('기업'),
     elem: parts * K.ELEM_DMG / 100,
     other: parts * K.OTHER_OPT / 100,
@@ -297,19 +374,31 @@ function renderMargin(n) {
   tbl.appendChild(thead);
 
   const body = el('tbody');
+  /* 돌파·코강을 맨 위에 둔다 — 여기서 붙는 전투력이 콘솔·옵션보다 한 자리 크다.
+     뒤의 두 칸은 그 줄이 왜 0 이고 왜 '—' 인지 알리는 hover 다. 이유가 등급마다
+     다르므로(R 은 돌파가 아예 없고, SR 은 코강이 없다) 여기서 골라 넣는다. */
+  const lim = limits(n.rarity);
   const lines = [
+    [t('cp.marginBreak'), r => r?.brk,
+      lim.break ? t('cp.marginMaxed') : t('cp.marginNoBreak'), null],
+    [t('cp.marginCore'), r => r?.core, t('cp.marginMaxed'),
+      lim.core ? t('cp.marginLocked') : t('cp.marginNoCore')],
     [t('cp.console_공용'), r => r?.공용],
     [t('cp.console_클래스'), r => r?.클래스],
     [t('cp.console_기업'), r => r?.기업],
     [t('cp.marginElem'), r => r?.elem],
     [t('cp.marginOther'), r => r?.other],
   ];
-  for (const [label, get] of lines) {
+  for (const [label, get, whyZero, whyNone] of lines) {
     const tr = el('tr');
     tr.appendChild(el('td', null, label));
     for (const r of per) {
       const v = get(r);
-      tr.appendChild(el('td', 'num', v == null ? '—' : '+' + fmt(v)));
+      /* 0 은 '못 구했다'가 아니라 '더 올릴 수 없다'는 뜻이라 '+0' 이 아닌 '0' 으로 쓴다. */
+      const td = el('td', 'num', v == null ? '—' : v ? '+' + fmt(v) : '0');
+      const why = v == null ? whyNone : v ? null : whyZero;
+      if (why) td.title = why;
+      tr.appendChild(td);
     }
     body.appendChild(tr);
   }
@@ -333,6 +422,12 @@ function renderMargin(n) {
    먼저 반올림했다면 0.05×3 = 0.15 (15%) 라 실제로 값이 달라진다.
 
    전투력에 들어가는 건 이 수치가 아니라 옵션 '단계 수'다 (cp.js 참고). */
+/* 옵션 단계를 인게임과 같은 색으로. 12~14 는 하늘색 글씨, 15 는 검은 칩에 하늘색
+   글씨다 — 니파고 탭의 슬롯 표시(np-slot .blue/.black)와 같은 경계를 쓴다.
+   종합 칩에는 단계가 하나로 정해지지 않으므로, 그 옵션에 붙은 것 중 가장 높은
+   단계를 따른다 (어디까지 올려 뒀는지가 이 줄에서 알고 싶은 것이다). */
+const olLevelCls = lv => (lv >= 15 ? ' is-lv15' : lv >= 12 ? ' is-lv12' : '');
+
 const round2 = v => Math.round(v * 100) / 100;   // 분수 2자리 = 퍼센트 정수
 const pct = v => Math.round(v * 100) + '%';
 /* hover 로는 원표 값을 그대로 보여준다 — 반올림 때문에 잃는 정보가 없게. */
@@ -352,16 +447,19 @@ function overloadTotals(gear) {
 
   const out = [];
   for (const [name, levels] of byName) {
-    let total = 0, steps = 0, exact = 0;
+    let total = 0, steps = 0, exact = 0, top = 0, count_ = 0;
     const parts = [];
     for (const [level, count] of [...levels].sort((a, b) => b[0] - a[0])) {
       const unit = T.optionValue.get(`${name}|${level}`) || 0;
       total += round2(unit * count);              // 같은 단계는 합산 후 반올림
       exact += unit * count;                      // 반올림 전 값 (hover 용)
       steps += level * count;
+      top = Math.max(top, level);                 // 칩 색을 정하는 단계
+      count_ += count;
       parts.push(count > 1 ? `Lv.${level}×${count}` : `Lv.${level}`);
     }
-    out.push({ name, total: round2(total), exact, steps, parts: parts.join(' + ') });
+    out.push({ name, total: round2(total), exact, steps, top, count: count_,
+      parts: parts.join(' + ') });
   }
   return out.sort((a, b) => b.steps - a.steps);
 }
@@ -374,53 +472,274 @@ function renderOverload(n) {
     box.appendChild(el('p', 'cp-note', t('cp.olNone')));
     return box;
   }
-  /* 3행(부위별)과 같은 칩 모양으로 맞춘다. 어느 단계가 몇 개 붙어 나온 합인지는
-     hover 로 — 상시로 펼치면 다섯 줄이 되어 카드가 세로로 길어진다. */
-  const chips = el('div', 'cp-olChips');
+  /* 인게임 옵션 창처럼 한 줄에 하나씩 — 왼쪽에 [정식 명칭], 오른쪽에 합계.
+     좁은 오른쪽 단에서는 한 줄, 넓어지면 두 줄로 갈라진다(auto-fit).
+     어느 단계가 몇 개 붙어 나온 합인지는 hover 로 — 상시로 펼치면 다섯 줄이
+     열 줄이 되어 카드가 세로로 길어진다. */
+  const list = el('div', 'cp-olList');
   for (const o of totals) {
-    const chip = el('span', 'cp-olChip is-total');
-    chip.title = `${o.parts} · ${t('cp.olExact', pctExact(o.exact))}`;
-    chip.appendChild(el('span', 'cp-olName', optionLabel(o.name, ctx.lang)));
-    chip.appendChild(el('span', 'cp-olVal', pct(o.total)));
-    chips.appendChild(chip);
+    const row = el('div', 'cp-olRow' + olLevelCls(o.top));
+    row.title = `${o.parts} · ${t('cp.olExact', pctExact(o.exact))}`;
+    const name = el('span', 'cp-olName', `[${optionFullLabel(o.name, ctx.lang)}]`);
+    // 몇 부위에 붙어 나온 합인지 — 같은 %라도 한 부위에 몰린 것과 다르다
+    if (o.count > 1) name.appendChild(el('span', 'cp-olCount', ' ×' + o.count));
+    row.append(name, el('span', 'cp-olVal', pct(o.total)));
+    list.appendChild(row);
   }
-  box.appendChild(chips);
+  box.appendChild(list);
   return box;
+}
+
+/* ── 옵션작 탭으로 넘기기 ─────────────────────────────────────
+   니파고(옵션작) 탭은 장비 한 부위를 굴리는 시뮬레이터라 슬롯이 셋뿐이다.
+   여기 니케는 네 부위를 들고 있으니 어느 부위로 이어 갈지 한 번 고르게 한다.
+   오버로드가 하나뿐이면 물어볼 게 없으므로 바로 넘어간다. */
+function simButton(n) {
+  const ol = SLOTS.map(slot => (n.gear || []).find(g => g.slot === slot))
+    .filter(g => g && g.tier === '오버로드' && g.options?.length);
+
+  const btn = el('button', 'cp-simBtn', t('cp.olSim'));
+  btn.type = 'button';
+  btn.title = t('cp.olSimHint');
+  btn.disabled = !ol.length || !ctx.goTab;
+  if (btn.disabled) return btn;
+
+  const go = g => {
+    closeTip();
+    /* 니파고는 계산기와 따로 불러오는 모듈이라 여기서 직접 집어넣는다.
+       탭을 아직 한 번도 안 열었어도 저장값으로 받아 두므로 순서는 상관없다. */
+    import('./nipago.js')
+      .then(m => m.seedSlots(g.options))
+      .finally(() => ctx.goTab('nipago'));
+  };
+
+  btn.setAttribute('aria-expanded', 'false');
+  btn.onclick = () => {
+    if (ol.length === 1) return go(ol[0]);
+    const menu = el('div', 'cp-simMenu');
+    menu.appendChild(el('p', 'cp-simHint', t('cp.olSimPick')));
+    for (const g of ol) {
+      const item = el('button', 'cp-simItem');
+      item.type = 'button';
+      item.appendChild(el('span', 'cp-simSlot', t('cp.slot_' + g.slot)));
+      const opts = el('span', 'cp-simOpts');
+      for (const o of g.options) {
+        opts.appendChild(el('span', 'cp-olCell' + olLevelCls(o.level),
+          `[${optionLabel(o.name, ctx.lang)}] ${o.level}`));
+      }
+      item.appendChild(opts);
+      item.onclick = () => go(g);
+      menu.appendChild(item);
+    }
+    openTip(btn, t('cp.olSim'), menu);
+  };
+  return btn;
 }
 
 /* 부위별 상세. 어느 장비에 무엇이 붙어 있는지 그대로 편다. */
 function renderOverloadBySlot(n) {
   const box = el('div', 'cp-detailRow');
-  box.appendChild(el('h4', 'cp-rowLbl', t('cp.olBySlot')));
+  const head = el('div', 'cp-rowHead');
+  head.append(el('h4', 'cp-rowLbl', t('cp.olBySlot')), simButton(n));
+  box.appendChild(head);
 
   const ol = (n.gear || []).filter(g => g.tier === '오버로드' && g.options?.length);
   if (!ol.length) {
     box.appendChild(el('p', 'cp-note', t('cp.olNone')));
     return box;
   }
-  /* 표로 짜면 칸 너비가 고정돼 좁은 오른쪽 단에서 가로로 넘친다.
-     부위별 한 줄 + 옵션 칩이 줄바꿈하는 형태라야 어느 폭에서도 들어간다. */
-  for (const slot of SLOTS) {
+  /* 인게임 옵션 창과 같은 배치 — 부위가 열, 옵션 칸이 행(오버로드는 부위마다
+     최대 3개). 자리를 비워 두지 않고 '효과 없음' 을 찍어야 어디가 아직 안 뚫린
+     칸인지 보인다. 칸이 좁아서 이름은 약어를 쓰고, 정식 명칭은 바로 위 종합에
+     이미 펼쳐져 있다.
+
+     그리드 자리를 손으로 지정한다 — 오버로드가 아닌 부위는 한 칸이 세 줄을
+     차지해서, 순서대로 흘려 넣으면 뒤 열이 한 줄씩 밀린다. */
+  const grid = el('div', 'cp-olGrid');
+  SLOTS.forEach((slot, col) => {
     const g = (n.gear || []).find(x => x.slot === slot);
-    if (!g || g.tier !== '오버로드' || !g.options.length) continue;
-    const line = el('div', 'cp-olSlotRow');
-    line.appendChild(el('span', 'cp-olSlot', t('cp.slot_' + slot)));
-    const chips = el('span', 'cp-olChips');
+    const head = el('div', 'cp-olHead', t('cp.slot_' + slot));
+    head.style.gridColumn = col + 1;
+    head.style.gridRow = 1;
+    grid.appendChild(head);
+
+    // 오버로드가 아니면 옵션 자리 자체가 없다 — 무엇을 끼고 있는지만 알린다
+    if (!g || g.tier !== '오버로드') {
+      const cell = el('div', 'cp-olCell is-off', g && g.tier ? tierLabel(g.tier, t) : t('cp.none'));
+      cell.style.gridColumn = col + 1;
+      cell.style.gridRow = '2 / span 3';
+      grid.appendChild(cell);
+      return;
+    }
     /* 여기는 부위에 실제로 붙어 있는 값이라 원표 그대로 쓴다. 반올림은 인게임
        합산을 재현하는 2행(종합)에만 건다 — 부위별로 미리 반올림해 버리면
        차속 13단 두 개가 6%+6%=12% 로 보이는데 종합은 11% 라 산수가 어긋난다. */
-    for (const o of g.options) {
-      const raw = T.optionValue.get(`${o.name}|${o.level}`) || 0;
-      const chip = el('span', 'cp-olChip');
-      chip.appendChild(el('span', 'cp-olName', optionLabel(o.name, ctx.lang)));
-      chip.appendChild(el('span', 'cp-olVal', pctExact(raw)));
-      chip.title = `${optionLabel(o.name, ctx.lang)} Lv.${o.level}`;
-      chips.appendChild(chip);
+    for (let i = 0; i < 3; i++) {
+      const o = g.options[i];
+      const cell = el('div', 'cp-olCell' + (o ? olLevelCls(o.level) : ' is-empty'));
+      cell.style.gridColumn = col + 1;
+      cell.style.gridRow = i + 2;
+      if (o) {
+        const raw = T.optionValue.get(`${o.name}|${o.level}`) || 0;
+        cell.append(el('span', 'cp-olName', `[${optionLabel(o.name, ctx.lang)}]`),
+          el('span', 'cp-olVal', pctExact(raw)));
+        cell.title = `${optionFullLabel(o.name, ctx.lang)} Lv.${o.level}`;
+      } else {
+        cell.textContent = t('cp.olNoEffect');
+      }
+      grid.appendChild(cell);
     }
-    line.appendChild(chips);
-    box.appendChild(line);
-  }
+  });
+  box.appendChild(grid);
   return box;
+}
+
+/* 부위별 칸이 한 줄에 들어가는지는 언어와 화면 폭이 가른다 — 한국어 약어는 두
+   글자라 '[공증] 9.70%' 가 그대로 들어가지만 'Crit.Rate' 는 못 들어간다.
+   이름이 잘리는 칸이 하나라도 있으면 표를 통째로 두 줄(이름 위·수치 아래)로
+   바꾼다. 칸마다 줄 수가 다른 게 제일 지저분하고, 잘라서 '[AT…' 로 보여 주면
+   ATK 인지 Ammo 인지 구분이 안 된다. 폭이 되는 쪽은 그대로 한 줄로 둔다.
+
+   글자를 실제로 그려 봐야 아는 값이라 붙인 뒤에 재고, 폰트가 늦게 오면 한 번 더
+   잰다 (처음 재는 순간에는 대체 폰트라 폭이 다르다). */
+function fitOlGrid(root) {
+  for (const grid of root.querySelectorAll('.cp-olGrid')) {
+    grid.classList.remove('is-stacked');
+    const tight = [...grid.querySelectorAll('.cp-olName')]
+      .some(n => n.scrollWidth > n.clientWidth + 1);
+    grid.classList.toggle('is-stacked', tight);
+  }
+}
+
+/* ── 눌러서 여는 상자 ─────────────────────────────────────────
+   상세 카드에서 두 군데가 쓴다 — 전투력 숫자의 계산식, 그리고 옵션 시뮬레이션의
+   부위 고르기. 둘 다 상시로 펼쳐 둘 내용이 아니라 눌렀을 때만 뜬다.
+
+   상자를 카드 안에 넣으면 .cp-detail 의 overflow:hidden 에 잘리므로 body 에 붙이고
+   좌표만 눌린 자리에서 받는다. 그래서 화면이 움직이면(스크롤·리사이즈) 자리가
+   어긋나니 그때는 닫는다. 한 번에 하나만 열린다. */
+let tipState = null;
+
+function closeTip() {
+  if (!tipState) return;
+  tipState.node.remove();
+  tipState.anchor.setAttribute('aria-expanded', 'false');
+  removeEventListener('keydown', tipState.onKey, true);
+  removeEventListener('pointerdown', tipState.onOut, true);
+  removeEventListener('resize', closeTip);
+  removeEventListener('scroll', closeTip, true);
+  tipState = null;
+}
+
+function openTip(anchor, title, body) {
+  const same = tipState && tipState.anchor === anchor;
+  closeTip();
+  if (same) return;                       // 같은 숫자를 다시 누르면 닫힌다
+
+  const node = el('div', 'cp-tip');
+  node.setAttribute('role', 'dialog');
+  const head = el('div', 'cp-tipHead');
+  head.appendChild(el('span', 'cp-tipTitle', title));
+  const x = el('button', 'cp-tipX', '×');
+  x.type = 'button';
+  x.setAttribute('aria-label', t('cp.close'));
+  x.onclick = closeTip;
+  head.appendChild(x);
+  node.append(head, body);
+  document.body.appendChild(node);
+
+  /* 눌린 숫자 바로 아래에 왼쪽을 맞춰 놓고, 화면 밖으로 나가면 안쪽으로 당긴다.
+     아래가 모자라면 위로 뒤집는다 — 목록이 긴 화면에서는 카드가 아래쪽에 있다. */
+  const a = anchor.getBoundingClientRect();
+  const b = node.getBoundingClientRect();
+  const x0 = Math.max(8, Math.min(a.left, innerWidth - b.width - 8));
+  const below = a.bottom + 8;
+  const y0 = below + b.height > innerHeight - 8 && a.top - b.height - 8 > 8
+    ? a.top - b.height - 8 : Math.min(below, Math.max(8, innerHeight - b.height - 8));
+  node.style.left = x0 + 'px';
+  node.style.top = y0 + 'px';
+
+  anchor.setAttribute('aria-expanded', 'true');
+  const onKey = e => { if (e.key === 'Escape') { e.stopPropagation(); closeTip(); anchor.focus(); } };
+  const onOut = e => { if (!node.contains(e.target) && e.target !== anchor) closeTip(); };
+  tipState = { node, anchor, onKey, onOut };
+  addEventListener('keydown', onKey, true);
+  addEventListener('pointerdown', onOut, true);
+  addEventListener('resize', closeTip);
+  addEventListener('scroll', closeTip, true);
+}
+
+/* 툴팁 속 내용 — 스탯 3종 + 계산 분해. 레벨마다 값이 다르므로 그 레벨의
+   계산 결과(compute 반환값)를 그대로 받아 만든다. */
+function cpBreakdown(r) {
+  const box = el('div', 'cp-tipBody');
+
+  const stats = el('div', 'cp-stats');
+  for (const [k, lab] of [['hp', 'HP'], ['atk', t('cp.atk')], ['def', t('cp.def')]]) {
+    const c = el('div', 'cp-stat');
+    c.appendChild(el('span', 'cp-statLbl', lab));
+    c.appendChild(el('span', 'cp-statNum', fmt(r.stats[k])));
+    stats.appendChild(c);
+  }
+  box.appendChild(stats);
+
+  const tb = el('table', 'grid cp-break');
+  const body = el('tbody');
+  const rows = [
+    [t('cp.b1'), fmt(r.parts.hp)],
+    [t('cp.b2'), fmt(r.parts.atk)],
+    [t('cp.b3'), fmt(r.parts.def)],
+    [t('cp.b4'), r.c4.toFixed(4)],
+    [t('cp.b5'), r.c5.toFixed(4)],
+    [t('cp.b6'), fmt(r.cp)],
+  ];
+  rows.forEach(([k, v], i) => {
+    const tr = el('tr', i === rows.length - 1 ? 'cp-total' : null);
+    tr.appendChild(el('td', null, k));
+    tr.appendChild(el('td', 'num', v));
+    body.appendChild(tr);
+  });
+  tb.appendChild(body);
+  box.appendChild(scrollBox(tb));
+  box.appendChild(el('p', 'cp-note', t('cp.breakHint', r.skillCoef.toFixed(2), r.elemDmg, r.other)));
+  return box;
+}
+
+/* ── 키운 상태 배지 ──────────────────────────────────────────
+   돌파·소장품·호감도·큐브는 전투력을 크게 가르는데도 입력 팝업을 열어야만
+   보였다. 등급·기업·속성처럼 고정된 축을 찍는 아이콘 줄에 구분선을 긋고 이어
+   붙인다 — 왼쪽은 '이 니케가 무엇인가', 오른쪽은 '얼마나 키웠나'다.
+
+   도형은 목록 표와 같은 것(roster.js)을 쓴다. 다만 목록에는 열 머리글이 있어
+   배지만 봐도 뜻이 서지만 여기는 그게 없으므로, hover 에 항목 이름을 앞에 붙인다.
+   레벨과 스킬은 넣지 않는다 — 레벨은 바로 아래 전투력 칸의 머리말이고,
+   스킬은 전투력 툴팁의 스킬계수에 그대로 나온다. */
+function growthBadges(n) {
+  const out = [];
+  const named = (node, label) => {
+    if (!node) return;
+    node.title = `${label} — ${node.title}`;
+    out.push(node);
+  };
+  named(gradeBadge(n.grade, t), t('cp.grade'));
+
+  const c = n.collection || { kind: 'none' };
+  const coll = collBadge(c, t);
+  // 미착용은 감추지 않고 회색 자리로 남긴다 — 없는 것과 안 보여 준 것은 다르다
+  named(coll || badge('is-round is-none', '–', t('cp.none')), t('cp.collection'));
+
+  named(bondBadge(n.bond, t), t('cp.bond'));
+
+  const cube = cubeBadge({ tid: n.cubeTid, level: n.cube === '미착용' ? 0 : n.cube },
+    cubeInfo(n.cubeTid), ctx.iconEl);
+  if (cube) {
+    named(cube, t('cp.cube'));
+  } else {
+    const off = el('span', 'cp-cubeBadge is-off', '–');
+    off.title = `${t('cp.cube')} — ${t('cp.none')}`;
+    out.push(off);
+  }
+  return out;
 }
 
 /* ── 상세정보 카드 ────────────────────────────────────────────
@@ -451,6 +770,10 @@ function renderDetail(root, n, r) {
   if (n.defWeapon !== n.weapon) {
     tags.appendChild(el('span', 'cp-tag cp-tag-warn', t('cp.defOverride', n.defWeapon)));
   }
+  /* 고정된 축과 키운 상태 사이에 선 하나. 둘 다 아이콘이라 선이 없으면 어디까지가
+     '이 니케의 성질' 이고 어디부터가 '내가 키운 것' 인지 갈리지 않는다. */
+  tags.appendChild(el('span', 'cp-tagSep'));
+  for (const b of growthBadges(n)) tags.appendChild(b);
   who.appendChild(tags);
   head.appendChild(who);
 
@@ -463,20 +786,29 @@ function renderDetail(root, n, r) {
   card.appendChild(head);
 
   /* 1행 — 최종 전투력 3종 (현재 레벨 / Lv.40 / Lv.400).
-     머리말 없이 숫자 셋만. 셋 다 같은 크기로 두고 현재 레벨만 색으로 구분한다. */
+     머리말 없이 숫자 셋만. 셋 다 같은 크기로 두고 현재 레벨만 색으로 구분한다.
+     숫자는 누를 수 있고, 누르면 그 레벨의 계산식과 스탯이 툴팁으로 열린다. */
   const row1 = el('div', 'cp-detailRow');
   const cps = el('div', 'cp-cpRow');
-  const cell = (label, value, big) => {
+  const cell = (label, res, big) => {
     const c = el('div', 'cp-cpCell' + (big ? ' is-now' : ''));
     c.appendChild(el('span', 'cp-cpLbl', label));
-    c.appendChild(el('span', 'cp-cpNum', value));
+    const btn = el('button', 'cp-cpNum', fmt(res ? res.cp : null));
+    btn.type = 'button';
+    if (res) {
+      btn.title = t('cp.cpTipHint');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.onclick = () => openTip(btn, `${label} · ${t('cp.cp')}`, cpBreakdown(res));
+    } else {
+      btn.disabled = true;
+    }
+    c.appendChild(btn);
     return c;
   };
-  cps.appendChild(cell(t('cp.lv', r.level), fmt(r.cp), true));
+  cps.appendChild(cell(t('cp.lv', r.level), r, true));
   for (const lv of ADJ_LEVELS) {
     if (lv === r.level) continue;      // 현재 레벨이 40·400 이면 같은 값이 두 번 나온다
-    const a = compute(T, n, lv);
-    cps.appendChild(cell(t('cp.lv', lv), fmt(a ? a.cp : null)));
+    cps.appendChild(cell(t('cp.lv', lv), compute(T, n, lv)));
   }
   row1.appendChild(cps);
   card.appendChild(row1);
@@ -539,42 +871,9 @@ function renderResult(root) {
     return out;
   }
 
+  /* 스탯 3종과 계산 분해는 여기 카드로 있었지만, 늘 보고 있을 값이 아니라
+     전투력 숫자를 눌렀을 때 뜨는 툴팁으로 옮겼다 (cpBreakdown). */
   out.appendChild(renderDetail(root, n, r));
-
-  // 스탯 3종 — 카드 하나 안에 세 칸 (라벨 위 / 숫자 아래)
-  const stats = el('div', 'card cp-stats');
-  for (const [k, lab] of [['hp', 'HP'], ['atk', t('cp.atk')], ['def', t('cp.def')]]) {
-    const c = el('div', 'cp-stat');
-    c.appendChild(el('span', 'cp-statLbl', lab));
-    c.appendChild(el('span', 'cp-statNum', fmt(r.stats[k])));
-    stats.appendChild(c);
-  }
-  out.appendChild(stats);
-
-  // 분해
-  const br = el('div', 'card cp-card-break');
-  br.appendChild(el('h3', null, t('cp.breakdown')));
-  const tb = el('table', 'grid cp-break');
-  const body = el('tbody');
-  const rows = [
-    [t('cp.b1'), fmt(r.parts.hp)],
-    [t('cp.b2'), fmt(r.parts.atk)],
-    [t('cp.b3'), fmt(r.parts.def)],
-    [t('cp.b4'), r.c4.toFixed(4)],
-    [t('cp.b5'), r.c5.toFixed(4)],
-    [t('cp.b6'), fmt(r.cp)],
-  ];
-  rows.forEach(([k, v], i) => {
-    const tr = el('tr', i === rows.length - 1 ? 'cp-total' : null);
-    tr.appendChild(el('td', null, k));
-    tr.appendChild(el('td', 'num', v));
-    body.appendChild(tr);
-  });
-  tb.appendChild(body);
-  br.appendChild(scrollBox(tb));
-  br.appendChild(el('p', 'cp-note', t('cp.breakHint', r.skillCoef.toFixed(2), r.elemDmg, r.other)));
-  out.appendChild(br);
-
   return out;
 }
 
@@ -600,7 +899,7 @@ function importPanel(root) {
       research: () => research,
       setResearch: (kind, code, v) => { setResearch(kind, code, v); save(); paint(root); },
       applyResearch: fresh => { applyResearch(fresh); save(); },
-      onPick: picked => { input = picked; save(); paint(root); },
+      onPick: picked => { input = adopt(picked); save(); paint(root); },
     });
   }
   return importEl;
@@ -609,6 +908,9 @@ function importPanel(root) {
 /* 왼쪽에 계정 카드 -> 니케 목록 -> 입력 폼을 쌓고, 오른쪽은 고른 니케의 결과만.
    목록이 열 열세 개라 왼쪽을 넓게 잡는다 (비율은 style.css). */
 function paint(root) {
+  /* 툴팁은 body 에 붙어 있어 root 를 비워도 남는다. 가리키던 버튼이 사라지므로
+     여기서 같이 닫는다 (모달을 열거나 다른 니케를 고를 때). */
+  closeTip();
   root.textContent = '';
   const wrap = el('div', 'cp-wrap');
   const left = el('div', 'cp-left');
@@ -617,7 +919,19 @@ function paint(root) {
   wrap.appendChild(renderResult(root));
   root.appendChild(wrap);
   if (modalOpen) root.appendChild(renderModal(root));
+
+  fitOlGrid(root);
+  // 폰트가 늦게 오면 글자 폭이 달라진다 — 오고 나서 한 번 더 잰다
+  if (document.fonts?.ready) document.fonts.ready.then(() => fitOlGrid(root));
+  /* 칸 폭은 창 크기를 따라가므로 (한 단 배치로 접히면 카드가 넓어진다) 다시 잰다.
+     탭을 다시 그려도 붙는 건 한 번뿐이라 mounted 를 보고 최신 root 로 잰다. */
+  mounted = root;
+  if (!fitBound) {
+    fitBound = true;
+    addEventListener('resize', () => { if (mounted) fitOlGrid(mounted); });
+  }
 }
+let mounted = null, fitBound = false;
 
 /* 불러온 계정의 리사이클 룸 연구 레벨을, 지금 고른 니케의 클래스·기업에 맞춰
    콘솔 입력에 얹는다. 니케를 바꿀 때마다 해당하는 연구 줄이 달라진다. */

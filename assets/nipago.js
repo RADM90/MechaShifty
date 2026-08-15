@@ -139,6 +139,32 @@ function normalize(v) {
   };
 }
 
+/* ── 밖에서 슬롯 채우기 ───────────────────────────────────────
+   계산기 탭이 보고 있던 니케의 오버로드 장비 한 부위를 그대로 넘겨 준다.
+   목표(goals)와 누적 소모(totalMod·totalKey)는 이 부위만의 값이 아니라 계속
+   쌓아 가는 값이라 그대로 두고, 슬롯과 잠금 이력만 갈아 끼운다 — 이력은 슬롯
+   번호를 가리키고 있어서 슬롯을 바꾸면 되돌리기가 어긋난다.
+
+   탭을 한 번도 안 열었으면 D(옵션 표)도 S 도 없다. 그때는 저장값만 고쳐 두면
+   탭을 열 때 load() 가 집어 가고, 값 검증은 그쪽 normalize 가 맡는다. */
+export function seedSlots(options) {
+  const slots = [0, 1, 2].map(i => {
+    const o = (options || [])[i];
+    return o && o.name ? { opt: o.name, lv: o.level || 1, lock: 'none' }
+      : { opt: '', lv: 11, lock: 'none' };
+  });
+  if (S) {
+    S = { ...S, slots, history: [] };
+    save();
+    if (mounted) { ui = { slot: -1, lock: -1, pending: null }; paint(mounted); }
+    return;
+  }
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(STORE)); } catch { /* 깨졌으면 기본값 */ }
+  localStorage.setItem(STORE,
+    JSON.stringify({ ...defaults(), ...(saved || {}), slots, history: [] }));
+}
+
 /* ── 확률 엔진 (원본 명세 그대로) ─────────────────────────────
    제외된 옵션의 확률은 남은 옵션들에 비율대로 재분배되고,
    거기에 슬롯 등장확률을 곱한 값이 그 슬롯의 최종 확률이다.        */

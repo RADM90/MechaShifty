@@ -75,6 +75,64 @@ function kfmt(v) {
   return (k < 100 ? k.toFixed(1) : String(Math.round(k))) + 'k';
 }
 
+/* ── 한 칸짜리 배지 ────────────────────────────────────────────
+   모양·색으로 종류를, 가운데 숫자로 단계를 나타낸다. 색만으로 뜻을 나르지
+   않도록 hover 에 원래 표기(3돌·5코강·SR15…)를 그대로 붙인다.
+
+   목록의 표 칸과 계산기 상세 카드가 같은 배지를 쓴다 — 같은 값을 두 화면에서
+   다르게 그리면 눈이 두 번 적응해야 한다. 그래서 도형을 만드는 쪽만 여기 모듈
+   높이로 올려 내보내고, <td> 로 감싸는 건 목록 쪽(renderImport)에 남긴다.
+   이 모듈은 i18n 표를 모르므로 t 를 받아 쓴다. */
+export function badge(cls, text, title) {
+  const b = el('span', 'cp-badge ' + cls);
+  // 두 자리(소장품 15 · 호감도 20…)는 도형 폭을 넘겨서 한 단계 작게 쓴다
+  b.appendChild(el('b', text.length > 1 ? 'is-2' : null, text));
+  b.title = title;
+  return b;
+}
+
+/* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 최대 돌파 이후 단계라
+   attraction_grade 의 코강 줄은 전부 돌파가 꽉 차 있다) → 배지 하나로 충분하다.
+     회색 별 0 · 금색 별 1~3 · 보라 별 코강 1~7                              */
+export function gradeBadge(grade, t) {
+  const core = /^([1-7])코강$/.exec(grade);
+  const brk = /^([0-3])돌$/.exec(grade);
+  const label = gradeLabel(grade, t);        // 데이터 키('3돌')를 화면 언어로
+  if (core) return badge('is-star is-core', core[1], label);
+  if (brk) return badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], label);
+  return null;                               // 모르는 표기 — 부르는 쪽이 글자로 쓴다
+}
+
+/* 소장품. R 파랑 · SR 보라 · 애장품 주황. 애장품은 레벨이 '2.0' 꼴이라 정수만. */
+const COLL_CLS = { R: 'is-r', SR: 'is-sr', 애장품: 'is-fav' };
+export function collBadge(c, t) {
+  if (!c || c.kind === 'none') return null;
+  const lv = parseInt(c.level, 10) || 0;
+  const title = c.kind === '애장품'
+    ? `${t('cp.favorite')} ${lv}${t('im.step')}` : `${c.kind}${lv}`;
+  return badge('is-round ' + COLL_CLS[c.kind], String(lv), title);
+}
+
+/* 호감도는 종류가 없으니 빨간 하트 하나에 단계만. */
+export const bondBadge = (bond, t) =>
+  badge('is-heart is-bond', String(bond), t('cp.bond') + ' ' + bond);
+
+/* 하모니 큐브 — 아이콘 + 레벨. 종류 이름과 효과는 hover 로 넘긴다 (글자로 쓰면
+   이 한 칸이 표를 밀어낸다). 전투력에는 레벨만 들어가서 종류는 표시 전용이다.
+   cubes.json 은 이 모듈이 안 들고 있으므로 풀어 놓은 정보와 아이콘 만드는 함수를
+   화면 쪽에서 받는다. */
+export function cubeBadge(cube, info, iconEl) {
+  if (!cube || !cube.level) return null;
+  const box = el('span', 'cp-cubeBadge');
+  const ic = cube.tid && iconEl('cube', cube.tid);
+  if (ic) box.appendChild(ic);
+  else if (info) box.appendChild(el('span', 'cp-cubeName', info.short));
+  box.appendChild(el('span', 'cp-cubeLv', String(cube.level)));
+  box.title = info ? `${info.short} · ${info.name} — ${info.effect}`
+    : (cube.tid ? '#' + cube.tid : '');
+  return box;
+}
+
 /* ── 검증 ─────────────────────────────────────────────────────
    바깥에서 들어온 JSON 이라 형태를 믿지 않는다. 모르는 값은 버리고 기본값으로
    메운다. 여기서 통과한 것만 계산기 입력으로 쓴다. */
@@ -170,6 +228,9 @@ export function toInput(entry, nikke, research, bondMax) {
     bond: Math.min(entry.bond, bondMax || entry.bond),
     skills: { ...entry.skills },
     cube: entry.cube.level ? String(entry.cube.level) : '미착용',
+    /* 큐브 종류는 전투력에 안 들어가지만(계수는 레벨만 본다) 상세 카드가 이름을
+       보여줘야 해서 같이 넘긴다. 없으면 레벨만 나온다. */
+    cubeTid: entry.cube.level ? entry.cube.tid : null,
     collection: { ...entry.collection },
     console: {
       공용: research.common || 0,
@@ -558,49 +619,16 @@ export function renderImport(root, ctx) {
     return box;
   }
 
-  /* ── 한 칸짜리 배지 ──────────────────────────────────────────
-     모양·색으로 종류를, 가운데 숫자로 단계를 나타낸다. 색만으로 뜻을 나르지
-     않도록 hover 에 원래 표기(3돌·5코강·SR15…)를 그대로 붙인다. */
-  function badge(cls, text, title) {
-    const b = el('span', 'cp-badge ' + cls);
-    // 두 자리(소장품 15 · 호감도 20…)는 도형 폭을 넘겨서 한 단계 작게 쓴다
-    b.appendChild(el('b', text.length > 1 ? 'is-2' : null, text));
-    b.title = title;
-    return b;
-  }
-
-  /* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 3돌 이후 단계라
-     attraction_grade 의 코강 줄은 전부 돌파 3이다) → 배지 하나로 충분하다.
-       회색 별 0 · 금색 별 1~3 · 보라 별 코강 1~7                            */
-  function gradeCell(grade) {
+  /* 배지 자체는 모듈 위쪽에 있다 (계산기 상세 카드와 같은 도형을 쓴다).
+     여기서는 표 칸으로만 감싸고, 값이 없는 칸은 '–' 로 비운다. */
+  const badgeCell = node => {
     const td = el('td', 'cp-rBadge');
-    const core = /^([1-7])코강$/.exec(grade);
-    const brk = /^([0-3])돌$/.exec(grade);
-    const label = gradeLabel(grade, t);      // 데이터 키('3돌')를 화면 언어로
-    if (core) td.appendChild(badge('is-star is-core', core[1], label));
-    else if (brk) td.appendChild(badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], label));
-    else td.textContent = grade;
+    if (node) td.appendChild(node); else td.textContent = '–';
     return td;
-  }
-
-  /* 소장품. R 파랑 · SR 보라 · 애장품 주황. 애장품은 레벨이 '2.0' 꼴이라 정수만. */
-  const COLL_CLS = { R: 'is-r', SR: 'is-sr', 애장품: 'is-fav' };
-  function collCell(c) {
-    const td = el('td', 'cp-rBadge');
-    if (!c || c.kind === 'none') { td.textContent = '–'; return td; }
-    const lv = parseInt(c.level, 10) || 0;
-    const title = c.kind === '애장품'
-      ? `${t('cp.favorite')} ${lv}${t('im.step')}` : `${c.kind}${lv}`;
-    td.appendChild(badge('is-round ' + COLL_CLS[c.kind], String(lv), title));
-    return td;
-  }
-
-  /* 호감도는 종류가 없으니 빨간 하트 하나에 단계만. */
-  function bondCell(bond) {
-    const td = el('td', 'cp-rBadge');
-    td.appendChild(badge('is-heart is-bond', String(bond), t('cp.bond') + ' ' + bond));
-    return td;
-  }
+  };
+  const gradeCell = grade => badgeCell(gradeBadge(grade, t) || el('span', null, grade));
+  const collCell = c => badgeCell(collBadge(c, t));
+  const bondCell = bond => badgeCell(bondBadge(bond, t));
 
   /* 우공합 — 오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력).
      이 둘이 실전 화력을 가르는 옵션이라 목록에서 한 숫자로 보고 싶다. 종합값은
@@ -624,19 +652,14 @@ export function renderImport(root, ctx) {
     return td;
   };
 
-  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨. 종류 이름과 효과는
-     data/cubes.json 에서 가져와 hover 로 넘긴다 — 이름을 글자로 쓰면 이 열 하나가
-     표 전체를 밀어낸다. 전투력에는 레벨만 들어가서 종류는 표시 전용이다. */
+  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨 — 도형은 모듈 위쪽의
+     cubeBadge 가 만든다 (계산기 상세 카드와 같은 모양). */
   function cubeCell(cube) {
-    const info = cubeInfo(cube.tid);
-    if (!cube.level) return el('td', 'cp-rCube', '–');
+    const box = cubeBadge(cube, cubeInfo(cube.tid), ctx.iconEl);
     const td = el('td', 'cp-rCube');
-    const ic = cube.tid && ctx.iconEl('cube', cube.tid);
-    if (ic) td.appendChild(ic);
-    else if (info) td.appendChild(el('span', 'cp-cubeName', info.short));
-    td.appendChild(el('span', 'cp-cubeLv', String(cube.level)));
-    td.title = info ? `${info.short} · ${info.name} — ${info.effect}`
-      : (cube.tid ? '#' + cube.tid : '');
+    if (!box) { td.textContent = '–'; return td; }
+    td.appendChild(box);
+    td.title = box.title;
     return td;
   }
 
