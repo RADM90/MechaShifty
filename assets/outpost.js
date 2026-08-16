@@ -430,12 +430,19 @@ function renderTower() {
   g.appendChild(head);
   g.appendChild(el('p', 'op-note', t('op.towerHint', TOWER_FLOORS)));
 
+  const towerName = tw => (tw.label ? t(tw.label) : ctx.L('corporation', tw.key));
+  const towerTitle = tw => `${towerName(tw)} — `
+    + t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'));
+
+  /* 표 하나에 층수와 몰드까지 넣었더니 네 열이 카드를 넘쳤다. 게다가 몰드 쪽은
+     타워마다 다른 값이 아니다 — 주 개방 횟수와 퍼펙트 간격만 따지므로 3사가 전부
+     같은 줄이었다. 그래서 '타워별로 다른 것'(층수)과 '무리별로 같은 것'(몰드)을
+     두 표로 가른다. */
   const tbl = el('table', 'grid op-towerTbl');
   const thead = el('thead'), hr = el('tr');
-  for (const [key, cls] of [['op.towerCol', ''], ['op.towerFloor', 'num'],
-    ['op.towerMold', 'num'], ['op.towerPerfect', 'num']]) {
-    hr.appendChild(el('th', cls, t(key)));
-  }
+  hr.appendChild(el('th', null, t('op.towerCol')));
+  hr.appendChild(el('th', 'num', t('op.towerFloor')));
+  hr.appendChild(el('th', 'num', t('op.towerHaveCol')));
   thead.appendChild(hr);
   tbl.appendChild(thead);
 
@@ -443,23 +450,71 @@ function renderTower() {
   for (const tw of TOWERS) {
     const opens = tw.days.reduce((a, d) => a + weekdayCount(from, today, d), 0);
     const floors = opens * TOWER_FLOORS;
-    const mold = moldRun(floorsForMolds(MOLD_UNIT), tw.days.length);
-    const perfect = moldRun(tw.perfectStep * (MOLD_UNIT / PERFECT_PER), tw.days.length);
-    const name = tw.label ? t(tw.label) : ctx.L('corporation', tw.key);
 
     const tr = el('tr');
     const nameTd = el('td', 'op-towerName');
     const ic = ctx.iconEl && ctx.iconEl('corporation', tw.key);
     if (ic) nameTd.appendChild(ic);
-    nameTd.appendChild(el('span', null, name));
-    nameTd.title = `${name} — ${t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'))}`;
+    nameTd.appendChild(el('span', null, towerName(tw)));
+    nameTd.title = towerTitle(tw);
     tr.appendChild(nameTd);
 
     const fl = el('td', 'num', t('op.floorN', floors));
-    // 지금까지 쌓인 몰드 개수는 상시로 보여줄 만큼 중요하진 않아 hover 로
-    fl.title = t('op.towerHave', opens, moldsAt(floors), perfectAt(floors, tw.perfectStep));
+    fl.title = t('op.towerOpens', opens);
     tr.appendChild(fl);
 
+    // 지금까지 쌓였을 몰드 — 기업 / 퍼펙트 순. 가운뎃점이 없으면 두 수가 붙어 읽힌다
+    const have = el('td', 'num');
+    have.appendChild(el('span', 'op-runs', int(moldsAt(floors))));
+    have.appendChild(el('span', 'op-weeks', '· ' + int(perfectAt(floors, tw.perfectStep))));
+    have.title = t('op.towerHave', opens, moldsAt(floors), perfectAt(floors, tw.perfectStep));
+    tr.appendChild(have);
+
+    tb.appendChild(tr);
+  }
+  tbl.appendChild(tb);
+  g.appendChild(scrollBox(tbl));
+
+  g.appendChild(moldTable(towerName, towerTitle));
+  g.appendChild(el('p', 'op-note op-towerFoot',
+    t('op.towerMoldNote', MOLD_BONUS_STEP, MOLD_BONUS, PERFECT_PER, MOLD_UNIT)));
+  return g;
+}
+
+/* 모집 한 번(50개)을 채우는 데 드는 등반 회차와 주 수. 값을 가르는 건 타워 이름이
+   아니라 '주 몇 번 열리나 + 퍼펙트 간격' 뿐이라, 같은 값을 갖는 타워끼리 한 줄로
+   묶는다 (지금은 3사 / 필그림·오버스펙 두 줄). 줄 이름이 길어져 표를 밀지 않도록
+   묶인 줄은 개수로 적고 이름은 hover 로 넘긴다. */
+function moldTable(towerName, towerTitle) {
+  const box = el('div', 'op-moldBox');
+  box.appendChild(el('h4', 'op-subhead', t('op.towerMoldTbl')));
+
+  const groups = new Map();
+  for (const tw of TOWERS) {
+    const key = `${tw.days.length}|${tw.perfectStep}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(tw);
+  }
+
+  const tbl = el('table', 'grid op-towerTbl');
+  const thead = el('thead'), hr = el('tr');
+  hr.appendChild(el('th', null, t('op.towerGroupCol')));
+  hr.appendChild(el('th', 'num', t('op.towerMold')));
+  hr.appendChild(el('th', 'num', t('op.towerPerfect')));
+  thead.appendChild(hr);
+  tbl.appendChild(thead);
+
+  const tb = el('tbody');
+  for (const list of groups.values()) {
+    const tw = list[0];
+    const tr = el('tr');
+    const nameTd = el('td', 'op-towerName');
+    nameTd.textContent = list.length > 1 ? t('op.towerGroupN', list.length) : towerName(tw);
+    nameTd.title = list.map(towerTitle).join('\n');
+    tr.appendChild(nameTd);
+
+    const mold = moldRun(floorsForMolds(MOLD_UNIT), tw.days.length);
+    const perfect = moldRun(tw.perfectStep * (MOLD_UNIT / PERFECT_PER), tw.days.length);
     for (const m of [mold, perfect]) {
       const td = el('td', 'num');
       td.appendChild(el('span', 'op-runs', t('op.runN', m.runs)));
@@ -471,10 +526,8 @@ function renderTower() {
     tb.appendChild(tr);
   }
   tbl.appendChild(tb);
-  g.appendChild(tbl);
-  g.appendChild(el('p', 'op-note op-towerFoot',
-    t('op.towerMoldNote', MOLD_BONUS_STEP, MOLD_BONUS, PERFECT_PER, MOLD_UNIT)));
-  return g;
+  box.appendChild(scrollBox(tbl));
+  return box;
 }
 
 /* ── 결과 ─────────────────────────────────────────────────── */

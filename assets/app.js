@@ -200,7 +200,9 @@ const STR = {
     'Imported data is stored in this browser only — nothing is sent to a server.',
     '読み込んだデータはこのブラウザにのみ保存され、サーバーには送信されません。',
   ],
-  'im.synchro': ['싱크로 레벨', 'Synchro level', 'シンクロレベル'],
+  /* 지휘관 줄은 한 줄에 싱크로 + 콘솔 넉 칸이 들어가야 한다. '레벨' 을 붙이면
+     좁은 화면에서 줄이 넘어간다 — 옆이 전부 레벨 숫자라 붙일 이유도 없다. */
+  'im.synchro': ['싱크로', 'Synchro', 'シンクロ'],
   'im.collected': ['수집 시각', 'Collected', '収集日時'],
   'im.colBasic': ['기본', 'Basics', '基本'],
   'im.colSkills': ['스킬', 'Skills', 'スキル'],
@@ -301,6 +303,12 @@ const STR = {
   'op.towerFloor': ['최대 층', 'Max floor', '最大階'],
   'op.towerMold': ['몰드 50', 'Mold 50', 'モールド50'],
   'op.towerPerfect': ['퍼펙트 50', 'Perfect 50', 'パーフェクト50'],
+  /* 타워 표 = 타워별로 다른 값(층수·쌓인 몰드), 몰드 표 = 무리별로 같은 값(회차·주) */
+  'op.towerHaveCol': ['쌓인 몰드', 'Molds so far', '累計モールド'],
+  'op.towerOpens': [o => `지금까지 ${o}회 열림`, o => `${o} openings so far`, o => `これまで${o}回開放`],
+  'op.towerMoldTbl': ['모집 한 번(50개)까지', 'To one recruit (50)', '募集1回（50個）まで'],
+  'op.towerGroupCol': ['타워 무리', 'Towers', 'タワー'],
+  'op.towerGroupN': [n => `기업 ${n}사`, n => `${n} corps`, n => `企業${n}社`],
   'op.floorN': [n => `${n.toLocaleString()}층`, n => `F${n.toLocaleString()}`, n => `${n.toLocaleString()}階`],
   'op.runN': [n => `${n}회`, n => `${n} runs`, n => `${n}回`],
   'op.weekN': [n => `${n}주`, n => `${n} wk`, n => `${n}週`],
@@ -319,9 +327,9 @@ const STR = {
     (u, f) => `${u}個まで${f}階`,
   ],
   'op.towerMoldNote': [
-    (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 오른쪽 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다.`,
-    (s, b, p, u) => `Corp molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the last two columns are the runs and weeks to get there.`,
-    (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 — 右の2列はそこまでの登攀回数と週数です。`,
+    (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 아래 표의 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다 — 값을 가르는 건 타워 이름이 아니라 주 개방 횟수와 퍼펙트 간격뿐이라 3사는 한 줄로 묶었습니다.`,
+    (s, b, p, u) => `Corp molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the second table gives the runs and weeks to get there. Only the weekly openings and the perfect interval change the numbers, so the big three share one row.`,
+    (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 — 下の表は そこまでの登攀回数と週数です。値を分けるのは週の開放回数とパーフェクト間隔だけなので、3社は1行にまとめています。`,
   ],
   'op.fromAccount': [
     '불러온 계정 자료에서 채웠습니다.',

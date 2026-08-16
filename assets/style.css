@@ -386,7 +386,12 @@ td.name { font-weight: 600; white-space: normal; min-width: 225px; }
 .tl-row.is-on { border-color: var(--st-good); }
 
 /* ── 통계 ───────────────────────────────────────────────────── */
-.cards { display: grid; gap: 17.5px; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); }
+/* min() 없이 minmax(400px, …) 만 쓰면 폭이 400px 아래인 화면에서 칸이 줄지 않아
+   카드가 창 밖으로 나가고 페이지에 가로 스크롤이 생긴다. 좁으면 폭을 따라간다. */
+.cards {
+  display: grid; gap: 17.5px;
+  grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
+}
 .card {
   background: var(--bg-panel); border: 1px solid var(--line);
   border-radius: var(--r); padding: 17.5px; box-shadow: var(--shadow);
@@ -919,12 +924,21 @@ table.cp-marginTbl tbody tr { cursor: default; }
 .op-createdSub { color: var(--ink-muted); font-size: 14px; }
 table.op-towerTbl { font-size: 14.5px; margin-top: 2.5px; }
 table.op-towerTbl th, table.op-towerTbl td { padding: 4px 5px; line-height: 1.3; }
-table.op-towerTbl thead th { cursor: default; font-size: 13px; white-space: nowrap; }
+table.op-towerTbl thead th { cursor: default; font-size: 13px; }
 table.op-towerTbl tbody tr { cursor: default; }
-.op-towerName { white-space: nowrap; }
+/* 이 표만 줄바꿈을 허용한다 (table.grid 는 기본이 nowrap). 언어마다 이름이
+   크게 달라서 — '필그림 / 오버스펙' 이 EN·JA 에서는 두 배가 된다 — 한 줄로
+   묶어 두면 세 열이 왼쪽 단(425px)이나 휴대폰 폭을 넘긴다. 넘치느니 접는다. */
+table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal; }
 .op-towerName .ic { height: 16.5px; margin-right: 5px; vertical-align: -2.5px; }
 .op-runs { font-variant-numeric: tabular-nums; font-weight: 600; }
 .op-weeks { margin-left: 5px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+/* 몰드 표는 층수 표와 세는 단위가 달라(타워별 -> 무리별) 작은 머리말로 끊어 준다 */
+.op-moldBox { margin-top: 12.5px; }
+.op-subhead {
+  margin: 0 0 2.5px; font-size: 13px; font-weight: 700; letter-spacing: .03em;
+  color: var(--ink-muted);
+}
 .op-towerFoot { margin: 10px 0 0; font-size: 14px; }
 .op-mode { padding: 10px 0; border-top: 1px solid var(--line); }
 .op-modeLbl { font-size: 15px; font-weight: 700; color: var(--ink-2); margin-bottom: 7.5px; }
@@ -1327,6 +1341,48 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
 }
 
 /* ── 반응형 ─────────────────────────────────────────────────── */
+/* 손에 쥐는 화면(700px 아래)에서는 상단바가 세로 공간을 너무 먹는다. 제목·언어
+   단추·탭을 한 단계씩 줄이고, 영문 부제는 뺀다 — 좁은 폭에서 제목이 두 줄로
+   접히는 원인이고, 어차피 고른 언어의 이름이 이미 앞에 있다. */
+@media (max-width: 700px) {
+  .topbar-in { gap: 10px; padding: 9px var(--pad) 7px; }
+  .brand { font-size: 17px; white-space: nowrap; }
+  .brand-sub { display: none; }
+  .langswitch button { font-size: 13.5px; padding: 4px 9px; }
+  .themebtn { font-size: 15px; padding: 4px 9px; }
+  .tabs button { font-size: 15px; padding: 7px 10px; }
+  /* 지휘관 줄은 한 줄에 다섯 칸이 남아야 한다. 싱크로가 네 자리(1200)까지,
+     콘솔이 세 자리(280)까지 가므로 글자·아이콘·여백을 한 단계씩 더 깎는다. */
+  .cp-cmdrRow { gap: 3px 5px; }
+  .cp-cmdr { padding: 8px 10px; }
+  .cp-cmdr .cp-tagSep { margin: 0; }
+  .cp-cmdrCell { gap: 2px; }
+  .cp-cmdrCell .ic { height: 15px; }
+  .cp-cmdrCell b, .cp-cmdr .cp-fact { font-size: 13.5px; }
+  .cp-cmdrName, .cp-cmdr .cp-factLbl { font-size: 12.5px; }
+  .cp-cmdr .cp-fact { gap: 4px; }
+  /* 계정 줄은 수집 시각과 버튼 넉 개가 한 줄을 다투다 시각 쪽이 3px 로 눌린다 */
+  .cp-acctFacts { flex-basis: 100%; }
+  /* 출시일 두 칸과 스쿼드 셀렉트는 더 못 줄어서 필터 상자를 넘긴다. 한 칸이
+     한 줄을 통째로 쓰게 두고(그래야 100% 가 줄 폭으로 풀린다) 안쪽을 접는다. */
+  .filter-row { gap: 10px; }
+  .filter-row .field { flex-basis: 100%; min-width: 0; }
+  .field, .range { flex-wrap: wrap; }
+  .field select, .field input[type="date"] { min-width: 0; max-width: 100%; }
+  /* 옵션 이름이 EN 에서 길어져 목표 줄이 카드를 넘긴다 — 줄 안에서 접히게 */
+  .np-goalhead { flex-wrap: wrap; }
+  /* 교차표 — 칸을 깎고, 열 머리의 아이콘과 글자를 위아래로 세운다. 옆으로 두면
+     머리 한 칸이 48px 이라 일곱 열이 카드를 넘겨 안쪽에 또 스크롤이 생긴다.
+     줄 머리(기업 이름)는 그대로 옆으로 — 세워도 글자 폭은 안 줄어든다. */
+  .card-cross .hm td { min-width: 28px; padding: 5px 1.5px; }
+  .card-cross .hm th { padding: 1.5px 1.5px; }
+  .card-cross .hm thead .iconlbl { flex-direction: column; gap: 1px; }
+  /* 기업 타워의 두 표도 세 열이라 한 단계 눌러야 안쪽 스크롤이 안 생긴다 */
+  table.op-towerTbl { font-size: 13.5px; }
+  table.op-towerTbl th, table.op-towerTbl td { padding: 4px 3px; }
+  .op-weeks { margin-left: 3px; }
+}
+
 @media (max-width: 900px) {
   .chiprow > .lbl { flex-basis: 100%; }
   .bar-row { grid-template-columns: 85px 1fr 50px; }
