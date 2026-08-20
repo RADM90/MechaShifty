@@ -652,15 +652,22 @@ function reveal(root) {
 function paint(root) {
   /* 툴팁은 body 에 붙어 있어 root 를 비워도 남는다. */
   closeTip();
-  root.textContent = '';
-  const wrap = el('div', 'cp-wrap');
-  const left = el('div', 'cp-left');
-  left.appendChild(importPanel(root));
-  wrap.appendChild(left);
-  wrap.appendChild(renderResult(root));
+  /* 목록을 떼었다 붙이면 스크롤이 맨 위로 튄다 (니케를 고를 때마다 목록이 처음으로 돌아간다).
+     이미 붙어 있으면 그대로 두고 결과 칸만 갈아 끼운다. */
+  let wrap = root.querySelector('.cp-wrap');
+  if (wrap && importEl && wrap.contains(importEl)) {
+    wrap.querySelector('.cp-out').replaceWith(renderResult(root));
+  } else {
+    root.textContent = '';
+    wrap = el('div', 'cp-wrap');
+    const left = el('div', 'cp-left');
+    left.appendChild(importPanel(root));
+    wrap.appendChild(left);
+    wrap.appendChild(renderResult(root));
+    root.appendChild(wrap);
+  }
   /* 한 단으로 접혔을 때 결과를 목록 위로 올릴지 (style.css). */
   wrap.classList.toggle('has-roster', !!(importApi && importApi.account()));
-  root.appendChild(wrap);
 
   fitOlGrid(root);
   // 폰트가 늦게 오면 글자 폭이 달라진다 — 오고 나서 한 번 더 잰다
