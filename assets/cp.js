@@ -204,17 +204,20 @@ export function gearStat(T, cls, slot, tier, enhance = 0) {
 }
 
 function gearOf(T, cls, gear) {
-  let stat = ZERO, elemDmg = 0, other = 0;
+  let stat = ZERO, elemDmg = 0, other = 0, optCoef = 0;
   for (const g of gear || []) {
     if (!g || !g.tier) continue;
     const row = gearStat(T, cls, g.slot, g.tier, g.enhance || 0);
     if (row) stat = add(stat, row);
     for (const o of g.options || []) {
       if (!o || !o.name || !o.level) continue;
-      if (o.name === ELEM_DAMAGE) elemDmg += o.level; else other += o.level;
+      const uco = o.name === ELEM_DAMAGE;
+      if (uco) elemDmg += o.level; else other += o.level;
+      // 옵션은 하나씩 소수 4자리로 끊는다. 묶어서 더한 뒤 끊으면 옵션이 많은 니케에서 최대 12 CP 차이
+      optCoef += round(o.level * (uco ? K.ELEM_DMG : K.OTHER_OPT), 4);
     }
   }
-  return { stat, elemDmg, other };
+  return { stat, elemDmg, other, optCoef };
 }
 
 /* ── 본 계산 ──────────────────────────────────────────────── */
@@ -227,30 +230,32 @@ export function compute(T, input, level = input.level) {
   const coreK = 1 + K.PER_CORE * grade.cores;
   const bond = T.bond.get(`${input.class}|${input.bond}`) || ZERO;
   const con = consoleOf(T, input.console || {});
-  const { stat: gearStat, elemDmg, other } = gearOf(T, input.class, input.gear);
+  const { stat: gearStat, elemDmg, other, optCoef } = gearOf(T, input.class, input.gear);
   const cube = cubeOf(T, input.cube);
   const coll = collectionOf(T, input.collection?.kind || 'none', input.collection?.level);
 
   const fixed = K.FIXED[input.rarity] || K.FIXED.SSR;
 
+  /* 반올림 자리가 결과를 가른다. 기본×돌파계수까지는 내림 -> 코강계수를 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
+  CP 환산은 스탯마다 내림, 마지막에 정수로 반올림. */
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
-    const inner = base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks;
-    stats[k] = Math.round(inner * coreK + gearStat[k] + cube.stat[k] + coll.stat[k]);
+    const inner = Math.floor(base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks);
+    stats[k] = Math.round(inner * coreK) + gearStat[k] + cube.stat[k] + coll.stat[k];
   }
 
   const s = input.skills || {};
   const skillCoef = (K.SKILL_BASE + (s.s1 || 0) + (s.s2 || 0) + (s.burst || 0) * 2) / 100;
-  const c4 = skillCoef + elemDmg * K.ELEM_DMG + other * K.OTHER_OPT;
-  // 시트가 이 항만 소수 4자리로 반올림한다. 결과가 달라지므로 그대로 따른다.
+  const c4 = skillCoef + optCoef;
+  // 이 항도 소수 4자리로 끊는다. 결과가 달라지므로 그대로 따른다.
   const c5 = round(cube.coef * K.CUBE + coll.coef * K.COLLECTION, 4);
 
   const parts = {
-    hp: Math.round(stats.hp * K.HP),
-    atk: Math.round(stats.atk * K.ATK),
-    def: Math.round(stats.def * K.DEF),
+    hp: Math.floor(stats.hp * K.HP),
+    atk: Math.floor(stats.atk * K.ATK),
+    def: Math.floor(stats.def * K.DEF),
   };
-  const cp = (parts.hp + parts.atk + parts.def) * (c4 + c5) / 100;
+  const cp = Math.round((parts.hp + parts.atk + parts.def) * (c4 + c5) / 100);
 
   return { level, stats, parts, skillCoef, elemDmg, other, c4, c5, cp,
     breaks: grade.breaks, cores: grade.cores };
