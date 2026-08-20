@@ -652,22 +652,21 @@ function reveal(root) {
 function paint(root) {
   /* 툴팁은 body 에 붙어 있어 root 를 비워도 남는다. */
   closeTip();
-  /* 목록을 떼었다 붙이면 스크롤이 맨 위로 튄다 (니케를 고를 때마다 목록이 처음으로 돌아간다).
-     이미 붙어 있으면 그대로 두고 결과 칸만 갈아 끼운다. */
-  let wrap = root.querySelector('.cp-wrap');
-  if (wrap && importEl && wrap.contains(importEl)) {
-    wrap.querySelector('.cp-out').replaceWith(renderResult(root));
-  } else {
-    root.textContent = '';
-    wrap = el('div', 'cp-wrap');
-    const left = el('div', 'cp-left');
-    left.appendChild(importPanel(root));
-    wrap.appendChild(left);
-    wrap.appendChild(renderResult(root));
-    root.appendChild(wrap);
-  }
+  /* 니케 목록 스크롤 — 화면 전체 스크롤이 올라가는 것은 의도된 동작이라 그대로 둔다. */
+  const listScroll = root.querySelector('.cp-roster .cp-scroll');
+  const listTop = listScroll ? listScroll.scrollTop : 0;
+  root.textContent = '';
+  const wrap = el('div', 'cp-wrap');
+  const left = el('div', 'cp-left');
+  left.appendChild(importPanel(root));
+  wrap.appendChild(left);
+  wrap.appendChild(renderResult(root));
   /* 한 단으로 접혔을 때 결과를 목록 위로 올릴지 (style.css). */
   wrap.classList.toggle('has-roster', !!(importApi && importApi.account()));
+  root.appendChild(wrap);
+  /* 같은 목록 패널이 되돌아온 경우에만 (언어가 바뀌면 새로 만들어지므로 맨 위가 맞다) */
+  const back = root.querySelector('.cp-roster .cp-scroll');
+  if (back && back === listScroll && listTop) back.scrollTop = listTop;
 
   fitOlGrid(root);
   // 폰트가 늦게 오면 글자 폭이 달라진다 — 오고 나서 한 번 더 잰다
