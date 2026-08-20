@@ -3,7 +3,7 @@
 // @name:en      MechaShifty — Export my Nikke roster
 // @name:ja      MechaShifty — 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.4.0
+// @version      1.4.1
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -309,12 +309,13 @@
     return SLOTS.map(([api, slot]) => {
       const tid = num(d[`${api}_equip_tid`]);
       const options = [];
+      /* 빈 칸은 건너뛰되 몇 번째 칸이었는지는 pos 로 남긴다 — 계산기가 인게임과 같은 자리에 그린다. */
       for (let i = 1; i <= 3; i++) {
         const id = String(num(d[`${api}_equip_option${i}_id`]) || '');
         if (id.length !== 7) continue;
         const name = OPTION[id.slice(3, 5)];
         const level = parseInt(id.slice(5, 7), 10);
-        if (name && level >= 1 && level <= 15) options.push({ name, level });
+        if (name && level >= 1 && level <= 15) options.push({ name, level, pos: i });
       }
       const rank = num(d[`${api}_equip_tier`]);
       const corp = num(d[`${api}_equip_corporation_type`]);

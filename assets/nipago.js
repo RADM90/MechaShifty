@@ -7,7 +7,7 @@
 
    app.js 와의 결합은 renderNipago(root, ctx) 한 곳뿐. */
 
-import { optionLabel } from './cp.js';
+import { optionLabel, olRows } from './cp.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
@@ -136,8 +136,9 @@ function normalize(v) {
 /* ── 밖에서 슬롯 채우기 ───────────────────────────────────────
    계산기 탭이 보고 있던 니케의 오버로드 장비 한 부위를 그대로 넘겨 준다. */
 export function seedSlots(options) {
+  const rows = olRows(options);
   const slots = [0, 1, 2].map(i => {
-    const o = (options || [])[i];
+    const o = rows[i];
     return o && o.name ? { opt: o.name, lv: o.level || 1, lock: 'none' }
       : { opt: '', lv: 11, lock: 'none' };
   });

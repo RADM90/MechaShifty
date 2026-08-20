@@ -198,12 +198,14 @@ function cleanGear(gear) {
   });
 }
 
+/* pos 는 그 부위의 몇 번째 옵션 칸인지다 (1~3). 빈 칸을 건너뛰면 목록이 오므라들어
+   상단·하단이 상단·중단으로 보이므로, 걸러 내는 동안에도 칸 번호를 놓치지 않는다. */
 function cleanOptions(options) {
   return (Array.isArray(options) ? options : [])
-    .map(o => (o && OPTION_ALIAS[o.name] ? { ...o, name: OPTION_ALIAS[o.name] } : o))
+    .map((o, i) => (o ? { ...o, name: OPTION_ALIAS[o.name] || o.name, pos: int(o.pos, 1, 3, i + 1) } : o))
     .filter(o => o && OPTIONS.includes(o.name) && int(o.level, 1, 15, 0))
     .slice(0, 3)
-    .map(o => ({ name: o.name, level: int(o.level, 1, 15, 1) }));
+    .map(o => ({ name: o.name, level: int(o.level, 1, 15, 1), pos: o.pos }));
 }
 
 /* ── 계산기 입력으로 ──────────────────────────────────────────

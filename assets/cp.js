@@ -29,6 +29,25 @@ export const K = {
 export const ELEM_DAMAGE = '우코';
 export const SLOTS = ['머리', '몸', '팔', '다리'];
 
+/* 오버로드 옵션은 한 부위에 칸이 셋이고 가운데가 비어 있을 수 있다. 목록은 빈 칸을 건너뛴 채로
+   오므라들어 오므로 칸 번호(pos)를 보고 제자리에 되돌린다 — 순서대로 깔면 상단·하단에 붙은 옵션이
+   상단·중단에 붙은 것처럼 보인다. 번호가 없는 옛 자료는 있던 순서대로 앞에서부터 채운다. */
+export function olRows(options) {
+  const rows = [null, null, null];
+  const rest = [];
+  for (const o of options || []) {
+    if (!o) continue;
+    const i = Math.round(Number(o.pos)) - 1;
+    if (i >= 0 && i < 3 && !rows[i]) rows[i] = o; else rest.push(o);
+  }
+  for (const o of rest) {
+    const i = rows.indexOf(null);
+    if (i < 0) break;
+    rows[i] = o;
+  }
+  return rows;
+}
+
 /* 장비 등급 — 원본 표에는 티어(T1~T10)뿐이고, '기업' 은 T9 에 붙는 보너스다. */
 export const TIERS = ['9티어_일반', '9티어_기업', '오버로드'];
 const TIER_SEED = {

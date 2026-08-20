@@ -5,7 +5,7 @@
    — syncro_stat 하나가 500KB라 첫 화면에 같이 얹지 않는다. */
 
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
-  K, SLOTS } from './cp.js';
+  K, SLOTS, olRows } from './cp.js';
 import { renderImport, OPTION_ALIAS, CHIP_AXES, badge, gradeBadge, collBadge, bondBadge,
   cubeBadge } from './roster.js';
 
@@ -347,9 +347,10 @@ function renderOverloadBySlot(n) {
       grid.appendChild(cell);
       return;
     }
-    /* 여기는 부위에 실제로 붙어 있는 값이라 원표 그대로 쓴다. */
+    /* 여기는 부위에 실제로 붙어 있는 값이라 원표 그대로 쓴다. 빈 칸이 있으면 그 자리를 비워 둔다. */
+    const rows = olRows(g.options);
     for (let i = 0; i < 3; i++) {
-      const o = g.options[i];
+      const o = rows[i];
       const cell = el('div', 'cp-olCell' + (o ? olLevelCls(o.level) : ' is-empty'));
       cell.style.gridColumn = col + 1;
       cell.style.gridRow = i + 2;
