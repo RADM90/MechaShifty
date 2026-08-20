@@ -1,0 +1,257 @@
+{
+ "rid": 802,
+ "name": {
+  "ko": "히메노",
+  "en": "Himeno",
+  "ja": "姫野"
+ },
+ "nameCode": 3012,
+ "rarity": "SR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "ce_01",
+ "element": "Wind",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 70.89,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.3,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 290.0,
+   "perTargetShot": 580.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "약점 공략",
+    "en": "Weak Spot Attack",
+    "ja": "弱点攻略"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 대상에게\n[방어력 {1}% ▼] [{2}초 유지]",
+    "en": "■ Activates when hitting a target with Full Charge. Affects the target.\nDEF ▼ {1}% for {2} sec.",
+    "ja": "■フルチャージ攻撃が命中した時、対象に\n「防御力{1}％▼」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     3.03,
+     3.47,
+     3.9,
+     4.33,
+     4.77,
+     5.2,
+     5.64,
+     6.07,
+     6.5,
+     6.94
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "보이지 않는 손",
+    "en": "Invisible Hand",
+    "ja": "見えない手"
+   },
+   "text": {
+    "ko": "■ 스나이퍼 라이플 소지 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]\n[최대 장탄 수 {3}발 ▲] [{4}초 유지]",
+    "en": "■ Affects all allies with sniper rifles.\nATK ▲ {1}% for {2} sec.\nMax Ammunition Capacity ▲ {3} round(s) for {4} sec.",
+    "ja": "■スナイパーライフルを所持する味方全体に\n「攻撃力{1}％▲」「{2}秒間維持」\n「最大装弾数{3}発▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     1.47,
+     2.53,
+     3.59,
+     4.64,
+     5.7,
+     6.75,
+     7.81,
+     8.87,
+     9.92,
+     10.98
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "고스트",
+    "en": "Ghost",
+    "ja": "ゴースト"
+   },
+   "text": {
+    "ko": "■ 자신을 제외한 최종 공격력이 가장 높은 아군 {1}기에게\n[차지 대미지 {2}% ▲] [{3}초 유지]\n[크리티컬 확률 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects {1} ally unit(s) with the highest final ATK. \nCharge Damage ▲ {2}% for {3} sec. \nCritical Rate ▲ {4}% for {5} sec.",
+    "ja": "■自分を除く最終攻撃力が最も高い味方{1}機に\n「チャージダメージ{2}％▲」\n「{3}秒間維持」\n「クリティカル確率{4}％▲」\n「{5}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     7.56,
+     9.36,
+     11.16,
+     12.96,
+     14.76,
+     16.56,
+     18.36,
+     20.16,
+     21.96,
+     23.76
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     8.52,
+     9.39,
+     10.26,
+     11.13,
+     12.0,
+     12.87,
+     13.74,
+     14.61,
+     15.48,
+     16.35
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "0f1e532dd0df"
+}

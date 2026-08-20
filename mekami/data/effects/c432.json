@@ -1,0 +1,44 @@
+{
+  "rid": 432,
+  "name": "아리아",
+  "textHash": "95e7d3e3dac5",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "critDmg",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "마지막 탄환 명중 시 아군 전체에게",
+      "on": "lastBullet",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "critRate",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [],
+  "unmodeled": [
+    "[burst] ■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 보호막] [{3}초 유지]",
+    "[burst] ■ 자신에게\n[명중률 {4}% ▲] [{5}초 유지]"
+  ]
+}

@@ -1,0 +1,670 @@
+{
+ "rid": 580,
+ "name": {
+  "ko": "팬텀",
+  "en": "Phantom",
+  "ja": "ファントム"
+ },
+ "nameCode": 5122,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "BestSeller",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 15.78,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 2.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 25.0,
+   "perTargetShot": 50.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "괴도의 예고장",
+    "en": "Thief's Calling Card",
+    "ja": "怪盗の予告状"
+   },
+   "text": {
+    "ko": "■ 일반 공격 명중 시 대상이 예고장 상태가 아닌 랩쳐라면 대상에게\n[예고장 : 방어력 {1}% ▼] [{2}초 유지]\n■ 일반 공격 명중 시 대상이 예고장 상태가 아닌 랩쳐라면 자신에게\n[괴도의 단검 : 명중률 {3}% ▲] [{4} 중첩] [{5}초 유지]\n■ 일반 공격 명중 시 대상이 예고장 상태라면 자신에게\n[공격 대미지 {6}% ▲] [{7}발 유지]",
+    "en": "■ Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects the target.\nCalling Card: DEF ▼ {1}% for {2} sec.\n■ Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects self.\nThief's Dagger: Hit Rate ▲ {3}%. Stacks up to {4} times and lasts for {5} sec.\n■ Activates when landing a normal attack on a target that is in the Calling Card state. Affects self.\nAttack Damage ▲ {6}% for {7} round(s).",
+    "ja": "■通常攻撃が命中した時、対象が\n予告状状態ではないラプチャーなら\n対象に\n「予告状：防御力{1}％▼」「{2}秒」\n■通常攻撃が命中した時、\n予告状状態ではないラプチャーなら自分に\n「怪盗の短剣：命中率{3}％▲」\n「{4}スタック」「{5}秒間維持」\n■通常攻撃が命中した時、\n対象が予告状状態なら自分に\n「攻撃ダメージ{6}％▲」「{7}発間維持」"
+   },
+   "values": [
+    [
+     19.02,
+     20.49,
+     21.96,
+     23.43,
+     24.87,
+     26.34,
+     27.81,
+     29.28,
+     30.75,
+     32.19
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     15.22,
+     16.39,
+     17.57,
+     18.74,
+     19.9,
+     21.07,
+     22.25,
+     23.42,
+     24.6,
+     25.75
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     44.41,
+     47.83,
+     51.25,
+     54.67,
+     58.09,
+     61.49,
+     64.91,
+     68.33,
+     71.75,
+     75.17
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "괴도의 시선",
+    "en": "Thief's Vision",
+    "ja": "怪盗の鑑定眼"
+   },
+   "text": {
+    "ko": "■ 자신이 괴도의 단검 최대 중첩 상태라면 예고장 상태의 대상에게\n[최종 공격력 {8}% 추가 대미지] [효과 적용 후 예고장 제거]\n■ 자신이 괴도의 단검 최대 중첩 상태라면 중첩 해제 후 자신에게\n[분배 대미지 {1}% ▲] [{2} 중첩] [버스트 스킬 사용 시 중첩 제거] [지속]\n■ 일반 공격 {3}회 공격 시 자신에게\n[공격력 {4}% ▲] [{5}초 유지]\n[분배 대미지 {6}% ▲] [{7}초 유지]",
+    "en": "■ Activates when Thief's Dagger is at max stacks. Affects targets in the Calling Card state.\nDeals {8}% of final ATK as additional damage. Removes Calling Card.\n■ Activates when Thief's Dagger is at max stacks. Removes stacks and affects self.\nDistributed Damage ▲ {1}% continuously. Stacks up to {2} times. Stacks are removed when using Burst Skill.\n■ Activates after performing {3} normal attacks. Affects self.\nATK ▲ {4}% for {5} sec.\nDistributed Damage ▲ {6}% for {7} sec.",
+    "ja": "■自分が怪盗の短剣フルスタック状態なら、\n予告状状態の対象に\n「最終攻撃力の{8}％の追加ダメージ」\n「効果発動後予告状解除」\n■自分が怪盗の短剣フルスタック状態なら、\nスタック解除後自分に\n「分配ダメージ{1}％▲」\n「{2}スタック」\n「バーストスキル使用時スタック解除」「持続」\n■通常攻撃で{3}回攻撃した時、自分に\n「攻撃力{4}％▲」「{5}秒間維持」\n「分配ダメージ{6}％▲」「{7}秒間維持」"
+   },
+   "values": [
+    [
+     7.61,
+     8.18,
+     8.78,
+     9.36,
+     9.94,
+     10.54,
+     11.11,
+     11.71,
+     12.29,
+     12.86
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     50.32,
+     54.16,
+     58.08,
+     61.92,
+     65.76,
+     69.68,
+     73.52,
+     77.44,
+     81.28,
+     85.12
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     18.87,
+     20.31,
+     21.78,
+     23.22,
+     24.66,
+     26.13,
+     27.57,
+     29.04,
+     30.48,
+     31.92
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     49.82,
+     53.66,
+     57.49,
+     61.33,
+     65.16,
+     68.99,
+     72.82,
+     76.67,
+     80.5,
+     84.33
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "비기 괴도 난무",
+    "en": "Secret Trick: Rampage of Thieves",
+    "ja": "秘技・怪盗乱舞"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 분배 대미지 ]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as distributed damage.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％の分配ダメージ」"
+   },
+   "values": [
+    [
+     861.12,
+     927.36,
+     993.6,
+     1059.84,
+     1126.08,
+     1192.32,
+     1258.56,
+     1324.8,
+     1391.04,
+     1457.28
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201801,
+  "name": {
+   "ko": "소중한 가면들",
+   "en": "Precious Masks",
+   "ja": "大切な仮面"
+  },
+  "weapon": "AR",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "괴도의 예고장",
+     "en": "Thief's Calling Card",
+     "ja": "怪盗の予告状"
+    },
+    "text": {
+     "ko": "■ 일반 공격 명중 시 대상이 예고장 상태가 아닌 랩쳐라면 대상에게\n[예고장 : 방어력 {1}% ▼] [{2}초 유지]\n■ 일반 공격 명중 시 대상이 예고장 상태가 아닌 랩쳐라면 자신에게\n[괴도의 단검 : 명중률 {3}% ▲] [{4} 중첩] [{5}초 유지]\n■ 일반 공격 {6}회 명중 시 대상이 타겟이라면 자신에게\n[괴도의 단검 : 명중률 {7}% ▲] [{8} 중첩] [{9}초 유지]\n■ 일반 공격 명중 시 대상이 예고장 상태라면 자신에게\n[공격 대미지 {10}% ▲] [{11}발 유지]",
+     "en": "■ Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects the target.\nCalling Card: DEF ▼ {1}% for {2} sec.\n■ Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects self.\nThief's Dagger: Hit Rate ▲ {3}%. Stacks up to {4} times and lasts for {5} sec.\n■ Activates after landing {6} normal attacks on the stage target. Affects self.\nThief's Dagger: Hit Rate ▲ {7}%. Stacks up to {8} times and lasts for {9} sec. \n■ Activates when landing a normal attack on a target that is in the Calling Card state. Affects self.\nAttack Damage ▲ {10}% for {11} round(s).",
+     "ja": "■通常攻撃が命中した時、対象が\n予告状状態ではないラプチャーなら\n対象に\n「予告状：防御力{1}％▼」「{2}秒」\n■通常攻撃が命中した時、\n予告状状態ではないラプチャーなら自分に\n「怪盗の短剣：命中率{3}％▲」\n「{4}スタック」「{5}秒間維持」\n■通常攻撃が{6}回命中した時、\n対象がターゲットなら自分に\n「怪盗の短剣：命中率{7}％▲」\n「{8}スタック」「{9}秒間維持」\n■通常攻撃が命中した時、\n対象が予告状状態なら自分に\n「攻撃ダメージ{10}％▲」「{11}発間維持」"
+    },
+    "values": [
+     [
+      19.02,
+      20.49,
+      21.96,
+      23.43,
+      24.87,
+      26.34,
+      27.81,
+      29.28,
+      30.75,
+      32.19
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      15.22,
+      16.39,
+      17.57,
+      18.74,
+      19.9,
+      21.07,
+      22.25,
+      23.42,
+      24.6,
+      25.75
+     ],
+     [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     [
+      15.22,
+      16.39,
+      17.57,
+      18.74,
+      19.9,
+      21.07,
+      22.25,
+      23.42,
+      24.6,
+      25.75
+     ],
+     [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      44.41,
+      47.83,
+      51.25,
+      54.67,
+      58.09,
+      61.49,
+      64.91,
+      68.33,
+      71.75,
+      75.17
+     ],
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "괴도의 시선",
+     "en": "Thief's Vision",
+     "ja": "怪盗の鑑定眼"
+    },
+    "text": {
+     "ko": "■ 자신이 괴도의 단검 최대 중첩 상태라면 예고장 상태의 대상에게\n[최종 공격력 {1}% 추가 대미지] [효과 적용 후 예고장 제거]\n■ 자신이 괴도의 단검 최대 중첩 상태라면 자신에게\n[분배 대미지 {2}% ▲] [{3} 중첩] [버스트 스킬 사용 시 중첩 제거] [지속]\n■ 자신이 괴도의 단검 최대 중첩 상태라면 중첩 해제 후 적 전체에게\n[최종 공격력 {4}% 분배 대미지]\n■ 일반 공격 {5}회 공격 시 자신에게\n[공격력 {6}% ▲] [{7}초 유지]\n[분배 대미지 {8}% ▲] [{9}초 유지]",
+     "en": "■ Activates when Thief's Dagger is at max stacks. Affects targets in the Calling Card state.\nDeals {1}% of final ATK as additional damage. Removes Calling Card.\n■ Activates when Thief's Dagger is at max stacks. Affects self.\nDistributed Damage ▲ {2}% continuously. Stacks up to {3} times. Stacks are removed when using Burst Skill.\n■ Activates when Thief's Dagger is at max stacks. Removes stacks and affects all enemies.\nDeals {4}% of final ATK as distributed damage.\n■ Activates after performing {5} normal attacks. Affects self.\nATK ▲ {6}% for {7} sec.\nDistributed Damage ▲ {8}% for {9} sec.",
+     "ja": "■自分が怪盗の短剣フルスタック状態なら、\n予告状状態の対象に\n「最終攻撃力の{1}％の追加ダメージ」\n「効果発動後予告状解除」\n■自分が怪盗の短剣フルスタック状態なら、\n自分に\n「分配ダメージ{2}％▲」\n「{3}スタック」\n「バーストスキル使用時スタック解除」\n「持続」\n■自分が怪盗の短剣フルスタック状態なら、\nスタック解除後敵全体に\n「最終攻撃力の{4}％の分配ダメージ」\n■通常攻撃で{5}回攻撃した時、自分に\n「攻撃力{6}％▲」「{7}秒間維持」\n「分配ダメージ{8}％▲」「{9}秒間維持」"
+    },
+    "values": [
+     [
+      49.82,
+      53.66,
+      57.49,
+      61.33,
+      65.16,
+      68.99,
+      72.82,
+      76.67,
+      80.5,
+      84.33
+     ],
+     [
+      7.61,
+      8.18,
+      8.78,
+      9.36,
+      9.94,
+      10.54,
+      11.11,
+      11.71,
+      12.29,
+      12.86
+     ],
+     [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+     ],
+     [
+      125.0,
+      138.89,
+      152.78,
+      166.67,
+      180.56,
+      194.44,
+      208.33,
+      222.22,
+      236.11,
+      250.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      50.32,
+      54.16,
+      58.08,
+      61.92,
+      65.76,
+      69.68,
+      73.52,
+      77.44,
+      81.28,
+      85.12
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      18.87,
+      20.31,
+      21.78,
+      23.22,
+      24.66,
+      26.13,
+      27.57,
+      29.04,
+      30.48,
+      31.92
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "비기 괴도 난무",
+     "en": "Secret Trick: Rampage of Thieves",
+     "ja": "秘技・怪盗乱舞"
+    },
+    "text": {
+     "ko": "■ 적 전체에게\n[최종 공격력 {1}% 분배 대미지]\n■ 대상이 작열 코드 타겟이라면 동일 적 대상에게\n[받는 대미지 {4}% ▲] [{5}초 유지]\n■ 자신에게\n[최대 장탄 수 {2}% ▲] [{3}초 유지]",
+     "en": "■ Affects all enemies.\nDeals {1}% of final ATK as distributed damage. \n■ Affects the enemy if the enemy is a Fire Code stage target.\nDamage Taken ▲ {4}% for {5} sec.\n■ Affects self.\nMax Ammunition Capacity ▲ {2}% for {3} sec.",
+     "ja": "■敵全体に\n「最終攻撃力の{1}％の分配ダメージ」\n■対象が灼熱コードのターゲットなら、\n同じ敵に\n「受けるダメージ{4}％▲」「{5}秒間維持」\n■自分に\n「最大装弾数{2}％▲」「{3}秒間維持」"
+    },
+    "values": [
+     [
+      861.12,
+      927.36,
+      993.6,
+      1059.84,
+      1126.08,
+      1192.32,
+      1258.56,
+      1324.8,
+      1391.04,
+      1457.28
+     ],
+     [
+      27.5,
+      30.0,
+      32.5,
+      35.0,
+      37.5,
+      40.0,
+      42.5,
+      45.0,
+      47.5,
+      50.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      9.0,
+      10.0,
+      11.0,
+      12.0,
+      13.0,
+      14.0,
+      15.0,
+      16.0,
+      17.0,
+      18.0
+     ],
+     [
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "41f9ba591521"
+}

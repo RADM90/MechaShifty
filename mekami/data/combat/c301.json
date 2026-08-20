@@ -1,0 +1,209 @@
+{
+ "rid": 301,
+ "name": {
+  "ko": "솔져 F.A.",
+  "en": "Soldier FA",
+  "ja": "ソルジャーF.A."
+ },
+ "nameCode": 1014,
+ "rarity": "R",
+ "class": "Defender",
+ "corporation": "ELYSION",
+ "squad": "Replace",
+ "element": "Iron",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 214.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 2.0,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "팔콘 윙",
+    "en": "Falcon Wings",
+    "ja": "ファルコンウィング"
+   },
+   "text": {
+    "ko": "■ 피격 시 {1}% 확률로 자신에게\n[방어력 {2}% ▲] [{3}초 유지]",
+    "en": "■ There is a {1}% chance of activating when attacked. Affects self.\nDEF ▲ {2}% for {3} sec.",
+    "ja": "■攻撃を受けた時、{1}％の確率で自分に\n「防御力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     0.9,
+     1.81,
+     2.72,
+     3.63,
+     4.54,
+     5.45,
+     6.36,
+     7.27,
+     8.18,
+     9.09
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "팔콘 네스트",
+    "en": "Falcon Nest",
+    "ja": "ファルコンネスト"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격 대미지 비례 {1}% 회복] [{2}초 유지]",
+    "en": "■ Affects self.\nRestores HP equal to {1}% of attack damage. Lasts for {2} sec.",
+    "ja": "■自分に\n「攻撃ダメージの{1}％回復」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     2.01,
+     4.03,
+     6.05,
+     8.07,
+     10.09,
+     12.11,
+     14.13,
+     16.15,
+     18.17,
+     20.19
+    ],
+    [
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "팔콘 부스트",
+    "en": "Falcon Boost",
+    "ja": "ファルコンブースト"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[최대 체력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects self.\nMax HP ▲ {1}% for {2} sec.",
+    "ja": "■自分に\n「最大HP{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     11.25,
+     22.5,
+     33.75,
+     45.0,
+     56.25,
+     67.5,
+     78.75,
+     90.0,
+     101.25,
+     112.5
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "7e077850e599"
+}

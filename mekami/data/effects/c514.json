@@ -1,0 +1,80 @@
+{
+  "rid": 514,
+  "name": "그레이브",
+  "textHash": "9c50fe5b39fb",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [],
+  "s2": [
+    {
+      "note": "일반 공격 {1}회 명중 시 자신에게",
+      "on": "shots",
+      "set": {
+        "state": "과열 I"
+      },
+      "count": {
+        "v": 1
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 2,
+          "dur": "permanent"
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "pierceDmg",
+          "v": 2,
+          "dur": "permanent"
+        },
+        {
+          "stat": "critRate",
+          "v": 6,
+          "dur": "permanent"
+        }
+      ]
+    },
+    {
+      "note": "아군 전체에게",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 3,
+          "dur": "permanent"
+        },
+        {
+          "stat": "pierceDmg",
+          "v": 4,
+          "dur": "permanent"
+        },
+        {
+          "stat": "maxAmmo",
+          "v": 5,
+          "dur": "permanent"
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s1] ■ 미래 예지 상태 종료 시 자신에게\n[탄환 {1}% 제거]\n[방열 : 재장전 비율 {2}% ▼] [방열 제거 조건]",
+    "[s1] ■ 자신이 방열 상태일 때 한하여 자신에게\n[시전자의 최종 최대 체력 비례 {3}% 회복] [1초 간격] [지속]",
+    "[s1] ■ 자신이 방열 상태일 때 한하여 아군 전체에게\n[버스트 게이지 충전 속도 {4}% ▲] [지속]\n[관통 대미지 {5}% ▲] [지속]",
+    "[s2] ■ 미래 예지 상태 적용 후 일반 공격 명중 시 자신에게\n[공격 명중 횟수 별 효과] [하위 효과 중복 적용]\n{3}회 : 미래 예지와 과열 I 상태일 때 한하여\n[과열 II : 공격력 {4}% ▲] [지속]\n{5}회 : 미래 예지와 과열 II 상태일 때 한하여\n[과열 III : 공격 대미지 {6}% ▲] [지속]",
+    "[burst] 미래 예지",
+    "[burst] 현재 체력 {1}% ▼",
+    "[burst] 1초 간격",
+    "[burst] 장탄 수 무한",
+    "[burst] 관통 특화"
+  ]
+}

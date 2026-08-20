@@ -1,0 +1,281 @@
+{
+ "rid": 231,
+ "name": {
+  "ko": "이사벨",
+  "en": "Isabel",
+  "ja": "イサベル"
+ },
+ "nameCode": 5013,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "PILGRIM",
+ "squad": "Inherit",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 5.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Bio",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 210.7,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 1.86,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "타겟 마킹",
+    "en": "Marked Target",
+    "ja": "ターゲットマーキング"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신에게\n[사용 횟수 별 추가 효과] [하위 효과 중복 적용]\n1 회 : [타겟 마킹 1 : 크리티컬 확률 {1}% ▲] [{2}초 유지]\n2 회 : [타겟 마킹 2 : 크리티컬 대미지 {3}% ▲] [{4}초 유지]\n3 회 : [타겟 마킹 3 : 공격력 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates when using Burst Skill. Affects self.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: Marked Target 1 - Critical Rate ▲ {1}% for {2} sec.\nTwice: Marked Target 2 - Critical Damage ▲ {3}% for {4} sec.\nThree times: Marked Target 3 - ATK ▲ {5}% for {6} sec.",
+    "ja": "■バーストスキルを使用した時、自分に\n「使用回数別の追加効果」\n「下位効果のスタック適用」\n1回：「ターゲットマーキング1：\nクリティカル確率{1}％▲」\n「{2}秒間維持」\n2回：「ターゲットマーキング2：\nクリティカルダメージ{3}％▲」\n「{4}秒間維持」\n3回：「ターゲットマーキング3：\n攻撃力{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     3.91,
+     4.17,
+     4.43,
+     4.69,
+     4.95,
+     5.22,
+     5.48,
+     5.74,
+     6.0,
+     6.26
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ],
+    [
+     11.27,
+     12.02,
+     12.77,
+     13.52,
+     14.27,
+     15.03,
+     15.78,
+     16.53,
+     17.28,
+     18.03
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ],
+    [
+     10.8,
+     11.52,
+     12.24,
+     12.96,
+     13.68,
+     14.4,
+     15.12,
+     15.84,
+     16.56,
+     17.28
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "페더 이젝션",
+    "en": "Pointed Feather",
+    "ja": "フェザー・イジェクション"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 {1}기에게\n[최종 공격력 {2}% 대미지]",
+    "en": "■ Affects {1} enemy unit(s) with the highest final DEF. \nDeals {2}% of final ATK as damage.",
+    "ja": "■最終防御力が最も高い敵{1}機に\n「最終攻撃力の{2}％のダメージ」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     106.61,
+     113.72,
+     120.83,
+     127.93,
+     135.04,
+     142.15,
+     149.26,
+     156.36,
+     163.47,
+     170.58
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "소닉 체이서",
+    "en": "Sonic Chaser",
+    "ja": "ソニックチェイサー"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n[타겟 마킹 단계 별 추가 효과] [하위 효과 중복 적용]  : \n타겟 마킹 1 : [받는 대미지 {2}% ▲] [{3}초 유지]\n타겟 마킹 2 : [최종 공격력 {4}% 추가 대미지]\n타겟 마킹 3 : [최종 공격력 {5}% 추가 대미지]\n■ 아군 전체에게\n[풀 버스트 타임 지속 시간 5초 ▼]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as Burst Skill damage.\nEffects vary for each stage of Marked Target. Each subsequent effect triggers all effects before it:\nMarked Target 1: Damage Taken ▲ {2}% for {3} sec.\nMarked Target 2: Deals {4}% of final ATK as additional damage.\nMarked Target 3: Deals {5}% of final ATK as additional damage.\n■ Affects all allies.\nFull Burst Duration ▼ 5 sec.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」\n「ターゲットマーキング段階別の追加効果」\n「下位効果のスタック適用」：\nターゲットマーキング1：「受けるダメージ\n{2}％▲」「{3}秒間維持」\nターゲットマーキング2：「最終攻撃力の\n{4}％の追加ダメージ」\nターゲットマーキング3：「最終攻撃力の\n{5}％の追加ダメージ」\n■味方全体に\n「フルバーストタイム5秒▼」"
+   },
+   "values": [
+    [
+     93.65,
+     99.9,
+     106.14,
+     112.38,
+     118.63,
+     124.87,
+     131.11,
+     137.36,
+     143.6,
+     149.85
+    ],
+    [
+     24.97,
+     26.64,
+     28.3,
+     29.97,
+     31.63,
+     33.3,
+     34.96,
+     36.63,
+     38.29,
+     39.96
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     187.31,
+     199.8,
+     212.28,
+     224.77,
+     237.26,
+     249.75,
+     262.23,
+     274.72,
+     287.21,
+     299.7
+    ],
+    [
+     218.53,
+     233.1,
+     247.66,
+     262.23,
+     276.8,
+     291.37,
+     305.94,
+     320.51,
+     335.08,
+     349.65
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "849155602e5f"
+}

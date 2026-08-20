@@ -1,0 +1,43 @@
+{
+  "rid": 304,
+  "name": "iDoll 플라워",
+  "textHash": "155ef71e8fa4",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "마지막 탄환 명중 시 대상에게",
+      "on": "lastBullet",
+      "to": "enemy",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dir": "down",
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "최종 공격력이 가장 높은 적 {1}기에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 3
+        },
+        "kind": "burst",
+        "type": "burstSkillDmg"
+      }
+    }
+  ],
+  "unmodeled": [
+    "[s2] ■ 최종 공격력이 가장 높은 적 {1}기에게\n[공격력 {2}% ▼] [{3}초 유지]",
+    "[burst] 도발"
+  ]
+}

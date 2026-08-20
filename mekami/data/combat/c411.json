@@ -1,0 +1,586 @@
+{
+ "rid": 411,
+ "name": {
+  "ko": "플로라",
+  "en": "Flora",
+  "ja": "フローラ"
+ },
+ "nameCode": 5126,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "BotanicGarden",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "피튜니아",
+    "en": "Petunia",
+    "ja": "ペチュニア"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신이 생존 상태일 때 한하여 자신과 자신의 양 옆에 있는 아군 2기에게\n[시전자의 최종 최대 체력 비례 {1}% 회복] [1초 간격] [지속]\n[받는 체력 회복량 {5}% ▲] [{6} 중첩] [지속]\n■ 일반 공격 {3}회 공격 시 전격 코드 아군 전체에게\n[중첩 가능 이로운 효과 중첩량 {4}개 ▲]",
+    "en": "■ Activates at the start of battle as long as this unit is alive. Affects self and both adjacent allies.\nRestores HP equal to {1}% of the skill user's final max HP every second.\nIncoming Healing ▲ {5}% continuously. Stacks up to {6} times.\n■ Activates after performing {3} normal attacks. Affects all Electric Code allies.\nIncreases the stack count of stackable buffs by {4}.",
+    "ja": "■戦闘開始時、自分が生存状態の時に限り、自分と自分の両隣にいる味方2機に\n「スキル発動者の最終最大HPの{1}％回復」「1秒間隔」「持続」\n「受けるHP回復量{5}％▲」「{6}スタック」「持続」\n■通常攻撃で{3}回攻撃した時、電撃コードの味方全体に\n「スタック可能バフ効果のスタック量{4}個▲」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.36,
+     2.55,
+     2.73,
+     2.91,
+     3.09,
+     3.27,
+     3.46,
+     3.64,
+     3.82,
+     4.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "아이리스",
+    "en": "Iris",
+    "ja": "アイリス"
+   },
+   "text": {
+    "ko": "■ 자신의 양 옆 아군 중 1기가 생존 상태에서 체력 {1}% 이하 도달 시 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 보호막] [{3}초 유지]\n■ 자신의 양 옆 아군 중 1기가 최대 체력 도달 시 아군 전체에게\n[방어력 무시 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when the HP of an adjacent ally drops to {1}% or below while the ally is still alive. Affects all allies.\nCreates a shield with HP equal to {2}% of the skill user's final max HP that lasts for {3} sec.\n■ Activates when either adjacent ally reaches max HP. Affects all allies.\nTrue Damage ▲ {4}% for {5} sec.",
+    "ja": "■自分の両隣の味方のうち1機が生存状態かつHP{1}％以下になった時、味方全体に\n「スキル発動者の最終最大HPの{2}％のバリア」「{3}秒間維持」\n■自分の両隣の味方のうち1機のHPが最大になった時、味方全体に\n「防御力無視ダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0
+    ],
+    [
+     6.04,
+     6.5,
+     6.96,
+     7.43,
+     7.89,
+     8.36,
+     8.82,
+     9.29,
+     9.75,
+     10.22
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     18.3,
+     19.71,
+     21.12,
+     22.52,
+     23.93,
+     25.34,
+     26.75,
+     28.16,
+     29.56,
+     30.97
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "시크릿 가든",
+    "en": "Secret Garden",
+    "ja": "秘密の花園"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 회복]\n[방어력 무시 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects all allies.\n Restores HP equal to {1}% of the skill user's final max HP.\nTrue Damage ▲ {2}% for {3} sec.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％回復」\n「防御力無視ダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     6.17,
+     6.65,
+     7.12,
+     7.6,
+     8.07,
+     8.55,
+     9.02,
+     9.5,
+     9.97,
+     10.45
+    ],
+    [
+     25.05,
+     26.98,
+     28.9,
+     30.83,
+     32.76,
+     34.68,
+     36.61,
+     38.54,
+     40.47,
+     42.39
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201901,
+  "name": {
+   "ko": "함께 만든 화분",
+   "en": "Planter We Made Together",
+   "ja": "一緒に作った植木鉢"
+  },
+  "weapon": "MG",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "피튜니아",
+     "en": "Petunia",
+     "ja": "ペチュニア"
+    },
+    "text": {
+     "ko": "■ 전투 시작 시 자신이 생존 상태일 때 한하여 자신과 자신의 양 옆에 있는 아군 2기에게\n[마음의 평화 : 시전자의 최종 최대 체력 비례 {1}% 회복] [1초 간격] [지속]\n[받는 체력 회복량 {5}% ▲] [{6} 중첩] [지속]\n■ 일반 공격 {3}회 공격 시 전격 코드 아군 전체에게\n[중첩 가능 이로운 효과 중첩량 {4}개 ▲]\n■ 버스트 2단계 진입 시 마음의 평화 상태인 아군 전체에게\n[시전자 기준 최대 체력만 {7}% ▲] [{8}초 유지]",
+     "en": "■ Activates at the start of battle as long as this unit is alive. Affects self and both adjacent allies.\nPeace of Mind: Restores HP equal to {1}% of the skill user's final max HP every second continuously.\nIncoming Healing ▲ {5}% continuously. Stacks up to {6} times.\n■ Activates after performing {3} normal attacks. Affects all Electric Code allies.\nIncreases the stack count of stackable buffs by {4}.\n■ Activates when entering Burst Stage 2. Affects all allies in the Peace of Mind state.\nMax HP ▲ {7}% of the skill user's max HP (without restoring HP) for {8} sec.",
+     "ja": "■戦闘開始時、自分が生存状態の時に限り、自分と自分の両隣にいる味方2機に\n「心の平和：スキル発動者の最終最大HPの{1}％回復」「1秒間隔」「持続」\n「受けるHP回復量{5}％▲」「{6}スタック」「持続」\n■通常攻撃で{3}回攻撃した時、電撃コードの味方全体に\n「スタック可能バフ効果のスタック量{4}個▲」\n■バースト2段階突入時、心の平和状態の味方全体に\n「スキル発動者基準で最大HPのみ{7}％▲」「{8}秒間維持」"
+    },
+    "values": [
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0
+     ],
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     [
+      2.36,
+      2.55,
+      2.73,
+      2.91,
+      3.09,
+      3.27,
+      3.46,
+      3.64,
+      3.82,
+      4.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      8.87,
+      9.55,
+      10.24,
+      10.92,
+      11.6,
+      12.28,
+      12.97,
+      13.65,
+      14.33,
+      15.01
+     ],
+     [
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "아이리스",
+     "en": "Iris",
+     "ja": "アイリス"
+    },
+    "text": {
+     "ko": "■ 자신의 양 옆 아군 중 1기가 생존 상태에서 체력 {1}% 이하 도달 시 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 보호막] [{3}초 유지]\n■ 자신의 양 옆 아군 중 1기가 최대 체력 도달 시 아군 전체에게\n[방어력 무시 대미지 {4}% ▲] [{5}초 유지]\n■ 보호막 적용 시 마음의 평화 상태인 아군 전체에게\n[시전자 기준 공격력 {6}% ▲] [{7}초 유지]",
+     "en": "■ Activates when the HP of an adjacent ally drops to {1}% or below while the ally is still alive. Affects all allies.\nCreates a shield with HP equal to {2}% of the skill user's final max HP that lasts for {3} sec.\n■ Activates when either adjacent ally reaches max HP. Affects all allies.\nTrue Damage ▲ {4}% for {5} sec.\n■ Activates when a shield is placed in front of this unit. Affects all allies in the Peace of Mind state.\nATK ▲ {6}% of the skill user's ATK for {7} sec.",
+     "ja": "■自分の両隣の味方のうち1機が生存状態かつHP{1}％以下になった時、味方全体に\n「スキル発動者の最終最大HPの{2}％のバリア」「{3}秒間維持」\n■自分の両隣の味方のうち1機のHPが最大になった時、味方全体に\n「防御力無視ダメージ{4}％▲」「{5}秒間維持」\n■バリア適用時、心の平和状態の味方全体に\n「スキル発動者基準で攻撃力{6}％▲」「{7}秒間維持」"
+    },
+    "values": [
+     [
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0,
+      90.0
+     ],
+     [
+      6.04,
+      6.5,
+      6.96,
+      7.43,
+      7.89,
+      8.36,
+      8.82,
+      9.29,
+      9.75,
+      10.22
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      18.3,
+      19.71,
+      21.12,
+      22.52,
+      23.93,
+      25.34,
+      26.75,
+      28.16,
+      29.56,
+      30.97
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      26.66,
+      28.71,
+      30.76,
+      32.81,
+      34.86,
+      36.91,
+      38.96,
+      41.02,
+      43.07,
+      45.12
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "시크릿 가든",
+     "en": "Secret Garden",
+     "ja": "秘密の花園"
+    },
+    "text": {
+     "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 회복]\n[방어력 무시 대미지 {2}% ▲] [{3}초 유지]\n[시전자 기준 공격력 {4}% ▲] [{5}초 유지]",
+     "en": "■ Affects all allies.\nRestores HP equal to {1}% of the skill user's final max HP.\nTrue Damage ▲ {2}% for {3} sec.\nATK ▲ {4}% of the skill user's ATK for {5} sec.",
+     "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％回復」\n「防御力無視ダメージ{2}％▲」「{3}秒間維持」\n「スキル発動者基準で攻撃力{4}％▲」「{5}秒間維持」"
+    },
+    "values": [
+     [
+      6.17,
+      6.65,
+      7.12,
+      7.6,
+      8.07,
+      8.55,
+      9.02,
+      9.5,
+      9.97,
+      10.45
+     ],
+     [
+      25.05,
+      26.98,
+      28.9,
+      30.83,
+      32.76,
+      34.68,
+      36.61,
+      38.54,
+      40.47,
+      42.39
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      50.73,
+      54.64,
+      58.54,
+      62.44,
+      66.35,
+      70.25,
+      74.15,
+      78.05,
+      81.96,
+      85.86
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "61b5037053e9"
+}

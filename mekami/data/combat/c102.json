@@ -1,0 +1,233 @@
+{
+ "rid": 102,
+ "name": {
+  "ko": "맥스웰",
+  "en": "Maxwell",
+  "ja": "マクスウェル"
+ },
+ "nameCode": 5001,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "Matis",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Bio",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "스트레이트 샷",
+    "en": "Straight Shot",
+    "ja": "ストレートショット"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 최종 공격력이 가장 높은 아군 2기에게\n[차지 속도 {1}% ▲] [{2}초 유지]\n[공격력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects the 2 allies with the highest final ATK.\nCharge Speed ▲ {1}% for {2} sec. \nATK ▲ {3}% for {4} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n最終攻撃力が最も高い味方2機に\n「チャージ速度{1}％▲」「{2}秒間維持」\n「攻撃力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     2.65,
+     2.85,
+     3.06,
+     3.26,
+     3.46,
+     3.67,
+     3.87,
+     4.08,
+     4.28,
+     4.48
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     25.46,
+     27.42,
+     29.38,
+     31.34,
+     33.3,
+     35.26,
+     37.22,
+     39.18,
+     41.14,
+     43.1
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "일렉트릭 샷",
+    "en": "Spark Shot",
+    "ja": "エレクトリックショット"
+   },
+   "text": {
+    "ko": "■ 니케를 제외한 적이 {1}기 이상일 때 한하여 자신에게\n[크리티컬 확률 {2}% ▲] [지속]\n[크리티컬 대미지 {3}% ▲] [지속]",
+    "en": "■ Activates when there are above {1} enemy unit(s), excluding Nikkes. Affects self.\nCritical Rate ▲ {2}%.\nCritical Damage ▲ {3}%.",
+    "ja": "■ニケを除いた敵が{1}機以上の時のみ自分に\n「クリティカル確率{2}％▲」「持続」\n「クリティカルダメージ{3}％▲」「持続」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.85,
+     3.07,
+     3.29,
+     3.51,
+     3.73,
+     3.95,
+     4.17,
+     4.39,
+     4.61,
+     4.83
+    ],
+    [
+     8.22,
+     8.85,
+     9.48,
+     10.12,
+     10.75,
+     11.38,
+     12.01,
+     12.65,
+     13.28,
+     13.91
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "피어스 샷",
+    "en": "Pierce Shot",
+    "ja": "ピアスショット"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[사용 무기 변경] :\n차지 시간 : 2초\n대미지 : 최종 공격력 {1}%\n풀 차지 대미지 : 300% 대미지\n최대 장탄 수 : {2}발\n추가 효과 : 관통 특화",
+    "en": "■ Affects self. \nChanges thes weapon in use: \nCharge Time: 2 sec\nDamage: {1}% of final ATK \nFull Charge Damage: 300% of damage \nMax Ammunition Capacity: {2}\nAdditional Effect: Gains Pierce",
+    "ja": "■自分に\n「使用武器を変更」：\nチャージ時間：2秒\nダメージ：最終攻撃力の{1}％\nフルチャージダメージ：300％のダメージ\n最大装弾数：{2}発\n追加効果：貫通特化"
+   },
+   "values": [
+    [
+     144.85,
+     219.14,
+     293.42,
+     367.71,
+     442.0,
+     516.28,
+     590.57,
+     664.85,
+     739.14,
+     813.42
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "1467264ad743"
+}

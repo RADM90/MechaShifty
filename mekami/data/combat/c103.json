@@ -1,0 +1,365 @@
+{
+ "rid": 103,
+ "name": {
+  "ko": "라플라스 : 얼티밋 히어로",
+  "en": "Laplace: Ultimate Hero",
+  "ja": "ラプラス：アルティメットヒーロー"
+ },
+ "nameCode": 5177,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "Matis",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "ProjectileDirect",
+  "damage": 2.5,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 2.5,
+  "rof": {
+   "start": 300,
+   "end": 300,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 150.0,
+   "perTargetShot": 300.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "일렉트릭 파워 풀 풀 차지",
+    "en": "Electric Power, Fully Full Charge!",
+    "ja": "エレクトリックパワー、フル・フルチャージ！！"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[시전자의 최종 최대 체력의 {1}% 만큼 공격력 ▲] [지속]\n■ 풀 차지 공격 시 자신에게\n[예열 : 차지 속도 {2}% ▲] [{3} 중첩] [지속]\n■ 자신이 예열 최대 중첩 상태라면 중첩 해제 후 자신에게\n[사용 무기 변경 : 일렉트릭 파워 풀 풀 차지] :\n대미지 : 최종 공격력 {5}% 대미지\n최대 장탄 수 : {6}발 (사용 무기 변경 시 최대 장탄 수 효과 갱신)\n제거 시점 : 모든 탄환 발사 시\n추가 효과 : 관통 특화\n■ 일렉트릭 파워 풀 풀 차지 상태 종료 시 자신에게\n[탄환 {7}% 제거]",
+    "en": "■ Activates at the start of battle. Affects self.\nATK ▲ {1}% of the skill user's final max HP continuously.\n■ Activates when performing a Full Charge attack. Affects self.\nWarm Up: Charge Speed ▲ {2}% continuously. Stacks up to {3} times.\n■ Activates when Warm Up is at max stacks. Removes stacks and affects self.\nChanges the weapon in use: Electric Power, Fully Full Charge\nDamage: {5}% of final ATK\nMax Ammunition Capacity: {6} (max ammunition effects refresh when the weapon in use changes)\nDeactivation condition: When all rounds are fired\nAdditional Effect: Gains Pierce\n■ Activates when Electric Power, Fully Full Charge ends. Affects self.\nRemoves {7}% of ammo.",
+    "ja": "■戦闘開始時、自分に\n「スキル発動者の最終最大HPの{1}％分の\n攻撃力▲」「持続」\n■フルチャージして攻撃した時、自分に\n「ウォームアップ：チャージ速度{2}％▲」\n「{3}スタック」「持続」\n■自分がウォームアップのフルスタック状態なら\nスタック解除後、自分に\n「使用武器変更：\nエレクトリックパワー・フル・フルチャージ」\nダメージ：最終攻撃力の{5}％のダメージ\n最大装弾数：{6}発（使用武器変更時、最大装弾数に対する効果更新）\n解除条件：全弾消費した時\n追加効果：貫通特化\n■エレクトリックパワー・フル・フルチャージ状態が終了した時、自分に\n「残弾数{7}％減少」"
+   },
+   "values": [
+    [
+     1.69,
+     1.95,
+     2.21,
+     2.48,
+     2.74,
+     3.0,
+     3.26,
+     3.52,
+     3.78,
+     4.05
+    ],
+    [
+     5.0,
+     5.56,
+     6.12,
+     6.68,
+     7.24,
+     7.8,
+     8.36,
+     8.92,
+     9.48,
+     10.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     2.64,
+     3.4,
+     4.16,
+     4.91,
+     5.67,
+     6.42,
+     7.18,
+     7.94,
+     8.69,
+     9.45
+    ],
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "오버 에너지",
+    "en": "Over Energy",
+    "ja": "オーバーエネルギー"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {8}회 공격 시 자신이 일렉트릭 파워 풀 풀 차지 상태라면 자신에게\n[오버 에너지 {9}% ▲] [최대 {1}%] [지속]\n■ 자신이 오버 에너지 {1}% 도달 시 초기화 후 자신에게\n[오버 에너지 단계 증가] [오버 에너지 단계 별 효과] [하위 효과 중복 적용]\n1단계 : [최대 체력만 {2}% ▲] [지속]\n2단계 : [최대 체력만 {3}% ▲] [지속]\n3단계 : [최대 체력만 {4}% ▲] [지속]\n4단계 : [최대 체력만 {5}% ▲] [지속]\n■ 버스트 3단계 진입 시 자신에게\n[공격 대미지 {6}% ▲] [{7}초 유지]",
+    "en": "■ Activates after performing {8} normal attacks while in the Electric Power, Fully Full Charge state. Affects self.\nOver Energy ▲ {9}% continuously, up to {1}%.\n■ Activates when Over Energy reaches {1}%. Resets Over Energy and affects self.\nAdvances to the next Over Energy stage. Effects vary for each stage of Over Energy. Each subsequent effect triggers all effects before it:\nStage 1: Max HP ▲ {2}% continuously.\nStage 2: Max HP ▲ {3}% continuously.\nStage 3: Max HP ▲ {4}% continuously.\nStage 4: Max HP ▲ {5}% continuously.\n■ Activates when entering Burst Stage 3. Affects self.\nAttack Damage ▲ {6}% for {7} sec.",
+    "ja": "■通常攻撃で{8}回攻撃した時、自分がエレクトリックパワー・フル・フルチャージ状態なら自分に\n「オーバーエネルギー{9}％▲」「最大{1}％」「持続」\n■自分がオーバーエネルギー{1}％状態になった時、\n初期化した後、自分に\n「オーバーエネルギーの段階増加」「オーバーエネルギーの段階別の効果」「下位効果のスタック適用」\n1段階：「最大HPのみ{2}％▲」「持続」\n2段階：「最大HPのみ{3}％▲」「持続」\n3段階：「最大HPのみ{4}％▲」「持続」\n4段階：「最大HPのみ{5}％▲」「持続」\n■バースト3段階突入時、自分に「攻撃ダメージ{6}％▲」「{7}秒間維持」"
+   },
+   "values": [
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     1.18,
+     1.27,
+     1.36,
+     1.45,
+     1.54,
+     1.63,
+     1.73,
+     1.82,
+     1.91,
+     2.0
+    ],
+    [
+     1.77,
+     1.91,
+     2.04,
+     2.18,
+     2.32,
+     2.45,
+     2.59,
+     2.73,
+     2.86,
+     3.0
+    ],
+    [
+     4.13,
+     4.45,
+     4.77,
+     5.09,
+     5.41,
+     5.73,
+     6.04,
+     6.36,
+     6.68,
+     7.0
+    ],
+    [
+     6.2,
+     6.68,
+     7.16,
+     7.64,
+     8.11,
+     8.59,
+     9.07,
+     9.55,
+     10.02,
+     10.5
+    ],
+    [
+     30.81,
+     33.18,
+     35.55,
+     37.92,
+     40.29,
+     42.66,
+     45.03,
+     47.4,
+     49.77,
+     52.14
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "회생전력활용무장 : 묠니르",
+    "en": "Regenerative Energy Armament: Mjolnir",
+    "ja": "回生エネルギー式武装：ミョルニル"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격력 {1}% ▲] [{2}초 유지]\n■ 적 전체에게\n[최종 공격력 {3}% 버스트 스킬 대미지]\n■ 자신이 오버 에너지 상태 1단계 이상이라면 조준선에 가장 가까운 적 1기에게\n[최종 공격력 {4}% X 오버 에너지 단계 추가 대미지]",
+    "en": "■ Affects self.\nATK ▲ {1}% for {2} sec.\n■ Affects all enemies.\nDeals {3}% of final ATK as Burst Skill damage.\n■ Activates when the skill user is at stage 1 or higher of Over Energy. Affects the enemy nearest to the crosshair.\nDeals {4}% of final ATK x Over Energy stage as additional damage.",
+    "ja": "■自分に\n「攻撃力{1}％▲」「{2}秒間維持」\n■敵全体に\n「最終攻撃力の{3}％の\nバーストスキルダメージ」\n■自分がオーバーエネルギー状態1段階以上なら、\n照準線に最も近い敵1機に\n「最終攻撃力の{4}％×オーバーエネルギー\n段階の追加ダメージ」"
+   },
+   "values": [
+    [
+     37.44,
+     40.32,
+     43.2,
+     46.08,
+     48.96,
+     51.84,
+     54.72,
+     57.6,
+     60.48,
+     63.36
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1745.45,
+     1879.71,
+     2013.98,
+     2148.24,
+     2282.51,
+     2416.78,
+     2551.04,
+     2685.31,
+     2819.57,
+     2953.84
+    ],
+    [
+     552.36,
+     594.85,
+     637.34,
+     679.83,
+     722.32,
+     764.81,
+     807.29,
+     849.78,
+     892.27,
+     934.76
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ad1471907c9d"
+}

@@ -1,0 +1,281 @@
+{
+ "rid": 202,
+ "name": {
+  "ko": "도라",
+  "en": "Dolla",
+  "ja": "ドラー"
+ },
+ "nameCode": 5036,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "Talentum",
+ "element": "Wind",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Bio",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "기업가 정신",
+    "en": "Entrepreneurship",
+    "ja": "企業家精神"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects all allies.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■味方全体に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     8.88,
+     9.69,
+     10.5,
+     11.31,
+     12.12,
+     12.93,
+     13.73,
+     14.54,
+     15.35,
+     16.16
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "s2": {
+   "name": {
+    "ko": "리스크 공유",
+    "en": "Risk Sharing",
+    "ja": "リスク共有"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 아군 전체에게\n[시작 횟수 별 효과] [하위 효과 중복 적용] :\n1회 : [버스트 스킬 재사용 시간 {1}초 ▼]\n2회 : [버스트 스킬 재사용 시간 {2}초 ▼]\n3회 : [버스트 스킬 재사용 시간 {3}초 ▼]\n■ 버스트 스킬 사용 시 아군 전체에게\n[사용 횟수 별 효과] [하위 효과 중복 적용] :\n1회 : [공격력 {4}% ▲] [{5}초 유지]\n2회 : [크리티컬 확률 {6}% ▲] [{7}초 유지]\n3회 : [크리티컬 대미지 {8}% ▲] [{9}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects all allies.\nEffects vary according to the number of times entered. Each subsequent effect triggers all effects before it:\nOnce: Cooldown of Burst Skill ▼ {1} sec.\nTwice: Cooldown of Burst Skill ▼ {2} sec.\nThree times: Cooldown of Burst Skill ▼ {3} sec.\n■ Activates when using Burst Skill. Affects all allies.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: ATK ▲ {4}% for {5} sec.\nTwice: Critical Rate ▲ {6}% for {7} sec.\nThree times: Critical Damage ▲ {8}% for {9} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n味方全体に\n「開始回数別の効果」\n「下位効果のスタック適用」：\n1回：\n「バーストスキルクールタイム{1}秒▼」\n2回：\n「バーストスキルクールタイム{2}秒▼」\n3回：\n「バーストスキルクールタイム{3}秒▼」\n■バーストスキルを使用した時、味方全体に\n「使用回数別の効果」\n「下位効果のスタック適用」：\n1回：「攻撃力{4}％▲」「{5}秒間維持」\n2回：「クリティカル確率{6}％▲」\n「{7}秒間維持」\n3回：「クリティカルダメージ{8}％▲」\n「{9}秒間維持」"
+   },
+   "values": [
+    [
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82,
+     1.82
+    ],
+    [
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2,
+     2.2
+    ],
+    [
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6,
+     2.6
+    ],
+    [
+     1.18,
+     1.91,
+     2.64,
+     3.36,
+     4.09,
+     4.81,
+     5.54,
+     6.27,
+     6.99,
+     7.72
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     1.05,
+     1.4,
+     1.75,
+     2.1,
+     2.45,
+     2.8,
+     3.15,
+     3.5,
+     3.85,
+     4.21
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.85,
+     4.89,
+     5.93,
+     6.98,
+     8.02,
+     9.06,
+     10.1,
+     11.14,
+     12.18,
+     13.22
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "R&D 샷",
+    "en": "R&D Shot",
+    "ja": "R&Dショット"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 {1}기에게\n[최종 공격력 {2}% 버스트 스킬 대미지]",
+    "en": "■ Affects {1} enemy unit(s) with the highest final DEF. \nDeals {2}% of final ATK as Burst Skill damage.",
+    "ja": "■最終防御力が最も高い敵{1}機に\n「最終攻撃力の{2}％の\nバーストスキルダメージ」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     404.08,
+     440.81,
+     477.55,
+     514.28,
+     551.02,
+     587.75,
+     624.48,
+     661.22,
+     697.95,
+     734.69
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "2179a03740b4"
+}

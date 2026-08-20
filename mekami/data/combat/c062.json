@@ -1,0 +1,257 @@
+{
+ "rid": 62,
+ "name": {
+  "ko": "미카 : 스노우 버디",
+  "en": "Mica: Snow Buddy",
+  "ja": "ミカ：スノーバディ"
+ },
+ "nameCode": 5104,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "LittleCannon",
+ "element": "Iron",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 11.7,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 2.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "정리정돈",
+    "en": "Tidying Up",
+    "ja": "整理整頓"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 아군 전체에게\n[정리정돈 : 받는 대미지 {2}% ▼] [{3} 중첩] [{4}초 유지]\n■ 자신이 정리정돈 최대 중첩 상태라면 아군 전체에게\n[최대 장탄 수 {5}% ▲] [지속]",
+    "en": "■ Activates after landing {1} normal attacks. Affects all allies. \nTidying Up: Damage Taken ▼ {2}%. Stacks up to {3} times and lasts for {4} sec.\n■ Activates when Tidying Up is at max stacks. Affects all allies.\nMax Ammunition Capacity ▲ {5}% continuously.",
+    "ja": "■通常攻撃が{1}回命中した時、味方全体に\n「整理整頓：受けるダメージ{2}％▼」\n「{3}スタック」「{4}秒間維持」\n■自分が整理整頓のフルスタック状態なら、味方全体に「最大装弾数{5}％▲」「持続」"
+   },
+   "values": [
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     1.1,
+     1.2,
+     1.3,
+     1.4,
+     1.5,
+     1.6,
+     1.7,
+     1.8,
+     1.9,
+     2.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     22.0,
+     24.0,
+     26.0,
+     28.0,
+     30.0,
+     32.0,
+     34.0,
+     36.0,
+     38.0,
+     40.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "응원의 축포",
+    "en": "Blessing Cannon",
+    "ja": "応援の祝砲"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 아군 전체에게\n[중첩 가능 이로운 효과 중첩량 {2}개 ▲]\n■ 전투 시작 시 자신에게\n[버스트 게이지 충전 속도 {3}% ▲] [지속]",
+    "en": "■ Activates after landing {1} normal attacks. Affects all allies.\nIncreases the stack count of stackable buffs by {2}.\n■ Activates at the start of battle. Affects self.\nBurst Gauge filling speed ▲ {3}% continuously.",
+    "ja": "■通常攻撃が{1}回命中した時、味方全体に\n「スタック可能バフ効果のスタック量{2}個▲」\n■戦闘開始時、自分に\n「バーストゲージのチャージ速度{3}％▲」\n「持続」"
+   },
+   "values": [
+    [
+     220.0,
+     212.0,
+     204.0,
+     196.0,
+     189.0,
+     181.0,
+     173.0,
+     165.0,
+     157.0,
+     150.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     120.0,
+     140.0,
+     160.0,
+     180.0,
+     200.0,
+     220.0,
+     240.0,
+     260.0,
+     280.0,
+     300.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "설온제",
+    "en": "Snowfield Festival",
+    "ja": "雪見温泉祭り"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[해로운 효과 해제 {1}개]\n[시전자 기준 공격력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects all allies.\nRemoves {1} debuff(s).\nATK ▲ {2}% of the skill user's ATK for {3} sec.",
+    "ja": "■味方全体に\n「デバフ効果解除{1}個」\n「スキル発動者基準で攻撃力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     23.59,
+     25.41,
+     27.22,
+     29.04,
+     30.85,
+     32.67,
+     34.49,
+     36.3,
+     38.12,
+     39.93
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "f5f84cf746e0"
+}

@@ -1,0 +1,51 @@
+{
+  "rid": 802,
+  "name": "히메노",
+  "textHash": "0f1e532dd0df",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 차지 공격 명중 시 대상에게",
+      "on": "fullChargeHit",
+      "to": "enemy",
+      "apply": [
+        {
+          "stat": "defPct",
+          "v": 1,
+          "dir": "down",
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "자신을 제외한 최종 공격력이 가장 높은 아군 {1}기에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "chargeDmg",
+          "v": 2,
+          "dur": {
+            "v": 3
+          }
+        },
+        {
+          "stat": "critRate",
+          "v": 4,
+          "dur": {
+            "v": 5
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s2] ■ 스나이퍼 라이플 소지 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]\n[최대 장탄 수 {3}발 ▲] [{4}초 유지]"
+  ]
+}

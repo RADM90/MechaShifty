@@ -1,0 +1,197 @@
+{
+ "rid": 305,
+ "name": {
+  "ko": "iDoll 오션",
+  "en": "iDoll Ocean",
+  "ja": "I-DOLL・オーシャン"
+ },
+ "nameCode": 1018,
+ "rarity": "R",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "Replace",
+ "element": "Water",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 8.73,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 1.5,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "오션 샤워",
+    "en": "Ocean Shower",
+    "ja": "オーシャンシャワー"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 남은 체력 비율이 가장 낮은 아군 {1}기에게 \n[시전자의 최종 최대 체력 비례 {2}% 회복]",
+    "en": "■ Activates when the last bullet hits the target. Affects the {1} ally unit(s) with the lowest HP percentage. \nRestores HP equal to {2}% of the skill user's final max HP.",
+    "ja": "■最後の弾丸が命中した時、残りのHPの割合が最も低い味方{1}機に\n「スキル発動者の最終最大HPの{2}％回復」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.21,
+     1.62,
+     2.02,
+     2.43,
+     2.83,
+     3.24,
+     3.64,
+     4.05,
+     4.45,
+     4.86
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "오션 클렌징",
+    "en": "Ocean Cleansing",
+    "ja": "オーシャンクレンジング"
+   },
+   "text": {
+    "ko": "■ 남은 체력 비율이 가장 낮은 아군 {1}기에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
+    "en": "■ Affects the {1} ally unit(s) with the lowest HP percentage. \nRestores HP equal to {2}% of the skill user's final max HP.",
+    "ja": "■残りのHPの割合が最も低い味方{1}機に\n「スキル発動者の最終最大HPの{2}％回復」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.42,
+     3.23,
+     4.03,
+     4.84,
+     5.65,
+     6.46,
+     7.26,
+     8.07,
+     8.88,
+     9.69
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "오션 다이브",
+    "en": "Ocean Dive",
+    "ja": "オーシャンダイブ"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
+    "en": "■ Affects all allies. \nRestores HP equal to {2}% of the skill user's final max HP.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{2}％回復」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     7.42,
+     9.9,
+     12.37,
+     14.85,
+     17.32,
+     19.8,
+     22.27,
+     24.75,
+     27.22,
+     29.7
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "74b4bc99fa32"
+}

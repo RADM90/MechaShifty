@@ -1,0 +1,209 @@
+{
+ "rid": 842,
+ "name": {
+  "ko": "클레어",
+  "en": "Claire",
+  "ja": "クレア"
+ },
+ "nameCode": 3017,
+ "rarity": "SR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE007",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "녹색 약초",
+    "en": "Green Herb",
+    "ja": "グリーンハーブ"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 {1}회 명중 시 최종 공격력이 가장 높은 아군 {2}기에게\n[녹색 허브 : 시전자의 최종 최대 체력 비례 {3}% 회복]",
+    "en": "■ Activates after landing {1} Full Charge attacks. Affects {2} ally unit(s) with the highest final ATK.\nGreen Herb: Restores HP equal to {3}% of the skill user's final max HP.",
+    "ja": "■フルチャージ攻撃が{1}回命中した時、\n最終攻撃力が最も高い味方{2}機に\n「グリーンハーブ：スキル発動者の\n最終最大HPの{3}％回復」"
+   },
+   "values": [
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.26,
+     1.44,
+     1.62,
+     1.79,
+     1.97,
+     2.15,
+     2.33,
+     2.5,
+     2.68,
+     2.86
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "임시 바리케이드",
+    "en": "Temporary Barricade",
+    "ja": "応急バリケード"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 아군 전체에게\n[푸른 허브 : 시전자의 최종 최대 체력 비례 {1}% 보호막] [{2}초 유지]",
+    "en": "■ Activates when using Burst Skill. Affects all allies.\nBlue Herb: Creates a shield with HP equal to {1}% of the skill user's final max HP that lasts for {2} sec.",
+    "ja": "■バーストスキルを使用した時、味方全体に\n「ブルーハーブ：スキル発動者の\n最終最大HPの{1}％のバリア」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     4.43,
+     5.06,
+     5.7,
+     6.33,
+     6.96,
+     7.6,
+     8.23,
+     8.87,
+     9.5,
+     10.13
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "R+G+B",
+    "en": "R+G+B",
+    "ja": "R+G+B"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 회복]\n[해로운 효과 해제 {2}개]",
+    "en": "■ Affects all allies.\nRestores {1}% of the skill user's final max HP.\nRemoves {2} debuff(s).",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの\n{1}％回復」\n「デバフ効果解除{2}個」"
+   },
+   "values": [
+    [
+     14.96,
+     17.12,
+     19.27,
+     21.43,
+     23.58,
+     25.74,
+     27.89,
+     30.04,
+     32.2,
+     34.35
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "fdce9fa65554"
+}

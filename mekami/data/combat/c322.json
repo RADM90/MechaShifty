@@ -1,0 +1,404 @@
+{
+ "rid": 322,
+ "name": {
+  "ko": "마르차나 : 마린 스터디",
+  "en": "Marciana: Marine Study",
+  "ja": "マルチャーナ：マリンスタディ"
+ },
+ "nameCode": 5176,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Akademeia",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "이머전시 휘슬",
+    "en": "Emergency Whistle",
+    "ja": "エマージェンシー・ホイッスル"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 직전에 자신이 버스트 스킬을 사용했다면 최종 최대 체력이 가장 높은 적 {1}기에게\n[경계 대상 지정] : \n효과 1 : [최종 공격력 {2}% 추가 대미지]\n효과 2 : 대상 생존 시 [경계 대상 : 공격력 {3}% ▼] [{4}초 유지]\n■ 적 사망 시 대상이 경계 대상 상태라면 무작위 적 {1}기에게\n[경계 대상 지정] : \n효과 1 : [최종 공격력 {2}% 추가 대미지]\n효과 2 : 대상 생존 시 [경계 대상 : 공격력 {3}% ▼] [{4}초 유지]\n■ 일반 공격 {8}회 명중 시 대상이 고위험 대상 상태라면 대상에게\n[최종 공격력 {9}% 추가 대미지]",
+    "en": "■ Activates when entering Full Burst after this unit uses her Burst Skill. Affects the {1} enemy unit(s) with the highest final max HP.\nFlagged Target Designation\nEffect 1: Deals {2}% of final ATK as additional damage.\nEffect 2: Activates when the target is alive.\nFlagged Target: ATK ▼ {3}% for {4} sec.\n■ Activates when an enemy is neutralized if the target is in the Flagged Target state. Affects {1} random enemy unit(s).\nFlagged Target Designation\nEffect 1: Deals {2}% of final ATK as additional damage.\nEffect 2: Activates when the target is alive.\nFlagged Target: ATK ▼ {3}% for {4} sec.\n■ Activates after landing {8} normal attacks against a target in the High-Risk Target state. Affects the target.\nDeals {9}% of final ATK as additional damage.",
+    "ja": "■フルバーストタイムが発動した時、直前に自分がバーストスキルを使用していれば最終最大HPが最も高い敵{1}機に\n「警戒対象指定」： \n効果1：「最終攻撃力の{2}％の追加ダメージ」\n効果2：対象が生存している時、「警戒対象：攻撃力{3}％▼」「{4}秒間維持」\n■敵が破壊された時、\n対象が警戒対象状態なら、ランダムな敵{1}機に\n「警戒対象指定」： \n効果1：「最終攻撃力の{2}％の追加ダメージ」\n効果2：対象が生存している時、「警戒対象：攻撃力{3}％▼」「{4}秒間維持」\n■通常攻撃が{8}回命中した時、対象が高リスク対象状態なら、対象に\n「最終攻撃力の{9}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2239.1,
+     2411.34,
+     2583.57,
+     2755.81,
+     2928.05,
+     3100.29,
+     3272.53,
+     3444.77,
+     3617.01,
+     3789.25
+    ],
+    [
+     6.24,
+     6.72,
+     7.2,
+     7.68,
+     8.16,
+     8.64,
+     9.12,
+     9.59,
+     10.08,
+     10.56
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    null,
+    null,
+    null,
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     96.82,
+     103.03,
+     109.24,
+     115.44,
+     121.65,
+     127.86,
+     134.06,
+     140.27,
+     146.48,
+     152.68
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "펭군 긴급 출동",
+    "en": "Penguin Emergency Dispatch",
+    "ja": "ペンくん緊急出動"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[휘슬 : 공격력 {1}% ▲] [{2} 중첩] [지속]\n[휘슬 중첩량 {3}개 ▲]\n■ 랩쳐가 {4}기 이하인 상태가 {5}초간 유지될 때마다 자신에게\n[휘슬 : 공격력 {1}% ▲] [{2} 중첩] [지속]\n■ 랩쳐가 {6}기 이상인 상태가 {7}초간 유지될 때마다\n[펭군 긴급 출동] : \n기능 : 랩쳐가 {6}기 이상일 때 휘슬을 소모하여 긴급하게 랩쳐를 공격합니다.\n효과 1 : 적 전체에게 [최종 공격력 {8}% 추가 대미지]\n효과 2 : 자신에게 [휘슬 중첩량 {9}개 ▼]\n■ 랩쳐 등장 시와 사망 시 랩쳐가 {10}기 이하인 상태에 한하여 자신에게\n[우월 코드 공격 대미지 {11}% ▲] [지속]",
+    "en": "■ Activates at the start of battle. Affects self.\nWhistle: ATK ▲ {1}% continuously. Stacks up to {2} times.\nWhistle stacks ▲ {3}.\n■ Activates every time there are {4} or fewer Raptures present for a period of {5} sec. Affects self.\nWhistle: ATK ▲ {1}% continuously. Stacks up to {2} times.\n■ Activates every time there are {6} or more Raptures present for a period of {7} sec.\nPenguin Emergency Dispatch\nFunction: Expends Whistle stacks to attack Raptures when there are {6} or more present.\nEffect 1: Affects all enemies. Deals {8}% of final ATK as additional damage.\nEffect 2: Affects self. Whistle stacks ▼ {9}.\n■ Only activates when a Rapture appears or is neutralized while there are {10} or fewer Raptures. Affects self.\nElemental Advantage Attack Damage ▲ {11}% continuously.",
+    "ja": "■戦闘開始時、自分に\n「ホイッスル：攻撃力{1}％▲」「{2}スタック」「持続」\n「ホイッスルスタック量{3}個▲」\n■ラプチャーが{4}機以下の状態を{5}秒間維持するたび、自分に\n「ホイッスル：攻撃力{1}％▲」「{2}スタック」「持続」\n■ラプチャーが{6}機以上の状態を{7}秒間維持するたび\n「ペンくん緊急出動」：\n機能：ラプチャーが{6}機以上の時、ホイッスルを消費し、緊急でラプチャーを攻撃する\n効果1：敵全体に「最終攻撃力の{8}％の\n追加ダメージ」\n効果2：自分に\n「ホイッスルスタック量{9}個▼」\n■ラプチャーが出現または破壊された時、ラプチャーが{10}機以下の場合、自分に\n「有利コードの攻撃ダメージ{11}％▲」「持続」"
+   },
+   "values": [
+    [
+     19.34,
+     20.83,
+     22.32,
+     23.8,
+     25.29,
+     26.78,
+     28.27,
+     29.76,
+     31.24,
+     32.73
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     126.67,
+     136.41,
+     146.16,
+     155.9,
+     165.64,
+     175.39,
+     185.13,
+     194.88,
+     204.62,
+     214.36
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     12.06,
+     12.99,
+     13.92,
+     14.84,
+     15.77,
+     16.7,
+     17.63,
+     18.56,
+     19.48,
+     20.41
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "펭군 스파이럴",
+    "en": "Penguin Spiral",
+    "ja": "ペンくんスパイラル"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[우월 코드 공격 대미지 {1}% ▲] [{2}초 유지]\n[공격 대미지 {3}% ▲] [{4}초 유지]\n■ 전격 코드 적 전체에게\n[고위험 대상 : 방어력 {5}% ▼] [{6}초 유지]",
+    "en": "■ Affects self.\nElemental Advantage Attack Damage ▲ {1}% for {2} sec.\nAttack Damage ▲ {3}% for {4} sec.\n■ Affects all Electric Code enemies.\nHigh-Risk Target: DEF ▼ {5}% for {6} sec.",
+    "ja": "■自分に\n「有利コードの攻撃ダメージ{1}％▲」「{2}秒間維持」\n「攻撃ダメージ{3}％▲」「{4}秒間維持」\n■電撃コードの敵全体に\n「高リスク対象：防御力{5}％▼」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     18.3,
+     19.71,
+     21.12,
+     22.52,
+     23.93,
+     25.34,
+     26.75,
+     28.16,
+     29.56,
+     30.97
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     16.22,
+     17.47,
+     18.72,
+     19.96,
+     21.21,
+     22.46,
+     23.71,
+     24.96,
+     26.2,
+     27.45
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     6.24,
+     6.72,
+     7.2,
+     7.68,
+     8.16,
+     8.64,
+     9.12,
+     9.59,
+     10.08,
+     10.56
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "858349c17b85"
+}

@@ -1,0 +1,209 @@
+{
+ "rid": 300,
+ "name": {
+  "ko": "솔져 E.G.",
+  "en": "Soldier EG",
+  "ja": "ソルジャーE.G."
+ },
+ "nameCode": 1013,
+ "rarity": "R",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Replace",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 14.01,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.17,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "이글 아이",
+    "en": "Eagle Eye",
+    "ja": "イーグルアイ"
+   },
+   "text": {
+    "ko": "■ 일반 공격 명중 시 {3}% 확률로 자신에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ There is a {3}% chance of activating after landing a normal attack. Affects self.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■通常攻撃が命中した時、{3}％の確率で自分に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     1.98,
+     2.64,
+     3.3,
+     3.96,
+     4.62,
+     5.28,
+     5.94,
+     6.59,
+     7.26,
+     7.92
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "이글 택틱",
+    "en": "Eagle's Gambit",
+    "ja": "イーグルタクティク"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[최대 장탄 수 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects self.\nMax Ammunition Capacity ▲ {1}% for {2} sec.",
+    "ja": "■自分に\n「最大装弾数{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     28.19,
+     37.59,
+     46.99,
+     56.38,
+     65.78,
+     75.18,
+     84.58,
+     93.98,
+     103.37,
+     112.77
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "이글 샷",
+    "en": "Eagle Shot",
+    "ja": "イーグルショット"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {2}% 대미지]",
+    "en": "■ Affects enemies within attack range. \nDeals {2}% of final ATK as damage.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{2}％のダメージ」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     180.0,
+     240.0,
+     300.0,
+     360.0,
+     420.0,
+     480.0,
+     540.0,
+     600.0,
+     660.0,
+     720.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "3bcac73a81a6"
+}

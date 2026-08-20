@@ -1,0 +1,233 @@
+{
+ "rid": 302,
+ "name": {
+  "ko": "프로덕트 08",
+  "en": "Product 08",
+  "ja": "プロダクト08"
+ },
+ "nameCode": 1015,
+ "rarity": "R",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "Replace",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Bio",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "전술 : 장갑 보강",
+    "en": "Tactic: Enhance Armor",
+    "ja": "戦術：装甲補強"
+   },
+   "text": {
+    "ko": "■ 일반 공격 명중 시 {4}% 확률로 남은 체력 수치가 가장 낮은 아군 {1}기에게\n[방어력 {2}% ▲] [{3}초 유지]",
+    "en": "■ There is a {4}% chance of activating after landing a normal attack. Affects the {1} ally unit(s) with the lowest remaining HP.\nDEF ▲ {2}% for {3} sec.",
+    "ja": "■通常攻撃が命中した時、{4}％の確率で\n残りのHPの数値が最も低い味方{1}機に\n「防御力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.27,
+     3.03,
+     3.78,
+     4.54,
+     5.3,
+     6.06,
+     6.81,
+     7.57,
+     8.33,
+     9.09
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "전술 : 정밀 사격",
+    "en": "Tactic: Crack Shot",
+    "ja": "戦術：精密射撃"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 아군 {1}기에게\n[크리티컬 확률 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects {1} ally unit(s) with the highest final ATK. \nCritical Rate ▲ {2}% for {3} sec.",
+    "ja": "■最終攻撃力が最も高い味方{1}機に\n「クリティカル確率{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     5.74,
+     7.66,
+     9.58,
+     11.49,
+     13.41,
+     15.32,
+     17.24,
+     19.16,
+     21.07,
+     22.99
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "전술 : 출력 상승",
+    "en": "Tactic: Power Boost",
+    "ja": "戦術：出力上昇"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects all allies.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■味方全体に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     4.84,
+     6.46,
+     8.08,
+     9.69,
+     11.31,
+     12.93,
+     14.54,
+     16.16,
+     17.77,
+     19.39
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ca73981bb085"
+}

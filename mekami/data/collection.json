@@ -1,0 +1,605 @@
+{
+ "note": "무기군별 소장품. 값 배열의 인덱스는 data/raw/collection_stat.json 의 skill1/skill2 열에서 온다 (소장품 SR15 -> 4, 4).",
+ "byWeapon": {
+  "AR": {
+   "R": {
+    "tid": 100101,
+    "name": {
+     "ko": "요리 지휘관 인형",
+     "en": "Cooking Commander Doll",
+     "ja": "お料理指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[코어 대미지 {1}% ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage dealt when attacking core ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「コアダメージ{1}％▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        5.67,
+        7.94,
+        10.22,
+        12.49
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100102,
+    "name": {
+     "ko": "요리 지휘관 인형 Ltd.",
+     "en": "Cooking Commander Doll Ltd.",
+     "ja": "お料理指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[코어 대미지 {1}% ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage dealt when attacking core ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「コアダメージ{1}％▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        10.22,
+        12.49,
+        14.77,
+        17.04
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "MG": {
+   "R": {
+    "tid": 100201,
+    "name": {
+     "ko": "쇼핑 지휘관 인형",
+     "en": "Shopping Commander Doll",
+     "ja": "お買い物指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[최대 장탄 수 {1}% ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nMax Ammunition Capacity ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「最大装弾数{1}％▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        1.56,
+        3.15,
+        4.74,
+        6.32
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100202,
+    "name": {
+     "ko": "쇼핑 지휘관 인형 Ltd.",
+     "en": "Shopping Commander Doll Ltd.",
+     "ja": "お買い物指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[최대 장탄 수 {1}% ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nMax Ammunition Capacity ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「最大装弾数{1}％▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        4.74,
+        6.32,
+        7.91,
+        9.5
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "RL": {
+   "R": {
+    "tid": 100301,
+    "name": {
+     "ko": "운동 지휘관 인형",
+     "en": "Exercising Commander Doll",
+     "ja": "運動指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[차지 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nCharge Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「チャージダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        1.58,
+        3.16,
+        4.74,
+        6.31
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100302,
+    "name": {
+     "ko": "운동 지휘관 인형 Ltd.",
+     "en": "Exercising Commander Doll Ltd.",
+     "ja": "運動指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[차지 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nCharge Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「チャージダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        4.74,
+        6.31,
+        7.89,
+        9.47
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "SG": {
+   "R": {
+    "tid": 100401,
+    "name": {
+     "ko": "전투 지휘관 인형",
+     "en": "Battling Commander Doll",
+     "ja": "戦闘指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[일반 공격 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nNormal Attack Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「通常攻撃ダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        1.57,
+        3.15,
+        4.73,
+        6.3
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100402,
+    "name": {
+     "ko": "전투 지휘관 인형 Ltd.",
+     "en": "Battling Commander Doll Ltd.",
+     "ja": "戦闘指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[일반 공격 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nNormal Attack Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「通常攻撃ダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        4.73,
+        6.3,
+        7.88,
+        9.46
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "SMG": {
+   "R": {
+    "tid": 100501,
+    "name": {
+     "ko": "커피 지휘관 인형",
+     "en": "Coffee Commander Doll",
+     "ja": "コーヒー指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[일반 공격 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nNormal Attack Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「通常攻撃ダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        1.57,
+        3.15,
+        4.73,
+        6.3
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100502,
+    "name": {
+     "ko": "커피 지휘관 인형 Ltd.",
+     "en": "Coffee Commander Doll Ltd.",
+     "ja": "コーヒー指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[일반 공격 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nNormal Attack Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「通常攻撃ダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        4.73,
+        6.3,
+        7.88,
+        9.46
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  },
+  "SR": {
+   "R": {
+    "tid": 100601,
+    "name": {
+     "ko": "낮잠 지휘관 인형",
+     "en": "Napping Commander Doll",
+     "ja": "お昼寝指揮官のぬいぐるみ"
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[차지 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nCharge Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「チャージダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        1.58,
+        3.16,
+        4.74,
+        6.31
+       ],
+       [
+        25.0,
+        28.0,
+        30.0,
+        32.0
+       ]
+      ]
+     }
+    ]
+   },
+   "SR": {
+    "tid": 100602,
+    "name": {
+     "ko": "낮잠 지휘관 인형 Ltd.",
+     "en": "Napping Commander Doll Ltd.",
+     "ja": "お昼寝指揮官のぬいぐるみLtd."
+    },
+    "skills": [
+     {
+      "name": {
+       "ko": "용기를 주는 시선",
+       "en": "Gaze of Courage",
+       "ja": "エンカレジメント"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[차지 대미지 {1}% 배율 ▲]\n[방어력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nCharge Damage Multiplier ▲ {1}%.\nDEF ▲ {2}%.",
+       "ja": "■戦闘開始時\n「チャージダメージ{1}％倍率▲」\n「防御力{2}％▲」"
+      },
+      "values": [
+       [
+        4.74,
+        6.31,
+        7.89,
+        9.47
+       ],
+       [
+        30.0,
+        32.0,
+        35.0,
+        37.0
+       ]
+      ]
+     },
+     {
+      "name": {
+       "ko": "마음의 버팀목",
+       "en": "Grounding Pillar",
+       "ja": "メンタルサポート"
+      },
+      "text": {
+       "ko": "■ 전투 시작 시\n[받는 대미지 {1}% ▼]\n[엄폐물 최대 체력 {2}% ▲]",
+       "en": "■ Activates at the start of battle. \nDamage Taken ▼ {1}%.\nMax HP of cover ▲ {2}%.",
+       "ja": "■戦闘開始時\n「受けるダメージ{1}％▼」\n「遮蔽物最大HP{2}％▲」"
+      },
+      "values": [
+       [
+        10.0,
+        12.0,
+        14.0,
+        17.0
+       ],
+       [
+        12.0,
+        18.0,
+        24.0,
+        30.0
+       ]
+      ]
+     }
+    ]
+   }
+  }
+ }
+}

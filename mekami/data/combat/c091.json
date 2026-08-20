@@ -1,0 +1,269 @@
+{
+ "rid": 91,
+ "name": {
+  "ko": "베스티",
+  "en": "Vesti",
+  "ja": "ベスティー"
+ },
+ "nameCode": 5022,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Absolute",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 5.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "상상실현",
+    "en": "Dreams Do Come True",
+    "ja": "想像の実現"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 자신에게\n[폭발 범위 {1}% ▲] [{2}초 유지]",
+    "en": "■ Activates when performing a Full Charge attack. Affects self.\nExplosion Radius ▲ {1}% for {2} sec.",
+    "ja": "■フルチャージして攻撃した時、自分に\n「爆発範囲{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     8.87,
+     9.55,
+     10.23,
+     10.92,
+     11.6,
+     12.28,
+     12.96,
+     13.65,
+     14.33,
+     15.01
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "생존본능",
+    "en": "Survival Instinct",
+    "ja": "生存本能"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신에게\n[사용 횟수 별 추가 효과] [하위 효과 중복 적용]\n1 회 : [생존본능 1: 공격력 {1}% ▲] [{2}초 유지]\n2 회 : [생존본능 2: 크리티컬 대미지 {3}% ▲] [{4}초 유지]\n3 회 : [생존본능 3: 크리티컬 확률 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates when using Burst Skill. Affects self.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: Survival Instinct 1 - ATK ▲ {1}% for {2} sec.\nTwice: Survival Instinct 2 - Critical Damage ▲ {3}% for {4} sec.\nThree times: Survival Instinct 3 - Critical Rate ▲ {5}% for {6} sec.",
+    "ja": "■バーストスキルを使用した時、自分に\n「使用回数別の追加効果」\n「下位効果のスタック適用」\n1回：「生存本能1：攻撃力{1}％▲」\n「{2}秒間維持」\n2回：「生存本能2：クリティカルダメージ\n{3}％▲」「{4}秒間維持」\n3回：「生存本能3：クリティカル確率\n{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     3.16,
+     3.4,
+     3.64,
+     3.89,
+     4.13,
+     4.37,
+     4.62,
+     4.86,
+     5.1,
+     5.35
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ],
+    [
+     13.2,
+     14.21,
+     15.23,
+     16.24,
+     17.26,
+     18.27,
+     19.29,
+     20.31,
+     21.32,
+     22.34
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ],
+    [
+     9.17,
+     9.87,
+     10.58,
+     11.28,
+     11.99,
+     12.69,
+     13.4,
+     14.1,
+     14.81,
+     15.51
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "정당방위",
+    "en": "Justifiable Defense",
+    "ja": "正当防衛"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[미사일 컨테이너 2기 호출] :\n기능 : 남은 체력 수치가 가장 낮은 적에게 최종 공격력 {1}% 대미지\n공격 간격 : 1초\n유지 시간 : 18초\n■ 적 전체에게\n[생존본능 단계 별 추가 효과] [하위 효과 중복 적용] :\n생존본능 1 : [최종 공격력 {2}% 추가 대미지]\n생존본능 2 : [최종 공격력 {3}% 추가 대미지]\n생존본능 3 : [최종 공격력 {4}% 추가 대미지]\n■ 아군 전체에게\n[풀 버스트 타임 지속 시간 5초 ▼]",
+    "en": "■ Affects self.\nDeploys two Missile Containers that deal {1}% of final ATK as damage to the enemy with the lowest remaining HP every second for 18 sec.\n■ Affects all enemies.\nEffects vary for each stage of Survival Instinct. Each subsequent effect triggers all effects before it:\nSurvival Instinct 1: Deals {2}% of final ATK as additional damage.\nSurvival Instinct 2: Deals {3}% of final ATK as additional damage.\nSurvival Instinct 3: Deals {4}% of final ATK as additional damage.\n■ Affects all allies.\nFull Burst Duration ▼ 5 sec.",
+    "ja": "■自分に\n「ミサイルコンテナ2機呼び出し」：\n機能：残りのHPの数値が最も低い敵に最終攻撃力の{1}％のダメージ\n攻撃間隔：1秒\n維持時間：18秒\n■敵全体に\n「生存本能段階別の追加効果」「下位効果のスタック適用」：\n生存本能1：\n「最終攻撃力の{2}％の追加ダメージ」\n生存本能2：\n「最終攻撃力の{3}％の追加ダメージ」\n生存本能3：「最終攻撃力の{4}％の追加ダメージ」■味方全体に「フルバーストタイム5秒▼」"
+   },
+   "values": [
+    [
+     9.19,
+     9.9,
+     10.61,
+     11.32,
+     12.02,
+     12.73,
+     13.44,
+     14.15,
+     14.86,
+     15.56
+    ],
+    [
+     124.45,
+     134.03,
+     143.6,
+     153.18,
+     162.75,
+     172.32,
+     181.9,
+     191.47,
+     201.04,
+     210.62
+    ],
+    [
+     146.1,
+     157.34,
+     168.58,
+     179.82,
+     191.05,
+     202.29,
+     213.53,
+     224.77,
+     236.01,
+     247.25
+    ],
+    [
+     178.57,
+     192.3,
+     206.04,
+     219.78,
+     233.51,
+     247.25,
+     260.98,
+     274.72,
+     288.46,
+     302.19
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "407791e48f1e"
+}

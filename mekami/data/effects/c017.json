@@ -1,0 +1,215 @@
+{
+  "rid": 17,
+  "name": "아니스 : 스타",
+  "textHash": "c138769fbd2f",
+  "confidence": "관측",
+  "note": "스쿼드에 다른 Step1 이 있느냐로 '나만의 별'과 '모두의 별'이 갈린다. 이 5인에서는 아니스가 유일한 Step1 이라 언제나 나만의 별이다.",
+  "s1": [
+    {
+      "note": "전투 시작 시 아군 전체 버스트 게이지 충전 속도 ▲ [지속]",
+      "on": "battleStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstGaugeSpeed",
+          "v": 5,
+          "dur": "permanent"
+        }
+      ]
+    },
+    {
+      "note": "자신을 제외한 Step1 아군이 없다면 — 나만의 별. 공격력 ▲ 는 해제 불가라 지속.",
+      "on": "battleStart|fullBurstEnd",
+      "if": {
+        "squadHasStep1": false
+      },
+      "to": "self",
+      "clear": [
+        "모두의 별"
+      ],
+      "set": {
+        "state": "나만의 별"
+      },
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 2,
+          "dur": "permanent"
+        }
+      ]
+    },
+    {
+      "note": "같은 조건에서 아군 전체 버스트 재사용 시간 ▼. 버프가 아니라 남은 쿨타임을 그 자리에서 깎는다.",
+      "on": "battleStart|fullBurstEnd",
+      "if": {
+        "squadHasStep1": false
+      },
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstCooldown",
+          "v": 3,
+          "dir": "down",
+          "unit": "sec"
+        }
+      ]
+    },
+    {
+      "note": "Step1 아군이 있다면 — 모두의 별. 버스트 재진입은 미반영이라 상태만 세운다.",
+      "on": "battleStart|fullBurstEnd",
+      "if": {
+        "squadHasStep1": true
+      },
+      "to": "self",
+      "clear": [
+        "나만의 별"
+      ],
+      "set": {
+        "state": "모두의 별",
+        "step": 1
+      }
+    },
+    {
+      "note": "풀 차지 공격 명중 시 추가 대미지. RL 은 자동 조작이면 매 발이 풀차지다. 추가 대미지는 이미 나간 총알에 얹히는 판정이라 버스트 게이지를 따로 벌지 않는다.",
+      "on": "fullChargeHit",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 4
+        },
+        "kind": "skill",
+        "label": "1스킬 풀차지 추가",
+        "gauge": false
+      }
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 버스트 시작 시 나만의 별이면 아군 전체 시전자 기준 공격력 ▲",
+      "on": "fullBurstStart",
+      "if": {
+        "selfState": "나만의 별"
+      },
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "atkFromCaster",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 차지 시 모두의 별이면 아군 회복. 이 스쿼드에서는 안 걸리지만 조건이 바뀌면 산다.",
+      "on": "fullChargeHit",
+      "if": {
+        "selfState": "모두의 별"
+      },
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "heal",
+          "v": 3
+        }
+      ]
+    },
+    {
+      "note": "자신과 자신보다 최종 방어력이 낮은 아군에게 발사체 폭발 대미지 ▲. 폭발 무기(RL)의 평타에 걸린다.",
+      "on": "fullBurstStart",
+      "to": "alliesLowerDef",
+      "apply": [
+        {
+          "stat": "explosionDmg",
+          "v": 4,
+          "dur": {
+            "v": 5
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 버스트 시작 시 아군 전체 공격 대미지 ▲",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 6,
+          "dur": {
+            "v": 7
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "슈팅 스타 — 최종 공격력 40.01% 를 0.25초 간격으로 10초간. 40대를 한꺼번에 때리면 풀버스트 구간이 어긋나 간격을 두고 편다.",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 1
+        },
+        "kind": "skill",
+        "times": 40,
+        "every": {
+          "n": 0.25
+        },
+        "label": "버스트 슈팅 스타"
+      }
+    },
+    {
+      "note": "차지 시간 0.7초로 고정 + 폭발 범위 ▲ + 방어력 ▲, 10초 유지",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "chargeTimeFix",
+          "v": 10,
+          "dur": {
+            "v": 2
+          }
+        },
+        {
+          "stat": "explosionRange",
+          "v": 3,
+          "dur": {
+            "v": 2
+          }
+        },
+        {
+          "stat": "defPct",
+          "v": 5,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "나만의 별이면 자신에게 공격 대미지 ▲",
+      "on": "burstUse",
+      "if": {
+        "selfState": "나만의 별"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 6,
+          "dur": {
+            "v": 7
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "1스킬 [모두의 별 : 버스트 재진입 1단계로 변경] — 버스트 재진입을 사이클 모형이 아직 다루지 않는다. 이 5인에서는 나만의 별이라 실제로 안 걸린다.",
+    "버스트 [모두의 별이면 아군 전체 최대 체력 15.02% ▲] — 체력은 대미지에 영향이 없다.",
+    "슈팅 스타의 '무작위 대상 자동 공격' — 적이 하나라는 전제라 언제나 그 하나를 친다."
+  ]
+}

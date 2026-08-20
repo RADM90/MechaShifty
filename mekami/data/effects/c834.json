@@ -1,0 +1,97 @@
+{
+  "rid": 834,
+  "name": "레이 (가칭)",
+  "textHash": "2a953331ecf5",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "자신이 공격 태세 상태라면 일반 공격 {4}회 명중 시 대상에게",
+      "on": "shots",
+      "if": {
+        "selfState": "공격 태세"
+      },
+      "count": {
+        "v": 4
+      },
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 5
+        },
+        "kind": "skill",
+        "gauge": false
+      }
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 버스트 타임 시작 시 직전에 버스트 스킬을 사용한 머신건 아군 전체에게",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "spinupRate",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "atkFromCaster",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        },
+        {
+          "stat": "atkFromCaster",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    },
+    {
+      "note": "적 전체에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 5
+        },
+        "kind": "burst",
+        "type": "burstSkillDmg"
+      }
+    }
+  ],
+  "unmodeled": [
+    "[s1] 조건을 못 읽어 통째로 남김: ■ 일반 공격 {1}회 명중 시 대상이 안티 AT 필드 상태라면 대상에게\n[최종 공격력 {2}% 추가 대미지]\n[안티 AT 필드 중첩량 {3}개 ▲]",
+    "[s1] 조건을 못 읽어 통째로 남김: ■ 풀 버스트 타임 시작 시 섬멸 태세 상태인 아군 전체에게\n[섬멸 태세 추가 효과 적용 대상 {6} ▲] [{7}초 유지]\n[섬멸 태세 추가 효과 공격 범위 {8}% ▲] [{9}초 유지]\n[시전자 기준 공격력 {10}% ▲] [{11}초 유지]",
+    "[burst] 공격 태세"
+  ]
+}

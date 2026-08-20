@@ -1,0 +1,257 @@
+{
+ "rid": 33,
+ "name": {
+  "ko": "키리",
+  "en": "Quiry",
+  "ja": "キリ"
+ },
+ "nameCode": 5082,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "ACPU",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "곁눈질",
+    "en": "Glance",
+    "ja": "のぞき見"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 대상에게\n[시전자 기준 공격력 {1}% ▼] [{2}초 유지]\n■ 풀 차지 공격 시 방어형 아군 {3}기에게\n[시전자 기준 공격력 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when hitting a target with Full Charge. Affects the target.\nATK ▼ {1}% of the skill user's ATK for {2} sec.\n■ Activates when attacking with Full Charge. Affects {3} Defender ally unit(s).\nATK ▲ {4}% of the skill user's ATK for {5} sec.",
+    "ja": "■フルチャージ攻撃が命中した時、対象に\n「スキル発動者基準で攻撃力{1}％▼」「{2}秒間維持」\n■フルチャージして攻撃した時、防御型の味方{3}機に\n「スキル発動者基準で攻撃力{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     5.28,
+     5.69,
+     6.1,
+     6.5,
+     6.91,
+     7.32,
+     7.72,
+     8.13,
+     8.54,
+     8.94
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     3.43,
+     3.7,
+     3.96,
+     4.23,
+     4.49,
+     4.75,
+     5.02,
+     5.28,
+     5.55,
+     5.81
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "훑어보기",
+    "en": "Scrutiny",
+    "ja": "見渡し"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 방어형 아군 {1}기에게\n[최대 체력 {2}% ▲] [지속]",
+    "en": "■ Activates at the start of battle. Affects {1} Defender ally unit(s).\nMax HP ▲ {2}% continuously.",
+    "ja": "■戦闘開始時、防御型の味方{1}機に\n「最大HP{2}％▲」「持続」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     6.87,
+     7.4,
+     7.93,
+     8.46,
+     8.98,
+     9.51,
+     10.04,
+     10.57,
+     11.1,
+     11.63
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "꿰뚫어보기",
+    "en": "Penetrating Stare",
+    "ja": "お見通し"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 회복] [1초 간격] [{2}초 유지]\n■ 방어형 아군 전체에게\n[크리티컬 확률 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects all allies.\n Restores HP equal to {1}% of the skill user's final max HP every second for {2} sec.\n■ Affects all Defender allies.\nCritical Rate ▲ {3}% for {4} sec.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％回復」「1秒間隔」「{2}秒間維持」\n■防御型の味方全体に\n「クリティカル確率{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     4.11,
+     4.43,
+     4.75,
+     5.06,
+     5.38,
+     5.7,
+     6.01,
+     6.33,
+     6.65,
+     6.96
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     11.76,
+     12.66,
+     13.57,
+     14.47,
+     15.38,
+     16.28,
+     17.19,
+     18.09,
+     19.0,
+     19.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "83ce3a683889"
+}

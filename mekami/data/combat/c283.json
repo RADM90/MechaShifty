@@ -1,0 +1,281 @@
+{
+ "rid": 283,
+ "name": {
+  "ko": "로산나 : 시크 오션",
+  "en": "Rosanna: Chic Ocean",
+  "ja": "ロザンナ：シックオーシャン"
+ },
+ "nameCode": 5116,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "UnderworldQueen",
+ "element": "Wind",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "페리타",
+    "en": "Ferita",
+    "ja": "フェリータ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 아군 전체에게\n[파츠 대미지 {1}% ▲] [{2}초 유지]\n■ 자신을 포함한 아군 누군가 파츠 파괴 시 아군 전체에게\n[시전자 기준 공격력 {3}% ▲] [{4} 중첩] [{5}초 유지]",
+    "en": "■ Activates at the start of battle. Affects all allies.\nDamage to Parts ▲ {1}% for {2} sec.\n■ Activates when an ally or self destroys an enemy's part. Affects all allies.\nATK ▲ {3}% of the skill user's ATK, stacks up to {4} time(s) and lasts for {5} sec.",
+    "ja": "■戦闘開始時、味方全体に\n「パーツダメージ{1}％▲」 「{2}秒間維持」\n■自分を含む味方の誰かが パーツを破壊した時、 味方全体に\n「スキル発動者基準で攻撃力{3}％▲」 「{4}スタック」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     14.33,
+     15.44,
+     16.54,
+     17.64,
+     18.74,
+     19.85,
+     20.95,
+     22.05,
+     23.16,
+     24.26
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     1.77,
+     1.91,
+     2.04,
+     2.18,
+     2.32,
+     2.45,
+     2.59,
+     2.73,
+     2.86,
+     3.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "스피나 디 로사",
+    "en": "Spina di Rosa",
+    "ja": "スピーナ・ディ・ローザ"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[파츠 대미지 {1}% ▲] [{2}초 유지]\n■ 조준선에 가장 가까운 적 1기에게 \n[최종 공격력 {3}% 지속 대미지] [1초 간격] [{4}초 유지]",
+    "en": "■ Affects all allies.\nDamage to Parts ▲ {1}% for {2} sec.\n■ Affects the enemy nearest to the crosshair.\nDeals {3}% of final ATK as sustained damage every second for {4} sec.",
+    "ja": "■味方全体に\n「パーツダメージ{1}％▲」「{2}秒間維持」\n■照準線に最も近い敵1機に\n「最終攻撃力の{3}％の持続ダメージ」「1秒間隔「{4}秒間維持」"
+   },
+   "values": [
+    [
+     14.33,
+     15.44,
+     16.54,
+     17.64,
+     18.74,
+     19.85,
+     20.95,
+     22.05,
+     23.16,
+     24.26
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     41.6,
+     44.8,
+     48.0,
+     51.2,
+     54.4,
+     57.6,
+     60.8,
+     64.0,
+     67.2,
+     70.4
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "온다 그란데",
+    "en": "Onda Grande",
+    "ja": "オンダ・グランデ"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[지속 대미지 {1}% ▲] [{2}초 유지]\n■ 적 전체에게\n[받는 대미지 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects all allies.\nSustained Damage ▲ {1}% for {2} sec.\n■ Affects all enemies.\nDamage Taken ▲ {3}% for {4} sec.",
+    "ja": "■味方全体に\n「持続ダメージ{1}％▲」 「{2}秒間維持」\n■敵全体に\n「受けるダメージ{3}％▲」 「{4}秒間維持」"
+   },
+   "values": [
+    [
+     12.01,
+     12.93,
+     13.86,
+     14.78,
+     15.7,
+     16.63,
+     17.55,
+     18.48,
+     19.4,
+     20.32
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     19.04,
+     20.51,
+     21.97,
+     23.44,
+     24.9,
+     26.37,
+     27.83,
+     29.3,
+     30.76,
+     32.23
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "37afac8e89a8"
+}

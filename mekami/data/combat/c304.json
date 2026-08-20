@@ -1,0 +1,221 @@
+{
+ "rid": 304,
+ "name": {
+  "ko": "iDoll 플라워",
+  "en": "iDoll Flower",
+  "ja": "I-DOLL・フラワー"
+ },
+ "nameCode": 1017,
+ "rarity": "R",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "Replace",
+ "element": "Wind",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "플라워 리프",
+    "en": "Perennial Leaf",
+    "ja": "フラワーリーフ"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 대상에게\n[공격력 {1}% ▼] [{2}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects the target.\nATK ▼ {1}% for {2} sec.",
+    "ja": "■最後の弾丸が命中した時、対象に\n「攻撃力{1}％▼」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     4.13,
+     5.5,
+     6.88,
+     8.26,
+     9.63,
+     11.01,
+     12.39,
+     13.77,
+     15.14,
+     16.52
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "플라워 컬러",
+    "en": "Hue of the Perennial",
+    "ja": "フラワーカラー"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 적 {1}기에게\n[공격력 {2}% ▼] [{3}초 유지]",
+    "en": "■ Affects {1} enemy unit(s) with the highest final ATK.\nATK ▼ {2}% for {3} sec.",
+    "ja": "■最終攻撃力が最も高い敵{1}機に\n「攻撃力{2}％▼」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     9.84,
+     13.12,
+     16.4,
+     19.68,
+     22.96,
+     26.25,
+     29.53,
+     32.81,
+     36.09,
+     39.37
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "플라워 퍼퓸",
+    "en": "Perennial Perfume",
+    "ja": "フラワーパフュー厶"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 적 {1}기에게\n[최종 공격력 {3}% 버스트 스킬 대미지]\n[도발] [{2}초 유지]",
+    "en": "■ Affects {1} enemy unit(s) with the highest final ATK.\nDeals {3}% of final ATK as Burst Skill damage.\nTaunt for {2} sec.",
+    "ja": "■最終攻撃力が最も高い敵{1}機に\n「最終攻撃力の{3}％の\nバーストスキルダメージ」\n「挑発」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     110.2,
+     134.69,
+     159.18,
+     183.67,
+     208.16,
+     232.65,
+     257.14,
+     281.63,
+     306.12,
+     330.61
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "155ef71e8fa4"
+}

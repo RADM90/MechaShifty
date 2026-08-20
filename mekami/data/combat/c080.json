@@ -1,0 +1,490 @@
+{
+ "rid": 80,
+ "name": {
+  "ko": "센티",
+  "en": "Centi",
+  "ja": "センチ"
+ },
+ "nameCode": 5021,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "MISSILIS",
+ "squad": "MightyTools",
+ "element": "Iron",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 0.5,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 345.0,
+   "perTargetShot": 690.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "보수공사",
+    "en": "Maintain Fortification",
+    "ja": "補修工事"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 자신에게\n[스킬 2 재사용 시간 {1}% ▼]",
+    "en": "■ Activates when landing a Full Charge attack. Affects self.\nCooldown of Skill 2 ▼ {1}%.",
+    "ja": "■フルチャージ攻撃が命中した時、自分に\n「スキル2のクールタイム{1}％▼」"
+   },
+   "values": [
+    [
+     4.58,
+     5.09,
+     5.6,
+     6.11,
+     6.62,
+     7.12,
+     7.63,
+     8.14,
+     8.65,
+     9.16
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "현장검토",
+    "en": "Field Discussion",
+    "ja": "現場検討"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[시전자의 최종 최대 체력 비례 {1}% 아군 공용 보호막] [{2}초 유지]",
+    "en": "■ Affects self.\nCreates a shared shield with HP equal to {1}% of the skill user's final max HP that protects all allies from damage. Lasts for {2} sec.",
+    "ja": "■自分に\n「スキル発動者の最終最大HPの{1}％の\n味方共用バリア」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     3.19,
+     3.54,
+     3.89,
+     4.25,
+     4.6,
+     4.96,
+     5.31,
+     5.67,
+     6.02,
+     6.38
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "착공시작",
+    "en": "Start Construction",
+    "ja": "着工開始"
+   },
+   "text": {
+    "ko": "■ 남은 체력 수치가 가장 낮은 적 {1}기에게\n[최종 공격력 {2}% 대미지]\n[방어력 {3}% ▼] [{4}초 유지]",
+    "en": "■ Affects {1} enemy unit(s) with the lowest remaining HP. \nDeals {2}% of final ATK as damage.\nDEF ▼ {3}% for {4} sec.",
+    "ja": "■残りのHPの数値が最も低い敵{1}機に\n「最終攻撃力の{2}％のダメージ」\n「防御力{3}％▼」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     72.73,
+     80.81,
+     88.89,
+     96.97,
+     105.06,
+     113.14,
+     121.22,
+     129.3,
+     137.38,
+     145.46
+    ],
+    [
+     7.27,
+     8.08,
+     8.88,
+     9.69,
+     10.5,
+     11.31,
+     12.12,
+     12.93,
+     13.73,
+     14.54
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201601,
+  "name": {
+   "ko": "금속 목걸이",
+   "en": "Metal Pendant",
+   "ja": "金属製のネックレス"
+  },
+  "weapon": "RL",
+  "maxLevel": 2,
+  "replaces": {
+   "s2": {
+    "name": {
+     "ko": "현장검토",
+     "en": "Field Discussion",
+     "ja": "現場検討"
+    },
+    "text": {
+     "ko": "■ 자신에게\n[시전자의 최종 최대 체력 비례 {1}% 아군 공용 보호막] [{2}초 유지]\n■ 아군 전체에게\n[시전자 기준 공격력 {3}% ▲] [{4} 중첩] [{5}초 유지]",
+     "en": "■ Affects self.\nCreates a shared shield with HP equal to {1}% of the skill user's final max HP that protects all allies from damage. Lasts for {2} sec. \n■ Affects all allies.\nATK ▲ {3}% of the skill user's ATK. Stacks up to {4} times and lasts for {5} sec.",
+     "ja": "■自分に\n「スキル発動者の最終最大HPの{1}％の\n味方共用バリア」\n「{2}秒間維持」\n■味方全体に\n「スキル発動者基準で攻撃力{3}％▲」\n「{4}スタック」「{5}秒間維持」"
+    },
+    "values": [
+     [
+      3.5,
+      3.88,
+      4.27,
+      4.66,
+      5.04,
+      5.44,
+      5.83,
+      6.22,
+      6.6,
+      7.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      2.53,
+      2.76,
+      2.99,
+      3.22,
+      3.45,
+      3.68,
+      3.92,
+      4.14,
+      4.37,
+      4.6
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0
+     ]
+    ]
+   },
+   "s1": {
+    "name": {
+     "ko": "보수공사",
+     "en": "Maintain Fortification",
+     "ja": "補修工事"
+    },
+    "text": {
+     "ko": "■ 풀 차지 공격 명중 시 자신에게\n[스킬 2 재사용 시간 {1}% ▼]\n■ 스킬2 발동 시 철갑 코드 아군 전체에게\n[우월 코드 공격 대미지 {2}% ▲] [{4} 중첩] [{3}초 유지]\n■ 전투 시작 시 아군 전체에게\n[자재 비축 : 시전자 기준 최대 체력 {6}% 까지 초과 받는 체력 회복량 저장] [{7}초 유지]\n[시전자의 최종 최대 체력 비례 {8}% 회복]\n■ 자신을 포함한 아군 누군가의 체력이 {9}% 이하 도달 시 자신이 자재 비축 상태라면 아군 전체에게\n[시전자의 최종 최대 체력 비례 {5}% 회복]",
+     "en": "■ Activates when landing a Full Charge attack. Affects self.\nCooldown of Skill 2 ▼ {1}%.\n■ Activates when Skill 2 activates. Affects all Iron Code allies.\nElemental Advantage Attack Damage ▲ {2}%. Stacks up to {4} times and lasts for {3} sec.\n■ Activates at the start of battle. Affects all allies.\nStockpile: Stores excess incoming healing, up to {6}% of the skill user's max HP. Lasts for {7} sec.\nRestores HP equal to {8}% of the skill user's final max HP.\n■ Activates when an ally's HP (including this unit's) drops to {9}% or below while this unit is in the Stockpile state. Affects all allies.\nRestores HP equal to {5}% of the skill user's final max HP.",
+     "ja": "■フルチャージ攻撃が命中した時、自分に\n「スキル2のクールタイム{1}％▼」\n■スキル2を発動した時、鉄甲コードの味方全体に\n「有利コードの攻撃ダメージ{2}％▲」「{4}スタック」「{3}秒間維持」\n■戦闘開始時、味方全体に\n「資材備蓄：スキル発動者基準で最大HP{6}％まで超過するHP回復量保存」「{7}秒間維持」\n「スキル発動者の最終最大HPの{8}％回復」\n■自分を含む味方誰かのHPが{9}％以下になった時、自分が資材備蓄状態なら味方全体に\n「スキル発動者の最終最大HPの{5}％回復」"
+    },
+    "values": [
+     [
+      4.58,
+      5.09,
+      5.6,
+      6.11,
+      6.62,
+      7.12,
+      7.63,
+      8.14,
+      8.65,
+      9.16
+     ],
+     [
+      3.13,
+      3.41,
+      3.7,
+      3.98,
+      4.27,
+      4.56,
+      4.84,
+      5.12,
+      5.41,
+      5.69
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      3.5,
+      3.88,
+      4.27,
+      4.66,
+      5.04,
+      5.44,
+      5.83,
+      6.22,
+      6.6,
+      7.0
+     ],
+     [
+      3.5,
+      3.88,
+      4.27,
+      4.66,
+      5.04,
+      5.44,
+      5.83,
+      6.22,
+      6.6,
+      7.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      3.5,
+      3.88,
+      4.27,
+      4.66,
+      5.04,
+      5.44,
+      5.83,
+      6.22,
+      6.6,
+      7.0
+     ],
+     [
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0,
+      100.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "착공시작",
+     "en": "Start Construction",
+     "ja": "着工開始"
+    },
+    "text": {
+     "ko": "■ 남은 체력 수치가 가장 낮은 적 {1}기에게\n[최종 공격력 {2}% 대미지]\n[방어력 {3}% ▼] [{4}초 유지]\n■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {5}% 회복]",
+     "en": "■ Affects the {1} enemy unit(s) with the lowest remaining HP.\nDeals {2}% of final ATK as damage.\nDEF ▼ {3}% for {4} sec.\n■ Affects all allies.\nRestores HP equal to {5}% of the skill user's final max HP.",
+     "ja": "■残HPが最も低い敵{1}機に\n「最終攻撃力の{2}％のダメージ」\n「防御力{3}％▼」「{4}秒間維持」\n■味方全体に\n「スキル発動者の最終最大HPの{5}％回復」"
+    },
+    "values": [
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      72.73,
+      80.81,
+      88.89,
+      96.97,
+      105.06,
+      113.14,
+      121.22,
+      129.3,
+      137.38,
+      145.46
+     ],
+     [
+      7.27,
+      8.08,
+      8.88,
+      9.69,
+      10.5,
+      11.31,
+      12.12,
+      12.93,
+      13.73,
+      14.54
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      17.84,
+      19.21,
+      20.59,
+      21.96,
+      23.33,
+      24.71,
+      26.08,
+      27.45,
+      28.82,
+      30.2
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "7fab1659d69a"
+}

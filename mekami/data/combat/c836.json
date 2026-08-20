@@ -1,0 +1,293 @@
+{
+ "rid": 836,
+ "name": {
+  "ko": "사쿠라",
+  "en": "Sakura",
+  "ja": "サクラ"
+ },
+ "nameCode": 3015,
+ "rarity": "SR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE005",
+ "element": "Water",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 8.1,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 1.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "지원 사격",
+    "en": "Support Fire",
+    "ja": "支援射撃"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 대상에게\n[받는 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks. Affects the target(s).\nDamage Taken ▲ {2}% for {3} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、対象に\n「受けるダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     10.15,
+     10.93,
+     11.71,
+     12.49,
+     13.27,
+     14.05,
+     14.84,
+     15.62,
+     16.4,
+     17.18
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "상태 집중 관리",
+    "en": "Intensive Condition Management",
+    "ja": "状態集中管理"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 남은 체력 비율이 가장 낮은 아군 {2}기에게 \n[받는 체력 회복량 {3}% ▲] [{4}초 유지]\n■ 일반 공격 {5}회 공격 시 남은 체력 비율이 가장 낮은 아군 {6}기에게 \n[받는 대미지 {7}% ▼] [{8}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects the {2} ally unit(s) with the lowest HP percentage.\nIncoming Healing ▲ {3}% for {4} sec.\n■ Activates after performing {5} normal attacks. Affects the {6} ally unit(s) with the lowest HP percentage.\nDamage Taken ▼ {7}% for {8} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、残りのHPの割合が最も低い味方{2}機に\n「受けるHP回復量{3}％▲」「{4}秒間維持」\n■通常攻撃で{5}回攻撃した時、残りのHPの割合が最も低い味方{6}機に\n「受けるダメージ{7}％▼」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     8.97,
+     9.66,
+     10.35,
+     11.04,
+     11.73,
+     12.42,
+     13.11,
+     13.8,
+     14.49,
+     15.18
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     8.84,
+     9.53,
+     10.21,
+     10.89,
+     11.57,
+     12.25,
+     12.93,
+     13.61,
+     14.29,
+     14.97
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "응급 치료",
+    "en": "Emergency Healing",
+    "ja": "応急手当"
+   },
+   "text": {
+    "ko": "■ 남은 체력 비율이 가장 낮은 아군 {1}기에게\n[시전자의 최종 최대 체력 비례 {2}% 지속 회복] [1초 간격] [{3}초 유지]",
+    "en": "■ Affects the {1} ally unit(s) with the lowest HP percentage.\nRestores HP equal to {2}% of the skill user's final max HP every second for {3} sec.",
+    "ja": "■残りのHPの割合が最も低い味方{1}機に\n「スキル発動者の最終最大HPの{2}％持続回復」「1秒間隔」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     5.93,
+     6.38,
+     6.84,
+     7.3,
+     7.75,
+     8.21,
+     8.66,
+     9.12,
+     9.58,
+     10.03
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "5fe5ea826e60"
+}

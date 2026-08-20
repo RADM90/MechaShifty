@@ -1,0 +1,269 @@
+{
+ "rid": 191,
+ "name": {
+  "ko": "앨리스",
+  "en": "Alice",
+  "ja": "アリス"
+ },
+ "nameCode": 5004,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "Unlimited",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Bio",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.5,
+   "fullDamage": 350.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "힘나는 당근",
+    "en": "Energizing Carrot",
+    "ja": "元気が出るニンジン"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 최종 공격력이 가장 높은 아군 {1}기에게\n[시전자 기준 차지 속도 {2}% ▲] [{3}초 유지]\n[차지 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects {1} ally unit(s) with the highest final ATK.\nCharge Speed ▲ {2}% of the skill user's Charge Speed for {3} sec. \nCharge Damage ▲ {4}% for {5} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n最終攻撃力が最も高い味方{1}機に\n「スキル発動者基準でチャージ速度{2}％▲」「{3}秒間維持」\n「チャージダメージ{4}％▲」\n「{5}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     6.89,
+     7.42,
+     7.95,
+     8.48,
+     9.02,
+     9.55,
+     10.08,
+     10.61,
+     11.14,
+     11.67
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     4.13,
+     4.45,
+     4.77,
+     5.09,
+     5.41,
+     5.73,
+     6.04,
+     6.36,
+     6.68,
+     7.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "건강한 당근",
+    "en": "Healthy Carrot",
+    "ja": "健康なニンジン"
+   },
+   "text": {
+    "ko": "■ 자신의 체력이 {1}% 이상이라면 자신에게\n[관통 특화] [지속]\n■ 자신의 체력이 {2}% 미만이라면 자신에게\n[공격 대미지 비례 {3}% 회복] [지속]",
+    "en": "■ Activates when this unit's HP is at {1}% or above. Affects self.\nGains Pierce. \n■ Activates when this unit's HP is below {2}%. Affects self.\nRestores HP equal to {3}% of attack damage. This effect is continuous.",
+    "ja": "■自分のHPが{1}％以上なら自分に\n「貫通特化」「持続」\n■自分のHPが{2}％未満なら自分に\n「攻撃ダメージの{3}％を回復」「持続」"
+   },
+   "values": [
+    [
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0
+    ],
+    [
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0,
+     80.0
+    ],
+    [
+     2.45,
+     3.08,
+     3.71,
+     4.34,
+     4.97,
+     5.6,
+     6.23,
+     6.86,
+     7.49,
+     8.12
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "신기하고 이상한 나라",
+    "en": "Wonderland",
+    "ja": "摩訶不思議な世界"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[차지 속도 {1}% ▲] [{2}초 유지]\n[공격력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects self. \nCharge Speed ▲ {1}% for {2} sec. \nATK ▲ {3}% for {4} sec.",
+    "ja": "■自分に\n「チャージ速度{1}％▲」「{2}秒間維持」\n「攻撃力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     54.84,
+     57.65,
+     60.46,
+     63.28,
+     66.09,
+     68.9,
+     71.71,
+     74.53,
+     77.34,
+     80.15
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     14.62,
+     19.12,
+     23.62,
+     28.12,
+     32.62,
+     37.12,
+     41.62,
+     46.12,
+     50.62,
+     55.12
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "9a43aaeee705"
+}

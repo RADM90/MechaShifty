@@ -1,0 +1,5776 @@
+{
+ "count": 199,
+ "nikkes": [
+  {
+   "rid": 10,
+   "name": {
+    "ko": "라피",
+    "en": "Rapi",
+    "ja": "ラピ"
+   },
+   "rarity": "SR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 11,
+   "name": {
+    "ko": "네온",
+    "en": "Neon",
+    "ja": "ネオン"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 224.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.6,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 12,
+   "name": {
+    "ko": "아니스",
+    "en": "Anis",
+    "ja": "アニス"
+   },
+   "rarity": "SR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 65.02,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 0.67,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 355.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 14,
+   "name": {
+    "ko": "네온 : 블루 오션",
+    "en": "Neon: Blue Ocean",
+    "ja": "ネオン：ブルーオーシャン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 15,
+   "name": {
+    "ko": "아니스 : 스파클링 서머",
+    "en": "Anis: Sparkling Summer",
+    "ja": "アニス：スパークリングサマー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 259.2,
+   "coreDamage": 200.0,
+   "maxAmmo": 5,
+   "reload": 2.0,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 16,
+   "name": {
+    "ko": "라피 : 레드 후드",
+    "en": "Rapi: Red Hood",
+    "ja": "ラピ：レッドフード"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 17,
+   "name": {
+    "ko": "아니스 : 스타",
+    "en": "Anis: Star",
+    "ja": "アニス：スター"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 18,
+   "name": {
+    "ko": "네온 : 비전 아이",
+    "en": "Neon: Vision Eye",
+    "ja": "ネオン：ビジョン・アイ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 75.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 20,
+   "name": {
+    "ko": "델타",
+    "en": "Delta",
+    "ja": "デルタ"
+   },
+   "rarity": "SR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 65.95,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.5,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 265.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 22,
+   "name": {
+    "ko": "시그널",
+    "en": "Signal",
+    "ja": "シグナル"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 23,
+   "name": {
+    "ko": "델타 : 닌자 시프",
+    "en": "Delta: Ninja Thief",
+    "ja": "デルタ：ニンジャシーフ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 30,
+   "name": {
+    "ko": "폴리",
+    "en": "Poli",
+    "ja": "ポリ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 32,
+   "name": {
+    "ko": "미란다",
+    "en": "Miranda",
+    "ja": "ミランダ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.8,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.43,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 33,
+   "name": {
+    "ko": "키리",
+    "en": "Quiry",
+    "ja": "キリ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 40,
+   "name": {
+    "ko": "D",
+    "en": "D",
+    "ja": "D"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 41,
+   "name": {
+    "ko": "K",
+    "en": "K",
+    "ja": "K"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 4.55,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.8,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 43,
+   "name": {
+    "ko": "D : 킬러 와이프",
+    "en": "D: Killer Wife",
+    "ja": "D：キラーワイフ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 60,
+   "name": {
+    "ko": "벨로타",
+    "en": "Belorta",
+    "ja": "ベロータ"
+   },
+   "rarity": "SR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 61,
+   "name": {
+    "ko": "미카",
+    "en": "Mica",
+    "ja": "ミカ"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 62,
+   "name": {
+    "ko": "미카 : 스노우 버디",
+    "en": "Mica: Snow Buddy",
+    "ja": "ミカ：スノーバディ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 11.7,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 2.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 70,
+   "name": {
+    "ko": "브리드",
+    "en": "Brid",
+    "ja": "ブリッド"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.29,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.3,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 71,
+   "name": {
+    "ko": "솔린",
+    "en": "Soline",
+    "ja": "ソリン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 5.85,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 2.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 72,
+   "name": {
+    "ko": "디젤",
+    "en": "Diesel",
+    "ja": "ディーゼル"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.38,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.16,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 73,
+   "name": {
+    "ko": "브리드 : 사일런트 트랙",
+    "en": "Brid: Silent Track",
+    "ja": "ブリッド：サイレントトラック"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 74,
+   "name": {
+    "ko": "솔린 : 프로스트 티켓",
+    "en": "Soline: Frost Ticket",
+    "ja": "ソリン：フロストチケット"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 75,
+   "name": {
+    "ko": "디젤 : 윈터 스위츠",
+    "en": "Diesel: Winter Sweets",
+    "ja": "ディーゼル：ウィンタースイーツ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 80,
+   "name": {
+    "ko": "센티",
+    "en": "Centi",
+    "ja": "センチ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 0.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 345.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 82,
+   "name": {
+    "ko": "리타",
+    "en": "Liter",
+    "ja": "リター"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 90,
+   "name": {
+    "ko": "엠마",
+    "en": "Emma",
+    "ja": "エマ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 91,
+   "name": {
+    "ko": "베스티",
+    "en": "Vesti",
+    "ja": "ベスティー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 5.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 92,
+   "name": {
+    "ko": "은화",
+    "en": "Eunhwa",
+    "ja": "ウンファ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 71.07,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.33,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 290.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 93,
+   "name": {
+    "ko": "엠마 : 택티컬 업",
+    "en": "Emma: Tactical Upgrade",
+    "ja": "エマ：タクティカル・アップ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 94,
+   "name": {
+    "ko": "베스티 : 택티컬 업",
+    "en": "Vesti: Tactical Upgrade",
+    "ja": "ベスティー：タクティカル・アップ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 22.44,
+   "coreDamage": 200.0,
+   "maxAmmo": 8,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 65.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 95,
+   "name": {
+    "ko": "은화 : 택티컬 업",
+    "en": "Eunhwa: Tactical Upgrade",
+    "ja": "ウンファ：タクティカル・アップ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 100,
+   "name": {
+    "ko": "라플라스",
+    "en": "Laplace",
+    "ja": "ラプラス"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 63.11,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.33,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 145.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 101,
+   "name": {
+    "ko": "드레이크",
+    "en": "Drake",
+    "ja": "ドレイク"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 214.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 102,
+   "name": {
+    "ko": "맥스웰",
+    "en": "Maxwell",
+    "ja": "マクスウェル"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 103,
+   "name": {
+    "ko": "라플라스 : 얼티밋 히어로",
+    "en": "Laplace: Ultimate Hero",
+    "ja": "ラプラス：アルティメットヒーロー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 2.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 2.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 150.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 105,
+   "name": {
+    "ko": "맥스웰 : 오디너리 미케닉",
+    "en": "Maxwell: Ordinary Mechanic",
+    "ja": "マクスウェル：オーディナリーメカニック"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 110,
+   "name": {
+    "ko": "크로우",
+    "en": "Crow",
+    "ja": "クロウ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 5.59,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.67,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 111,
+   "name": {
+    "ko": "자칼",
+    "en": "Jackal",
+    "ja": "ジャッカル"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 65.02,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 0.67,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 355.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 112,
+   "name": {
+    "ko": "바이퍼",
+    "en": "Viper",
+    "ja": "バイパー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 220.4,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.56,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 113,
+   "name": {
+    "ko": "E.H.",
+    "en": "E.H.",
+    "ja": "E.H."
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 120,
+   "name": {
+    "ko": "N102",
+    "en": "N102",
+    "ja": "N102"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 121,
+   "name": {
+    "ko": "앤 : 미라클 페어리",
+    "en": "Anne: Miracle Fairy",
+    "ja": "エヌ : ミラクルフェアリー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 60.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 130,
+   "name": {
+    "ko": "메어리",
+    "en": "Mary",
+    "ja": "メアリー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 131,
+   "name": {
+    "ko": "페퍼",
+    "en": "Pepper",
+    "ja": "ペッパー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 132,
+   "name": {
+    "ko": "메어리 : 베이 갓데스",
+    "en": "Mary: Bay Goddess",
+    "ja": "メアリー：ベイゴッデス"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 65.95,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.5,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 265.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 140,
+   "name": {
+    "ko": "슈가",
+    "en": "Sugar",
+    "ja": "シュガー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 141,
+   "name": {
+    "ko": "밀크",
+    "en": "Milk",
+    "ja": "ミルク"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 142,
+   "name": {
+    "ko": "프림",
+    "en": "Frima",
+    "ja": "プリム"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 65.95,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.5,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 265.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 143,
+   "name": {
+    "ko": "밀크 : 블루밍 바니",
+    "en": "Milk: Blooming Bunny",
+    "ja": "ミルク：ブルーミングバニー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 150,
+   "name": {
+    "ko": "율리아",
+    "en": "Julia",
+    "ja": "ジュリア"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.07,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.2,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 160,
+   "name": {
+    "ko": "유니",
+    "en": "Yuni",
+    "ja": "ユニ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 161,
+   "name": {
+    "ko": "미하라",
+    "en": "Mihara",
+    "ja": "ミハラ"
+   },
+   "rarity": "SR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 5.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 15.07,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.67,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 162,
+   "name": {
+    "ko": "미하라 : 본딩 체인",
+    "en": "Mihara: Bonding Chain",
+    "ja": "ミハラ：ボンディングチェーン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 170,
+   "name": {
+    "ko": "프리바티",
+    "en": "Privaty",
+    "ja": "プリバティ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 171,
+   "name": {
+    "ko": "율하",
+    "en": "Yulha",
+    "ja": "ユルハ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 68.23,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.87,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 275.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 172,
+   "name": {
+    "ko": "애드미",
+    "en": "Admi",
+    "ja": "アドミ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 67.37,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.73,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 270.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 180,
+   "name": {
+    "ko": "길로틴",
+    "en": "Guillotine",
+    "ja": "ギロチン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 181,
+   "name": {
+    "ko": "메이든",
+    "en": "Maiden",
+    "ja": "メイデン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 182,
+   "name": {
+    "ko": "길로틴 : 윈터 슬레이어",
+    "en": "Guillotine: Winter Slayer",
+    "ja": "ギロチン：ウィンタースレイヤー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 183,
+   "name": {
+    "ko": "메이든 : 아이스 로즈",
+    "en": "Maiden: Ice Rose",
+    "ja": "メイデン：アイスローズ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 182.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 190,
+   "name": {
+    "ko": "루드밀라",
+    "en": "Ludmilla",
+    "ja": "ルドミラ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.32,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 2.76,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 15.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 191,
+   "name": {
+    "ko": "앨리스",
+    "en": "Alice",
+    "ja": "アリス"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 192,
+   "name": {
+    "ko": "토브",
+    "en": "Tove",
+    "ja": "トーブ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.2,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 193,
+   "name": {
+    "ko": "네베",
+    "en": "Neve",
+    "ja": "ネヴェ"
+   },
+   "rarity": "SR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 194,
+   "name": {
+    "ko": "루드밀라 : 윈터 오너",
+    "en": "Ludmilla: Winter Owner",
+    "ja": "ルドミラ：ウィンターオーナー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.86,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 3.0,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 195,
+   "name": {
+    "ko": "앨리스 : 원더랜드 바니",
+    "en": "Alice: Wonderland Bunny",
+    "ja": "アリス：ワンダーランドバニー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 200,
+   "name": {
+    "ko": "루피",
+    "en": "Rupee",
+    "ja": "ルピー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 201,
+   "name": {
+    "ko": "얀",
+    "en": "Yan",
+    "ja": "ヤン"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 202,
+   "name": {
+    "ko": "도라",
+    "en": "Dolla",
+    "ja": "ドラー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 203,
+   "name": {
+    "ko": "루피 : 윈터 쇼퍼",
+    "en": "Rupee: Winter Shopper",
+    "ja": "ルピー：ウィンターショッパー"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 210,
+   "name": {
+    "ko": "엑시아",
+    "en": "Exia",
+    "ja": "エクシア"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 212,
+   "name": {
+    "ko": "노벨",
+    "en": "Novel",
+    "ja": "ノベル"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 220,
+   "name": {
+    "ko": "스노우 화이트",
+    "en": "Snow White",
+    "ja": "スノーホワイト"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.5,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 221,
+   "name": {
+    "ko": "라푼젤",
+    "en": "Rapunzel",
+    "ja": "ラプンツェル"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 60.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 62.95,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.3,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 145.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 222,
+   "name": {
+    "ko": "홍련",
+    "en": "Scarlet",
+    "ja": "紅蓮"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 27.08,
+   "coreDamage": 200.0,
+   "maxAmmo": 20,
+   "reload": 2.3,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 223,
+   "name": {
+    "ko": "나유타",
+    "en": "Nayuta",
+    "ja": "ナユタ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 224,
+   "name": {
+    "ko": "스노우 화이트 : 이노센트 데이즈",
+    "en": "Snow White: Innocent Days",
+    "ja": "スノーホワイト：イノセントデイズ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 5.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 225,
+   "name": {
+    "ko": "홍련 : 흑영",
+    "en": "Scarlet: Black Shadow",
+    "ja": "紅蓮：ブラックシャドウ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 57.29,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 125.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 226,
+   "name": {
+    "ko": "라푼젤 : 퓨어 그레이스",
+    "en": "Rapunzel: Pure Grace",
+    "ja": "ラプンツェル：ピュアグレイス"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 230,
+   "name": {
+    "ko": "하란",
+    "en": "Harran",
+    "ja": "ハラン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 70.89,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.3,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 290.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 231,
+   "name": {
+    "ko": "이사벨",
+    "en": "Isabel",
+    "ja": "イサベル"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 5.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 210.7,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.86,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 232,
+   "name": {
+    "ko": "노아",
+    "en": "Noah",
+    "ja": "ノア"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "PILGRIM",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 32.02,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 150.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 233,
+   "name": {
+    "ko": "도로시",
+    "en": "Dorothy",
+    "ja": "ドロシー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 234,
+   "name": {
+    "ko": "도로시 : 세렌디피티",
+    "en": "Dorothy: Serendipity",
+    "ja": "ドロシー：セレンディピティ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 240,
+   "name": {
+    "ko": "루마니",
+    "en": "Rumani",
+    "ja": "ルマニ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 56.38,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 0.6,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 325.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 241,
+   "name": {
+    "ko": "에피넬",
+    "en": "Epinel",
+    "ja": "エピネル"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 242,
+   "name": {
+    "ko": "폴크방",
+    "en": "Folkwang",
+    "ja": "フォルクヴァン"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.29,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.3,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 260,
+   "name": {
+    "ko": "모더니아",
+    "en": "Modernia",
+    "ja": "モダニア"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 15.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 7.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.3,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 261,
+   "name": {
+    "ko": "니힐리스타",
+    "en": "Nihilister",
+    "ja": "ニヒリスター"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 262,
+   "name": {
+    "ko": "리버렐리오",
+    "en": "Liberalio",
+    "ja": "リバーレリオ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 270,
+   "name": {
+    "ko": "블랑",
+    "en": "Blanc",
+    "ja": "ブラン"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 60.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 271,
+   "name": {
+    "ko": "누아르",
+    "en": "Noir",
+    "ja": "ノワール"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 204.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.23,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 272,
+   "name": {
+    "ko": "루주",
+    "en": "Rouge",
+    "ja": "ルージュ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 71.07,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.33,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 290.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 280,
+   "name": {
+    "ko": "로산나",
+    "en": "Rosanna",
+    "ja": "ロザンナ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 1.67,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 281,
+   "name": {
+    "ko": "목단",
+    "en": "Moran",
+    "ja": "モラン"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.5,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 282,
+   "name": {
+    "ko": "사쿠라",
+    "en": "Sakura",
+    "ja": "サクラ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 67.0,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.67,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 270.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 283,
+   "name": {
+    "ko": "로산나 : 시크 오션",
+    "en": "Rosanna: Chic Ocean",
+    "ja": "ロザンナ：シックオーシャン"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 284,
+   "name": {
+    "ko": "사쿠라 : 블룸 인 서머",
+    "en": "Sakura: Bloom in Summer",
+    "ja": "サクラ：ブルーム・イン・サマー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 290,
+   "name": {
+    "ko": "마나",
+    "en": "Mana",
+    "ja": "マナ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 15.07,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.67,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 291,
+   "name": {
+    "ko": "에테르",
+    "en": "Ether",
+    "ja": "エーテル"
+   },
+   "rarity": "SR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 214.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.0,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 300,
+   "name": {
+    "ko": "솔져 E.G.",
+    "en": "Soldier EG",
+    "ja": "ソルジャーE.G."
+   },
+   "rarity": "R",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.01,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.17,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 301,
+   "name": {
+    "ko": "솔져 F.A.",
+    "en": "Soldier FA",
+    "ja": "ソルジャーF.A."
+   },
+   "rarity": "R",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 214.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.0,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 302,
+   "name": {
+    "ko": "프로덕트 08",
+    "en": "Product 08",
+    "ja": "プロダクト08"
+   },
+   "rarity": "R",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 303,
+   "name": {
+    "ko": "프로덕트 12",
+    "en": "Product 12",
+    "ja": "プロダクト12"
+   },
+   "rarity": "R",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.67,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.67,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 304,
+   "name": {
+    "ko": "iDoll 플라워",
+    "en": "iDoll Flower",
+    "ja": "I-DOLL・フラワー"
+   },
+   "rarity": "R",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 305,
+   "name": {
+    "ko": "iDoll 오션",
+    "en": "iDoll Ocean",
+    "ja": "I-DOLL・オーシャン"
+   },
+   "rarity": "R",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 306,
+   "name": {
+    "ko": "솔져 O.W.",
+    "en": "Soldier OW",
+    "ja": "ソルジャーO.W."
+   },
+   "rarity": "R",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 9.36,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 2.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 307,
+   "name": {
+    "ko": "프로덕트 23",
+    "en": "Product 23",
+    "ja": "プロダクト23"
+   },
+   "rarity": "R",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 308,
+   "name": {
+    "ko": "iDoll 썬",
+    "en": "iDoll Sun",
+    "ja": "I-DOLL・サン"
+   },
+   "rarity": "R",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.5,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 310,
+   "name": {
+    "ko": "에이드",
+    "en": "Ade",
+    "ja": "エード"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.5,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 311,
+   "name": {
+    "ko": "코코아",
+    "en": "Cocoa",
+    "ja": "ココア"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 312,
+   "name": {
+    "ko": "소다",
+    "en": "Soda",
+    "ja": "ソーダ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 313,
+   "name": {
+    "ko": "프리바티 : 언카인드 메이드",
+    "en": "Privaty: Unkind Maid",
+    "ja": "プリバティ：アンカインド・メイド"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 182.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.0,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 314,
+   "name": {
+    "ko": "소다 : 트윙클링 바니",
+    "en": "Soda: Twinkling Bunny",
+    "ja": "ソーダ：トゥインクルバニー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.6,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 0.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 315,
+   "name": {
+    "ko": "에이드 : 에이전트 바니",
+    "en": "Ade: Agent Bunny",
+    "ja": "エード：エージェントバニー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 316,
+   "name": {
+    "ko": "벨벳",
+    "en": "Velvet",
+    "ja": "ベルベット"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 321,
+   "name": {
+    "ko": "마르차나",
+    "en": "Marciana",
+    "ja": "マルチャーナ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 322,
+   "name": {
+    "ko": "마르차나 : 마린 스터디",
+    "en": "Marciana: Marine Study",
+    "ja": "マルチャーナ：マリンスタディ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 330,
+   "name": {
+    "ko": "크라운",
+    "en": "Crown",
+    "ja": "クラウン"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 331,
+   "name": {
+    "ko": "차임",
+    "en": "Chime",
+    "ja": "チャイム"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 350,
+   "name": {
+    "ko": "마스트",
+    "en": "Mast",
+    "ja": "マスト"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 351,
+   "name": {
+    "ko": "앵커",
+    "en": "Anchor",
+    "ja": "アンカー"
+   },
+   "rarity": "SR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 352,
+   "name": {
+    "ko": "헬름",
+    "en": "Helm",
+    "ja": "ヘルム"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 353,
+   "name": {
+    "ko": "헬름 : 아쿠아마린",
+    "en": "Helm: Aquamarine",
+    "ja": "ヘルム：アクアマリン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 354,
+   "name": {
+    "ko": "마스트 : 로망틱 메이드",
+    "en": "Mast: Romantic Maid",
+    "ja": "マスト：ロマンチックメイド"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 355,
+   "name": {
+    "ko": "앵커 : 이노센트 메이드",
+    "en": "Anchor: Innocent Maid",
+    "ja": "アンカー：イノセントメイド"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 361,
+   "name": {
+    "ko": "킬로",
+    "en": "Kilo",
+    "ja": "キロ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 380,
+   "name": {
+    "ko": "네로",
+    "en": "Nero",
+    "ja": "ネロ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.39,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.3,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 381,
+   "name": {
+    "ko": "비스킷",
+    "en": "Biscuit",
+    "ja": "ビスケット"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 382,
+   "name": {
+    "ko": "레오나",
+    "en": "Leona",
+    "ja": "レオナ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 390,
+   "name": {
+    "ko": "츠바이",
+    "en": "Zwei",
+    "ja": "ツバイ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 100.75,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 35.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 391,
+   "name": {
+    "ko": "아인",
+    "en": "Ein",
+    "ja": "アイン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 392,
+   "name": {
+    "ko": "라이",
+    "en": "Rei",
+    "ja": "ライ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 9.15,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.83,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 400,
+   "name": {
+    "ko": "길티",
+    "en": "Guilty",
+    "ja": "ギルティ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 231.4,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.67,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 401,
+   "name": {
+    "ko": "신",
+    "en": "Sin",
+    "ja": "シン"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 402,
+   "name": {
+    "ko": "퀀시",
+    "en": "Quency",
+    "ja": "クエンシー"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 4.47,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.67,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 403,
+   "name": {
+    "ko": "퀀시 : 이스케이프 퀸",
+    "en": "Quency: Escape Queen",
+    "ja": "クエンシー：エスケープクイーン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 5.06,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 7.4,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 411,
+   "name": {
+    "ko": "플로라",
+    "en": "Flora",
+    "ja": "フローラ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 412,
+   "name": {
+    "ko": "트리나",
+    "en": "Trina",
+    "ja": "トリナ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 68.59,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 0.83,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 360.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 430,
+   "name": {
+    "ko": "노이즈",
+    "en": "Noise",
+    "ja": "ノイズ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 431,
+   "name": {
+    "ko": "볼륨",
+    "en": "Volume",
+    "ja": "ボリューム"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 432,
+   "name": {
+    "ko": "아리아",
+    "en": "Aria",
+    "ja": "アリア"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.47,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.33,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 441,
+   "name": {
+    "ko": "아비스타",
+    "en": "Avistar",
+    "ja": "アビスタ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 450,
+   "name": {
+    "ko": "나가",
+    "en": "Naga",
+    "ja": "ナガ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 204.8,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 451,
+   "name": {
+    "ko": "티아",
+    "en": "Tia",
+    "ja": "ティア"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 470,
+   "name": {
+    "ko": "레드 후드",
+    "en": "Red Hood",
+    "ja": "レッドフード"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "AllStep",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 471,
+   "name": {
+    "ko": "스노우 화이트 : 헤비암즈",
+    "en": "Snow White: Heavy Arms",
+    "ja": "スノーホワイト：ヘビーアームズ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 500,
+   "name": {
+    "ko": "일레그",
+    "en": "Elegg",
+    "ja": "エレグ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "MISSILIS",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 501,
+   "name": {
+    "ko": "트로니",
+    "en": "Trony",
+    "ja": "トロニー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 502,
+   "name": {
+    "ko": "일레그 : 붐 앤 쇼크",
+    "en": "Elegg: Boom and Shock",
+    "ja": "エレグ：ブーム・アンド・ショック"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 511,
+   "name": {
+    "ko": "신데렐라",
+    "en": "Cinderella",
+    "ja": "シンデレラ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "PILGRIM",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 32.11,
+   "coreDamage": 200.0,
+   "maxAmmo": 24,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 22.5,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 513,
+   "name": {
+    "ko": "리틀 머메이드",
+    "en": "Little Mermaid",
+    "ja": "リトルマーメイド"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 514,
+   "name": {
+    "ko": "그레이브",
+    "en": "Grave",
+    "ja": "グレイブ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "PILGRIM",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 17.91,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 45.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 515,
+   "name": {
+    "ko": "신데렐라 : 크리스탈 웨이브",
+    "en": "Cinderella: Crystal Wave",
+    "ja": "シンデレラ：クリスタルウェーブ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "PILGRIM",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 520,
+   "name": {
+    "ko": "브래디",
+    "en": "Bready",
+    "ja": "ブレッディ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 521,
+   "name": {
+    "ko": "크러스트",
+    "en": "Crust",
+    "ja": "クラスト"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 532,
+   "name": {
+    "ko": "소라",
+    "en": "Sora",
+    "ja": "ソラ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 550,
+   "name": {
+    "ko": "베이",
+    "en": "Bay",
+    "ja": "ベイ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "TETRA",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 551,
+   "name": {
+    "ko": "클레이",
+    "en": "Clay",
+    "ja": "クレイ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 570,
+   "name": {
+    "ko": "아크레인저 블랙",
+    "en": "Ark Ranger Black",
+    "ja": "アークレンジャー・ブラック"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "TETRA",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 580,
+   "name": {
+    "ko": "팬텀",
+    "en": "Phantom",
+    "ja": "ファントム"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 15.78,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 2.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": true,
+   "effects": true
+  },
+  {
+   "rid": 581,
+   "name": {
+    "ko": "아르카나",
+    "en": "Arcana",
+    "ja": "アルカナ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ELYSION",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 64.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 150.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 582,
+   "name": {
+    "ko": "레이블",
+    "en": "Label",
+    "ja": "レーベル"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ELYSION",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 583,
+   "name": {
+    "ko": "아르카나 : 포츈 메이트",
+    "en": "Arcana: Fortune Mate",
+    "ja": "アルカナ：フォーチュンメイト"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ELYSION",
+   "element": "Fire",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 222.8,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 2.33,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 590,
+   "name": {
+    "ko": "모리",
+    "en": "Mori",
+    "ja": "モリー"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 600,
+   "name": {
+    "ko": "민트",
+    "en": "Mint",
+    "ja": "ミント"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 601,
+   "name": {
+    "ko": "프리카",
+    "en": "Prika",
+    "ja": "プリカ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "TETRA",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 620,
+   "name": {
+    "ko": "백학",
+    "en": "Snow Crane",
+    "ja": "シラツル"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "MISSILIS",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 800,
+   "name": {
+    "ko": "마키마",
+    "en": "Makima",
+    "ja": "マキマ"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ABNORMAL",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.73,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.5,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 801,
+   "name": {
+    "ko": "파워",
+    "en": "Power",
+    "ja": "パワー"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 802,
+   "name": {
+    "ko": "히메노",
+    "en": "Himeno",
+    "ja": "姫野"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 70.89,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.3,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 290.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 810,
+   "name": {
+    "ko": "2B",
+    "en": "2B",
+    "ja": "2B"
+   },
+   "rarity": "SSR",
+   "class": "Defender",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 5.99,
+   "coreDamage": 200.0,
+   "maxAmmo": 90,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 811,
+   "name": {
+    "ko": "A2",
+    "en": "A2",
+    "ja": "A2"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 67.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 1.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 130.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 812,
+   "name": {
+    "ko": "파스칼",
+    "en": "Pascal",
+    "ja": "パスカル"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "normal",
+   "damage": 75.0,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.5,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 115.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 820,
+   "name": {
+    "ko": "렘",
+    "en": "Rem",
+    "ja": "レム"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Water",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 821,
+   "name": {
+    "ko": "에밀리아",
+    "en": "Emilia",
+    "ja": "エミリア"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Water",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 822,
+   "name": {
+    "ko": "람",
+    "en": "Ram",
+    "ja": "ラム"
+   },
+   "rarity": "SR",
+   "class": "Defender",
+   "corporation": "ABNORMAL",
+   "element": "Wind",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 830,
+   "name": {
+    "ko": "아스카",
+    "en": "Asuka",
+    "ja": "アスカ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 18.76,
+   "coreDamage": 200.0,
+   "maxAmmo": 20,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 30.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 831,
+   "name": {
+    "ko": "레이",
+    "en": "Rei",
+    "ja": "レイ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 832,
+   "name": {
+    "ko": "마리",
+    "en": "Mari",
+    "ja": "マリ"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Electronic",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 833,
+   "name": {
+    "ko": "미사토",
+    "en": "Misato",
+    "ja": "ミサト"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 834,
+   "name": {
+    "ko": "레이 (가칭)",
+    "en": "Rei (Tentative Name)",
+    "ja": "レイ（仮称）"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 14.71,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.5,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 25.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 835,
+   "name": {
+    "ko": "아스카 : WILLE",
+    "en": "Asuka: WILLE",
+    "ja": "アスカ：WILLE"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Wind",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.47,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.33,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 836,
+   "name": {
+    "ko": "사쿠라",
+    "en": "Sakura",
+    "ja": "サクラ"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Water",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 840,
+   "name": {
+    "ko": "에이다",
+    "en": "Ada",
+    "ja": "エイダ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 841,
+   "name": {
+    "ko": "질",
+    "en": "Jill",
+    "ja": "ジル"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Electronic",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 71.09,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 110.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 842,
+   "name": {
+    "ko": "클레어",
+    "en": "Claire",
+    "ja": "クレア"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Electronic",
+   "burst": "Step1",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 850,
+   "name": {
+    "ko": "이브",
+    "en": "EVE",
+    "ja": "イヴ"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 851,
+   "name": {
+    "ko": "레이븐",
+    "en": "Raven",
+    "ja": "レイヴン"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "RL",
+   "control": "charge",
+   "damage": 61.3,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    0,
+    0
+   ],
+   "burstEnergy": 140.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 852,
+   "name": {
+    "ko": "릴리",
+    "en": "Lily",
+    "ja": "リリー"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Wind",
+   "burst": "Step2",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 8.1,
+   "coreDamage": 200.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 860,
+   "name": {
+    "ko": "치사토",
+    "en": "Chisato",
+    "ja": "千束"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 10.12,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 861,
+   "name": {
+    "ko": "타키나",
+    "en": "Takina",
+    "ja": "たきな"
+   },
+   "rarity": "SSR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SR",
+   "control": "charge",
+   "damage": 69.04,
+   "coreDamage": 200.0,
+   "maxAmmo": 6,
+   "reload": 2.0,
+   "range": [
+    45,
+    100
+   ],
+   "burstEnergy": 280.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 862,
+   "name": {
+    "ko": "쿠루미",
+    "en": "Kurumi",
+    "ja": "クルミ"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step1",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "AR",
+   "control": "normal",
+   "damage": 13.65,
+   "coreDamage": 200.0,
+   "maxAmmo": 60,
+   "reload": 1.0,
+   "range": [
+    25,
+    45
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 870,
+   "name": {
+    "ko": "퀸(마코토)",
+    "en": "Queen (Makoto)",
+    "ja": "クイーン（真）"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "SG",
+   "control": "normal",
+   "damage": 201.5,
+   "coreDamage": 200.0,
+   "maxAmmo": 9,
+   "reload": 1.5,
+   "range": [
+    0,
+    25
+   ],
+   "burstEnergy": 20.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 871,
+   "name": {
+    "ko": "유키코",
+    "en": "Yukiko",
+    "ja": "雪子"
+   },
+   "rarity": "SSR",
+   "class": "Attacker",
+   "corporation": "ABNORMAL",
+   "element": "Fire",
+   "burst": "Step3",
+   "cooldown": 40.0,
+   "burstDuration": 10.0,
+   "weapon": "MG",
+   "control": "normal",
+   "damage": 5.57,
+   "coreDamage": 200.0,
+   "maxAmmo": 300,
+   "reload": 2.5,
+   "range": [
+    35,
+    55
+   ],
+   "burstEnergy": 5.0,
+   "spinup": true,
+   "favorite": false,
+   "effects": true
+  },
+  {
+   "rid": 872,
+   "name": {
+    "ko": "아이기스",
+    "en": "Aigis",
+    "ja": "アイギス"
+   },
+   "rarity": "SR",
+   "class": "Supporter",
+   "corporation": "ABNORMAL",
+   "element": "Iron",
+   "burst": "Step2",
+   "cooldown": 20.0,
+   "burstDuration": 10.0,
+   "weapon": "SMG",
+   "control": "normal",
+   "damage": 5.06,
+   "coreDamage": 250.0,
+   "maxAmmo": 120,
+   "reload": 1.0,
+   "range": [
+    15,
+    35
+   ],
+   "burstEnergy": 10.0,
+   "spinup": false,
+   "favorite": false,
+   "effects": true
+  }
+ ]
+}

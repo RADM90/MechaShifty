@@ -1,0 +1,245 @@
+{
+ "rid": 430,
+ "name": {
+  "ko": "노이즈",
+  "en": "Noise",
+  "ja": "ノイズ"
+ },
+ "nameCode": 5074,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "PrimaDonna",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "코러스",
+    "en": "Chorus",
+    "ja": "コーラス"
+   },
+   "text": {
+    "ko": "■ {1}회 피격 시 아군 전체에게\n[받는 대미지 {2}% ▼] [{3}초 유지]",
+    "en": "■ Activates when attacked {1} time(s). Affects all allies.\nDamage Taken ▼ {2}% for {3} sec.",
+    "ja": "■{1}回攻撃を受けた時、味方全体に\n「受けるダメージ{2}％▼」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     5.86,
+     6.4,
+     6.93,
+     7.46,
+     8.0,
+     8.53,
+     9.06,
+     9.59,
+     10.13,
+     10.66
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "싱잉 투게더",
+    "en": "Sing Together",
+    "ja": "シンギングトゥギャザー"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 대상에게\n[도발] [{1}초 유지]\n■ 풀 차지 공격 시 자신에게\n[최대 체력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when landing a Full Charge attack. Affects the target.\nTaunts for {1} sec.\n■ Activates when performing a Full Charge attack. Affects self.\nMax HP ▲ {2}% for {3} sec.",
+    "ja": "■フルチャージ攻撃が命中した時、対象に\n「挑発」「{1}秒間維持」\n■フルチャージして攻撃した時、自分に\n「最大HP{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     17.54,
+     18.35,
+     19.16,
+     19.98,
+     20.79,
+     21.6,
+     22.42,
+     23.23,
+     24.04,
+     24.86
+    ],
+    [
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8,
+     1.8
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "에너제틱 노이즈",
+    "en": "Energetic Noise",
+    "ja": "エナジェティックノイズ"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 지속 회복] [1초 간격] [{2}초 유지]\n[최대 체력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects all allies.\n Restores HP equal to {1}% of the skill user's final max HP every second for {2} sec.\nMax HP ▲ {3}% for {4} sec.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％持続回復」「1秒間隔」「{2}秒間維持」\n「最大HP{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     1.36,
+     1.48,
+     1.6,
+     1.73,
+     1.85,
+     1.98,
+     2.1,
+     2.22,
+     2.35,
+     2.47
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     27.22,
+     29.7,
+     32.17,
+     34.65,
+     37.12,
+     39.6,
+     42.07,
+     44.55,
+     47.02,
+     49.5
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ebd31165140c"
+}

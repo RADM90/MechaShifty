@@ -1,0 +1,100 @@
+{
+  "rid": 262,
+  "name": "리버렐리오",
+  "textHash": "9704e19774d2",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 버스트 타임 시작 시 자신에게",
+      "on": "fullBurstStart",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 차지 공격 코어 명중 시 자신에게",
+      "on": "fullChargeHit",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 차지 공격 명중 시 대상에게",
+      "on": "fullChargeHit",
+      "limit": {
+        "n": 5
+      },
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 5
+        },
+        "kind": "skill",
+        "gauge": false
+      }
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 최종 공격력이 가장 낮은 기본 버스트 단계가 Step 3인 아군 {8}기에게",
+      "on": "fullBurstStart",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "chargeSpeed",
+          "v": 6,
+          "dur": {
+            "v": 7
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "적 전체에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 3
+        },
+        "kind": "skill",
+        "gauge": false
+      }
+    }
+  ],
+  "unmodeled": [
+    "[s2] 조건을 못 읽어 통째로 남김: ■ 풀 차지 공격 명중 시 대상이 타겟이라면 자신에게\n[격류 : 공격 대미지 {1}% ▲] [지속]\n[완만류 해제]",
+    "[s2] 조건을 못 읽어 통째로 남김: ■ 풀 차지 공격 명중 시 대상이 타겟이 아닌 랩쳐라면 자신에게\n[완만류 : 차지 시간 {2}초로 고정] [지속]\n[격류 해제]",
+    "[s2] ■ 전투 시작 시 자신에게\n[차지 속도 증가 효과 면역] [지속] [해제 불가]\n[차지 속도 감소 효과 면역] [지속] [해제 불가]"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "rid": 171,
+  "name": "율하",
+  "textHash": "eb7786329002",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [],
+  "s2": [],
+  "burst": [
+    {
+      "note": "적 전체에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 1
+        },
+        "kind": "burst",
+        "type": "burstSkillDmg"
+      }
+    },
+    {
+      "note": "자신이 평정심 상태라면 동일 적 대상에게",
+      "on": "burstUse",
+      "if": {
+        "selfState": "평정심"
+      },
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 2
+        },
+        "kind": "skill",
+        "gauge": false
+      }
+    }
+  ],
+  "unmodeled": [
+    "[s1] ■ {1}회 피격 시 자신에게\n[평정심 : 크리티컬 확률 {2}% ▲] [{3}초 유지]",
+    "[s2] ■ 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]\n[받는 대미지 균등 분배] [{3}초 유지]"
+  ]
+}

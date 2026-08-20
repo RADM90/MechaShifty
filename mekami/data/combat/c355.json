@@ -1,0 +1,341 @@
+{
+ "rid": 355,
+ "name": {
+  "ko": "앵커 : 이노센트 메이드",
+  "en": "Anchor: Innocent Maid",
+  "ja": "アンカー：イノセントメイド"
+ },
+ "nameCode": 5131,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "Aegis",
+ "element": "Water",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "불가사리(모양) 오므라이스",
+    "en": "Starfish (Shaped) Omurice",
+    "ja": "ヒトデ（形）オムライス"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 아군 전체에게\n[사용 횟수 별 효과] [하위 효과 중복 적용]\n1회 : [체력 회복량 {1}% ▲] [{2}초 유지]\n2회 : [분배 대미지 {3}% ▲] [{4}초 유지]\n3회 : [중첩 가능 해로운 효과 중첩량 {5}개 ▼]\n■ 풀 버스트 타임 시작 시 동일 스쿼드 아군이 있다면 아군 전체에게\n[시전자 최대 체력 비례 {6}% 회복] [1초 간격] [{7}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects all allies.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: Healing ▲ {1}% for {2} sec.\nTwice: Distributed Damage ▲ {3}% for {4} sec.\nThree times: Decreases the stack count of stackable debuffs by {5}.\n■ Activates when entering Full Burst if an ally from the same squad is present. Affects all allies.\nRestores HP equal to {6}% of the skill user's max HP every second for {7} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n味方全体に\n「使用回数別の効果」「下位効果のスタック適用」\n1回：「HP回復量{1}％▲」\n「{2}秒間維持」\n2回：「分配ダメージ{3}％▲」「{4}秒間維持」\n3回：「スタック可能デバフ効果のスタック量{5}個▼」\n■フルバーストタイムが発動した時、\n同じ部隊の味方がいれば味方全体に\n「スキル発動者の最大HPの{6}％の回復」「1秒間隔」「{7}秒間維持」"
+   },
+   "values": [
+    [
+     18.29,
+     19.7,
+     21.11,
+     22.51,
+     23.92,
+     25.33,
+     26.74,
+     28.14,
+     29.55,
+     30.96
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     17.96,
+     19.34,
+     20.72,
+     22.1,
+     23.49,
+     24.87,
+     26.25,
+     27.63,
+     29.01,
+     30.4
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.79,
+     1.93,
+     2.07,
+     2.21,
+     2.34,
+     2.48,
+     2.62,
+     2.76,
+     2.9,
+     3.04
+    ],
+    [
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0,
+     8.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "말미잘(모양) 파스타",
+    "en": "Sea Anemone (Shaped) Pasta",
+    "ja": "イソギンチャク（形）パスタ"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 종료 시 아군 전체에게\n[사용 횟수 별 효과] [하위 효과 중복 적용]\n1회 : [명중률 {1}% ▲] [{2}초 유지]\n2회 : [시전자 기준 공격력 {3}% ▲] [{4}초 유지]\n3회 : [재장전 속도 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates when Full Burst ends. Affects all allies.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: Hit Rate ▲ {1}% for {2} sec.\nTwice: ATK ▲ {3}% of the skill user's ATK for {4} sec.\nThree times: Reload Speed ▲ {5}% for {6} sec.",
+    "ja": "■フルバーストタイムが終了した時、\n味方全体に\n「使用回数別の効果」「下位効果のスタック適用」\n1回：「命中率{1}％▲」「{2}秒間維持」\n2回：「スキル発動者基準で\n攻撃力{3}％▲」「{4}秒間維持」\n3回：「リロード速度{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     5.98,
+     6.44,
+     6.9,
+     7.36,
+     7.83,
+     8.29,
+     8.75,
+     9.21,
+     9.67,
+     10.13
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     20.65,
+     22.25,
+     23.85,
+     25.44,
+     27.04,
+     28.64,
+     30.23,
+     31.83,
+     33.43,
+     35.02
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     23.82,
+     25.62,
+     27.42,
+     29.23,
+     31.03,
+     32.83,
+     34.63,
+     36.44,
+     38.24,
+     40.04
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "바다 산책",
+    "en": "Seaside Stroll",
+    "ja": "海辺で散歩"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[저장 : 시전자 기준 최대 체력 {1}%까지 초과 받는 체력 회복량 저장] [{2}초 유지]\n[시전자 최대 체력 비례 {3}% 회복]\n[시전자 기준 공격력 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects all allies.\nStorage: Stores excess incoming healing, up to {1}% of the skill user's max HP. Lasts for {2} sec.\nRestores HP equal to {3}% of the skill user's max HP.\nATK ▲ {4}% of the skill user's ATK for {5} sec.",
+    "ja": "■味方全体に\n「保存：スキル発動者基準で最大HPの{1}％まで超過HP回復量を保存」「{2}秒間維持」\n「スキル発動者の最大HPの{3}％の回復」\n「スキル発動者基準で攻撃力{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     35.56,
+     38.3,
+     41.04,
+     43.77,
+     46.51,
+     49.24,
+     51.98,
+     54.72,
+     57.45,
+     60.19
+    ],
+    [
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0
+    ],
+    [
+     23.56,
+     25.41,
+     27.25,
+     29.1,
+     30.95,
+     32.79,
+     34.64,
+     36.49,
+     38.33,
+     40.18
+    ],
+    [
+     17.78,
+     19.15,
+     20.52,
+     21.88,
+     23.25,
+     24.62,
+     25.99,
+     27.36,
+     28.72,
+     30.09
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "7113d89b608b"
+}

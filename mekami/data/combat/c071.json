@@ -1,0 +1,209 @@
+{
+ "rid": 71,
+ "name": {
+  "ko": "솔린",
+  "en": "Soline",
+  "ja": "ソリン"
+ },
+ "nameCode": 5019,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "InfinityRail",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.85,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 2.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 2,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "유능하게!",
+    "en": "On the Ball!",
+    "ja": "落ち度なく！"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 자신에게\n[공격 속도 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects self.\nAttack Speed▲ {2}% for {3} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、自分に\n「攻撃速度{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0
+    ],
+    [
+     4.29,
+     4.62,
+     4.95,
+     5.28,
+     5.61,
+     5.94,
+     6.27,
+     6.59,
+     6.92,
+     7.26
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "어른스럽게!",
+    "en": "Grow up!",
+    "ja": "シックに！"
+   },
+   "text": {
+    "ko": "■ 자신의 체력이 최대일 때 한하여 자신에게\n[크리티컬 확률 {1}% ▲] [지속]\n[크리티컬 대미지 {2}% ▲] [지속]",
+    "en": "■ Activates only when this unit is at max HP. Affects self.\nCritical Rate ▲ {1}% continuously.\nCritical Damage ▲ {2}% continuously.",
+    "ja": "■自分のHPが最大の時のみ自分に\n「クリティカル確率{1}％▲」\n「持続」\n「クリティカルダメージ{2}％▲」\n「持続」"
+   },
+   "values": [
+    [
+     12.77,
+     13.76,
+     14.74,
+     15.72,
+     16.71,
+     17.69,
+     18.67,
+     19.66,
+     20.64,
+     21.62
+    ],
+    [
+     36.79,
+     39.62,
+     42.45,
+     45.28,
+     48.11,
+     50.94,
+     53.77,
+     56.61,
+     59.44,
+     62.27
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "나도 한다면 해!",
+    "en": "My Word, My Bond!",
+    "ja": "大胆不敵！"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {1}% 대미지]\n■ 자신의 체력이 최대라면 동일 적 대상에게\n[최종 공격력 {2}% 추가 대미지]",
+    "en": "■ Affects enemies within attack range.\nDeals {1}% of final ATK as damage.\n■ Affects the same target(s) when at max HP.\nDeals {2}% of final ATK as additional damage.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{1}％のダメージ」\n■自分のHPが最大の場合、同じ敵に\n「最終攻撃力の{2}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     234.0,
+     252.0,
+     270.0,
+     288.0,
+     306.0,
+     324.0,
+     342.0,
+     360.0,
+     378.0,
+     396.0
+    ],
+    [
+     546.0,
+     588.0,
+     630.0,
+     672.0,
+     714.0,
+     756.0,
+     798.0,
+     840.0,
+     882.0,
+     924.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "e433c7b0bdf0"
+}

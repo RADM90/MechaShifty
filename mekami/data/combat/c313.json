@@ -1,0 +1,317 @@
+{
+ "rid": 313,
+ "name": {
+  "ko": "프리바티 : 언카인드 메이드",
+  "en": "Privaty: Unkind Maid",
+  "ja": "プリバティ：アンカインド・メイド"
+ },
+ "nameCode": 5106,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "MaidForYou",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 182.1,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 2.0,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 75,
+   "perShot": 18,
+   "speed": 1.05
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[공격 시 명중률 증가]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "열정 충만 메이드",
+    "en": "Passionate Maid",
+    "ja": "やる気満々メイド"
+   },
+   "text": {
+    "ko": "■ 펠릿 {1}회 명중 시 조준선에 가장 가까운 적 {3}기에게\n[최종 공격력 {2}% 대미지]",
+    "en": "■ Activates when hitting the target with {1} pellet(s). Affects {3} enemy unit(s) nearest to the crosshair. \nDeals {2}% of final ATK as damage.",
+    "ja": "■ペレットが{1}回命中した時、照準線に最も近い敵{3}機に\n「最終攻撃力の{2}％のダメージ」"
+   },
+   "values": [
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     119.86,
+     129.08,
+     138.3,
+     147.52,
+     156.74,
+     165.96,
+     175.18,
+     184.4,
+     193.62,
+     202.84
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "사랑 가득 메이드",
+    "en": "Loving Maid",
+    "ja": "愛情たっぷりメイド"
+   },
+   "text": {
+    "ko": "■ 일반 공격 1회로 펠릿 {1}개 이상 명중 시 자신에게\n[재장전 속도 {2}% ▲] [{3}초 유지]\n■ 풀 버스트 타임 지속 시간 중 펠릿 {4}회 명중 시 자신에게\n[탄환 충전 {5}발]\n[공격력 {6}% ▲] [{7} 중첩] [{8}초 유지]",
+    "en": "■ Activates when {1} or more pellets hit with a single normal attack. Affects self.\nReload Speed ▲ {2}% for {3} sec.\n■ Activates when hitting {4} times with pellets during Full Burst. Affects self.\nReload {5} round(s).\nATK ▲ {6}%. Stacks up to {7} times and lasts for {8} sec.",
+    "ja": "■通常攻撃1回でペレットが{1}個以上命中した時、自分に\n「リロード速度{2}％▲」「{3}秒間維持」\n■フルバーストタイムの持続時間中、\nペレットが{4}回命中した時、自分に\n「弾丸チャージ{5}発」\n「攻撃力{6}％▲」「{7}スタック」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     12.33,
+     13.28,
+     14.23,
+     15.18,
+     16.13,
+     17.08,
+     18.03,
+     18.98,
+     19.93,
+     20.88
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     6.63,
+     7.14,
+     7.65,
+     8.16,
+     8.67,
+     9.18,
+     9.69,
+     10.2,
+     10.71,
+     11.22
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "부끄러운! 당신의 메이드",
+    "en": "Your Bashful Maid!",
+    "ja": "あなたのはにかみメイド"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격 대미지 {1}% ▲] [{2}초 유지]\n[크리티컬 대미지 {3}% ▲] [{4}초 유지]\n■ 적 전체에게\n[최종 공격력 {5}% 버스트 스킬 대미지]",
+    "en": "■ Affects self.\nAttack damage ▲ {1}% for {2} sec.\nCritical Damage ▲ {3}% for {4} sec.\n■ Affects all enemies.\nDeals {5}% of final ATK as Burst Skill damage.",
+    "ja": "■自分に\n「攻撃ダメージ{1}％▲」「{2}秒間維持」\n「クリティカルダメージ{3}％▲」\n「{4}秒間維持」\n■敵全体に「最終攻撃力の{5}％のバーストスキルダメージ」"
+   },
+   "values": [
+    [
+     6.24,
+     6.72,
+     7.2,
+     7.68,
+     8.16,
+     8.64,
+     9.12,
+     9.6,
+     10.08,
+     10.56
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     52.1,
+     56.11,
+     60.12,
+     64.12,
+     68.13,
+     72.14,
+     76.15,
+     80.16,
+     84.16,
+     88.17
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     630.3,
+     678.78,
+     727.27,
+     775.75,
+     824.24,
+     872.72,
+     921.21,
+     969.69,
+     1018.18,
+     1066.66
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "62eec9ec1e7d"
+}

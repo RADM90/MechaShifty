@@ -1,0 +1,233 @@
+{
+ "rid": 241,
+ "name": {
+  "ko": "에피넬",
+  "en": "Epinel",
+  "ja": "エピネル"
+ },
+ "nameCode": 5038,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "LifeTonic",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 10.12,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 1.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "슈퍼 루키",
+    "en": "Total Noob",
+    "ja": "スーパールーキー"
+   },
+   "text": {
+    "ko": "■ 적 처치 시 자신에게\n[슈퍼 루키 : 공격력 {1}% ▲] [{2}중첩] [{3}초 유지]",
+    "en": "■ Activates when defeating an enemy. Affects self.\nTotal Noob: ATK ▲ {1}%. Stacks up to {2} times and lasts for {3} sec.",
+    "ja": "■敵を倒した時、自分に\n「スーパールーキー：攻撃力{1}％▲」「{2}スタック」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     8.18,
+     8.82,
+     9.44,
+     10.08,
+     10.71,
+     11.34,
+     11.97,
+     12.6,
+     13.23,
+     13.86
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "스파이더",
+    "en": "Arachnid",
+    "ja": "スパイダー"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 자신에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지] \n[크리티컬 대미지 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects self.\nCritical Rate▲ {1}% for {2} sec.\nCritical Damage ▲ {3}% for {4} sec.",
+    "ja": "■最後の弾丸が命中した時、自分に\n「クリティカル確率{1}％▲」\n「{2}秒間維持」\n「クリティカルダメージ{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     2.98,
+     3.21,
+     3.44,
+     3.67,
+     3.9,
+     4.13,
+     4.36,
+     4.59,
+     4.82,
+     5.05
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.78,
+     4.07,
+     4.36,
+     4.65,
+     4.95,
+     5.24,
+     5.53,
+     5.82,
+     6.11,
+     6.4
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "SAFE 50-50",
+    "en": "SAFE 50-50",
+    "ja": "SAFE 50-50"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 자신이 슈퍼 루키 최대 중첩 상태라면 동일 적 대상에게\n[최종 공격력 {2}% 추가 대미지]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as Burst Skill damage. \n■ Activates when Total Noob is at max stacks. Affects the same targets.\nDeals {2}% of final ATK as additional damage.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％のバーストスキルダメージ」\n■自分がスーパールーキーの\nフルスタック状態なら、同じ敵に「最終攻撃力の{2}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     270.56,
+     291.37,
+     312.18,
+     333.0,
+     353.81,
+     374.62,
+     395.43,
+     416.25,
+     437.06,
+     457.87
+    ],
+    [
+     270.56,
+     291.37,
+     312.18,
+     333.0,
+     353.81,
+     374.62,
+     395.43,
+     416.25,
+     437.06,
+     457.87
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "60efd387e442"
+}

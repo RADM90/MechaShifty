@@ -1,0 +1,377 @@
+{
+ "rid": 105,
+ "name": {
+  "ko": "맥스웰 : 오디너리 미케닉",
+  "en": "Maxwell: Ordinary Mechanic",
+  "ja": "マクスウェル：オーディナリーメカニック"
+ },
+ "nameCode": 5178,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "Matis",
+ "element": "Wind",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Energy",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "순차적 리미트 해제",
+    "en": "Sequential Limit Release",
+    "ja": "シーケンシャルリミット解除"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 아군 전체에게\n[시전자 기준 최대 체력 {1}% ▲] [{2}중첩] [지속]\n■ 버스트 {3}단계 진입 시 아군 전체에게\n[공격 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when performing a Full Charge attack. Affects all allies.\nMax HP ▲ {1}% of the skill user's max HP continuously. Stacks up to {2} times.\n■ Activates when entering Burst Stage {3}. Affects all allies.\nAttack Damage ▲ {4}% for {5} sec.",
+    "ja": "■フルチャージして攻撃した時、味方全体に\n「スキル発動者基準で最大HP{1}％▲」\n「{2}スタック」「持続」\n■バースト{3}段階突入時、味方全体に\n「攻撃ダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     0.5,
+     0.56,
+     0.61,
+     0.67,
+     0.72,
+     0.78,
+     0.84,
+     0.89,
+     0.95,
+     1.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     6.25,
+     6.67,
+     7.08,
+     7.5,
+     7.92,
+     8.33,
+     8.75,
+     9.16,
+     9.58,
+     10.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "출력 전환 시퀀스",
+    "en": "Output Switching Sequence",
+    "ja": "出力切替シーケンス"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 아군 전체에게\n[시전자의 최종 최대 체력의 {1}% 만큼 공격력 ▲] [{2}초 유지]\n■ 버스트 스킬 사용 시 자신에게\n[과전류 : 공격력 {5}% ▲] [최대 {6}단계] [지속]\n■ 풀 차지 공격 시 아군 전체에게\n[버스트 게이지 충전 {7}%]",
+    "en": "■ Activates when using Burst Skill. Affects all allies.\nATK ▲ {1}% of the skill user's final max HP for {2} sec.\n■ Activates when using Burst Skill. Affects self.\nOvercurrent: ATK ▲ {5}% continuously. Up to {6} stages in total.\n■ Activates when performing a Full Charge attack. Affects all allies.\nFills Burst Gauge by {7}%.",
+    "ja": "■バーストスキルを使用した時、味方全体に\n「スキル発動者の最終最大HPの\n{1}％分の攻撃力▲」\n「{2}秒間維持」\n■バーストスキルを使用した時、自分に\n「過電流：攻撃力{5}％▲」「最大{6}段階」\n「持続」\n■フルチャージして攻撃した時、味方全体に\n「バーストゲージのチャージ{7}％」"
+   },
+   "values": [
+    [
+     0.5,
+     0.56,
+     0.61,
+     0.67,
+     0.72,
+     0.78,
+     0.84,
+     0.89,
+     0.95,
+     1.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     3.58,
+     3.98,
+     4.38,
+     4.77,
+     5.17,
+     5.57,
+     5.96,
+     6.36,
+     6.76,
+     7.15
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     15.0,
+     16.67,
+     18.34,
+     20.0,
+     21.67,
+     23.33,
+     25.0,
+     26.67,
+     28.33,
+     30.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.58,
+     3.98,
+     4.38,
+     4.77,
+     5.17,
+     5.57,
+     5.96,
+     6.36,
+     6.76,
+     7.15
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "메티스 버스트 버스터",
+    "en": "Matis UberBuster",
+    "ja": "メティスバスターバスター"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[사용 무기 변경 : 메티스 버스트 버스터] :\n[차지 시간]\n[과전류 단계별 효과] [단계별 효과만 적용]\n차지 시간 : {9}초\n1단계이하 : {9}초 고정\n2단계 : {1}초 고정\n3단계 : {2}초 고정\n4단계 : {3}초 고정\n5단계이상 : {4}초 고정\n대미지 : 최종 공격력 {5}% 대미지\n풀 차지 대미지 : 300%\n최대 장탄 수 : {6}발\n추가 효과 : [관통 특화]\n■ 아군 전체에게\n[공격 대미지 {7}%▲] [{8}초 유지]",
+    "en": "■ Affects self.\nChanges the weapon in use: Matis UberBuster\nCharge Time is fixed. Effect varies according to the stage of Overcurrent. Only one effect is triggered at a time.\nCharge Time: {9}sec.\nStage 1 or below: Fixed at {9} sec.\nStage 2: Fixed at {1} sec.\nStage 3: Fixed at {2} sec.\nStage 4: Fixed at {3} sec.\nStage 5 or above: Fixed at {4} sec.\nDamage: {5}% of final ATK\nFull Charge Damage: 300%\nMax Ammunition Capacity: {6}\nAdditional Effect: Gains Pierce.\n■ Affects all allies.\nAttack Damage ▲ {7}% for {8} sec.",
+    "ja": "■自分に\n「使用武器変更：\nメティスバスターバスター」：\n「チャージ時間」\n「過電流の段階別の効果」\n「各段階の効果のみ適用」\nチャージ時間：{9}秒\n1段階以下：{9}秒に固定\n2段階：{1}秒に固定\n3段階：{2}秒に固定\n4段階：{3}秒に固定\n5段階以上：{4}秒に固定\nダメージ：最終攻撃力の{5}％のダメージ\nフルチャージダメージ：300％\n最大装弾数：{6}発\n追加効果：「貫通特化」\n■味方全体に\n「攻撃ダメージ{7}％▲」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5,
+     2.5
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5,
+     1.5
+    ],
+    [
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4,
+     0.4
+    ],
+    [
+     175.0,
+     194.44,
+     213.89,
+     233.33,
+     252.78,
+     272.22,
+     291.67,
+     311.11,
+     330.56,
+     350.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     12.5,
+     13.89,
+     15.28,
+     16.67,
+     18.06,
+     19.44,
+     20.83,
+     22.22,
+     23.61,
+     25.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "9af684665e20"
+}

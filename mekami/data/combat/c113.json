@@ -1,0 +1,293 @@
+{
+ "rid": 113,
+ "name": {
+  "ko": "E.H.",
+  "en": "E.H.",
+  "ja": "E.H."
+ },
+ "nameCode": 5166,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Exotic",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 10.12,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 1.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "홈메이드 매거진",
+    "en": "Homemade Magazine",
+    "ja": "ホームメイドマガジン"
+   },
+   "text": {
+    "ko": "■ 폐품 {1}개 획득 시 사제 탄창 제작 수가 {2}개 미만이라면 자신에게\n기능 : 폐품을 탄창으로 제작 후 이로운 효과를 부여합니다.\n효과 1 : [폐품 제거]\n효과 2 : [사제 탄창 제작 1개] [최대 {2}개 보유] [지속]\n효과 3 : [공격력 {3}% X 사제 탄창 개수 ▲] [지속]",
+    "en": "■ Activates when obtaining {1} Scrap(s) while having fewer than {2} homemade magazines crafted. Affects self.\nFunction: Crafts magazines out of Scraps and gains a buff.\nEffect 1: Removes Scrap(s).\nEffect 2: Crafts 1 homemade magazine, up to a maximum of {2}. This effect is continuous.\nEffect 3: ATK ▲ {3}% continuously x the number of homemade magazines.",
+    "ja": "■廃品を{1}個回収した時、\n自家製弾倉が{2}本未満なら自分に\n機能：廃品で自家製弾倉を製造し、\n強化効果を得る\n効果1：「廃品数リセット」\n効果2：「自家製弾倉1本増加」「最大{2}本」「持続」\n効果3：「攻撃力{3}％×自家製弾倉数▲」「持続」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0
+    ],
+    [
+     4.43,
+     4.77,
+     5.11,
+     5.45,
+     5.8,
+     6.14,
+     6.48,
+     6.82,
+     7.16,
+     7.5
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "정크 헌팅",
+    "en": "Scrap Hunt",
+    "ja": "ジャンクハンティング"
+   },
+   "text": {
+    "ko": "■ 자신에게\n기능 : 폐품 획득 시 이로운 효과를 얻습니다.\n효과 1 : 전투 시작 시 [폐품 {7}개 ▲] [최대 {2}개] [지속]\n효과 2 : 자신을 포함한 아군 누군가 파괴 가능한 발사체 파괴 시 [폐품 {1}개 ▲] [최대 {2}개] [지속]\n효과 3 : 자신을 포함한 아군 누군가 파츠 파괴 시 [폐품 {3}개 ▲] [최대 {2}개] [지속]\n효과 4 : 적 사망 시 [폐품 {4}개 ▲] [최대 {2}개] [지속]\n효과 5 : 폐품 획득 시 [우월 코드 공격 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Affects self.\nFunction: Gains a buff when obtaining Scraps.\nEffect 1: Activates at the start of battle. Scraps ▲ {7} continuously, up to a maximum of {2}.\nEffect 2: Activates when an ally or self destroys a destructible projectile. Scraps ▲ {1} continuously, up to a maximum of {2}.\nEffect 3: Activates when an ally or self destroys an enemy's part. Scraps ▲ {3} continuously, up to a maximum of {2}.\nEffect 4: Activates when an enemy is neutralized. Scraps ▲ {4} continuously, up to a maximum of {2}.\nEffect 5: Activates when obtaining Scraps. Elemental Advantage Attack Damage ▲ {5}% for {6} sec.",
+    "ja": "■自分に\n機能：廃品を回収し、強化効果を得る\n効果1：戦闘開始時「廃品{7}個▲」\n「最大{2}個」「持続」\n効果2：自分を含む味方の誰かが\n破壊可能な発射体を破壊した時、\n「廃品{1}個▲」「最大{2}個」「持続」\n効果3：自分を含む味方の誰かが\nパーツを破壊した時\n「廃品{3}個▲」「最大{2}個」「持続」\n効果4：敵が破壊された時\n「廃品{4}個▲」「最大{2}個」「持続」\n効果5：廃品を回収した時、\n「有利コードの攻撃ダメージ{5}％▲」\n「{6}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     9.67,
+     10.41,
+     11.16,
+     11.9,
+     12.64,
+     13.39,
+     14.13,
+     14.88,
+     15.62,
+     16.36
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "인 투 더 헤븐",
+    "en": "Heavenbound",
+    "ja": "イン・トゥ・ザ・ヘブン"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[사용 무기 변경]\n차지 시간 : 0.4초\n대미지 : 최종 공격력 {1}%\n풀 차지 대미지 : 250% 대미지\n최대 장탄 수 : 1발 X 사제 탄창 개수\n유지 시간 : {2}초 유지\n제거 시점 : 유지 시간 종료 또는 모든 탄환 발사 시\n추가 효과\n[공격력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects self.\nChanges the weapon in use.\nCharge Time: 0.4 sec\nDamage: {1}% of final ATK\nFull Charge Damage: 250% of damage\nMax Ammunition Capacity: 1 x the number of homemade magazines\nDuration: {2} sec\nDeactivation condition: When the duration ends or when all rounds have been fired.\nAdditional Effect:\nATK ▲ {3}% for {4} sec.",
+    "ja": "■自分に\n「使用武器変更」\nチャージ時間：0.4秒\nダメージ：最終攻撃力の{1}％\nフルチャージダメージ：250％\n最大装弾数：1発×自家製弾倉の数\n持続時間：{2}秒\n解除条件：\n持続時間終了または全弾消費した時\n追加効果\n「攻撃力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     36.02,
+     38.8,
+     41.57,
+     44.35,
+     47.12,
+     49.9,
+     52.67,
+     55.45,
+     58.22,
+     61.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     254.12,
+     273.67,
+     293.22,
+     312.76,
+     332.31,
+     351.86,
+     371.41,
+     390.96,
+     410.5,
+     430.05
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "019b62e47b0c"
+}

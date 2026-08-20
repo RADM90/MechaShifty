@@ -1,0 +1,281 @@
+{
+ "rid": 225,
+ "name": {
+  "ko": "홍련 : 흑영",
+  "en": "Scarlet: Black Shadow",
+  "ja": "紅蓮：ブラックシャドウ"
+ },
+ "nameCode": 5105,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "PILGRIM",
+ "squad": "Goddess",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "ProjectileDirect",
+  "damage": 57.29,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.3,
+   "fullDamage": 150.0
+  },
+  "burstEnergy": {
+   "perShot": 125.0,
+   "perTargetShot": 250.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 50
+ },
+ "shotText": "■ 대상에게\n검기를 날려 좁은 범위를 공격합니다.\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "화무십일홍 · 파죽",
+    "en": "Fleetly Fading: Breakthrough",
+    "ja": "花無十日紅・破竹"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시\n[공격 횟수 별 효과] [단계별 효과만 적용]\n3회 : 최종 방어력이 가장 낮은 적 {1}기에게 \n[최종 공격력 {2}% 대미지]\n6회 : 공격 범위 내 적들에게 \n[최종 공격력 {3}% 분배 대미지]\n9회 : 적 전체에게 \n[최종 공격력 {4}% 분배 대미지]",
+    "en": "■ Activates when performing a Full Charge attack.\nEffects vary according to the number of attacks. Only one effect is triggered at a time.\nThree times: Affects the {1} enemy unit(s) with the lowest final DEF.\nDeals {2}% of final ATK as damage.\nSix times: Affects enemies within attack range.\nDeals {3}% of final ATK as distributed damage.\nNine times: Affects all enemies.\nDeals {4}% of final ATK as distributed damage.",
+    "ja": "■フルチャージして攻撃した時、\n「攻撃回数別の効果」\n「各段階の効果のみ適用」\n3回：最終防御力が最も低い敵{1}機に\n「最終攻撃力の{2}％のダメージ」\n6回：攻撃範囲内の敵に\n「最終攻撃力の{3}％の分配ダメージ」\n9回：敵全体に\n「最終攻撃力の {4}％の分配ダメージ」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     218.46,
+     225.63,
+     232.81,
+     239.98,
+     247.16,
+     254.32,
+     261.5,
+     268.68,
+     275.85,
+     283.03
+    ],
+    [
+     371.28,
+     392.79,
+     414.32,
+     435.85,
+     457.37,
+     478.89,
+     500.42,
+     521.94,
+     543.47,
+     565.0
+    ],
+    [
+     441.23,
+     486.43,
+     531.63,
+     576.83,
+     622.03,
+     667.23,
+     712.43,
+     757.63,
+     802.83,
+     848.03
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "화무십일홍 · 수라",
+    "en": "Fleetly Fading: Asura",
+    "ja": "花無十日紅・修羅"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 자신에게\n[최대 장탄 수 {1}% ▲] [{2}초 유지]\n[탄환 충전 {3}%]",
+    "en": "■ Activates when entering Full Burst. Affects self. \nMax Ammunition Capacity ▲ {1}% for {2} sec.\nReload {3}% of the magazine(s).",
+    "ja": "■フルバーストタイムが発動した時、自分に\n「最大装弾数{1}％▲」「{2}秒間維持」\n「弾丸チャージ{3}％」"
+   },
+   "values": [
+    [
+     40.0,
+     42.22,
+     44.44,
+     46.66,
+     48.88,
+     51.1,
+     53.32,
+     55.54,
+     57.76,
+     60.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     60.0,
+     60.0,
+     60.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "화무십일홍 · 만개",
+    "en": "Fleetly Fading: Strike",
+    "ja": "花無十日紅・満開"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[스킬 1의 풀 차지 공격 횟수 조건이 1회/2회/3회 로 변경] [{1}초 유지]\n[공격력 {2}% ▲] [{3}초 유지]\n[차지 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects self.\nChanges Full Charge attack count required for Skill 1 to 1 time/2 times/3 times for {1} sec.\nATK ▲ {2}% for {3} sec.\nCharge Damage ▲ {4}% for {5} sec.",
+    "ja": "■自分に\n「スキル1のフルチャージ攻撃回数の条件が\n1回/2回/3回に変更」「{1}秒間維持」\n「攻撃力{2}％▲」「{3}秒間維持」\n「チャージダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     17.28,
+     28.15,
+     39.02,
+     49.89,
+     60.76,
+     71.64,
+     82.51,
+     93.38,
+     104.25,
+     115.12
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     96.41,
+     104.54,
+     112.68,
+     120.81,
+     128.95,
+     137.09,
+     145.22,
+     153.36,
+     161.49,
+     169.63
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "2fd5e2eb199b"
+}

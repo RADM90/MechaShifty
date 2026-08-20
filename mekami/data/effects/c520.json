@@ -1,0 +1,126 @@
+{
+  "rid": 520,
+  "name": "브래디",
+  "textHash": "fa89c8caa639",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 버스트 타임 시작 시 자신에게",
+      "on": "fullBurstStart",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 차지 공격 {8}회 명중 시 자신이 머물고 싶은 맛 상태라면 대상에게",
+      "on": "fullChargeHit",
+      "if": {
+        "selfState": "머물고 싶은 맛"
+      },
+      "set": {
+        "state": "맛의 여운",
+        "dur": {
+          "v": 2
+        }
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "receivedUp",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ],
+      "hit": {
+        "ratio": {
+          "v": 3
+        },
+        "kind": "skill",
+        "type": "dotDmg"
+      }
+    },
+    {
+      "note": "풀 차지 공격 명중 시 자신이 나누고 싶은 맛 상태라면 자신에게",
+      "on": "fullChargeHit",
+      "if": {
+        "selfState": "나누고 싶은 맛"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 5,
+          "dur": {
+            "v": 6
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 차지 공격 명중 시 자신이 나누고 싶은 맛 상태라면 적 전체에게",
+      "on": "fullChargeHit",
+      "if": {
+        "selfState": "나누고 싶은 맛"
+      },
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 7
+        },
+        "kind": "skill",
+        "type": "distributedDmg"
+      }
+    }
+  ],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "자신이 나누고 싶은 맛 상태라면 자신에게",
+      "on": "burstUse",
+      "if": {
+        "selfState": "나누고 싶은 맛"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 5,
+          "dur": {
+            "v": 6
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s1] ■ 지속 대미지 증가 효과 적용 시 자신에게\n[머물고 싶은 맛 : 차지 속도 {3}% ▼] [{4}초 유지] [해제 불가]\n[나누고 싶은 맛 삭제]",
+    "[s1] ■ 분배 대미지 증가 효과 적용 시 지속 대미지 증가 상태가 아니라면 자신에게\n[나누고 싶은 맛 : 차지 속도 {5}% ▼] [{6}초 유지] [해제 불가]\n[머물고 싶은 맛 삭제]",
+    "[s2] 1초 간격",
+    "[burst] ■ 자신이 머물고 싶은 맛 상태라면 자신에게\n[맛의 여운 효과 {3}% ▲] [{4}초 유지]"
+  ]
+}

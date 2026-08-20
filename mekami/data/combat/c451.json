@@ -1,0 +1,317 @@
+{
+ "rid": 451,
+ "name": {
+  "ko": "티아",
+  "en": "Tia",
+  "ja": "ティア"
+ },
+ "nameCode": 5100,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "MISSILIS",
+ "squad": "DazzlingPearl",
+ "element": "Iron",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "파충류 애호가",
+    "en": "Reptile Lover",
+    "ja": "爬虫類愛好家"
+   },
+   "text": {
+    "ko": "■ 엄폐물 체력 회복 시 자신에게\n[버스트 스킬 재사용 시간 {1}초 ▼] [{2} 중첩] [{3}초 유지]\n■ 엄폐물 체력 회복 시 아군 전체에게\n[공격 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when recovering Cover's HP. Affects self.\nCooldown of Burst Skill ▼ {1} sec, stacks up to {2} time(s) and lasts for {3} sec.\n■ Activates when recovering Cover's HP. Affects all allies.\nAttack damage ▲ {4}% for {5} sec.",
+    "ja": "■遮蔽物のHPを回復した時自分に\n「バーストスキルクールタイム{1}秒▼」「{2}スタック」「{3}秒間維持」\n■遮蔽物のHPを回復した時、味方全体に\n「攻撃ダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     7.0,
+     7.0,
+     7.0,
+     10.0,
+     10.0,
+     10.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0
+    ],
+    [
+     17.46,
+     19.08,
+     20.71,
+     22.34,
+     23.97,
+     25.6,
+     27.23,
+     28.85,
+     30.48,
+     32.11
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "카멜레온 은신술",
+    "en": "Chameleon Invisibility",
+    "ja": "カメレオンの隠れ身の術"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 자신에게\n[시전자의 최대 체력 비례 엄폐물 최대 체력 {2}% ▲] [{3}초 유지]\n[주목 : 적 전체 도발] [{4}초 유지]\n■ 버스트 스킬 사용 시 자신에게\n[시전자의 최종 최대 체력 비례 엄폐물 체력 회복 {5}%]\n[공격 대미지 비례 {6}% 회복] [{7}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks. Affects self.\nMax HP of cover ▲ {2}% of the skill user's max HP for {3} sec.\nAttract: Taunts all enemies for {4} sec.\n■ Activates when using Burst Skill. Affects self.\nRestores cover HP equal to {5}% of the skill user's final max HP.\nRestores HP equal to {6}% of attack damage. Lasts for {7} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、自分に\n「スキル発動者の最大HPの{2}％分\n遮蔽物最大HP▲」「{3}秒間維持」\n「ヘイト：敵全体を挑発」「{4}秒間維持」\n■バーストスキルを使用した時、自分に\n「スキル発動者の最終最大HPの{5}％分\n遮蔽物HP回復」\n「攻撃ダメージの{6}％を回復」\n「{7}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     19.35,
+     20.84,
+     22.33,
+     23.82,
+     25.31,
+     26.79,
+     28.28,
+     29.77,
+     31.26,
+     32.75
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     10.5,
+     11.71,
+     12.92,
+     14.14,
+     15.35,
+     16.56,
+     17.77,
+     18.98,
+     20.2,
+     21.41
+    ],
+    [
+     18.03,
+     18.47,
+     18.91,
+     19.34,
+     19.78,
+     20.22,
+     20.65,
+     21.09,
+     21.53,
+     21.96
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "도마뱀의 보호",
+    "en": "Lizard's Protection",
+    "ja": "トカゲの保護"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[시전자의 최종 최대 체력 비례 {1}% 보호막] [{2}초 유지]\n■ 자신을 제외한 아군 전체에게\n[시전자의 최종 최대 체력 비례 {3}% 보호막] [{4}초 유지]\n■ 아군 전체에게\n[버스트 재진입 1단계]",
+    "en": "■ Affects self.\nCreates a shield with HP equal to {1}% of the skill user's final max HP that lasts for {2} sec. \n■ Affects all allies (except self).\nCreates a shield with HP equal to {3}% of the skill user's final max HP that lasts for {4} sec.\n■ Affects all allies.\nRe-enters Burst Stage 1.",
+    "ja": "■自分に\n「スキル発動者の最終最大HPの\n{1}％のバリア」「{2}秒間維持」\n■自分を除く味方全体に\n「スキル発動者の最終最大HPの\n{3}％のバリア」「{4}秒間維持」\n■味方全体に\n「バースト再突入1段階」"
+   },
+   "values": [
+    [
+     20.72,
+     22.32,
+     23.91,
+     25.5,
+     27.1,
+     28.69,
+     30.29,
+     31.88,
+     33.48,
+     35.07
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     6.03,
+     6.49,
+     6.96,
+     7.42,
+     7.89,
+     8.35,
+     8.81,
+     9.28,
+     9.74,
+     10.21
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "f13b0e69dfe3"
+}

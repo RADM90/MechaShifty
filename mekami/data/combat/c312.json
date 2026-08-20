@@ -1,0 +1,245 @@
+{
+ "rid": 312,
+ "name": {
+  "ko": "소다",
+  "en": "Soda",
+  "ja": "ソーダ"
+ },
+ "nameCode": 5051,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "MaidForYou",
+ "element": "Fire",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "자리 청소 메이드",
+    "en": "Spotless Chair",
+    "ja": "整理整頓メイド"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 자기 자신에게\n[메이드정신 : 최대 체력 {2}% ▲] [{3} 중첩] [{4}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects self.\nMaid Spirit: Max HP ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、自分に\n「メイド精神：最大HP{2}％▲」「{3}スタック」\\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0,
+     180.0
+    ],
+    [
+     7.15,
+     7.8,
+     8.45,
+     9.1,
+     9.75,
+     10.4,
+     11.05,
+     11.7,
+     12.35,
+     13.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "바닥 청소 메이드",
+    "en": "Squeaky Clean Floor",
+    "ja": "床掃除メイド"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 회복]\n■ 자신이 메이드 정신 최대 중첩 상태라면 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]",
+    "en": "■ Affects all allies.\nRestores HP equal to {1}% of the skill user's final max HP.\n■ Activates when Maid Spirit is at max stacks. Affects all allies.\nRestores HP equal to {2}% of the skill user's final max HP.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％回復」\n■自分がメイド精神のフルスタック状態\nなら、味方全体に\n「スキル発動者の最終最大HPの{2}％回復」"
+   },
+   "values": [
+    [
+     2.04,
+     2.17,
+     2.3,
+     2.43,
+     2.57,
+     2.7,
+     2.83,
+     2.96,
+     3.1,
+     3.23
+    ],
+    [
+     5.37,
+     6.19,
+     7.0,
+     7.82,
+     8.63,
+     9.45,
+     10.26,
+     11.08,
+     11.89,
+     12.71
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "대청소 메이드",
+    "en": "Spring Cleaning",
+    "ja": "大掃除メイド"
+   },
+   "text": {
+    "ko": "■ 무작위 적 {1}기에게\n[최종 공격력 {2}% 대미지]\n[기절] [{4}초 유지]\n■ 작열 코드 아군 전체에게\n[중첩 가능 이로운 효과 중첩량 {3}개 ▲]",
+    "en": "■ Affects {1} random enemy unit(s).\nDeals {2}% of final ATK as damage.\nStuns for {4} sec.\n■ Affects all Fire Code allies.\nIncreases the stack count of stackable buffs by {3}.",
+    "ja": "■ランダムの敵{1}機に\n「最終攻撃力の{2}％のダメージ｣\n「気絶」「{4}秒間維持」\n■灼熱コードの味方全体に\n「スタック可能バフ効果のスタック量 {3}個▲」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     110.68,
+     134.08,
+     157.48,
+     180.88,
+     204.28,
+     227.68,
+     251.08,
+     274.48,
+     297.88,
+     321.28
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "9bc5e31150f8"
+}

@@ -1,0 +1,281 @@
+{
+ "rid": 431,
+ "name": {
+  "ko": "볼륨",
+  "en": "Volume",
+  "ja": "ボリューム"
+ },
+ "nameCode": 5075,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "PrimaDonna",
+ "element": "Wind",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 8.73,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 1.5,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "프리스타일",
+    "en": "Freestyle",
+    "ja": "フリースタイル"
+   },
+   "text": {
+    "ko": "■ 적 처치 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Activates when defeating an enemy. Affects self.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■敵を倒した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     6.93,
+     7.56,
+     8.18,
+     8.82,
+     9.44,
+     10.08,
+     10.71,
+     11.34,
+     11.97,
+     12.6
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "드랍 더 비트",
+    "en": "Drop the Beat",
+    "ja": "ドロップ・ザ・ビート"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 아군 전체에게\n[시작 횟수 별 효과] [하위 효과 중복 적용] :\n1회 : [버스트 스킬 재사용 시간 {1}초 ▼]\n2회 : [버스트 스킬 재사용 시간 {2}초 ▼]\n3회 : [버스트 스킬 재사용 시간 {3}초 ▼]\n■ 버스트 스킬 사용 시 아군 전체에게\n[사용 횟수 별 효과] [하위 효과 중복 적용] :\n1회 : [크리티컬 대미지 {4}% ▲] [{5}초 유지]\n2회 : [크리티컬 대미지 {6}% ▲] [{7}초 유지]\n3회 : [크리티컬 대미지 {8}% ▲] [{9}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects all allies.\nEffects vary according to the number of times entered. Each subsequent effect triggers all effects before it:\nOnce: Cooldown of Burst Skill ▼ {1} sec.\nTwice: Cooldown of Burst Skill ▼ {2} sec.\nThree times: Cooldown of Burst Skill ▼ {3} sec.\n■ Activates when using Burst Skill. Affects all allies.\nEffects vary according to the number of uses. Each subsequent effect triggers all effects before it:\nOnce: Critical Damage ▲ {4}% for {5} sec.\nTwice: Critical Damage ▲ {6}% for {7} sec.\nThree times: Critical Damage ▲ {8}% for {9} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n味方全体に\n「開始回数別の効果」\n「下位効果のスタック適用」：\n1回：\n「バーストスキルクールタイム{1}秒▼」\n2回：\n「バーストスキルクールタイム{2}秒▼」\n3回：\n「バーストスキルクールタイム{3}秒▼」\n■バーストスキルを使用した時、味方全体に\n「使用回数別の効果」\n「下位効果のスタック適用」：\n1回：「クリティカルダメージ{4}％▲」「{5}秒間維持」\n2回：「クリティカルダメージ{6}％▲」「{7}秒間維持」\n3回：「クリティカルダメージ{8}％▲」「{9}秒間維持」"
+   },
+   "values": [
+    [
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34,
+     2.34
+    ],
+    [
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7,
+     2.7
+    ],
+    [
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17,
+     3.17
+    ],
+    [
+     1.68,
+     2.69,
+     3.7,
+     4.71,
+     5.72,
+     6.73,
+     7.74,
+     8.75,
+     9.76,
+     10.77
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.36,
+     4.37,
+     5.38,
+     6.39,
+     7.4,
+     8.41,
+     9.42,
+     10.44,
+     11.45,
+     12.46
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.05,
+     6.09,
+     7.13,
+     8.17,
+     9.21,
+     10.25,
+     11.29,
+     12.33,
+     13.37,
+     14.42
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "볼륨 업, 가이즈!",
+    "en": "Turn up the volume!",
+    "ja": "ボリュームアップ、ガイズ！"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects all allies.\nCritical Rate ▲ {1}% for {2} sec.",
+    "ja": "■味方全体に\n「クリティカル確率{1}％▲」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     17.54,
+     19.14,
+     20.73,
+     22.33,
+     23.92,
+     25.52,
+     27.11,
+     28.71,
+     30.3,
+     31.9
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "f02dea612081"
+}

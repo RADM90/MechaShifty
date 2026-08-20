@@ -1,0 +1,221 @@
+{
+ "rid": 181,
+ "name": {
+  "ko": "메이든",
+  "en": "Maiden",
+  "ja": "メイデン"
+ },
+ "nameCode": 5032,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "External",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 231.6,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 0.67,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 45.0,
+   "perTargetShot": 90.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "언령 : 기교의 언",
+    "en": "Kotodama: Words of Skill",
+    "ja": "言霊：技巧の言"
+   },
+   "text": {
+    "ko": "■ {1}회 피격 시 자신에게\n[복수 : 공격력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when attacked {1} time(s). Affects self.\nRevenge: ATK ▲ {2}% for {3} sec.",
+    "ja": "■{1}回攻撃を受けた時、自分に\n「復讐：攻撃力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     15.75,
+     16.96,
+     18.18,
+     19.39,
+     20.6,
+     21.81,
+     23.03,
+     24.24,
+     25.45,
+     26.66
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "언령 : 필중의 언",
+    "en": "Kotodama: Words of Assault",
+    "ja": "言霊：必中の言"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[도발] [{1}초 유지]\n■ 자신에게\n[크리티컬 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects all enemies.\nTaunt for {1} sec. \n■ Affects self.\nCritical Damage ▲ {2}% for {3} sec.",
+    "ja": "■敵全体に\n「挑発」「{1}秒間維持」\n■自分に\n「クリティカルダメージ{2}％▲」\n「{3}秒間維持」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     94.13,
+     100.65,
+     107.18,
+     113.7,
+     120.22,
+     126.75,
+     133.27,
+     139.79,
+     146.32,
+     152.84
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "언령 : 힘있는 말",
+    "en": "Kotodama: Words of Power",
+    "ja": "言霊：確かな言葉"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 자신이 복수 상태라면 동일 적 대상에게\n[최종 공격력 {2}% 추가 대미지]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as Burst Skill damage. \n■ Activates if the skill user is in the Revenge state. Affects the same targets.\nDeals {2}% of final ATK as additional damage.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」\n■自分が復讐状態なら同じ敵に\n「最終攻撃力の{2}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     270.56,
+     291.37,
+     312.18,
+     333.0,
+     353.81,
+     374.62,
+     395.43,
+     416.25,
+     437.06,
+     457.87
+    ],
+    [
+     270.56,
+     291.37,
+     312.18,
+     333.0,
+     353.81,
+     374.62,
+     395.43,
+     416.25,
+     437.06,
+     457.87
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "fefce35b0816"
+}

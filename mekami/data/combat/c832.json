@@ -1,0 +1,269 @@
+{
+ "rid": 832,
+ "name": {
+  "ko": "마리",
+  "en": "Mari",
+  "ja": "マリ"
+ },
+ "nameCode": 5120,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE004",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "일점 저격",
+    "en": "Precision Sniping",
+    "ja": "一点狙撃"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 아군 전체에게\n[보호막에 가하는 대미지 {1}% ▲] [{2}초 유지]\n■ 대상 코어 명중 시 아군 전체에게\n[관통 대미지 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates when landing a Full Charge attack. Affects all allies.\nDamage dealt to Shield ▲ {1}% for {2} sec.\n■ Activates when landing an attack on a target's core. Affects all allies.\nPierce Damage ▲ {3}% for {4} sec.",
+    "ja": "■フルチャージして攻撃した時、味方全体に\n「バリアに与えるダメージ{1}％▲」「{2}秒間維持」\n■対象のコアに命中した時、味方全体に\n「貫通ダメージ{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     59.17,
+     63.72,
+     68.27,
+     72.81,
+     77.36,
+     81.9,
+     86.45,
+     91.0,
+     95.54,
+     100.09
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     24.25,
+     26.11,
+     27.97,
+     29.83,
+     31.69,
+     33.55,
+     35.41,
+     37.27,
+     39.13,
+     40.99
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "정신 집중",
+    "en": "Full Focus",
+    "ja": "精神集中"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[관통 특화] [{1}초 유지]\n[공격력 {4}% ▲] [{5}초 유지]\n■ 아군 전체에게\n[시전자 기준 공격력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects self. \nGain Pierce for {1} sec.\nATK ▲ {4}% for {5} sec.\n■ Affects all allies.\nATK ▲ {2}% of the skill user's ATK for {3} sec.",
+    "ja": "■自分に\n「貫通特化」「{1}秒間維持」\n「攻撃力{4}％▲」「{5}秒間維持」\n■味方全体に\n「スキル発動者基準で攻撃力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     18.17,
+     19.57,
+     20.97,
+     22.37,
+     23.77,
+     25.17,
+     26.57,
+     27.98,
+     29.38,
+     30.78
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     17.98,
+     19.4,
+     20.82,
+     22.25,
+     23.67,
+     25.09,
+     26.52,
+     27.94,
+     29.36,
+     30.78
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "좌표 유도식 미사일",
+    "en": "GPS Guided Missile",
+    "ja": "座標誘導式ミサイル"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 아군 전체에게\n[공격 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as Burst Skill damage.\n■ Affects all allies.\nAttack damage ▲ {2}% for {3} sec.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％のバーストスキルダメージ」\n■味方全体に\n「攻撃ダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     363.63,
+     394.27,
+     424.9,
+     455.54,
+     486.18,
+     516.81,
+     547.45,
+     578.08,
+     608.72,
+     639.36
+    ],
+    [
+     24.25,
+     26.11,
+     27.97,
+     29.83,
+     31.69,
+     33.55,
+     35.41,
+     37.27,
+     39.13,
+     40.99
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "f6a6e73ccc8d"
+}

@@ -1,0 +1,317 @@
+{
+ "rid": 502,
+ "name": {
+  "ko": "일레그 : 붐 앤 쇼크",
+  "en": "Elegg: Boom and Shock",
+  "ja": "エレグ：ブーム・アンド・ショック"
+ },
+ "nameCode": 5146,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "ElectricShock",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "헬로 고스트",
+    "en": "Hello Ghost",
+    "ja": "ハローゴースト"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 무작위 적 1기에게\n[빙의] [{3}초 유지]\n기능 : 적에게 빙의된 유령을 찾아 포획\n필요 명중 횟수 : {2}회 (아군 전체 일괄 누적)\n효과 : [명중 횟수 100% 달성 시 유령 1개 포획] [최대 {4}개]\n반복 주기 : {1}초\n■ 수냉 코드 아군 전체에게\n[유령 개수 별 효과] [하위 효과 중복 적용]\n유령 개수가 1개 이상일 때 한하여\n[시전자 기준 공격력 {5}% ▲] [지속]\n유령 개수가 {6}개 이상일 때 한하여\n[우월 코드 공격 대미지 {7}% ▲] [지속]",
+    "en": "■ Activates at the start of battle. Affects 1 random enemy.\nPossession lasts for {3} sec.\nAbility: Find and capture ghosts possessing the enemy.\nRequired hit count: {2} time(s) in total, cumulative across all allies.\nEffect: Captures 1 ghost when the required hit count reaches 100%. A maximum of {4} ghost(s) can be captured.\nRecurring interval: {1} sec\n■ Affects all Water Code allies.\nEffects vary according to the number of ghosts. Each subsequent effect triggers all effects before it:\n1 or more ghosts:\nATK ▲ {5}% of the skill user's ATK continuously.\n{6} or more ghosts:\nElemental Advantage Attack Damage ▲ {7}% continuously.",
+    "ja": "■戦闘開始時、ランダムな敵1機に\n「憑依」「{3}秒間維持」\n機能：敵にキャプチャー可能な幽霊が\n憑依する\n必要命中回数：{2}回（味方全体で累計）\n効果：「命中回数100％到達時に\n幽霊キャプチャー数1増加」\n「最大{4}」\n再発動周期：{1}秒\n■水冷コードの味方全体に\n「幽霊キャプチャー数別効果」\n「下位効果のスタック適用」\n幽霊キャプチャー数が1以上の時のみ\n「スキル発動者基準で攻撃力{5}％▲」\n「持続」\n幽霊キャプチャー数が{6}以上の時のみ\n「有利コードの攻撃ダメージ{7}％▲」「持続」"
+   },
+   "values": [
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0
+    ],
+    [
+     9.57,
+     10.3,
+     11.04,
+     11.78,
+     12.51,
+     13.25,
+     13.99,
+     14.72,
+     15.46,
+     16.2
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0
+    ],
+    [
+     20.68,
+     22.27,
+     23.86,
+     25.45,
+     27.04,
+     28.64,
+     30.23,
+     31.82,
+     33.41,
+     35.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "고스트 버스터",
+    "en": "Ghostbuster",
+    "ja": "ゴーストバスター"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]\n■ 유령 개수가 최대 상태에서 유령 포획 시 적 전체에게\n[최종 공격력 {3}% 대미지]",
+    "en": "■ Activates when using Burst Skill. Affects self.\nATK ▲ {1}% for {2} sec.\n■ Activates when a ghost is captured while at maximum ghost capacity. Affects all enemies.\nDeals {3}% of final ATK as damage.",
+    "ja": "■バーストスキルを使用した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」\n■幽霊キャプチャー数が最大の状態で\n幽霊キャプチャー発動時、敵全体に\n「最終攻撃力の{3}％のダメージ」"
+   },
+   "values": [
+    [
+     23.63,
+     25.45,
+     27.27,
+     29.09,
+     30.91,
+     32.72,
+     34.54,
+     36.36,
+     38.18,
+     40.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     650.0,
+     700.0,
+     750.0,
+     800.0,
+     850.0,
+     900.0,
+     950.0,
+     1000.0,
+     1050.0,
+     1100.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "13 고스트",
+    "en": "13 Ghosts",
+    "ja": "サーティーンゴースト"
+   },
+   "text": {
+    "ko": "■ 자신의 유령 개수가 13이 아니라면 무작위 적들에게\n[최종 공격력 {1}% 대미지] [{2}회 순차 공격]\n[유령 개수 {3}개 ▼] [최소 1개 유지]\n■ 자신의 유령 개수가 13이라면 무작위 적들에게\n[최종 공격력 {4}% 대미지] [{5}회 순차 공격]\n[유령 개수 {6}개 ▼]",
+    "en": "■ Affects random enemy units if the number of ghosts is not 13.\nDeals {1}% of final ATK as damage. Attacks sequentially {2} times.\nNumber of ghosts ▼ {3}. Maintains at least 1 ghost.\n■ Affects random enemy units if the number of ghosts is 13.\nDeals {4}% of final ATK as damage. Attacks sequentially {5} times.\nNumber of ghosts ▼ {6}.",
+    "ja": "■自分の幽霊キャプチャー数が13でない時、\nランダムな敵に\n「最終攻撃力の{1}％のダメージ」\n「{2}回順番に攻撃」\n「幽霊キャプチャー数{3}▼」「最低1を維持」\n■自分の幽霊キャプチャー数が13の時、\nランダムな敵に\n「最終攻撃力の{4}％のダメージ」\n「{5}回順番に攻撃」\n「幽霊キャプチャー数{6}▼」"
+   },
+   "values": [
+    [
+     472.72,
+     509.09,
+     545.45,
+     581.81,
+     618.18,
+     654.54,
+     690.9,
+     727.27,
+     763.63,
+     800.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     472.72,
+     509.09,
+     545.45,
+     581.81,
+     618.18,
+     654.54,
+     690.9,
+     727.27,
+     763.63,
+     800.0
+    ],
+    [
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ed800af320d0"
+}

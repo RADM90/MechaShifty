@@ -1,0 +1,281 @@
+{
+ "rid": 500,
+ "name": {
+  "ko": "일레그",
+  "en": "Elegg",
+  "ja": "エレグ"
+ },
+ "nameCode": 5107,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "ElectricShock",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "쇼트",
+    "en": "Short Circuit",
+    "ja": "回路ショート"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 아군 전체에게\n[적 발사체 공격 시 해당 발사체에 가하는 대미지 {1}% ▲] [지속]\n■ 일반 공격 {2}회 명중 시 대상이 붐 인스톨 상태라면 대상과 주변의 적 {3}기에게\n[최종 공격력 {4}% 분배 대미지]",
+    "en": "■ Activates at the start of battle. Affects all allies.\nWhen attacking an enemy projectile, damage dealt to that projectile ▲ {1}% continuously.\n■ Activates after landing {2} normal attacks. Affects the target and {3} surrounding enemy unit(s) if the target is in BOOM Install.\nDeals {4}% of final ATK as distributed damage.",
+    "ja": "■戦闘開始時、味方全体に\n「敵の発射体を攻撃する時、該当の発射体に与えるダメージ{1}％▲」「持続」\n■通常攻撃が{2}回命中した時、\n対象がブームインストール状態なら、\n対象と周囲の敵{3}機に\n「最終攻撃力の{4}％の分配ダメージ」"
+   },
+   "values": [
+    [
+     35.25,
+     37.96,
+     40.67,
+     43.38,
+     46.1,
+     48.81,
+     51.52,
+     54.23,
+     56.94,
+     59.66
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     93.75,
+     100.97,
+     108.18,
+     115.39,
+     122.6,
+     129.81,
+     137.03,
+     144.24,
+     151.45,
+     158.65
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "패스트 차지",
+    "en": "Fast Charge",
+    "ja": "ファストチャージ"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 대상이 붐 인스톨 상태라면 아군 전체에게\n[시전자 기준 공격력 {2}% ▲] [{3}초 유지]\n■ 타겟 출현 시 아군 전체에게\n[버스트 게이지 충전 {4}%] [전투 중 1회 발동]",
+    "en": "■ Activates after landing {1} normal attacks on a target in the BOOM Install state. Affects all allies.\nATK ▲ {2}% of the skill user's ATK for {3} sec.\n■ Activates when the stage target appears. Affects all allies.\nFills Burst Gauge by {4}%. Activates once per battle.",
+    "ja": "■通常攻撃が{1}回命中した時、対象がブームインストール状態なら味方全体に\n「スキル発動者基準で攻撃力{2}％▲」「{3}秒間維持」\n■ターゲットが出現した時、味方全体に\n「バーストゲージのチャージ{4}％」「戦闘中1回発動」"
+   },
+   "values": [
+    [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    [
+     5.49,
+     6.33,
+     7.18,
+     8.02,
+     8.87,
+     9.71,
+     10.56,
+     11.4,
+     12.24,
+     13.09
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "붐 인스톨",
+    "en": "BOOM Install",
+    "ja": "ブームインストール"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[분배 대미지 {1}% ▲] [{2}초 유지]\n■ 조준선에 가장 가까운 적 1기에게\n[최종 공격력 {3}% 버스트 스킬 대미지]\n[붐 인스톨 : 방어력 {4}% ▼] [{5}초 유지]",
+    "en": "■ Affects all allies.\nDistributed Damage ▲ {1}% for {2} sec.\n■ Affects the enemy nearest to the crosshair.\nDeals {3}% of final ATK as Burst Skill damage.\nBOOM Install: DEF ▼ {4}% for {5} sec.",
+    "ja": "■味方全体に\n「分配ダメージ{1}％▲」「{2}秒間維持」\n■照準線に最も近い敵1機に\n「最終攻撃力の{3}％の\nバーストスキルダメージ」\n「ブームインストール：防御力{4}％▼」\n「{5}秒間維持」"
+   },
+   "values": [
+    [
+     22.46,
+     24.38,
+     26.3,
+     28.22,
+     30.14,
+     32.06,
+     33.98,
+     35.9,
+     37.82,
+     39.74
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     187.09,
+     201.48,
+     215.87,
+     230.26,
+     244.66,
+     259.05,
+     273.44,
+     287.83,
+     302.22,
+     316.66
+    ],
+    [
+     21.06,
+     22.68,
+     24.3,
+     25.92,
+     27.54,
+     29.16,
+     30.78,
+     32.4,
+     34.02,
+     35.64
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "b72853008026"
+}

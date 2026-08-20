@@ -1,0 +1,281 @@
+{
+ "rid": 820,
+ "name": {
+  "ko": "렘",
+  "en": "Rem",
+  "ja": "レム"
+ },
+ "nameCode": 5108,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE003",
+ "element": "Water",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "렘에게 맡겨주세요!",
+    "en": "Leave it to Rem!",
+    "ja": "レムにお任せください！"
+   },
+   "text": {
+    "ko": "■ 자신이 도깨비 기운 상태라면 일반 공격 {1}회 명중 시 자신에게\n[공격력 {2}% ▲] [{3} 중첩] [{4}초 유지]\n■ 버스트 스킬 사용 시 아군 전체에게\n[체력 회복 균등 분배] [{5}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks while in the Demon's Breath state. Affects self.\nATK ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.\n■ Activates when using Burst Skill. Affects all allies.\nEqually shares HP recovery for {5} sec.",
+    "ja": "■自分が鬼の気状態なら、通常攻撃が{1}回命中した時、自分に\n「攻撃力{2}％▲」「{3}スタック」「{4}秒間維持」\n■バーストスキルを使用した時、味方全体に\n「HP回復均等分配」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     2.49,
+     2.68,
+     2.88,
+     3.07,
+     3.26,
+     3.45,
+     3.64,
+     3.84,
+     4.03,
+     4.22
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "렘이 치료하겠습니다!",
+    "en": "Rem the Healer",
+    "ja": "レムが治療します！"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[공격 대미지 비례 {1}% 회복] [지속]\n■ 전투 시작 시 자신과 최종 공격력이 가장 높은 로켓 런처 소지 아군 {2}기에게\n[체력 회복 균등 분배] [지속]",
+    "en": "■ Activates at the start of battle. Affects self.\nRestores HP equal to {1}% of attack damage. This effect is continuous.\n■ Activates at the start of battle. Affects self and the {2} ally unit(s) with rocket launchers who have the highest final ATK.\nEqually shares HP recovery. This effect is continuous.",
+    "ja": "■戦闘開始時、自分に\n「攻撃ダメージの{1}％回復」「持続」\n■戦闘開始時、自分と最終攻撃力が最も高いロケットランチャーを所持する味方{2}機に\n「HP回復均等分配」「持続」"
+   },
+   "values": [
+    [
+     24.96,
+     26.88,
+     28.8,
+     30.72,
+     32.64,
+     34.56,
+     36.48,
+     38.4,
+     40.32,
+     42.24
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "렘은 용서하지 않습니다!",
+    "en": "No Mercy from Rem",
+    "ja": "レムは許しません！"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[도깨비 기운 : 크리티컬 확률 {1}% ▲] [{2}초 유지]\n■ 로켓 런처 소지 아군 전체에게\n[시전자 기준 공격력 {3}% ▲] [{4}초 유지]\n[최대 장탄 수 {5}발 ▲] [{6}초 유지]",
+    "en": "■ Affects self.\nDemon's Breath: Critical Rate ▲ {1}% for {2} sec.\n■ Affects all allies with rocket launchers.\nATK ▲ {3}% of the skill user's ATK for {4} sec.\nMax Ammunition Capacity ▲ {5} round(s) for {6} sec.",
+    "ja": "■自分に\n「鬼の気：クリティカル確率{1}％▲」「{2}秒間維持」\n■ロケットランチャーを所持する味方全体に\n「スキル発動者基準で攻撃力{3}％▲」「{4}秒間維持」\n「最大装弾数{5}発▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     7.4,
+     10.4,
+     13.76,
+     17.29,
+     20.37,
+     23.69,
+     27.25,
+     30.78,
+     33.6,
+     37.8
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.01,
+     32.31,
+     34.62,
+     36.93,
+     39.24,
+     41.55,
+     43.86,
+     46.17,
+     48.47,
+     50.78
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     3.0,
+     3.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "24032a271fcf"
+}

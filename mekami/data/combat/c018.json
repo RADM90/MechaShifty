@@ -1,0 +1,473 @@
+{
+ "rid": 18,
+ "name": {
+  "ko": "네온 : 비전 아이",
+  "en": "Neon: Vision Eye",
+  "ja": "ネオン：ビジョン・アイ"
+ },
+ "nameCode": 5170,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "Counters",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 300,
+   "end": 300,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 75.0,
+   "perTargetShot": 150.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "건강한 몸",
+    "en": "Healthy Body",
+    "ja": "超健康体"
+   },
+   "text": {
+    "ko": "■ 피격 시 자신이 건강한 몸 상태가 아니라면 자신에게\n[무적] [{3}초 유지] [전투 중 {4}회 발동]\n[해로운 효과 면역 ∞개] [{5}초 유지] [전투 중 {6}회 발동]\n[건강한 몸 : 받는 체력 회복량 {1}% ▲] [{2}초 유지]\n■ 풀 차지 공격 명중 시 대상이 타겟이라면 대상에게\n[화력 폭발] : \n효과 : [최종 공격력 {7}% 추가 대미지]\n초화력 상태 추가 효과 : [최종 공격력 {8}% 추가 대미지]",
+    "en": "■ Activates when attacked while not in Healthy Body status. Affects self.\nInvulnerable for {3} sec. Activates {4} time(s) per battle.\nGains debuff immunity to ∞ debuffs for {5} sec. Activates {6} time(s) per battle.\nHealthy Body: Incoming Healing ▲ {1}% for {2} sec.\n■ Activates when landing a Full Charge attack. Affects the enemy if the enemy is the stage target.\nFirepower Explosion:\nEffect: Deals {7}% of final ATK as additional damage.\nAdditional effect of Super Firepower status: Deals {8}% of final ATK as additional damage.",
+    "ja": "■攻撃を受けた時、自分が健康体状態でなければ、自分に\n「無敵」「{3}秒間維持」「戦闘中{4}回発動」\n「デバフ効果免疫∞個」「{5}秒間維持」「戦闘中{6}回発動」\n「健康体：受けるHP回復量{1}％▲」「{2}秒間維持」\n■フルチャージ攻撃が命中した時、対象がターゲットなら、対象に\n「火力爆発」：\n効果：「最終攻撃力の{7}％の追加ダメージ」\n超火力状態追加効果：「最終攻撃力の{8}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     6.06,
+     6.53,
+     7.0,
+     7.46,
+     7.93,
+     8.4,
+     8.86,
+     9.33,
+     9.8,
+     10.26
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     258.81,
+     278.71,
+     298.62,
+     318.53,
+     338.44,
+     358.34,
+     378.25,
+     398.16,
+     418.07,
+     437.98
+    ],
+    [
+     155.28,
+     167.23,
+     179.17,
+     191.12,
+     203.06,
+     215.01,
+     226.95,
+     238.9,
+     250.84,
+     262.79
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "화력 충전",
+    "en": "Firepower Charge",
+    "ja": "超火力チャージ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[화력 게이지 {8} 충전] \n■ 일반 공격 시 자신이 화력 충전 상태라면 자신에게\n[화력 게이지 2 충전]\n■ 화력 충전 상태 종료 시 자신에게\n[화력 게이지 {9} 충전]\n■ 풀 버스트 타임 종료 시 자신이 화력 게이지 보유 상태라면 자신에게\n[버스트 게이지 충전 속도 {2}% X 화력 게이지 충전량 ▲] [{3}초 유지]\n■ 풀 버스트 타임 시작 시 자신에게\n[화력 전개] :\n효과 : [공격력 {4}% ▲] [{5}초 유지]\n초화력 추가 효과 : [공격력 {6}% ▲] [{7}초 유지]",
+    "en": "■ Activates at the start of battle. Affects self.\nIncreases the Firepower Gauge's charge by {8}.\n■ Activates when performing a normal attack while in Firepower Charge status. Affects self.\nIncreases the Firepower Gauge's charge by 2.\n■ Activates when Firepower Charge ends. Affects self.\nIncreases the Firepower Gauge's charge by {9}.\n■ Activates when Full Burst ends while Firepower Gauge is active. Affects self.\nBurst Gauge filling speed ▲ {2}% x Firepower Gauge charge amount for {3} sec.\n■ Activates when entering Full Burst. Affects self.\nMaximum Firepower: \nEffect: ATK ▲ {4}% for {5} sec.\nAdditional effect for Super Firepower: ATK ▲ {6}% for {7} sec.",
+    "ja": "■戦闘開始時、自分に\n「火力ゲージ{8}チャージ」\n■通常攻撃をした時、自分が火力チャージ状態なら、自分に\n「火力ゲージ2チャージ」\n■火力チャージ状態が終了した時、自分に\n「火力ゲージ{9}チャージ」\n■フルバーストタイムが終了した時、自分に火力ゲージがある状態なら自分に\n「バーストゲージのチャージ速度{2}％×火力ゲージのチャージ量▲」\n「{3}秒間維持」\n■フルバーストタイムが発動した時、自分に\n「火力全開」：\n効果：「攻撃力{4}％▲」「{5}秒間維持」\n超火力追加効果：「攻撃力{6}％▲」「{7}秒間維持」"
+   },
+   "values": [
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     2.96,
+     3.19,
+     3.42,
+     3.65,
+     3.87,
+     4.1,
+     4.33,
+     4.56,
+     4.79,
+     5.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     47.29,
+     50.93,
+     54.57,
+     58.21,
+     61.85,
+     65.49,
+     69.12,
+     72.76,
+     76.4,
+     80.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     20.71,
+     22.31,
+     23.9,
+     25.49,
+     27.09,
+     28.68,
+     30.27,
+     31.87,
+     33.46,
+     35.05
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0,
+     45.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "초화력",
+    "en": "Super Firepower",
+    "ja": "超火力解放"
+   },
+   "text": {
+    "ko": "■ 자신이 화력 게이지가 100미만이면 자신에게\n[화력 충전 : 화력 게이지 충전 가능] [{2}초 유지] [해제 불가]\n[화력 게이지 1 충전] \n■ 자신이 화력 게이지가 100이라면 자신에게\n[초화력 : 공격 대미지 {4}% ▲] [{5}초 유지]\n[화력 게이지 100 소모]\n■ 자신에게\n[폭발 범위 {6}% ▲] [{7}초 유지]\n[공격 대미지 {10}% ▲] [{11}초 유지]",
+    "en": "■ Activates when the Firepower Gauge's charge is lower than 100. Affects self.\nFirepower Charge: Charges the Firepower Gauge for {2} sec. This effect cannot be removed.\nIncreases the Firepower Gauge's charge by 1.\n■ Activates when the Firepower Gauge's charge is at 100. Affects self.\nSuper Firepower: Attack Damage ▲ {4}% for {5} sec.\nDecreases the Firepower Gauge's charge by 100.\n■ Affects self.\nExplosion Radius ▲ {6}% for {7} sec.\nAttack Damage ▲ {10}% for {11} sec.",
+    "ja": "■自分の火力ゲージが100未満の場合、自分に\n「火力チャージ：火力ゲージチャージ可能」「{2}秒間維持」「解除不可」\n「火力ゲージ1チャージ」\n■自分の火力ゲージが100の場合、自分に\n「超火力：攻撃ダメージ{4}％▲」「{5}秒間維持」\n「火力ゲージ100消費」\n■自分に\n「爆発範囲{6}％▲」「{7}秒間維持」\n「攻撃ダメージ{10}％▲」「{11}秒間維持」"
+   },
+   "values": [
+    [
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0,
+     99.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     34.56,
+     35.72,
+     36.89,
+     38.05,
+     39.22,
+     40.38,
+     41.54,
+     42.71,
+     43.87,
+     45.03
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5,
+     0.5
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     22.94,
+     32.64,
+     42.33,
+     52.03,
+     61.73,
+     71.42,
+     81.12,
+     90.82,
+     100.51,
+     110.21
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "85f56a92639e"
+}

@@ -1,0 +1,233 @@
+{
+ "rid": 810,
+ "name": {
+  "ko": "2B",
+  "en": "2B",
+  "ja": "2B"
+ },
+ "nameCode": 5094,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "ABNORMAL",
+ "squad": "ce002_01",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.99,
+  "coreDamage": 200.0,
+  "maxAmmo": 90,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "생존 행동",
+    "en": "Survival",
+    "ja": "生存行動"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신에게\n[시작 횟수 별 효과] [하위 효과 중복 적용]\n1회 : [최대 체력 {1}% ▲] [지속]\n2회 : [최대 체력 {2}% ▲] [지속]\n3회 : [최대 체력 {3}% ▲] [지속]",
+    "en": "■ Activates when using Burst Skill. Affects self.\nEffects vary according to the number of times used. Each subsequent effect triggers all effects before it:\nOnce: Max HP ▲ {1}% continuously.\nTwice: Max HP ▲ {2}% continuously.\nThree times: Max HP ▲ {3}% continuously.",
+    "ja": "■バーストスキルを使用した時、自分に\n「開始回数別の効果」「下位効果のスタック適用」\n1回：「最大HP{1}％▲」「持続」\n2回：「最大HP{2}％▲」「持続」\n3回：「最大HP{3}％▲」「持続」"
+   },
+   "values": [
+    [
+     5.92,
+     6.38,
+     6.84,
+     7.29,
+     7.75,
+     8.2,
+     8.66,
+     9.12,
+     9.57,
+     10.03
+    ],
+    [
+     11.85,
+     12.76,
+     13.68,
+     14.59,
+     15.5,
+     16.41,
+     17.32,
+     18.24,
+     19.15,
+     20.06
+    ],
+    [
+     34.13,
+     36.75,
+     39.38,
+     42.0,
+     44.63,
+     47.25,
+     49.88,
+     52.5,
+     55.13,
+     57.76
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "클러스터 봄",
+    "en": "Cluster Bomb",
+    "ja": "クラスターボム"
+   },
+   "text": {
+    "ko": "■ {1}회 사격 시 적 전체에게\n[최종 공격력 {2}% 대미지]\n■ 전투 시작 시 자신에게\n[시전자의 최종 최대 체력의 {3}%만큼 공격력 ▲] [지속]",
+    "en": "■ Activates after firing {1} time(s). Affects all enemies.\nDeals {2}% of final ATK as damage. \n■ Activates at the start of battle. Affects self.\nATK ▲ {3}% of the skill user's final max HP continuously.",
+    "ja": "■{1}回射撃した時、敵全体に\n「最終攻撃力の{2}％のダメージ」\n■戦闘開始時、自分に\n「スキル発動者の最終最大HPの{3}％分の\n攻撃力▲」「持続」"
+   },
+   "values": [
+    [
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0
+    ],
+    [
+     98.94,
+     106.56,
+     114.17,
+     121.78,
+     129.39,
+     137.0,
+     144.61,
+     152.22,
+     159.84,
+     167.45
+    ],
+    [
+     3.64,
+     3.92,
+     4.2,
+     4.48,
+     4.76,
+     5.04,
+     5.32,
+     5.6,
+     5.88,
+     6.16
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "연속 공격",
+    "en": "Series of Attacks",
+    "ja": "連続攻撃"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 분배 대미지]\n■ 남은 체력 수치가 가장 높은 적 {2}기에게\n[최종 공격력 {3}% 추가 대미지]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as distributed damage. \n■ Affects {2} enemy unit(s) with the highest remaining HP.\nDeals {3}% of final ATK as additional damage.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％の分配ダメージ」\n■残りHPの値が最も高い敵{2}機に\n「最終攻撃力の{3}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     1441.44,
+     1552.32,
+     1663.2,
+     1774.08,
+     1884.96,
+     1995.84,
+     2106.72,
+     2217.6,
+     2328.48,
+     2439.36
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     468.0,
+     504.0,
+     540.0,
+     576.0,
+     612.0,
+     648.0,
+     684.0,
+     720.0,
+     756.0,
+     792.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "1cf70be38ea9"
+}

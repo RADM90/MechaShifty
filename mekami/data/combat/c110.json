@@ -1,0 +1,197 @@
+{
+ "rid": 110,
+ "name": {
+  "ko": "크로우",
+  "en": "Crow",
+  "ja": "クロウ"
+ },
+ "nameCode": 5025,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "MISSILIS",
+ "squad": "Exotic",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Bio",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.59,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 1.67,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 2,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "킬링타임",
+    "en": "Killing Time",
+    "ja": "暇つぶし"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 적 전체에게\n[공격력 {1}% ▼] [{2}초 유지]",
+    "en": "■ Affects all enemies. Activates when entering Full Burst.\nATK ▼ {1}% for {2} sec.",
+    "ja": "■フルバーストタイムが発動した時、敵全体に\n「攻撃力{1}％▼」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     11.77,
+     12.68,
+     13.59,
+     14.49,
+     15.4,
+     16.31,
+     17.21,
+     18.12,
+     19.02,
+     19.93
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "데어데블",
+    "en": "Daredevil",
+    "ja": "デアデビル"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 대상에게 \n[최종 공격력 {1}% 추가 대미지]\n■ 마지막 탄환 명중 시 자신에게 \n[방어력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects the target.\nDeals {1}% of final ATK as additional damage. \n■ Activates when the last bullet hits the target. Affects self.\nDEF ▲ {2}% for {3} sec.",
+    "ja": "■最後の弾丸が命中した時、対象に\n「最終攻撃力の{1}％の追加ダメージ」\n■最後の弾丸が命中した時、自分に\n「防御力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     52.65,
+     56.7,
+     60.75,
+     64.8,
+     68.85,
+     72.9,
+     76.95,
+     81.0,
+     85.05,
+     89.09
+    ],
+    [
+     7.52,
+     8.1,
+     8.67,
+     9.25,
+     9.83,
+     10.41,
+     10.99,
+     11.57,
+     12.15,
+     12.72
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "더 테러리스트",
+    "en": "The Terrorist",
+    "ja": "ザ・テロリスト"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 적 1기에게\n[최종 공격력 {1}% 버스트 스킬 대미지]",
+    "en": "■ Affects the enemy with the highest final ATK.\nDeals {1}% of final ATK as Burst Skill damage.",
+    "ja": "■最終攻撃力が最も高い敵1機に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」"
+   },
+   "values": [
+    [
+     541.12,
+     582.75,
+     624.37,
+     666.0,
+     707.62,
+     749.25,
+     790.87,
+     832.5,
+     874.12,
+     915.75
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ca7a5581f43f"
+}

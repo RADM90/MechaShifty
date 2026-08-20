@@ -1,0 +1,245 @@
+{
+ "rid": 261,
+ "name": {
+  "ko": "니힐리스타",
+  "en": "Nihilister",
+  "ja": "ニヒリスター"
+ },
+ "nameCode": 5056,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "PILGRIM",
+ "squad": "Heretic",
+ "element": "Fire",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "버닝 샷",
+    "en": "Burning Shot",
+    "ja": "バーニングショット"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 자신에게\n[관통 특화] [{1}발 유지]\n[관통 범위 50% 확장] [{2}발 유지]\n■ {3}기 이상을 동시에 명중시켰다면 대상에게\n[최종 공격력 {4}% 추가 대미지]",
+    "en": "■ Activates when attacking with Full Charge. Affects self.\nGain Pierce for {1} round(s).\nPiercing Radius ▲ 50% for {2} round(s).\n■ Activates when hits {3} or more enemies concurrently. Affects all enemies hit.\nDeals {4}% of final ATK as additional damage.",
+    "ja": "■フルチャージして攻撃した時、自分に\n「貫通特化」「{1}発間維持」\n「貫通範囲50％拡張」「{2}発間維持」\n■{3}機以上同時に命中した場合、対象に\n「最終攻撃力の{4}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     11.28,
+     15.62,
+     19.95,
+     24.29,
+     28.63,
+     32.97,
+     37.31,
+     41.65,
+     45.99,
+     50.33
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "메기도 플레임",
+    "en": "Megiddo Flame",
+    "ja": "メギドフレイム"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {1}% 대미지]",
+    "en": "■ Affects enemies within attack range. \nDeals {1}% of final ATK as damage.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{1}％のダメージ」"
+   },
+   "values": [
+    [
+     66.56,
+     71.68,
+     76.79,
+     81.92,
+     87.04,
+     92.16,
+     97.27,
+     102.4,
+     107.52,
+     112.64
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "번 아포칼립스",
+    "en": "Burning Scourge",
+    "ja": "バーンアポカリプス"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {1}% 대미지]\n[화상 : 최종 공격력 {2}% 지속 대미지] [1초 간격] [{3}초 유지]\n■ 자신에게\n[최대 장탄 수 {4}발 ▲] [{5}초 유지]",
+    "en": "■ Affects enemies within the attack range.\nDeals {1}% of final ATK as damage.\nBurn: Deals {2}% of final ATK as sustained damage every second for {3} sec. \n■ Affects self.\nMax Ammunition Capacity ▲ {4} for {5} sec.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{1}％のダメージ」\n「火傷：最終攻撃力の{2}％の\n持続ダメージ」「1秒間隔」「{3}秒間維持」\n■自分に\n「最大装弾数{4}発▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     99.84,
+     106.36,
+     112.89,
+     119.42,
+     125.95,
+     132.48,
+     139.0,
+     145.53,
+     152.06,
+     158.59
+    ],
+    [
+     7.48,
+     8.12,
+     8.75,
+     9.38,
+     10.02,
+     10.65,
+     11.28,
+     11.92,
+     12.55,
+     13.19
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     3.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     5.0,
+     5.0,
+     5.0,
+     6.0,
+     6.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "cf20defcb2f4"
+}

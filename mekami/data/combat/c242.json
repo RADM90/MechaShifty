@@ -1,0 +1,257 @@
+{
+ "rid": 242,
+ "name": {
+  "ko": "폴크방",
+  "en": "Folkwang",
+  "ja": "フォルクヴァン"
+ },
+ "nameCode": 5039,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "LifeTonic",
+ "element": "Water",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 14.29,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.3,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "스타팅 휘슬",
+    "en": "Starting Whistle",
+    "ja": "スターティングホイッスル"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 아군 2기에게\n[시전자의 최종 최대 체력 비례 {1}% 보호막] [{2}초 유지]\n[받는 체력 회복량 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects the 2 allies with the highest final ATK.\nCreates a shield with HP equal to {1}% of the skill user's final max HP that lasts for {2} sec. \nIncoming Healing ▲ {3}% for {4} sec.",
+    "ja": "■最終攻撃力が最も高い味方2機に\n「スキル発動者の最終最大HPの{1}％バリア」「{2}秒間維持」\n「受けるHP回復量{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     6.85,
+     7.61,
+     8.37,
+     9.14,
+     9.9,
+     10.66,
+     11.42,
+     12.18,
+     12.94,
+     13.71
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     22.85,
+     25.39,
+     27.92,
+     30.46,
+     33.0,
+     35.54,
+     38.08,
+     40.62,
+     43.16,
+     45.7
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "s2": {
+   "name": {
+    "ko": "페이스 다운",
+    "en": "Harder, Better, Faster",
+    "ja": "ペースダウン"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 적 1기에게\n[도발] [{1}초 유지]\n■ 자신에게\n[최대 체력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects the enemy with the highest final ATK.\nTaunt for {1} sec. \n■ Affects self.\nMax HP ▲ {2}% for {3} sec.",
+    "ja": "■最終攻撃力が最も高い敵1機に\n「挑発」「{1}秒間維持」\n■自分に\n「最大HP{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     22.92,
+     25.37,
+     27.82,
+     30.26,
+     32.71,
+     35.16,
+     37.61,
+     40.06,
+     42.51,
+     44.96
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "스플린트",
+    "en": "Sprint",
+    "ja": "スプリント"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 아군 2기에게\n[시전자의 최종 최대 체력 비례 {1}% 보호막] [{2}초 유지]\n[공격 대미지 비례 {3}% 회복] [{4}초 유지]",
+    "en": "■ Affects the 2 allies with the highest final ATK.\nCreates a shield with HP equal to {1}% of the skill user's final max HP that lasts for {2} sec. \nRestores HP equal to {3}% of attack damage. Lasts for {4} sec.",
+    "ja": "■最終攻撃力が最も高い味方2機に\n「スキル発動者の最終最大HPの\n{1}％のバリア」「{2}秒間維持」\n「攻撃ダメージの{3}％回復」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     16.45,
+     18.28,
+     20.1,
+     21.93,
+     23.76,
+     25.59,
+     27.42,
+     29.25,
+     31.07,
+     32.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     32.9,
+     36.56,
+     40.21,
+     43.87,
+     47.53,
+     51.18,
+     54.84,
+     58.5,
+     62.15,
+     65.81
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "280111ac2e5d"
+}

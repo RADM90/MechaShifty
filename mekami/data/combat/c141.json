@@ -1,0 +1,430 @@
+{
+ "rid": 141,
+ "name": {
+  "ko": "밀크",
+  "en": "Milk",
+  "ja": "ミルク"
+ },
+ "nameCode": 5028,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "CafeSweety",
+ "element": "Water",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Bio",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "승부욕",
+    "en": "In It to Win It",
+    "ja": "負けず嫌い"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 아군 2기에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects the 2 allies with the highest final ATK.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■最終攻撃力が最も高い味方2機に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     17.51,
+     19.1,
+     20.69,
+     22.28,
+     23.87,
+     25.46,
+     27.06,
+     28.65,
+     30.24,
+     31.83
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "s2": {
+   "name": {
+    "ko": "밀크 도핑",
+    "en": "Sugar Rush",
+    "ja": "ミルクドーピング"
+   },
+   "text": {
+    "ko": "■ 자신의 체력이 80% 이상일 때 한하여 아군 전체에게\n[크리티컬 대미지 {1}% ▲] [지속]",
+    "en": "■ Activates when above 80% HP. Affects all allies.\nCritical Damage ▲ {1}% permanently.",
+    "ja": "■自分のHPが80％以上の時のみ味方全体に\n「クリティカルダメージ{1}％▲」「持続」"
+   },
+   "values": [
+    [
+     6.12,
+     6.68,
+     7.23,
+     7.79,
+     8.35,
+     8.9,
+     9.46,
+     10.02,
+     10.57,
+     11.13
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "투 더 빅토리",
+    "en": "Victory is Mine",
+    "ja": "勝利に向かって"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 1기에게\n[최종 공격력 {2}% 버스트 스킬 대미지]\n■ 아군 전체에게\n[공격 대미지 비례 {3}% 회복] [{1}초 유지]",
+    "en": "■ Affects the enemy with the highest final DEF. \nDeals {2}% of final ATK as Burst Skill damage. \n■ Affects all allies. \nRestores HP equal to {3}% of attack damage. Lasts for {1} sec.",
+    "ja": "■最終防御力が最も高い敵1機に\n「最終攻撃力の{2}％の\nバーストスキルダメージ」\n■味方全体に\n「攻撃ダメージの{3}％回復」「{1}秒間維持」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     202.04,
+     220.4,
+     238.77,
+     257.14,
+     275.51,
+     293.87,
+     312.24,
+     330.61,
+     348.97,
+     367.34
+    ],
+    [
+     8.88,
+     9.69,
+     10.5,
+     11.31,
+     12.12,
+     12.93,
+     13.73,
+     14.54,
+     15.35,
+     16.16
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 200901,
+  "name": {
+   "ko": "커플 머그잔",
+   "en": "Lover Mug",
+   "ja": "ペアマグカップ"
+  },
+  "weapon": "SR",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "승부욕",
+     "en": "In It to Win It",
+     "ja": "負けず嫌い"
+    },
+    "text": {
+     "ko": "■ {3}초 마다 최종 공격력이 가장 높은 아군 {5}기에게\n[공격력 {1}% ▲] [{2}초 유지]\n■ 전투 시작 시 자신에게\n[버스트 스킬 재사용 시간 {4}초 ▼] [지속]",
+     "en": "■ Activates every {3} sec. Affects {5} ally unit(s) with the highest final ATK.\nATK ▲ {1}% for {2} sec.\n■ Activates at the start of battle. Affects self.\nCooldown of Burst Skill ▼ {4} sec continuously.",
+     "ja": "■{3}秒ごとに最終攻撃力が最も高い味方{5}機に\n「攻撃力{1}％▲」「{2}秒間維持」\n■戦闘開始時、自分に\n「バーストスキルクールタイム{4}秒▼」「持続」"
+    },
+    "values": [
+     [
+      17.51,
+      19.1,
+      20.69,
+      22.28,
+      23.87,
+      25.46,
+      27.06,
+      28.65,
+      30.24,
+      31.83
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "밀크 도핑",
+     "en": "Sugar Rush",
+     "ja": "ミルクドーピング"
+    },
+    "text": {
+     "ko": "■ 자신의 체력이 {1}% 이상일 때 한하여 아군 전체에게\n[크리티컬 대미지 {2}% ▲] [지속]\n■ 풀 차지 공격 {3}회 명중 시 아군 전체에게\n[버스트 스킬 재사용 시간 {4}초 ▼]",
+     "en": "■ Activates when above {1}% HP. Affects all allies.\nCritical Damage ▲ {2}% continuously.\n■ Activates when attacking with Full Charge for {3} time(s). Affects all allies.\nCooldown of Burst Skill ▼ {4} sec.",
+     "ja": "■自分のHPが{1}％以上の時のみ味方全体に\n「クリティカルダメージ{2}％▲」「持続」\n■フルチャージ攻撃が{3}回命中した時、味方全体に\n「バーストスキルクールタイム{4}秒▼」"
+    },
+    "values": [
+     [
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0,
+      80.0
+     ],
+     [
+      6.12,
+      6.68,
+      7.23,
+      7.79,
+      8.35,
+      8.9,
+      9.46,
+      10.02,
+      10.57,
+      11.13
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      1.67,
+      1.8,
+      1.93,
+      2.06,
+      2.19,
+      2.32,
+      2.44,
+      2.58,
+      2.7,
+      2.83
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "투 더 빅토리",
+     "en": "Victory is Mine",
+     "ja": "勝利に向かって"
+    },
+    "text": {
+     "ko": "■ 최종 방어력이 가장 높은 적 {1}기에게\n[최종 공격력 {2}% 버스트 스킬 대미지]\n■ 아군 전체에게\n[공격 대미지 비례 {3}% 회복] [{4}초 유지]\n[받는 체력 회복량 {5}% ▲] [{6}초 유지]",
+     "en": "■ Affects {1} enemy unit(s) with the highest final DEF. \nDeals {2}% of final ATK as Burst Skill damage.\n■ Affects all allies. \nRestores HP equal to {3}% of attack damage. Lasts for {4} sec.\nIncoming Healing ▲ {5}% for {6} sec.",
+     "ja": "■最終防御力が最も高い敵{1}機に\n「最終攻撃力の{2}％の\nバーストスキルダメージ」\n■味方全体に\n「攻撃ダメージの{3}％の回復」「{4}秒間維持」\n「受けるHP回復量{5}％▲」「{6}秒間維持」"
+    },
+    "values": [
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     [
+      202.04,
+      220.4,
+      238.77,
+      257.14,
+      275.51,
+      293.87,
+      312.24,
+      330.61,
+      348.97,
+      367.34
+     ],
+     [
+      8.88,
+      9.69,
+      10.5,
+      11.31,
+      12.12,
+      12.93,
+      13.73,
+      14.54,
+      15.35,
+      16.16
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      44.61,
+      48.04,
+      51.48,
+      54.91,
+      58.34,
+      61.77,
+      65.2,
+      68.64,
+      72.07,
+      75.5
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "957f3399c4a7"
+}

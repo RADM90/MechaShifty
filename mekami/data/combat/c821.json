@@ -1,0 +1,281 @@
+{
+ "rid": 821,
+ "name": {
+  "ko": "에밀리아",
+  "en": "Emilia",
+  "ja": "エミリア"
+ },
+ "nameCode": 5109,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ABNORMAL",
+ "squad": "CE003",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 750
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "미정령의 축복",
+    "en": "Lesser Spirit's Blessing",
+    "ja": "微精霊の祝福"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 자신에게\n[차지 속도 {1}% ▲] [{2}발 유지]\n[최종 최대 장탄 수 1발 당 차지 대미지 {3}% ▲] [{4}발 유지]",
+    "en": "■ Activates when attacking with Full Charge. Affects self.\nCharge Speed ▲ {1}% for {2} round(s).\nCharge Damage ▲{3}% for every unit in the final Max Ammunition Capacity, lasts for {4} round(s).",
+    "ja": "■フルチャージして攻撃した時、自分に\n「チャージ速度{1}％▲」「{2}発間維持」\n「自分の最終最大装弾数1発ごとにチャージダメージ{3}％▲」「{4}発間維持」"
+   },
+   "values": [
+    [
+     8.92,
+     9.37,
+     9.83,
+     10.28,
+     10.74,
+     11.19,
+     11.65,
+     12.1,
+     12.55,
+     13.01
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.39,
+     1.46,
+     1.53,
+     1.6,
+     1.67,
+     1.74,
+     1.81,
+     1.88,
+     1.95,
+     2.01
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "대정령의 철퇴",
+    "en": "Great Spirit's Mace",
+    "ja": "大精霊の鉄槌"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 대상에게\n[자신이 가한 피해량의 {1}% 만큼 본체에 고정 대미지]\n■ 풀 버스트 타임 시작 시 자신에게\n[최대 장탄 수 {2}발 ▲] [{3}초 유지]",
+    "en": "■ Activates when hitting a target with Full Charge. Affects target(s).\nDeals Fixed Damage to the main body equal to {1}% of the damage dealt by self.\n■ Activates when entering Full Burst. Affects self.\nMax Ammunition Capacity ▲ {2} round(s) for {3} sec.",
+    "ja": "■フルチャージ攻撃が命中した時、対象に\n「自分が与えたダメージ量の{1}％分本体に固定ダメージ」\n■フルバーストタイムが発動した時、自分に\n「最大装弾数{2}発▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     41.32,
+     43.28,
+     45.25,
+     47.21,
+     49.18,
+     51.14,
+     53.1,
+     55.07,
+     57.03,
+     58.99
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     2.0,
+     2.0,
+     2.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "빙결의 마녀",
+    "en": "Freezing Witch",
+    "ja": "氷結の魔女"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[폭발 범위 {5}% ▲] [{6}초 유지]\n[빙결의 마녀]\n기능 : 차지 속도가 감소하는 대신 차지 대미지 증가 {2}발 유지\n효과 1 : [차지 속도 {1}% ▼]\n효과 2 : [차지 대미지 {3}% ▲]",
+    "en": "■ Affects self.\nExplosion Range ▲ {5}% for {6} sec.\nFreezing Witch\nFunction: Decreases Charge Speed and increases Charge Damage for {2} shot(s).\nEffect 1: Charge Speed ▼ {1}%.\nEffect 2: Charge Damage ▲ {3}%.",
+    "ja": "■自分に\n「爆発範囲{5}％▲」「{6}秒間維持」\n「氷結の魔女」\n機能：チャージ速度が減少する代わりに、チャージダメージ増加 {2}発間維持\n効果1：「チャージ速度{1}％▼」\n効果2：「チャージダメージ{3}％▲」"
+   },
+   "values": [
+    [
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0,
+     300.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     842.4,
+     893.3,
+     944.2,
+     995.11,
+     1046.01,
+     1096.92,
+     1147.82,
+     1198.72,
+     1249.63,
+     1300.53
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     59.82,
+     64.42,
+     69.03,
+     73.63,
+     78.23,
+     82.83,
+     87.43,
+     92.04,
+     96.64,
+     101.24
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "684089aef986"
+}

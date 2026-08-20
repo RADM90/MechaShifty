@@ -1,0 +1,281 @@
+{
+ "rid": 850,
+ "name": {
+  "ko": "이브",
+  "en": "EVE",
+  "ja": "イヴ"
+ },
+ "nameCode": 5142,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ABNORMAL",
+ "squad": "CE006_01",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "임팩트 타입 엑소스파인",
+    "en": "Impact-Type Exospine",
+    "ja": "インパクトエグゾスパイン"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[임팩트 타입 엑소스파인 : 크리티컬 확률 {1}% ▲] [지속]\n■ 일반 공격 크리티컬 {6}회 명중 시 무작위 적들에게\n[불안정 에너지 : 최종 공격력 {2}% 대미지] [{3}회 순차 공격] \n■ 불안정 에너지 명중 시 대상이 전격 코드라면 대상에게\n[받는 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates at the start of battle. Affects self.\nImpact-Type Exospine: Critical Rate ▲ {1}% continuously.\n■ Activates after landing {6} critical hits with normal attacks. Affects random enemy units.\nUnstable Energy: Deals {2}% of final ATK as damage. Attacks sequentially {3} times.\n■ Activates when Unstable Energy hits an Electric Code target. Affects the target.\nDamage Taken ▲ {4}% for {5} sec.",
+    "ja": "■戦闘開始時、自分に\n「インパクトエグゾスパイン：クリティカル確率{1}％▲」「持続」\n■通常攻撃が{6}回クリティカル命中した時、ランダムな敵に\n「不安定エネルギー：最終攻撃力の{2}％のダメージ」\n「{3}回順番に攻撃」\n■不安定エネルギーが命中した時、対象が電撃コードなら対象に\n「受けるダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     35.45,
+     38.18,
+     40.91,
+     43.63,
+     46.36,
+     49.09,
+     51.82,
+     54.54,
+     57.27,
+     60.0
+    ],
+    [
+     141.82,
+     152.72,
+     163.63,
+     174.54,
+     185.45,
+     196.36,
+     207.27,
+     218.18,
+     229.09,
+     240.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     5.91,
+     6.36,
+     6.82,
+     7.27,
+     7.73,
+     8.18,
+     8.64,
+     9.09,
+     9.55,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0,
+     44.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "이글아이 타입 엑소스파인",
+    "en": "Eagle Eye-Type Exospine",
+    "ja": "イーグルアイエグゾスパイン"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[이글아이 타입 엑소스파인] [하위 효과 중복 적용]\n[시전자 기준 공격력 {1}% ▲] [지속]\n[최대 장탄 수 {2}% ▲] [지속]\n■ 일반 공격 {3}회 명중 시 대상이 전격 코드라면 자신에게 \n[탄환 충전 {4}발]",
+    "en": "■ Activates at the start of battle. Affects self.\nEagle Eye-Type Exospine.\nPrevious effects trigger repeatedly.\nATK ▲ {1}% of the skill user's ATK continuously.\nMax Ammunition Capacity ▲ {2}% continuously.\n■ Activates after landing {3} normal attacks on an Electric Code target. Affects self.\nReloads {4} round(s).",
+    "ja": "■戦闘開始時、自分に\n「イーグルアイエグゾスパイン」「下位効果のスタック適用」\n「スキル発動者基準で攻撃力{1}％▲」「持続」\n「最大装弾数{2}％▲」「持続」\n■通常攻撃が{3}回命中した時、対象が電撃コードなら自分に\n「弾丸チャージ{4}発」"
+   },
+   "values": [
+    [
+     29.55,
+     31.82,
+     34.09,
+     36.36,
+     38.64,
+     40.91,
+     43.18,
+     45.46,
+     47.73,
+     50.0
+    ],
+    [
+     14.77,
+     15.91,
+     17.04,
+     18.18,
+     19.32,
+     20.45,
+     21.59,
+     22.73,
+     23.86,
+     25.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "카운터 체인",
+    "en": "Counter Chain",
+    "ja": "カウンターチェーン"
+   },
+   "text": {
+    "ko": "■ 무작위 적들에게\n[최종 공격력 {1}% 대미지] [{2}회 순차 공격] \n■ 자신에게\n[엑소스파인 Mk2]\n기능 : 엑소스파인 기능 향상\n유지 시간 : {3}초\n[임팩트 타입 엑소스파인 Mk2 적용]\n효과 : 불안정 에너지 순차 공격 대미지 배율이 100% 증가 상태로 변경\n[이글아이 타입 엑소스파인 Mk2 적용]\n효과 : 이글 아이 타입 엑소스파인 공격력 증가 배율이 100% 증가 상태로 변경",
+    "en": "■ Affects random enemy units.\nDeals {1}% of final ATK as damage. Attacks sequentially {2} times. \n■ Affects self.\nExospine Mk2\nFunction: Enhances Exospine.\nDuration: {3} sec.\nTriggers Impact-Type Exospine Mk2.\nEffect: The damage multiplier of Unstable Energy sequential attacks is scaled by 100%.\nTriggers Eagle Eye-Type Exospine Mk2.\nEffect: The damage multiplier of Eagle Eye-Type Exospine is scaled by 100%.",
+    "ja": "■ランダムな敵に\n「最終攻撃力の{1}％のダメージ」「{2}回順番に攻撃」\n■自分に\n「エグゾスパインMk2」\n機能：エグゾスパインの機能向上\n維持時間：{3}秒\n「インパクトエグゾスパインMk2適用」\n効果：不安定エネルギーの順番に攻撃する効果のダメージ倍率を100％効果量に対し増加\n「イーグルアイエグゾスパインMk2適用」\n効果：イーグルアイエグゾスパインの攻撃力増加倍率を100％効果量に対し増加"
+   },
+   "values": [
+    [
+     270.13,
+     290.91,
+     311.69,
+     332.47,
+     353.25,
+     374.03,
+     394.8,
+     415.58,
+     436.36,
+     457.14
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     5.0,
+     5.0,
+     5.0,
+     7.0,
+     7.0,
+     7.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "dc96d5745250"
+}

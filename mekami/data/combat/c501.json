@@ -1,0 +1,293 @@
+{
+ "rid": 501,
+ "name": {
+  "ko": "트로니",
+  "en": "Trony",
+  "ja": "トロニー"
+ },
+ "nameCode": 5112,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "ElectricShock",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "T.Rony 봄버",
+    "en": "T.Rony Bomber",
+    "ja": "T.Ronyボンバー"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 T.Rony 봄버 상태의 적이 없다면 조준선에 가장 가까운 적 1기에게\n[누적 폭발 스킬] [{1}초 유지] :\n기능 : 시전자가 가하는 대미지의 일부를 누적. 최대 누적량 도달 시 적에게 대미지를 준 후 해제.\n효과 1 : [최대 대미지 누적량은 시전자 최종 공격력의 {3}%]\n효과 2 : [자신의 공격 대미지의 {2}%만큼 누적]\n효과 3 : [누적 폭발 스킬 폭파 시 공격 범위 내 적들에게 분배 대미지]",
+    "en": "■ Activates when hitting a target with Full Charge. Affects 1 enemy unit nearest to the crosshair if there are no enemies in T.Rony Bomber status.\nCumulative Damage Skill active for {1} sec.\nFunction: Accumulates a fraction of the skill user's inflicted damage. Upon reaching the maximum accumulated damage, deals damage to enemies before ending.\nEffect 1: Maximum Accumulated Damage is {3}% of the skill user's final ATK.\nEffect 2: Accumulates {2}% of the skill user's ATK damage.\nEffect 3: Deals distributed damage to enemies within the attack range when Cumulative Damage Skill explodes.",
+    "ja": "■フルチャージ攻撃が命中した時、T.Ronyボンバー状態の敵がいなければ照準線に最も近い敵1機に\n「蓄積爆破」「{1}秒間維持」：\n機能：スキル発動者が与えるダメージの一部を蓄積。最大蓄積量に到達した時、敵にダメージを与えて解除。\n効果1：「最大ダメージ蓄積量はスキル発動者の最終攻撃力の{3}％」\n効果2：「自分の攻撃ダメージの{2}％分蓄積」\n効果3：「蓄積爆破効果が爆発すると、攻撃範囲内の敵に分配ダメージ」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     907.63,
+     977.45,
+     1047.27,
+     1117.09,
+     1186.9,
+     1256.72,
+     1326.54,
+     1396.36,
+     1466.18,
+     1536.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "효율 증가",
+    "en": "Efficiency Increase",
+    "ja": "効率アップ"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 {1}회 공격 시 자신에게\n[분배 대미지 {2}% ▲] [{3}초 유지]\n■ 풀 차지 공격 {4}회 명중 시 대상에게\n[방어력 {5}% ▼] [{6}초 유지]",
+    "en": "■ Activates when attacking with Full Charge for {1} time(s). Affects self.\nDistributed Damage ▲ {2}% for {3} sec.\n■ Activates when hitting the target with Full Charge for {4} time(s). Affects the target.\nDEF ▼ {5}% for {6} sec.",
+    "ja": "■フルチャージして{1}回攻撃した時、自分に\n「分配ダメージ{2}％▲」「{3}秒間維持」\n■フルチャージして{4}回命中した時、対象に\n「防御力{5}％▼」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     30.63,
+     32.98,
+     35.34,
+     37.7,
+     40.05,
+     42.41,
+     44.77,
+     47.12,
+     49.48,
+     51.84
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.67,
+     6.1,
+     6.54,
+     6.98,
+     7.41,
+     7.85,
+     8.29,
+     8.72,
+     9.16,
+     9.59
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "메가 T.Rony",
+    "en": "Mega T.Rony",
+    "ja": "メガT.Rony"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격력 {1}% ▲] [{2}초 유지]\n[누적 폭발 스킬의 대미지 누적 비율 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects self. \nATK ▲ {1}% for {2} sec.\nAccumulated damage ratio of the Cumulative Damage Skill ▲ {3}% for {4} sec.",
+    "ja": "■自分に\n「攻撃力{1}％▲」「{2}秒間維持」\n「蓄積爆破のダメージ蓄積割合{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     59.9,
+     64.51,
+     69.12,
+     73.72,
+     78.33,
+     82.94,
+     87.55,
+     92.16,
+     96.76,
+     101.37
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     37.12,
+     39.98,
+     42.84,
+     45.69,
+     48.55,
+     51.4,
+     54.26,
+     57.12,
+     59.97,
+     62.83
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "f4bb80dd639c"
+}

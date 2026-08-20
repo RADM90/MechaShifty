@@ -1,0 +1,466 @@
+{
+ "rid": 150,
+ "name": {
+  "ko": "율리아",
+  "en": "Julia",
+  "ja": "ジュリア"
+ },
+ "nameCode": 5014,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "MasterHand",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Bio",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 14.07,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.2,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "데크레센도",
+    "en": "Decrescendo",
+    "ja": "デクレッシェンド"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects self.\nCritical Rate▲ {1}% for {2} sec.",
+    "ja": "■自分に\n「クリティカル確率{1}％▲」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     15.38,
+     16.57,
+     17.75,
+     18.93,
+     20.12,
+     21.3,
+     22.48,
+     23.67,
+     24.85,
+     26.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "s2": {
+   "name": {
+    "ko": "크레센도",
+    "en": "Crescendo",
+    "ja": "クレッシェンド"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 자신에게\n[크레센도 : 크리티컬 대미지 {1}% ▲] [{2} 중첩] [{3}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects self.\nCrescendo: Critical Damage ▲ {1}%. Stacks up to {2} times and lasts for {3} sec.",
+    "ja": "■最後の弾丸が命中した時、自分に\n「クレッシェンド：クリティカルダメージ\n{1}％▲」「{2}スタック」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     14.65,
+     15.78,
+     16.9,
+     18.03,
+     19.16,
+     20.29,
+     21.41,
+     22.54,
+     23.67,
+     24.79
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "클라이맥스",
+    "en": "Climax",
+    "ja": "クライマックス"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 {1}기에게\n[최종 공격력 {2}% 대미지]\n■ 자신이 크레센도 최대 중첩 상태라면 동일 적 대상에게\n[최종 공격력 {3}% 추가 대미지]",
+    "en": "■ Affects the {1} enemy unit(s) with the highest final DEF.\nDeals {2}% of final ATK as damage.\n■ Activates when Crescendo is at max stacks. Affects the same target(s).\nDeals {3}% of final ATK as additional damage.",
+    "ja": "■最終防御力が最も高い敵{1}機に\n「最終攻撃力の{2}％のダメージ」\n■自分がクレッシェンドの\nフルスタック状態なら、同じ敵に\n「最終攻撃力の{3}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     321.75,
+     346.5,
+     371.25,
+     396.0,
+     420.75,
+     445.5,
+     470.25,
+     495.0,
+     519.75,
+     544.5
+    ],
+    [
+     321.75,
+     346.5,
+     371.25,
+     396.0,
+     420.75,
+     445.5,
+     470.25,
+     495.0,
+     519.75,
+     544.5
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201201,
+  "name": {
+   "ko": "음악 노트",
+   "en": "Music Notebook",
+   "ja": "五線譜ノート"
+  },
+  "weapon": "AR",
+  "maxLevel": 2,
+  "replaces": {
+   "s2": {
+    "name": {
+     "ko": "크레센도",
+     "en": "Crescendo",
+     "ja": "クレッシェンド"
+    },
+    "text": {
+     "ko": "■ 일반 공격 크리티컬 {1}회 명중 시 자신에게\n[크레센도 : 크리티컬 대미지 {2}% ▲] [{3} 중첩] [{4}초 유지]\n■ 일반 공격 크리티컬 {7}회 명중 시 대상에게\n[마르카토 : 최종 공격력 {5}% 추가 대미지]\n■ 마르카토가 크리티컬로 명중 했다면 동일 적 대상에게\n[최종 공격력 {6}% 추가 대미지]\n■ 전투 시작 시 자신에게\n[스킬 1 강제 사용]",
+     "en": "■ Activates after landing {1} critical hit(s) with normal attacks. Affects self.\nCrescendo: Critical Damage ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.\n■ Activates after landing {7} critical hit(s) with normal attacks. Affects the target(s).\nMarcato: Deals {5}% of final ATK as additional damage.\n■ Activates if Marcato lands as a crit attack. Affects the same target.\nDeals {6}% of final ATK as additional damage.\n■ Activates at the start of battle. Affects self.\nForcefully uses Skill 1.",
+     "ja": "■通常攻撃が{1}回クリティカル命中した時、\n自分に\n「クレッシェンド：クリティカルダメージ\n{2}％▲」「{3}スタック」「{4}秒間維持」\n■通常攻撃が{7}回クリティカル命中した時、対象に\n「マルカート：最終攻撃力の{5}％の追加ダメージ」\n■マルカートがクリティカル命中した時、同じ敵に\n「最終攻撃力の{6}％の追加ダメージ」\n■戦闘開始時、自分に\n「スキル1強制使用」"
+    },
+    "values": [
+     [
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0,
+      6.0
+     ],
+     [
+      14.65,
+      15.78,
+      16.9,
+      18.03,
+      19.16,
+      20.29,
+      21.41,
+      22.54,
+      23.67,
+      24.79
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0
+     ],
+     [
+      52.0,
+      56.0,
+      60.0,
+      64.0,
+      68.0,
+      72.0,
+      76.0,
+      80.0,
+      84.0,
+      88.0
+     ],
+     [
+      59.09,
+      63.63,
+      68.18,
+      72.72,
+      77.27,
+      81.81,
+      86.36,
+      90.91,
+      95.45,
+      100.0
+     ],
+     [
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0,
+      8.0
+     ]
+    ]
+   },
+   "s1": {
+    "name": {
+     "ko": "데크레센도",
+     "en": "Decrescendo",
+     "ja": "デクレッシェンド"
+    },
+    "text": {
+     "ko": "■ 자신에게\n[크리티컬 확률 {1}% ▲] [{2}초 유지]\n[공격력 {3}% ▲] [{4}초 유지]\n[일반 공격 크리티컬 확률 {5}% ▲] [{6}초 유지]",
+     "en": "■ Affects self.\nCritical Rate ▲ {1}% for {2} sec.\nATK ▲ {3}% for {4} sec.\nNormal Attack Critical Rate ▲ {5}% for {6} sec.",
+     "ja": "■自分に\n「クリティカル確率{1}％▲」\n「{2}秒間維持」\n「攻撃力{3}％▲」「{4}秒間維持」\n「通常攻撃のクリティカル確率{5}％▲」\n「{6}秒間維持」"
+    },
+    "values": [
+     [
+      15.38,
+      16.57,
+      17.75,
+      18.93,
+      20.12,
+      21.3,
+      22.48,
+      23.67,
+      24.85,
+      26.04
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      11.81,
+      12.72,
+      13.63,
+      14.54,
+      15.45,
+      16.36,
+      17.27,
+      18.18,
+      19.09,
+      20.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      21.36,
+      23.01,
+      24.65,
+      26.29,
+      27.94,
+      29.58,
+      31.23,
+      32.87,
+      34.51,
+      36.16
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "클라이맥스",
+     "en": "Climax",
+     "ja": "クライマックス"
+    },
+    "text": {
+     "ko": "■ 무작위 적들에게\n[최종 공격력 {1}% 대미지] [{2}회 순차 공격]\n■ 자신이 크레센도 최대 중첩 상태라면 동일 적 대상에게\n[최종 공격력 {3}% 추가 대미지]",
+     "en": "■ Affects random enemies.\nDeals {1}% of final ATK as damage. Attacks sequentially {2} times.\n■ Activates when Crescendo is at max stacks. Affects the same target.\nDeals {3}% of final ATK as additional damage.",
+     "ja": "■ランダムな敵に\n「最終攻撃力の{1}％のダメージ」\n「{2}回順番に攻撃」\n■自分がクレッシェンドの\nフルスタック状態なら、同じ敵に\n「最終攻撃力の{3}％の追加ダメージ」"
+    },
+    "values": [
+     [
+      321.75,
+      346.5,
+      371.25,
+      396.0,
+      420.75,
+      445.5,
+      470.25,
+      495.0,
+      519.75,
+      544.5
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      321.75,
+      346.5,
+      371.25,
+      396.0,
+      420.75,
+      445.5,
+      470.25,
+      495.0,
+      519.75,
+      544.5
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "7b393cbfc88a"
+}

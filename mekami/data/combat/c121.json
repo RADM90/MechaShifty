@@ -1,0 +1,281 @@
+{
+ "rid": 121,
+ "name": {
+  "ko": "앤 : 미라클 페어리",
+  "en": "Anne: Miracle Fairy",
+  "ja": "エヌ : ミラクルフェアリー"
+ },
+ "nameCode": 5085,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "RecallRelease",
+ "element": "Wind",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "춤추는 요정",
+    "en": "Fairy Dance",
+    "ja": "踊る妖精"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 지원형 아군 전체에게\n[공격 대미지 비례 {2}% 회복] [{3}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects all Supporter allies.\nRestores HP equal to {2}% of attack damage. Lasts for {3} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、支援型の味方全体に\n「攻撃ダメージの{2}％回復」\n「{3}秒間維持」"
+   },
+   "values": [
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     3.33,
+     3.64,
+     3.94,
+     4.25,
+     4.55,
+     4.85,
+     5.16,
+     5.46,
+     5.76,
+     6.07
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "요정의 장난",
+    "en": "Fairy's Jest",
+    "ja": "妖精のイタズラ"
+   },
+   "text": {
+    "ko": "■ 자신의 체력이 {1}% 이상일 때 한하여 아군 전체에게\n[받는 체력 회복량 {2}% ▲] [지속]\n■ 마지막 탄환 명중 시 자신의 체력이 {3}% 이상이라면 적 전체에게\n[받는 체력 회복량 {4}% ▼] [{5}초 유지]",
+    "en": "■ Affects all allies. Activates when above {1}% HP.\nIncoming Healing ▲ {2}%.\n■ Activates when the last bullet hits the target while this unit's HP is at {3}% or above. Affects all enemies.\nIncoming Healing ▼ {4}% for {5} sec.",
+    "ja": "■自分のHPが{1}％以上の時のみ味方全体に\n「受けるHP回復量{2}％▲」「持続」\n■最後の弾丸が命中した時、自分のHPが{3}％以上なら敵全体に\n「受けるHP回復量{4}％▼」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0
+    ],
+    [
+     12.9,
+     14.08,
+     15.25,
+     16.42,
+     17.6,
+     18.77,
+     19.94,
+     21.12,
+     22.29,
+     23.46
+    ],
+    [
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0,
+     90.0
+    ],
+    [
+     43.41,
+     47.36,
+     51.3,
+     55.25,
+     59.2,
+     63.14,
+     67.09,
+     71.04,
+     74.98,
+     78.93
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "파란 나비의 꿈",
+    "en": "Blue Butterfly Slumber",
+    "ja": "青い蝶の夢"
+   },
+   "text": {
+    "ko": "■ 화력형 아군 전체에게\n[시전자의 최종 최대 체력 비례 {3}% 회복]\n[공격력 {4}% ▲] [{5}초 유지]\n■ 전투불능 상태 화력형 아군 무작위 {1}기에게\n[체력 {2}%로 부활] [전투 중 1회 발동]",
+    "en": "■ Affects all Attacker allies.\nRestores HP equal to {3}% of the skill user's final max HP.\nATK ▲ {4}% for {5} sec.\n■ Affects {1} incapacitated Attacker ally unit(s) at random.\nRevives with {2}% HP. Activates once per battle.",
+    "ja": "■火力型の味方全体に\n「スキル発動者の最終最大HPの{3}％回復」\n「攻撃力{4}％▲」「{5}秒間維持」\n■戦闘不能状態の火力型の味方をランダムで{1}機に\n「HP{2}％で復活」「戦闘中1回発動」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     54.45,
+     59.4,
+     64.35,
+     69.3,
+     74.25,
+     79.2,
+     84.15,
+     89.1,
+     94.05,
+     99.0
+    ],
+    [
+     21.23,
+     23.16,
+     25.09,
+     27.02,
+     28.95,
+     30.88,
+     32.81,
+     34.74,
+     36.67,
+     38.61
+    ],
+    [
+     42.47,
+     46.33,
+     50.19,
+     54.05,
+     57.91,
+     61.77,
+     65.63,
+     69.49,
+     73.35,
+     77.22
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0,
+    60.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "4fe87b9d4fe4"
+}

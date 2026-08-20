@@ -1,0 +1,66 @@
+{
+  "rid": 233,
+  "name": "도로시",
+  "textHash": "cf0e2d533a6b",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "마지막 탄환 공격 시 아군 전체에게",
+      "on": "lastBullet",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstCooldown",
+          "v": 1,
+          "dir": "down",
+          "unit": "sec"
+        }
+      ]
+    },
+    {
+      "note": "마지막 탄환 공격 시 자신이 발현 상태라면 아군 전체에게",
+      "on": "lastBullet",
+      "if": {
+        "selfState": "발현"
+      },
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "partsDmg",
+          "v": 2,
+          "dur": {
+            "v": 3
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "지정한 적 대상 1기에게",
+      "on": "burstUse",
+      "set": {
+        "state": "낙인",
+        "dur": {
+          "v": 4
+        }
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "distributedDmg",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s2] ■ 적 전체에게\n[초토화 : 최종 공격력 {1}% 분배 대미지]",
+    "[burst] ■ 자신에게\n[발현 : 스킬 2 재사용 시간 {5}초 ▼] [{1}초 유지]\n[관통 특화] [{2}초 유지]"
+  ]
+}

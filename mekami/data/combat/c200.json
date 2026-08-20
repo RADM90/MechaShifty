@@ -1,0 +1,257 @@
+{
+ "rid": 200,
+ "name": {
+  "ko": "루피",
+  "en": "Rupee",
+  "ja": "ルピー"
+ },
+ "nameCode": 5034,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "Talentum",
+ "element": "Iron",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "프라이즈",
+    "en": "Prize",
+    "ja": "プライズ"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 철갑 코드 아군 전체에게\n[중첩 가능 이로운 효과 중첩량 {2}개 ▲]\n[크리티컬 확률 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks. Affects all Iron Code allies.\nIncreases the stack count of stackable buffs by {2}.\nCritical Rate ▲ {3}% for {4} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、鉄甲コードの味方全体に\n「スタック可能バフ効果のスタック量 {2}個▲」\n「クリティカル確率{3}％▲」\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.23,
+     1.34,
+     1.45,
+     1.56,
+     1.68,
+     1.79,
+     1.9,
+     2.01,
+     2.13,
+     2.24
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "마일리지",
+    "en": "Mileage",
+    "ja": "マイレージ"
+   },
+   "text": {
+    "ko": "■ {1}회 공격 시 자신에게\n[마일리지 : 공격력 {2}% ▲] [{3} 중첩] [{4}초 유지]",
+    "en": "■ Activates after performing {1} attacks. Affects self.\nMileage: ATK ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.",
+    "ja": "■{1}回攻撃した時、自分に\n「マイレージ：攻撃力{2}％▲」\n「{3}スタック」\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     7.59,
+     8.28,
+     8.97,
+     9.66,
+     10.35,
+     11.04,
+     11.73,
+     12.42,
+     13.11,
+     13.8
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "싱글 페이먼트",
+    "en": "Single Payment",
+    "ja": "シングルペイメント"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {1}% 대미지]\n■ 자신이 마일리지 최대 중첩 상태라면 아군 전체에게\n[ 공격력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects enemies within attack range.\nDeals {1}% of final ATK as damage.\n■ Activates when Mileage is at max stacks. Affects all allies.\nATK ▲ {2}% for {3} sec.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{1}％のダメージ」\n■自分がマイレージの\nフルスタック状態なら、味方全体に\n「攻撃力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     150.85,
+     164.57,
+     178.28,
+     192.0,
+     205.71,
+     219.42,
+     233.14,
+     246.85,
+     260.57,
+     274.28
+    ],
+    [
+     10.89,
+     11.88,
+     12.87,
+     13.86,
+     14.85,
+     15.84,
+     16.83,
+     17.82,
+     18.81,
+     19.8
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "8c766c0b70ad"
+}

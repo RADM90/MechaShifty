@@ -1,0 +1,85 @@
+{
+  "rid": 331,
+  "name": "차임",
+  "textHash": "e6a36af3b008",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "전투 시작 시 나의 왕에게",
+      "on": "battleStart",
+      "set": {
+        "state": "소원"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkFromCaster",
+          "v": 1,
+          "dur": "permanent"
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 버스트 타임 시작 시 나의 왕에게",
+      "on": "fullBurstStart",
+      "set": {
+        "state": "일과 보고",
+        "dur": {
+          "v": 2
+        }
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "normalAtkPct",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "아군 전체에게",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "maxAmmo",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "나의 왕에게",
+      "on": "burstUse",
+      "set": {
+        "state": "충심",
+        "dur": {
+          "v": 4
+        }
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[burst] 버스트 재진입 2단계"
+  ]
+}

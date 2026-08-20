@@ -1,0 +1,425 @@
+{
+ "rid": 412,
+ "name": {
+  "ko": "트리나",
+  "en": "Trina",
+  "ja": "トリナ"
+ },
+ "nameCode": 5134,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "BotanicGarden",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 68.59,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 0.83,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 360.0,
+   "perTargetShot": 720.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "네이처 그레이스",
+    "en": "Nature's Grace",
+    "ja": "ネイチャーズグレイス"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 종료 시 아군 전체에게\n[시전자의 최종 최대 체력 비례 {1}% 지속 회복] [1초 간격]\n [{2}초 유지]\n■ 풀 차지 공격 시 남은 체력 비율이 가장 낮은 아군 {4}기가 체력 {3}% 이하라면 대상에게\n[시전자의 최종 최대 체력 비례 {5}% 회복]\n■ 풀 차지 공격 시 남은 체력 비율이 가장 낮은 아군 {7}기가 체력 {6}% 이하라면 대상에게\n[시전자의 최종 최대 체력 비례 {8}% 회복]",
+    "en": "■ Activates after Full Burst ends. Affects all allies.\nRestores HP equal to {1}% of the skill user's final max HP every second for {2} sec.\n■ Activates when performing a Full Charge attack if the HP of the {4} ally unit(s) with the lowest HP percentage is at {3}% or less. Affects the target(s).\nRestores HP equal to {5}% of the skill user's final max HP.\n■ Activates when performing a Full Charge attack if the HP of the {7} ally unit(s) with the lowest HP percentage is at {6}% or less. Affects the target(s).\nRestores HP equal to {8}% of the skill user's final max HP.",
+    "ja": "■フルバーストタイムが終了した時、味方全体に\n「スキル発動者の最終最大HPの{1}％持続回復」「1秒間隔」\n「{2}秒間維持」\n■フルチャージして攻撃した時、残りのHPの割合が最も低い味方{4}機がHP{3}％以下なら、対象に「スキル発動者の最終最大HPの\n{5}％回復」\n■フルチャージして攻撃した時、残りのHPの割合が最も低い味方{7}機がHP{6}％以下なら、対象に\n「スキル発動者の最終最大HPの\n{8}％回復」"
+   },
+   "values": [
+    [
+     2.4,
+     2.58,
+     2.77,
+     2.95,
+     3.14,
+     3.32,
+     3.51,
+     3.69,
+     3.88,
+     4.06
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.2,
+     1.29,
+     1.38,
+     1.48,
+     1.57,
+     1.66,
+     1.75,
+     1.85,
+     1.94,
+     2.03
+    ],
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.03,
+     1.09,
+     1.15,
+     1.21,
+     1.27,
+     1.33,
+     1.39,
+     1.45,
+     1.51,
+     1.57
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "피스풀 트리",
+    "en": "Peaceful Tree",
+    "ja": "ピースフルツリー"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신이 생존 상태일 때 한하여 전격 코드 소총 아군 전체에게\n[시전자 기준 최대 체력만 {1}% ▲] [지속]\n■ 전투 시작 시 스쿼드에서 가장 왼쪽에 위치한 전격 코드 소총 아군 {6}기에게\n[무적] [{7}초 유지]\n■ 버스트 스킬 사용 시 스쿼드에서 가장 왼쪽에 위치한 전격 코드 소총 아군 {6}기에게\n[공격 대미지 {2}% ▲] [{3}초 유지]\n[재장전 속도 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates at the start of battle as long as the skill user is alive. Affects all Electric Code allies with assault rifles.\nMax HP ▲ {1}% of the skill user's max HP (without restoring HP) continuously.\n■ Activates at the start of battle. Affects the {6} leftmost Electric Code ally unit(s) with assault rifles.\nInvulnerable for {7} sec.\n■ Activates when using Burst Skill. Affects the {6} leftmost Electric Code ally unit(s) with assault rifles.\nAttack Damage ▲ {2}% for {3} sec.\nReload Speed ▲ {4}% for {5} sec.",
+    "ja": "■戦闘開始時、自分が生存状態の時に限り、\n電撃コードのアサルトライフルを使用する\n味方全体に\n「スキル発動者基準で最大HPのみ{1}％▲」「持続」\n■戦闘開始時、部隊の一番左側にいる\n電撃コードのアサルトライフルを使用する\n味方{6}機に\n「無敵」「{7}秒間維持」\n■バーストスキルを使用した時、部隊の一番左側にいる電撃コードのアサルトライフルを使用する味方{6}機に\n「攻撃ダメージ{2}％▲」「{3}秒間維持」\n「リロード速度{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     26.57,
+     28.62,
+     30.66,
+     32.71,
+     34.75,
+     36.8,
+     38.84,
+     40.89,
+     42.93,
+     44.98
+    ],
+    [
+     55.64,
+     59.92,
+     64.2,
+     68.48,
+     72.76,
+     77.04,
+     81.32,
+     85.6,
+     89.87,
+     94.15
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.03,
+     32.34,
+     34.65,
+     36.96,
+     39.27,
+     41.58,
+     43.89,
+     46.2,
+     48.51,
+     50.82
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "머덜리 포레스트",
+    "en": "Mother Forest",
+    "ja": "マザリーフォレスト"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자 기준 최대 체력만 {1}% ▲] [{2}초 유지]\n[공격 대미지 {8}% ▲] [{9}초 유지]\n■ 니케를 제외한 적이 1기 일 때 아군 전체에게\n[뻗은 뿌리 : 대상 설명이 '적 전체에게' 로 끝나는 버스트 스킬 대미지 {3}% ▲] [{4}초 유지]\n■ 니케를 제외한 적이 2기 이상일 때 아군 전체에게\n[뻗은 뿌리를 시든 뿌리로 변경]\n[시든 뿌리 : 대상 설명이 '적 전체에게' 로 끝나는 버스트 스킬 대미지 {10}% ▲] [{4}초 유지]\n■ 전격 코드 소총 아군 전체에게\n[명중률 {5}% ▲] [{6}초 유지]\n[최대 장탄 수 {7}발 ▲] [{6}초 유지]",
+    "en": "■ Affects all allies.\nMax HP ▲ {1}% of the skill user's max HP without restoring HP for {2} sec.\nAttack Damage ▲ {8}% for {9} sec.\n■ Activates when enemy count aside from Nikkes is 1. Affects all allies.\n Spread Roots: Burst Skill damage of skills with \"Affects all enemies\" ▲ {3}% for {4} sec.\n■ Activates when enemy count aside from Nikkes is more than 2. Affects all allies.\nChanges Spread Roots to Wilted Roots.\nWilted Roots: Burst Skill damage of skills with \"Affects all enemies\" ▲ {10}% for {4} sec.\n■ Affects all Electric Code allies with assault rifles.\nHit Rate ▲ {5}% for {6} sec.\nMax Ammunition Capacity ▲ {7} round(s) for {6} sec.",
+    "ja": "■味方全体に\n「スキル発動者基準で最大HPのみ{1}％▲」「{2}秒間維持」\n「攻撃ダメージ{8}％▲」「{9}秒間維持」\n■ニケを除いた敵が1機の場合、味方全体に\n「根張り：スキル対象の説明部分が『敵全体に』で終わる\nバーストスキルダメージ {3}％▲」「{4}秒間維持」\n■ニケを除いた敵が2機以上の場合、味方全体に\n「根張りが根腐れに変化」\n「根腐れ：スキル対象の説明部分が『敵全体に』で終わるバーストスキルダメージ {10}％▲」「{4}秒間維持」\n■電撃コードのアサルトライフルを使用する味方全体に\n「命中率{5}％▲」「{6}秒間維持」\n「最大装弾数{7}発▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     11.9,
+     12.82,
+     13.73,
+     14.65,
+     15.56,
+     16.48,
+     17.4,
+     18.31,
+     19.23,
+     20.14
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     257.4,
+     277.2,
+     297.0,
+     316.8,
+     336.6,
+     356.4,
+     376.2,
+     396.0,
+     415.8,
+     435.6
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     26.76,
+     28.82,
+     30.88,
+     32.94,
+     35.0,
+     37.06,
+     39.12,
+     41.18,
+     43.24,
+     45.3
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     11.0,
+     12.0,
+     13.0,
+     14.0,
+     15.0,
+     16.0,
+     17.0,
+     18.0,
+     20.0
+    ],
+    [
+     12.35,
+     13.3,
+     14.25,
+     15.2,
+     16.15,
+     17.1,
+     18.05,
+     19.0,
+     19.95,
+     20.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     38.09,
+     41.02,
+     43.95,
+     46.88,
+     49.81,
+     52.74,
+     55.67,
+     58.6,
+     61.53,
+     64.46
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "2b6181aad14e"
+}

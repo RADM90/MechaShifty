@@ -1,0 +1,281 @@
+{
+ "rid": 93,
+ "name": {
+  "ko": "엠마 : 택티컬 업",
+  "en": "Emma: Tactical Upgrade",
+  "ja": "エマ：タクティカル・アップ"
+ },
+ "nameCode": 5147,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "Absolute",
+ "element": "Fire",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "환경 조성",
+    "en": "Environment Setup",
+    "ja": "環境コントロール"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[환경 조성] :\n기능 : 주변에 용액을 분사해 전투에 유리한 환경을 만듭니다.\n효과 1 : [받는 대미지 {1}% ▲] [{2}초 유지]\n효과 1 대상 : 적 전체(환경 조성 중 등장하는 적 포함)\n\n효과 2 : [환경 조성 : 시전자의 최종 최대 체력 비례 {3}% 지속 회복] [1초 간격] [{4}초 유지]\n효과 2 대상 : 아군 전체\n\n반복 주기 : {5}초\n\n■ 적 등장 시 자신에게\n[노출] [해제 불가]\n효과 : [주목 : 적 전체 도발] [지속]",
+    "en": "■ Activates at the start of battle. Affects self.\nEnvironment Setup\nFunction: Sprays a solution into the surroundings to create an advantageous battlefield.\nEffect 1: Damage Taken ▲ {1}% for {2} sec.\nEffect 1 Targets: All enemies (including those that appear during Environment Setup)\n\nEffect 2: Environment Setup: Restores HP equal to {3}% of the skill user's final max HP every second for {4} sec.\nEffect 2 Targets: All allies\n\nRecurring interval: {5} sec\n\n■ Activates when the enemy appears. Affects self.\nExposure (Cannot be removed)\nEffect: Attract: Taunts all enemies continuously.",
+    "ja": "■戦闘開始時、自分に\n「環境コントロール」：\n機能：周囲に溶液を散布し\n戦闘に有利な環境を作る\n効果1：「受けるダメージ{1}％▲」\n「{2}秒間維持」\n効果1の対象：敵全体\n（環境コントロール効果中に\n出現した敵を含む）\n\n効果2：「環境コントロール：スキル発動者の最終最大HPの{3}％持続回復」\n「1秒間隔」「{4}秒間維持」\n効果2の対象：味方全体\n\n再発動周期：{5}秒\n\n■敵出現時、自分に\n「陽動」「解除不可」\n効果：「ヘイト：敵全体を挑発」「持続」"
+   },
+   "values": [
+    [
+     2.3,
+     2.48,
+     2.66,
+     2.84,
+     3.01,
+     3.19,
+     3.37,
+     3.55,
+     3.72,
+     3.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.37,
+     1.47,
+     1.58,
+     1.68,
+     1.79,
+     1.9,
+     2.0,
+     2.11,
+     2.21,
+     2.32
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "포메이션 LT",
+    "en": "LT Formation",
+    "ja": "フォーメーションLT"
+   },
+   "text": {
+    "ko": "■ 자신이 생존해 있을 때 한하여\n[포메이션 LT] :\n기능 : 대상에게 전투에 유리한 전술 작전을 하달합니다. \n효과 1 : 동일 스쿼드 아군 전체에게 [크리티컬 대미지 {1}% ▲] [지속]\n효과 2 : 아군 전체에게 [발사체 폭발 대미지 {2}% ▲] [지속]\n\n[자신에게 포메이션 AS 적용 중 추가 효과]\n효과 1 : 아군 전체에게 [방어력 무시 대미지 {3}% ▲] [지속]\n효과 2 : 아군 전체에게 [발사체 폭발 대미지 {4}% ▲] [지속]\n효과 3 : 자신에게 [노출 발동 불가] [지속]\n효과 4 : 자신에게 [환경 조성 반복 주기 {5}초 ▼] [지속]",
+    "en": "■ Activates as long as this unit is still alive.\nLT Formation\nFunction: Issues advantageous combat tactics to the targets.\nEffect 1: Affects all allies from the same squad. Critical Damage ▲ {1}% continuously.\nEffect 2: Affects all allies. Projectile Explosion Damage ▲ {2}% continuously.\n\nBonus effects while this unit is in the AS Formation state:\nEffect 1: Affects all allies. True Damage ▲ {3}% continuously.\nEffect 2: Affects all allies. Projectile Explosion Damage ▲ {4}% continuously.\nEffect 3: Affects self. Exposure activation disabled continuously.\nEffect 4: Affects self. Recurring interval of Environment Setup ▼ {5} sec continuously.",
+    "ja": "■自分が生存している限り\n「フォーメーションLT」：\n機能：戦闘を有利に進める作戦指示を行う\n効果1：同じ部隊の味方全体に\n「クリティカルダメージ{1}％▲」「持続」\n効果2：味方全体に\n「発射体爆発ダメージ{2}％▲」「持続」\n\n「自分にフォーメーションAS適用中、効果を追加」\n効果1：味方全体に\n「防御力無視ダメージ{3}％▲」「持続」\n効果2：味方全体に\n「発射体爆発ダメージ{4}％▲」「持続」\n効果3：自分に\n「陽動発動不可」「持続」\n効果4：自分に\n「環境コントロール再発動周期{5}秒▼」「持続」"
+   },
+   "values": [
+    [
+     13.89,
+     14.96,
+     16.03,
+     17.1,
+     18.16,
+     19.23,
+     20.3,
+     21.37,
+     22.44,
+     23.51
+    ],
+    [
+     1.37,
+     1.47,
+     1.58,
+     1.68,
+     1.79,
+     1.9,
+     2.0,
+     2.11,
+     2.21,
+     2.32
+    ],
+    [
+     18.3,
+     19.71,
+     21.12,
+     22.52,
+     23.93,
+     25.34,
+     26.75,
+     28.16,
+     29.56,
+     30.97
+    ],
+    [
+     1.83,
+     1.97,
+     2.11,
+     2.25,
+     2.39,
+     2.53,
+     2.67,
+     2.81,
+     2.95,
+     3.09
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "전장 조성",
+    "en": "Battlefield Formation",
+    "ja": "戦場コントロール"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[전장 조성 : 시전자 기준 공격력 {1}% ▲] [{2}초 유지]\n■ 자신이 환경 조성 상태라면 자신에게\n[환경 조성 강화] :\n기능 : 환경 조성 기능 향상\n유지시간 : 10초\n효과 1 : 환경 조성 받는 대미지 증가 배율이 100% 증가 상태로 변경\n효과 1 대상 : 적 전체\n\n효과 2 : [받는 체력 회복량 {3}% ▲]\n효과 2 대상 : 아군 전체",
+    "en": "■ Affects all allies.\nBattlefield Formation: ATK ▲ {1}% of the skill user's ATK for {2} sec.\n■ Activates if this unit is in the Environment Setup state. Affects self.\nEnhanced Environment Setup\nFunction: Enhances Environment Setup.\nDuration: 10 sec.\nEffect 1: The \"Damage Taken\" multiplier of Environment Setup is scaled by 100%.\nEffect 1 Targets: All enemies\n\nEffect 2: Incoming Healing ▲ {3}%.\nEffect 2 Targets: All allies",
+    "ja": "■味方全体に\n「戦場コントロール：スキル発動者基準で\n攻撃力{1}％▲」「{2}秒間維持」\n■自分が環境コントロール状態なら、自分に\n「環境コントロール強化」：\n機能：環境コントロール性能向上\n維持時間：10秒\n効果1：環境コントロール効果による\nダメージの増加倍率が100％\n効果量に対し増加\n効果1の対象：敵全体\n\n効果2：「受けるHP回復量{3}％▲」\n効果2の対象：味方全体"
+   },
+   "values": [
+    [
+     23.68,
+     25.5,
+     27.32,
+     29.14,
+     30.96,
+     32.78,
+     34.61,
+     36.43,
+     38.25,
+     40.07
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     17.16,
+     18.48,
+     19.8,
+     21.12,
+     22.44,
+     23.76,
+     25.08,
+     26.4,
+     27.72,
+     29.04
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "bd9b7352fb2b"
+}

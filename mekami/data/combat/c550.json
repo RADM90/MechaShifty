@@ -1,0 +1,382 @@
+{
+ "rid": 550,
+ "name": {
+  "ko": "베이",
+  "en": "Bay",
+  "ja": "ベイ"
+ },
+ "nameCode": 5111,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "Rewind",
+ "element": "Fire",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "유 캔 두잇",
+    "en": "You Can Do It",
+    "ja": "ユーキャンドゥーイット"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신이 생존해 있을 때 한하여 아군 전체에게\n[받는 대미지 차등 분배] [지속]\n[시전자 기준 방어력 {1}% ▲] [지속]",
+    "en": "■ Activates when using Burst Skill as long as this unit is still alive. Affects all allies. \nProportionally shares damage taken. This effect is continuous.\nDEF ▲ {1}% of the skill user's DEF continuously.",
+    "ja": "■バーストスキルを使用した時、\n自分が生存している限り、味方全体に\n「受けるダメージ偏差分配」「持続」\n「スキル発動者基準で防御力{1}％▲」\n「持続」"
+   },
+   "values": [
+    [
+     5.57,
+     6.08,
+     6.58,
+     7.09,
+     7.6,
+     8.11,
+     8.61,
+     9.12,
+     9.63,
+     10.13
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "치얼업 투게더",
+    "en": "Cheer Up Together",
+    "ja": "チアアップトゥギャザー"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신이 생존해 있을 때 한하여 자신의 엄폐물에게\n[받는 대미지 차등 분배] [지속]\n■ 풀 버스트 타임 종료 시 자신에게\n[시전자의 최종 최대 체력 비례 엄폐물 체력 지속 회복 {1}%] [1초 간격] [{2}초 유지]",
+    "en": "■ Activates when using Burst Skill as long as this unit is still alive. Affects this unit's cover.\nProportionally shares damage taken. This effect is continuous.\n■ Activates when Full Burst ends. Affects self.\nContinuously restores cover HP equal to {1}% of the skill user's final max HP every second for {2} sec.",
+    "ja": "■バーストスキルを使用した時、\n自分が生存している限り、自分の遮蔽物に\n「受けるダメージ偏差分配」「持続」\n■フルバーストタイムが終了した時、自分に\n「スキル発動者の最終最大HPに比例して\n遮蔽物HP持続回復{1}％」「1秒間隔」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     1.58,
+     1.72,
+     1.87,
+     2.01,
+     2.16,
+     2.3,
+     2.44,
+     2.59,
+     2.73,
+     2.88
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "퍼스트 위너",
+    "en": "First Winner",
+    "ja": "ファーストウィナー"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[시전자의 최대 체력 비례 엄폐물 최대 체력 {1}% ▲] [{2}초 유지]\n■ 아군 전체에게\n[받는 대미지 {3}% ▼] [{4}초 유지]",
+    "en": "■ Affects self.\nMax HP of cover ▲ {1}% of the skill user's max HP for {2} sec.\n■ Affects all allies.\nDamage Taken ▼ {3}% for {4} sec.",
+    "ja": "■自分に\n「スキル発動者の最大HPに比例して\n遮蔽物最大HP{1}％▲」「{2}秒間維持」\n■味方全体に\n「受けるダメージ{3}％▼」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     9.9,
+     10.8,
+     11.7,
+     12.6,
+     13.5,
+     14.4,
+     15.3,
+     16.2,
+     17.1,
+     18.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     4.87,
+     5.32,
+     5.76,
+     6.2,
+     6.65,
+     7.09,
+     7.53,
+     7.98,
+     8.42,
+     8.87
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201301,
+  "name": {
+   "ko": "연습용 신발",
+   "en": "Practice Shoes",
+   "ja": "練習用シューズ"
+  },
+  "weapon": "RL",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "유 캔 두잇",
+     "en": "You Can Do It",
+     "ja": "ユーキャンドゥーイット"
+    },
+    "text": {
+     "ko": "■ 버스트 스킬 사용 시 자신이 생존해 있을 때 한하여 아군 전체에게\n[받는 대미지 차등 분배] [지속]\n[시전자 기준 방어력 {1}% ▲] [지속]\n■ 풀 차지 공격 시 자신을 제외한 아군 전체에게\n[시전자 최종 최대 체력 비례 {2}% 회복]",
+     "en": "■ Activates when using Burst Skill as long as this unit is still alive. Affects all allies.\nProportionally shares damage taken. This effect is continuous.\nDEF ▲ {1}% of the skill user's DEF continuously.\n■ Activates when performing a Full Charge attack. Affects all allies (except self).\nRestores HP equal to {2}% of the skill user's final max HP.",
+     "ja": "■バーストスキルを使用した時、\n自分が生存している限り、味方全体に\n「受けるダメージ偏差分配」「持続」\n「スキル発動者基準で防御力{1}％▲」\n「持続」\n■フルチャージして攻撃した時、\n自分を除く味方全体に\n「スキル発動者の最終最大HPの{2}％回復」"
+    },
+    "values": [
+     [
+      5.57,
+      6.08,
+      6.58,
+      7.09,
+      7.6,
+      8.11,
+      8.61,
+      9.12,
+      9.63,
+      10.13
+     ],
+     [
+      2.36,
+      2.54,
+      2.72,
+      2.91,
+      3.09,
+      3.27,
+      3.45,
+      3.63,
+      3.82,
+      4.0
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "치얼업 투게더",
+     "en": "Cheer Up Together",
+     "ja": "チアアップトゥギャザー"
+    },
+    "text": {
+     "ko": "■ 버스트 스킬 사용 시 자신이 생존해 있을 때 한하여 자신의 엄폐물에게\n[받는 대미지 차등 분배] [지속]\n■ 풀 버스트 타임 종료 시 자신에게\n[시전자의 최종 최대 체력 비례 엄폐물 체력 지속 회복 {1}%] [1초 간격] [{2}초 유지]\n■ 버스트 1단계 진입 시 자신의 엄폐물이 파괴된 상태라면 자신에게\n[시전자 최종 최대 체력 비례 {3}% 회복]",
+     "en": "■ Activates when using Burst Skill as long as this unit is still alive. Affects this unit's cover. \nProportionally shares damage taken. This effect is continuous.\n■ Activates when Full Burst ends. Affects self.\nContinuously restores cover HP equal to {1}% of the skill user's final max HP every second for {2} sec.\n■ Activates when entering Burst Stage 1 if this unit's cover has been destroyed. Affects self.\nRestores HP equal to {3}% of the skill user's final max HP.",
+     "ja": "■バーストスキルを使用した時、\n自分が生存している限り、自分の遮蔽物に\n「受けるダメージ偏差分配」「持続」\n■フルバーストタイムが終了した時、自分に\n「スキル発動者の最終最大HPに比例して\n遮蔽物HP持続回復 {1}％」\n「1秒間隔」「{2}秒間維持」\n■バースト1段階突入時、自分の遮蔽物が\n破壊された状態なら、自分に\n「スキル発動者の最終最大HPの{3}％回復」"
+    },
+    "values": [
+     [
+      1.58,
+      1.72,
+      1.87,
+      2.01,
+      2.16,
+      2.3,
+      2.44,
+      2.59,
+      2.73,
+      2.88
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      11.82,
+      12.73,
+      13.64,
+      14.54,
+      15.45,
+      16.36,
+      17.27,
+      18.18,
+      19.09,
+      20.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "퍼스트 위너",
+     "en": "First Winner",
+     "ja": "ファーストウィナー"
+    },
+    "text": {
+     "ko": "■ 자신의 엄폐물이 파괴된 상태라면 자신에게\n[엄폐물 체력 {5}%로 엄폐물 부활] [전투 중 1회 발동]\n■ 자신에게\n[시전자의 최대 체력 비례 엄폐물 최대 체력 {1}% ▲] [{2}초 유지]\n■ 아군 전체에게\n[받는 대미지 {3}% ▼] [{4}초 유지]",
+     "en": "■ Affects this unit if her cover has been destroyed.\nRebuilds cover with {5}% HP. Activates once per battle.\n■ Affects self.\nMax HP of cover ▲ {1}% of the skill user's max HP for {2} sec.\n■ Affects all allies.\nDamage Taken ▼ {3}% for {4} sec.",
+     "ja": "■自分の遮蔽物が破壊された状態なら、自分に\n「遮蔽物HP{5}％で遮蔽物復活」\n「戦闘中1回発動」\n■自分に\n「スキル発動者の最大HPに比例して\n遮蔽物最大HP {1}％▲」「{2}秒間維持」\n■味方全体に\n「受けるダメージ{3}％▼」「{4}秒間維持」"
+    },
+    "values": [
+     [
+      9.9,
+      10.8,
+      11.7,
+      12.6,
+      13.5,
+      14.4,
+      15.3,
+      16.2,
+      17.1,
+      18.0
+     ],
+     [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     [
+      4.87,
+      5.32,
+      5.76,
+      6.2,
+      6.65,
+      7.09,
+      7.53,
+      7.98,
+      8.42,
+      8.87
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      11.81,
+      12.72,
+      13.63,
+      14.54,
+      15.45,
+      16.36,
+      17.27,
+      18.18,
+      19.09,
+      20.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "5b42ce3029c6"
+}

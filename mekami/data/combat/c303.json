@@ -1,0 +1,209 @@
+{
+ "rid": 303,
+ "name": {
+  "ko": "프로덕트 12",
+  "en": "Product 12",
+  "ja": "プロダクト12"
+ },
+ "nameCode": 1016,
+ "rarity": "R",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "Replace",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.67,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.67,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "행동 : 공격 상승",
+    "en": "Action: Increase ATK",
+    "ja": "行動：攻撃上昇"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {3}회 공격 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects self. Activates after performing {3} normal attacks.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■通常攻撃で{3}回攻撃した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     2.07,
+     2.76,
+     3.45,
+     4.14,
+     4.83,
+     5.52,
+     6.21,
+     6.9,
+     7.59,
+     8.28
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "행동 : 화력 집중",
+    "en": "Action: Focus Fire",
+    "ja": "行動：火力集中"
+   },
+   "text": {
+    "ko": "■ 남은 체력 수치가 가장 낮은 적 {2}기에게\n[최종 공격력 {1}% 대미지]",
+    "en": "■ Affects {2} enemy unit(s) with the lowest remaining HP. \nDeals {1}% of final ATK as damage.",
+    "ja": "■残りのHPの数値が最も低い敵{2}機に\n「最終攻撃力の{1}％のダメージ」"
+   },
+   "values": [
+    [
+     27.27,
+     36.36,
+     45.45,
+     54.54,
+     63.63,
+     72.72,
+     81.81,
+     90.9,
+     100.0,
+     109.09
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "행동 : 정밀 타격",
+    "en": "Action: Precision Strike",
+    "ja": "行動：精密打撃"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {2}% 대미지]",
+    "en": "■ Affects enemies within attack range. \nDeals {2}% of final ATK as damage.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{2}％のダメージ」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     180.0,
+     240.0,
+     300.0,
+     360.0,
+     420.0,
+     480.0,
+     540.0,
+     600.0,
+     660.0,
+     720.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "c4d906683922"
+}

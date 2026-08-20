@@ -1,0 +1,389 @@
+{
+ "rid": 314,
+ "name": {
+  "ko": "소다 : 트윙클링 바니",
+  "en": "Soda: Twinkling Bunny",
+  "ja": "ソーダ：トゥインクルバニー"
+ },
+ "nameCode": 5113,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "MaidForYou",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 231.6,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 0.67,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 45.0,
+   "perTargetShot": 90.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "럭키 골든 칩",
+    "en": "Lucky Golden Chip",
+    "ja": "ラッキーゴールデンチップ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[골든 칩 중첩량 {1}개 ▲]\n■ 풀 버스트 타임 지속 중 일반 공격 {2}회 공격 시 자신에게\n[골든 칩 : 크리티컬 대미지 {3}% ▲] [{4} 중첩] [지속]\n■ 풀 버스트 타임 지속 중 일반 공격 {2}회 공격 시 자신과 자신을 제외한 최종 공격력이 가장 높은 아군 {7}기에게\n[공격 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates at the start of battle. Affects self. \nGolden Chip stacks ▲ {1}.\n■ Activates after performing {2} normal attack(s) during Full Burst. Affects self.\nGolden Chip: Critical Damage ▲ {3}% continuously, stacks up to {4} time(s).\n■ Activates after performing {2} normal attack(s) during Full Burst. Affects self and the {7} ally unit(s) with the highest final ATK (except the skill user). \nAttack Damage ▲ {5}% for {6} sec.",
+    "ja": "■戦闘開始時、自分に\n「ゴールデンチップのスタック量{1}個▲」\n■フルバーストタイム持続中に\n通常攻撃で{2}回攻撃した時、自分に\n「ゴールデンチップ：\nクリティカルダメージ{3}％▲」「{4}スタック」\n「持続」\n■フルバーストタイム中に通常攻撃で\n{2}回攻撃した時、\n自分と自分を除く最終攻撃力が\n最も高い味方{7}機に\n「攻撃ダメージ{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     40.0,
+     40.0,
+     40.0,
+     45.0,
+     45.0,
+     45.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     1.24,
+     1.25,
+     1.25,
+     1.26,
+     1.27,
+     1.28,
+     1.29,
+     1.3,
+     1.31,
+     1.32
+    ],
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     7.42,
+     7.77,
+     8.11,
+     8.45,
+     8.8,
+     9.14,
+     9.48,
+     9.82,
+     10.17,
+     10.51
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "비기너즈 베네핏",
+    "en": "Beginner's Rewards",
+    "ja": "ビギナーズベネフィット"
+   },
+   "text": {
+    "ko": "■ 버스트 3단계 진입 시 아군 전체에게\n[골든 칩 중첩량 별 효과] [하위 효과 중복 적용]\n1단계 : 골든 칩 {1} 중첩 이상이라면\n[시간 연장 I : 풀 버스트 타임 지속 시간 {2}초 ▲] [풀 버스트 타임 동안 지속]\n2단계 : 골든 칩 {3} 중첩 이상이라면\n[시간 연장 II : 풀 버스트 타임 지속 시간 {4}초 ▲] [풀 버스트 타임 동안 지속]\n■ 풀 버스트 타임 지속 중 일반 공격 시 조준선에 가장 가까운 적 {5}기에게\n[시간 연장 상태 별 효과] [하위 효과 중복 적용]\n1단계 : 자신이 시간 연장 I 상태라면\n[최종 공격력 {6}% 대미지]\n2단계 : 자신이 시간 연장 II 상태라면\n[최종 공격력 {7}% 대미지]",
+    "en": "■ Activates when entering Burst Stage 3. Affects all allies.\nEffects vary according to the number of Golden Chip stacks. Each subsequent effect triggers all effects before it:\nStage 1: With {1} or more stacks of Golden Chip,\nTime Extension I: Full Burst Duration▲ {2} sec. Lasts until Full Burst ends.\nStage 2: With {3} or more stacks of Golden Chip,\nTime Extension II: Full Burst Duration▲ {4} sec. Lasts until Full Burst ends.\n■ Activates when performing a normal attack during Full Burst. Affects the {5} enemy unit(s) nearest to the crosshair. \nEffects vary according to the state of Time Extension. Each subsequent effect triggers all effects before it:\nStage 1: When in Time Extension I state,\ndeals {6}% of final ATK as damage.\nStage 2: When in Time Extension II state,\ndeals {7}% of final ATK as damage.",
+    "ja": "■バースト3段階突入時、味方全体に\n「ゴールデンチップのスタック量別の効果」\n「下位効果のスタック適用」\n1段階：ゴールデンチップ{1}スタック以上なら\n「時間延長I：フルバーストタイムの持続時間{2}秒▲」「フルバーストタイムの間持続」\n2段階：ゴールデンチップ{3}スタック以上なら\n「時間延長II：フルバーストタイムの持続時間{4}秒▲」「フルバーストタイムの間持続」\n■フルバーストタイムの持続中、\n通常攻撃をした時、\n照準線に最も近い敵{5}機に\n「時間延長状態別の効果」\n「下位効果のスタック適用」\n1段階：自分が時間延長I状態なら\n「最終攻撃力の{6}％のダメージ」\n2段階：自分が時間延長II状態なら\n「最終攻撃力の{7}％のダメージ」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     27.63,
+     30.35,
+     33.06,
+     35.77,
+     38.48,
+     41.19,
+     43.91,
+     46.62,
+     49.33,
+     52.04
+    ],
+    [
+     45.97,
+     50.31,
+     54.64,
+     58.98,
+     63.32,
+     67.66,
+     72.0,
+     76.34,
+     80.68,
+     85.02
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "고 어헤드, 소다!",
+    "en": "Onward, Soda!",
+    "ja": "ゴー・アヘッド、ソーダ！"
+   },
+   "text": {
+    "ko": "■ 고 어헤드, 소다! 사용 시\n[골든 칩 중첩량 별 효과] [하위 효과 중복 적용] [효과 적용 후 골든 칩 중첩량 {1}개 ▼]\n1단계 : 적 전체에게\n[최종 공격력 {2}% 버스트 스킬 대미지]\n2단계 : 골든 칩 {3} 중첩 이상이라면 자신에게\n[명중률 {4}% ▲] [{5}초 유지]\n3단계 : 골든 칩 {6} 중첩 이상이라면 자신에게\n[공격력 {7}% ▲] [{8}초 유지]",
+    "en": "■ Activates when using Onward, Soda!\nEffects vary according to the number of Golden Chip stacks. Each subsequent effect triggers all effects before it. Golden Chip stacks ▼ {1} after the effect is applied.\nStage 1: Affects all enemies.\nDeals {2}% of final ATK as Burst Skill damage.\nStage 2: Activates when Golden Chip is at {3} or more stacks. Affects self.\nHit Rate ▲ {4}% for {5} sec.\nStage 3: Activates when Golden Chip is at {6} or more stacks. Affects self.\nATK ▲ {7}% for {8} sec.",
+    "ja": "■ゴー・アヘッド、ソーダ！を使用した時、\n「ゴールデンチップのスタック量別の効果」\n「下位効果のスタック適用」\n「効果適用後、ゴールデンチップのスタック量\n{1}個▼」\n1段階：敵全体に\n「最終攻撃力の{2}％の\nバーストスキルダメージ」\n2段階：ゴールデンチップ\n{3}スタック以上なら、自分に\n「命中率{4}％▲」「{5}秒間維持」\n3段階：ゴールデンチップ\n{6}スタック以上なら、自分に\n「攻撃力{7}％▲」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0,
+     17.0
+    ],
+    [
+     484.84,
+     500.83,
+     516.81,
+     532.8,
+     548.78,
+     564.76,
+     580.75,
+     596.73,
+     612.72,
+     628.7
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     12.64,
+     15.56,
+     18.48,
+     21.4,
+     24.32,
+     27.24,
+     30.16,
+     33.08,
+     36.0,
+     38.91
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     30.23,
+     34.12,
+     38.01,
+     41.9,
+     45.79,
+     49.68,
+     53.58,
+     57.47,
+     61.36,
+     65.25
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "468e566fdb72"
+}

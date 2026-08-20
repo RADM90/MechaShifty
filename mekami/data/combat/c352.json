@@ -1,0 +1,454 @@
+{
+ "rid": 352,
+ "name": {
+  "ko": "헬름",
+  "en": "Helm",
+  "ja": "ヘルム"
+ },
+ "nameCode": 5066,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Aegis",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "진두지휘",
+    "en": "Frontline Command",
+    "ja": "陣頭指揮"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 아군 전체에게\n[일반 공격 크리티컬 확률 {1}% ▲] [{2}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects all allies. \nCritical Rate of normal attack ▲ {1}% for {2} sec.",
+    "ja": "■最後の弾丸が命中した時、味方全体に\n「通常攻撃のクリティカル確率{1}％▲」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     8.65,
+     9.31,
+     9.98,
+     10.64,
+     11.31,
+     11.98,
+     12.64,
+     13.31,
+     13.97,
+     14.64
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "포문 개방",
+    "en": "Fire Away",
+    "ja": "砲門開放"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[저지 부위 공격 대미지 {1}% ▲] [지속]\n■ 풀 버스트 타임 시작 시 아군 전체에게\n[공격 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Affects all allies.\nDamage to Interruption Parts ▲{1}% permanently.\n■ Activates when entering Full Burst. Affects all allies.\nAttack damage ▲{2}% for {3} sec.",
+    "ja": "■味方全体に\n「阻止部位の攻撃ダメージ {1}％▲」「持続」\n■フルバーストタイムが発動した時、味方全体に\n「攻撃ダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.82,
+     1.96,
+     2.1,
+     2.24,
+     2.38,
+     2.52,
+     2.66,
+     2.8,
+     2.94,
+     3.08
+    ],
+    [
+     7.0,
+     7.54,
+     8.08,
+     8.62,
+     9.15,
+     9.69,
+     10.23,
+     10.77,
+     11.31,
+     11.85
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "이지스 캐논",
+    "en": "Aegis Cannon",
+    "ja": "イージスキャノン"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 적 1기에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 아군 전체에게\n[공격 대미지 비례 {2}% 회복] [{3}초 유지]",
+    "en": "■ Affects the enemy with the highest final ATK. \nDeals {1}% of final ATK as Burst Skill damage. \n■ Affects all allies. \nRestores HP equal to {2}% of attack damage. Lasts for {3} sec.",
+    "ja": "■最終攻撃力が最も高い敵1機に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」\n■味方全体に\n「攻撃ダメージの{2}％回復」\n「{3}秒間維持」"
+   },
+   "values": [
+    [
+     731.25,
+     787.5,
+     843.75,
+     900.0,
+     956.25,
+     1012.5,
+     1068.75,
+     1125.0,
+     1181.25,
+     1237.5
+    ],
+    [
+     32.17,
+     34.65,
+     37.12,
+     39.6,
+     42.07,
+     44.55,
+     47.02,
+     49.5,
+     51.97,
+     54.45
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     21.0,
+     22.0,
+     23.0,
+     24.0,
+     25.0,
+     26.0,
+     27.0,
+     28.0,
+     29.0,
+     30.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 200701,
+  "name": {
+   "ko": "낡은 나침반",
+   "en": "Antique Compass",
+   "ja": "古びた羅針盤"
+  },
+  "weapon": "SR",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "진두지휘",
+     "en": "Frontline Command",
+     "ja": "陣頭指揮"
+    },
+    "text": {
+     "ko": "■ 마지막 탄환 명중 시 아군 전체에게\n[일반 공격 크리티컬 확률 {1}% ▲] [{2}초 유지]\n■ 풀 차지 공격 시 아군 전체에게\n[시전자의 최종 최대 체력 비례 {3}% 회복]\n[버스트 게이지 충전 {4}%]",
+     "en": "■ Activates when the last bullet hits the target. Affects all allies.\nCritical Rate of normal attacks ▲ {1}% for {2} sec.\n■ Activates when attacking with Full Charge. Affects all allies.\nRestores HP equal to {3}% of the skill user's final max HP.\nFills Burst Gauge by {4}%.",
+     "ja": "■最後の弾丸が命中した時、味方全体に\n「通常攻撃のクリティカル確率{1}％▲」「{2}秒間維持」\n■フルチャージして攻撃した時、味方全体に\n「スキル発動者の最終最大HPの{3}％回復」\n「バーストゲージのチャージ{4}％」"
+    },
+    "values": [
+     [
+      8.65,
+      9.31,
+      9.98,
+      10.64,
+      11.31,
+      11.98,
+      12.64,
+      13.31,
+      13.97,
+      14.64
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      0.34,
+      0.37,
+      0.4,
+      0.42,
+      0.45,
+      0.48,
+      0.51,
+      0.53,
+      0.56,
+      0.59
+     ],
+     [
+      8.46,
+      9.11,
+      9.76,
+      10.41,
+      11.06,
+      11.71,
+      12.36,
+      13.01,
+      13.66,
+      14.31
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "포문 개방",
+     "en": "Fire Away",
+     "ja": "砲門開放"
+    },
+    "text": {
+     "ko": "■ 아군 전체에게\n[저지 부위 공격 대미지 {1}% ▲] [지속]\n■ 풀 버스트 타임 시작 시 아군 전체에게\n[공격 대미지 {2}% ▲] [{3}초 유지]\n■ 풀 차지 공격 명중 시 대상에게\n[최종 공격력 {4}% 추가 대미지]",
+     "en": "■ Affects all allies.\nDamage to Interruption Parts ▲ {1}% continuously.\n■ Activates when entering Full Burst. Affects all allies.\nAttack Damage ▲ {2}% for {3} sec.\n■ Activates when hitting a target with Full Charge. Affects the target.\nDeals {4}% of final ATK as additional damage.",
+     "ja": "■味方全体に\n「阻止部位の攻撃ダメージ {1}％▲」「持続」\n■フルバーストタイムが発動した時、味方全体に\n「攻撃ダメージ{2}％▲」「{3}秒間維持」\n■フルチャージ攻撃が命中した時、対象に\n「最終攻撃力の{4}％の追加ダメージ」"
+    },
+    "values": [
+     [
+      1.82,
+      1.96,
+      2.1,
+      2.24,
+      2.38,
+      2.52,
+      2.66,
+      2.8,
+      2.94,
+      3.08
+     ],
+     [
+      16.47,
+      17.74,
+      19.0,
+      20.27,
+      21.54,
+      22.8,
+      24.07,
+      25.34,
+      26.61,
+      27.87
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      105.76,
+      113.89,
+      122.03,
+      130.16,
+      138.3,
+      146.44,
+      154.57,
+      162.71,
+      170.84,
+      178.98
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "이지스 캐논",
+     "en": "Aegis Cannon",
+     "ja": "イージスキャノン"
+    },
+    "text": {
+     "ko": "■ 최종 공격력이 가장 높은 적 1기에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 아군 전체에게\n[공격 대미지 비례 {2}% 회복] [{3}초 유지]\n■ 자신에게\n[차지 대미지 {4}% 배율 ▲] [{5}발 유지]",
+     "en": "■ Affects the enemy with the highest final ATK.\nDeals {1}% of final ATK as Burst Skill damage.\n■ Affects all allies.\nRestores HP equal to {2}% of attack damage. Lasts for {3} sec.\n■ Affects self.\nCharge Damage Multiplier ▲ {4}% for {5} round(s).",
+     "ja": "■最終攻撃力が最も高い敵1機に\n「最終攻撃力の{1}％のバーストスキルダメージ」\n■味方全体に\n「攻撃ダメージの{2}％回復」「{3}秒間維持」\n■自分に\n「チャージダメージ{4}％倍率▲」「{5}発間維持」"
+    },
+    "values": [
+     [
+      4867.2,
+      5241.6,
+      5616.0,
+      5990.4,
+      6364.8,
+      6739.2,
+      7113.6,
+      7488.0,
+      7862.4,
+      8236.8
+     ],
+     [
+      32.17,
+      34.65,
+      37.12,
+      39.6,
+      42.07,
+      44.55,
+      47.02,
+      49.5,
+      51.97,
+      54.45
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      93.6,
+      100.8,
+      108.0,
+      115.2,
+      122.4,
+      129.6,
+      136.8,
+      144.0,
+      151.2,
+      158.4
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "7d503d08d07e"
+}

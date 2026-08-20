@@ -1,0 +1,305 @@
+{
+ "rid": 260,
+ "name": {
+  "ko": "모더니아",
+  "en": "Modernia",
+  "ja": "モダニア"
+ },
+ "nameCode": 5044,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "PILGRIM",
+ "squad": "Heretic",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 15.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 7.71,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.3,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "고속진화",
+    "en": "High-Speed Evolution",
+    "ja": "高速進化"
+   },
+   "text": {
+    "ko": "■ 일반 공격 명중 시 대상에게\n[최종 공격력 {1}% 추가 대미지]\n■ 일반 공격 {2}회 명중 시 자신에게\n[크리티컬 대미지 {3}% ▲] [{4}중첩] [{5}초 유지]\n[최대 장탄 수 {6}% ▼] [{7}중첩] [{8}초 유지]",
+    "en": "■ Activates when landing a normal attack. Affects the target.\nDeals {1}% of final ATK as additional damage. \n■ Activates after landing {2} normal attacks. Affects self.\nCritical Damage ▲ {3}%. Stacks up to {4} times and lasts for {5} sec.\nMax Ammunition Capacity ▼ {6}%. Stacks up to {7} times and lasts for {8} sec.",
+    "ja": "■通常攻撃が命中した時、対象に\n「最終攻撃力の{1}％の追加ダメージ」\n■通常攻撃が{2}回命中した時、自分に\n「クリティカルダメージ{3}％▲」\n「{4}スタック」「{5}秒間維持」\n「最大装弾数{6}％▼」\n「{7}スタック」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     1.9,
+     2.03,
+     2.16,
+     2.29,
+     2.41,
+     2.54,
+     2.67,
+     2.8,
+     2.92,
+     3.05
+    ],
+    [
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0
+    ],
+    [
+     9.93,
+     10.41,
+     10.89,
+     11.37,
+     11.85,
+     12.33,
+     12.81,
+     13.29,
+     13.77,
+     14.25
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04,
+     5.04
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "대도약",
+    "en": "Giant Leap",
+    "ja": "大跳躍"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 아군 전체에게\n[명중률 {1}% ▲] [{2}초 유지]\n■ 일반 공격 {3}회 명중 시 자신이 명중률 증가 상태라면 자신에게\n[공격력 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects all allies.\nHit Rate ▲ {1}% for {2} sec.\n■ Activates after landing {3} normal attacks while the skill user's hit rate is increased. Affects self.\n ATK ▲ {4}% for {5} sec.",
+    "ja": "■フルバーストタイムが発動した時、味方全体に\n「命中率{1}％▲」「{2}秒間維持」\n■通常攻撃が{3}回命中した時、自分が命中率増加状態なら、自分に\n「攻撃力{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     5.35,
+     5.7,
+     6.06,
+     6.42,
+     6.77,
+     7.13,
+     7.49,
+     7.84,
+     8.2,
+     8.56
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0
+    ],
+    [
+     18.36,
+     19.59,
+     20.81,
+     22.04,
+     23.26,
+     24.48,
+     25.71,
+     26.93,
+     28.16,
+     29.38
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "신세계",
+    "en": "New World",
+    "ja": "新世界"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[풀 버스트 타임 지속 시간 5초 ▲]\n■ 자신에게\n[장탄 수 무한] [{2}초 유지]\n[섬멸 모드] :\n기능 : 조준선 확장 & 조준 범위 내 적 전체 동시 조준. 보스는 저지 부위 및 파츠 무관, 단일 적으로 간주\n대미지 : 최종 공격력 {1}% 대미지\n유지 시간 : {2}초",
+    "en": "■ Affects all allies.\nFull Burst Duration ▲ 5 sec.\n■ Affects self.\nUnlimited ammunition for {2} sec.\nDestroy Mode:\nExtends her line of sight and auto-aims at all enemies within range. The stage target is treated as a single enemy regardless of whether it has parts (including interruption parts).\nDeals {1}% of final ATK as damage for {2} sec.",
+    "ja": "■味方全体に\n「フルバーストタイム5秒▲」\n■自分に\n「装弾数無限」「{2}秒間維持」\n「殲滅モード」：\n機能：照準線拡張＆照準範囲内のすべての敵を同時に照準。ボスは阻止部位及びパーツに関係なく、単一の敵とみなす\nダメージ：最終攻撃力の{1}％のダメージ\n維持時間：{2}秒"
+   },
+   "values": [
+    [
+     1.52,
+     1.6,
+     1.68,
+     1.76,
+     1.84,
+     1.92,
+     2.0,
+     2.08,
+     2.16,
+     2.24
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "0393a99412fc"
+}

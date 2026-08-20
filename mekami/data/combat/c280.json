@@ -1,0 +1,659 @@
+{
+ "rid": 280,
+ "name": {
+  "ko": "로산나",
+  "en": "Rosanna",
+  "ja": "ロザンナ"
+ },
+ "nameCode": 5045,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "UnderworldQueen",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.1,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 1.67,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "온 더 렘",
+    "en": "On the Lam",
+    "ja": "オン・ザ・ラム"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 자신에게\n[은신 : 1인 공격 대상에서 제외 직접 피격 시 해제] [{2}초 유지]\n[크리티컬 확률 {3}% ▲] [{4}초 유지]\n■ 일반 공격 {5}회 공격 시 최종 공격력이 가장 높은 적 {6}기에게\n[이로운 효과 해제 {7}개] [전투 중 {8}회 발동]",
+    "en": "■ Activates after landing {1} normal attacks. Affects self.\nConcealment: Prevents being targeted by single-target attacks for {2} sec. This effect is removed upon taking a direct hit.\nCritical Rate ▲ {3}% for {4} sec.\n■ Activates after performing {5} normal attacks. Affects the {6} enemy unit(s) with the highest final ATK.\nRemoves {7} buff(s). Activates {8} time(s) per battle.",
+    "ja": "■通常攻撃が{1}回命中した時、自分に\n「隠れ身：単一攻撃対象から除外\n直接攻撃を受けると解除」「{2}秒間維持」\n「クリティカル確率{3}％▲」\n「{4}秒間維持」\n■通常攻撃で{5}回攻撃した時、最終攻撃力が最も高い敵\n{6}機に\n「バフ効果解除{7}個」「戦闘中\n{8}回発動」"
+   },
+   "values": [
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     8.98,
+     10.13,
+     11.28,
+     12.43,
+     13.59,
+     14.74,
+     15.89,
+     17.04,
+     18.19,
+     19.34
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     3.0,
+     3.0,
+     3.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "카포 디 카피",
+    "en": "Capo dei Capi",
+    "ja": "カポ・ディ・カピ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[은신 : 1인 공격 대상에서 제외 직접 피격 시 해제] [{1}초 유지]\n■ 니케 누군가 전투불능 시 자신에게\n[광기 : 공격력 {2}% ▲] [{3} 중첩] [{4}초 유지]\n[버스트 게이지 충전 {5}%]",
+    "en": "■ Activates at the start of battle. Affects self.\nConcealment: Prevents being targeted by single-target attacks for {1} sec. This effect is removed upon taking a direct hit.\n■ Activates when a Nikke is incapacitated. Affects self.\nFrenzy: ATK ▲ {2}%, stacks up to {3} time(s) and lasts for {4} sec.\nFills Burst Gauge by {5}%.",
+    "ja": "■戦闘開始時、自分に\n「隠れ身：単一攻撃対象から除外\n直接攻撃を受けると解除」「{1}秒間維持」\n■ニケの誰かが戦闘不能時、自分に\n「狂気：攻撃力{2}％▲」「{3}スタック」「{4}秒間維持」\n「バーストゲージのチャージ{5}％」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     12.83,
+     13.92,
+     15.01,
+     16.09,
+     17.18,
+     18.27,
+     19.35,
+     20.44,
+     21.53,
+     22.61
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ],
+    [
+     20.54,
+     22.32,
+     24.09,
+     25.87,
+     27.65,
+     29.43,
+     31.2,
+     32.98,
+     34.76,
+     36.54
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "벤데타",
+    "en": "Vendetta",
+    "ja": "ヴェンデッタ"
+   },
+   "text": {
+    "ko": "■ 우선적으로 화력형 적 {1}기에게\n[최종 공격력 {2}% 대미지]\n■ 자신이 은신 상태라면 동일 적 대상에게\n[최종 공격력 {3}% 추가 대미지]",
+    "en": "■ Prioritizes Attacker-type enemies. Affects {1} unit(s).\nDeals {2}% of final ATK as damage.\n■ Activates if the skill user is in the Concealment state. Affects the same target(s).\nDeals {3}% of final ATK as additional damage.",
+    "ja": "■優先的に火力型の敵{1}機に\n「最終攻撃力の{2}％のダメージ」\n■自分が隠れ身の状態なら同じ敵に\n「最終攻撃力の{3}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     720.72,
+     786.24,
+     851.76,
+     917.28,
+     982.8,
+     1048.32,
+     1113.84,
+     1179.36,
+     1244.88,
+     1310.4
+    ],
+    [
+     308.88,
+     336.96,
+     365.04,
+     393.12,
+     421.2,
+     449.28,
+     477.36,
+     505.44,
+     533.52,
+     561.6
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 202001,
+  "name": {
+   "ko": "인장 반지",
+   "en": "Signet Ring",
+   "ja": "シグネットリング"
+  },
+  "weapon": "MG",
+  "maxLevel": 2,
+  "replaces": {
+   "s2": {
+    "name": {
+     "ko": "카포 디 카피",
+     "en": "Capo dei Capi",
+     "ja": "カポ・ディ・カピ"
+    },
+    "text": {
+     "ko": "■ 전투 시작 시 자신에게\n[은신 : 1인 공격 대상에서 제외 직접 피격 시 해제] [{1}초 유지]\n■ 니케 누군가 전투불능 시 자신에게\n[광기 : 공격력 {2}% ▲] [{3} 중첩] [{4}초 유지]\n[버스트 게이지 충전 {5}%]\n■ 아군 누군가 전투불능 시 우선적으로 화력형 적 {10}기에게\n[최종 공격력 {11}% 대미지]\n■ 일반 공격 {6}회 명중 시 대상이 타겟이라면 자신에게\n[광기 : 공격력 {7}% ▲] [{8} 중첩] [{9}초 유지]",
+     "en": "■ Activates at the start of battle. Affects self.\nConcealment: Prevents being targeted by single-target attacks for {1} sec. This effect is removed upon taking a direct hit.\n■ Activates when a Nikke is incapacitated. Affects self.\nFrenzy: ATK ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.\nFills Burst Gauge by {5}%.\n■ Activates when a Nikke is incapacitated. Prioritizes Attacker-type enemies. Affects {10} unit(s).\nDeals {11}% of final ATK as damage.\n■ Activates after landing {6} normal attacks on the stage target. Affects self.\nFrenzy: ATK ▲ {7}%. Stacks up to {8} times and lasts for {9} sec.",
+     "ja": "■戦闘開始時、自分に\n「隠れ身：単一攻撃対象から除外直接攻撃を受けると解除」\n「{1}秒間維持」\n■ニケの誰かが戦闘不能時、自分に\n「狂気：攻撃力{2}％▲」「{3}スタック」「{4}秒間維持」\n「バーストゲージのチャージ{5}％」\n■味方の誰かが戦闘不能時、優先的に火力型の敵{10}機に\n「最終攻撃力の{11}％のダメージ」\n■通常攻撃が{6}回命中した時、対象がターゲットなら自分に\n「狂気：攻撃力{7}％▲」「{8}スタック」「{9}秒間維持」"
+    },
+    "values": [
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      12.83,
+      13.92,
+      15.01,
+      16.09,
+      17.18,
+      18.27,
+      19.35,
+      20.44,
+      21.53,
+      22.61
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     [
+      20.54,
+      22.32,
+      24.09,
+      25.87,
+      27.65,
+      29.43,
+      31.2,
+      32.98,
+      34.76,
+      36.54
+     ],
+     [
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0,
+      500.0
+     ],
+     [
+      12.83,
+      13.92,
+      15.01,
+      16.09,
+      17.18,
+      18.27,
+      19.35,
+      20.44,
+      21.53,
+      22.61
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ],
+     [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+     ],
+     [
+      200.0,
+      222.22,
+      244.44,
+      266.67,
+      288.89,
+      311.11,
+      333.33,
+      355.56,
+      377.78,
+      400.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "벤데타",
+     "en": "Vendetta",
+     "ja": "ヴェンデッタ"
+    },
+    "text": {
+     "ko": "■ 우선적으로 화력형 적 {1}기에게\n[아살토 : 최종 공격력 {2}% 대미지]\n■ 자신이 은신 상태라면 아살토에 명중된 대상에게\n[최종 공격력 {3}% 추가 대미지]\n■ 아살토에 명중된 대상이 수냉 코드 타겟이라면 대상에게\n[받는 대미지 {5}% ▲] [{6}초 유지]",
+     "en": "■ Prioritizes Attacker-type enemies. Affects {1} enemy unit(s).\nAssalto: Deals {2}% of final ATK as damage.\n■ Activates when the skill user is in the Concealment state. Affects the target(s) hit by Assalto.\nDeals {3}% of final ATK as additional damage.\n■ Activates if the target that was hit by Assalto is a Water Code stage target. Affects the target.\nDamage Taken ▲ {5}% for {6} sec.",
+     "ja": "■優先的に火力型の敵{1}機に\n「アサルト：最終攻撃力の{2}％のダメージ」\n■自分が隠れ身状態なら、アサルトの命中した対象に\n「最終攻撃力の{3}％の追加ダメージ」\n■アサルトの命中した対象が水冷コードの\nターゲットなら、対象に\n「受けるダメージ{5}％▲」「{6}秒間維持」"
+    },
+    "values": [
+     [
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+     ],
+     [
+      720.72,
+      786.24,
+      851.76,
+      917.28,
+      982.8,
+      1048.32,
+      1113.84,
+      1179.36,
+      1244.88,
+      1310.4
+     ],
+     [
+      308.88,
+      336.96,
+      365.04,
+      393.12,
+      421.2,
+      449.28,
+      477.36,
+      505.44,
+      533.52,
+      561.6
+     ],
+     null,
+     [
+      14.5,
+      16.11,
+      17.72,
+      19.33,
+      20.94,
+      22.56,
+      24.17,
+      25.78,
+      27.39,
+      29.0
+     ],
+     [
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0,
+      30.0
+     ]
+    ]
+   },
+   "s1": {
+    "name": {
+     "ko": "온 더 렘",
+     "en": "On the Lam",
+     "ja": "オン・ザ・ラム"
+    },
+    "text": {
+     "ko": "■ 일반 공격 {1}회 명중 시 자신에게\n[은신 : 1인 공격 대상에서 제외 직접 피격 시 해제] [{2}초 유지]\n[크리티컬 확률 {3}% ▲] [{4}초 유지]\n■ 일반 공격 {5}회 공격 시 최종 공격력이 가장 높은 적 {6}기에게\n[이로운 효과 해제 {7}개] [전투 중 1회 발동]\n■ 타겟 등장 시 자신에게\n[우월 코드 공격 대미지 {8}% ▲] [지속]",
+     "en": "■ Activates after landing {1} normal attacks. Affects self.\nConcealment: Prevents being targeted by single-target attacks for {2} sec. This effect is removed upon taking a direct hit.\nCritical Rate ▲ {3}% for {4} sec.\n■ Activates after performing {5} normal attacks. Affects the {6} enemy unit(s) with the highest final ATK.\nRemoves {7} buff(s). Activates once per battle.\n■ Activates when the stage target appears. Affects self.\nElemental Advantage Attack Damage ▲ {8}% continuously.",
+     "ja": "■通常攻撃が{1}回命中した時、自分に\n「隠れ身：単一攻撃対象から除外\n直接攻撃を受けると解除」「{2}秒間維持」\n「クリティカル確率{3}％▲」「{4}秒間維持」\n■通常攻撃で{5}回攻撃した時、最終攻撃力が最も高い敵{6}機に\n「バフ効果解除{7}個」「戦闘中1回発動」\n■ターゲットが出現した時、自分に\n「有利コードの攻撃ダメージ{8}％▲」「持続」"
+    },
+    "values": [
+     [
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0,
+      120.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      8.98,
+      10.13,
+      11.28,
+      12.43,
+      13.59,
+      14.74,
+      15.89,
+      17.04,
+      18.19,
+      19.34
+     ],
+     [
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+     ],
+     [
+      1.0,
+      1.0,
+      1.0,
+      3.0,
+      3.0,
+      3.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      11.0,
+      12.0,
+      13.0,
+      14.0,
+      15.0,
+      16.0,
+      17.0,
+      18.0,
+      19.0,
+      20.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "560458ab0ee9"
+}

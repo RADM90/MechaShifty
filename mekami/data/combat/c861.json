@@ -1,0 +1,293 @@
+{
+ "rid": 861,
+ "name": {
+  "ko": "타키나",
+  "en": "Takina",
+  "ja": "たきな"
+ },
+ "nameCode": 5165,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE008",
+ "element": "Iron",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "전투 보정",
+    "en": "Combat Support",
+    "ja": "戦闘補正"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시와 풀 버스트 타임 종료 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]\n■ 풀 버스트 타임 시작 시 자신에게\n[방어력 무시 대미지 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates at the start of battle and when Full Burst ends. Affects self.\nATK ▲ {1}% for {2} sec.\n■ Activates when entering Full Burst. Affects self.\nTrue Damage ▲ {3}% for {4} sec.",
+    "ja": "■戦闘開始時およびフルバーストタイムが\n終了した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」\n■フルバーストタイムが発動した時、自分に\n「防御力無視ダメージ{3}％▲」\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     47.29,
+     50.93,
+     54.57,
+     58.21,
+     61.85,
+     65.49,
+     69.12,
+     72.76,
+     76.4,
+     80.04
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     20.71,
+     22.3,
+     23.9,
+     25.49,
+     27.08,
+     28.68,
+     30.27,
+     31.86,
+     33.46,
+     35.05
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "전장 통제",
+    "en": "Battlefield Control",
+    "ja": "戦場支配"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[받는 대미지 {1}% ▲] [{2}초 유지]\n[기절] [{3}초 유지]\n■ 아군 전체에게\n[방어력 무시 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects all enemies.\nDamage Taken ▲ {1}% for {2} sec.\nStuns for {3} sec.\n■ Affects all allies.\nTrue Damage ▲ {4}% for {5} sec.",
+    "ja": "■敵全体に\n「受けるダメージ{1}％▲」「{2}秒間維持」\n「気絶」「{3}秒間維持」\n■味方全体に\n「防御力無視ダメージ{4}％▲」\n「{5}秒間維持」"
+   },
+   "values": [
+    [
+     5.96,
+     6.42,
+     6.88,
+     7.33,
+     7.79,
+     8.25,
+     8.71,
+     9.17,
+     9.63,
+     10.09
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     83.01,
+     89.4,
+     95.79,
+     102.17,
+     108.56,
+     114.94,
+     121.33,
+     127.72,
+     134.1,
+     140.49
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "제압 개시",
+    "en": "Suppression Initiated",
+    "ja": "制圧開始"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[사용 무기 변경]\n대미지 : 최종 공격력 {1}% 대미지\n유지 시간 : {2}초\n추가 효과\n자신에게 : [일반 공격을 방어력 무시 대미지로 변경] [{3}초 유지]\n명중 대상에게 : [받는 대미지 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects self.\nChanges the weapon in use.\nDamage: {1}% of final ATK\nDuration: {2} sec\nAdditional Effects\nAffects self: Normal attacks deal true damage for {3} sec.\nAffects targets hit: Damage Taken ▲ {4}% for {5} sec.",
+    "ja": "■自分に\n「使用武器変更」\nダメージ：最終攻撃力の{1}％のダメージ\n維持時間：{2}秒\n追加効果\n自分に：\n「通常攻撃を防御力無視ダメージに変更」\n「{3}秒間維持」\n命中した敵に：「受けるダメージ{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     118.56,
+     127.68,
+     136.8,
+     145.92,
+     155.04,
+     164.16,
+     173.28,
+     182.4,
+     191.52,
+     200.64
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     3.56,
+     3.84,
+     4.11,
+     4.39,
+     4.66,
+     4.94,
+     5.21,
+     5.49,
+     5.76,
+     6.04
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "6afba45df060"
+}

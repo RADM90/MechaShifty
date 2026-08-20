@@ -1,0 +1,514 @@
+{
+ "rid": 30,
+ "name": {
+  "ko": "폴리",
+  "en": "Poli",
+  "ja": "ポリ"
+ },
+ "nameCode": 5016,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "ELYSION",
+ "squad": "ACPU",
+ "element": "Water",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 201.5,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 1.5,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "브레이브 콜",
+    "en": "Brave Call",
+    "ja": "ブレイブコール"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 아군 전체에게\n[공격력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects all allies.  ATK ▲ {2}% for {3} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、味方全体に\n「攻撃力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.73,
+     3.03,
+     3.33,
+     3.64,
+     3.94,
+     4.25,
+     4.55,
+     4.85,
+     5.16,
+     5.46
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "도그 테라피",
+    "en": "That's a Good Boy",
+    "ja": "ドッグセラピー"
+   },
+   "text": {
+    "ko": "■ 자신과 자신을 제외한 남은 체력 수치가 가장 낮은 아군 {1}기에게\n[방어력 {2}% ▲] [{3}초 유지]\n[받는 대미지 균등 분배] [{4}초 유지]",
+    "en": "■ Affects self and {1} ally unit(s) with the lowest remaining HP (except the skill user). \nDEF ▲ {2}% for {3} sec. \nEqually shares damage taken for {4} sec.",
+    "ja": "■自分と自分を除く残りHPの値が\n最も低い味方{1}機に\n「防御力{2}％▲」「{3}秒間維持」\n「受けるダメージ均等分配」\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     11.75,
+     13.06,
+     14.36,
+     15.67,
+     16.97,
+     18.28,
+     19.59,
+     20.89,
+     22.2,
+     23.51
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "폴리스 라인",
+    "en": "Poli's Defense Line",
+    "ja": "ポリスライン"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[시전자의 최종 최대 체력 비례 {1}% 아군 공용 보호막] [{2}초 유지]\n■ 아군 전체에게\n[공격력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects self.\nCreates a shared shield with HP equal to {1}% of the skill user's final max HP that protects all allies from damage. Lasts for {2} sec. \n■ Affects all allies.\nATK ▲ {3}% for {4} sec.",
+    "ja": "■自分に\n「スキル発動者の最終最大HPの{1}％の\n味方共用バリア」「{2}秒間維持」\n■味方全体に\n「攻撃力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     11.13,
+     12.37,
+     13.61,
+     14.85,
+     16.08,
+     17.32,
+     18.56,
+     19.8,
+     21.03,
+     22.27
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     22.27,
+     24.75,
+     27.22,
+     29.7,
+     32.17,
+     34.65,
+     37.12,
+     39.6,
+     42.07,
+     44.55
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": {
+  "tid": 201001,
+  "name": {
+   "ko": "형사 수첩",
+   "en": "Police Notebook",
+   "ja": "捜査用手帳"
+  },
+  "weapon": "SG",
+  "maxLevel": 2,
+  "replaces": {
+   "s1": {
+    "name": {
+     "ko": "브레이브 콜",
+     "en": "Brave Call",
+     "ja": "ブレイブコール"
+    },
+    "text": {
+     "ko": "■ 일반 공격 {1}회 공격 시 아군 전체에게\n[공격력 {2}% ▲] [{3}초 유지]\n■ 전투 시작 시 자신에게\n[폴리스 뱃지 : 시전자의 최종 최대 체력 비례 {4}% 보호막] [{5}초 유지]",
+     "en": "■ Activates after performing {1} normal attacks. Affects all allies.\nATK ▲ {2}% for {3} sec.\n■ Activates at the start of battle. Affects self.\nPolice Badge: Creates a shield with HP equal to {4}% of the skill user's final max HP that lasts for {5} sec.",
+     "ja": "■通常攻撃を{1}回行った時、味方全体に\n「攻撃力{2}％▲」「{3}秒間維持」\n■戦闘開始時、自分に\n「ポリスバッジ：スキル発動者の最終最大HPの\n{4}％のバリア」「{5}秒間維持」"
+    },
+    "values": [
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ],
+     [
+      2.73,
+      3.03,
+      3.33,
+      3.64,
+      3.94,
+      4.25,
+      4.55,
+      4.85,
+      5.16,
+      5.46
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      59.09,
+      63.64,
+      68.18,
+      72.73,
+      77.27,
+      81.82,
+      86.36,
+      90.91,
+      95.46,
+      100.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ]
+    ]
+   },
+   "burst": {
+    "name": {
+     "ko": "폴리스 라인",
+     "en": "Poli's Defense Line",
+     "ja": "ポリスライン"
+    },
+    "text": {
+     "ko": "■ 자신이 폴리스 뱃지 상태라면 자신에게\n[불굴] [{5}초 유지][폴리스 뱃지 제거]\n■ 자신에게\n[시전자의 최종 최대 체력 비례 {1}% 아군 공용 보호막] [{2}초 유지]\n■ 아군 전체에게\n[공격력 {3}% ▲] [{4}초 유지]",
+     "en": "■ Activates when in the Police Badge state. Affects self.\nGains Indomitability for {5} sec. Removes Police Badge.\n■ Affects self.\nCreates a shared shield with HP equal to {1}% of the skill user's final max HP that protects all allies from damage. Lasts for {2} sec.\n■ Affects all allies.\nATK ▲ {3}% for {4} sec.",
+     "ja": "■自分がポリスバッジ状態なら、自分に\n「不屈」「{5}秒間維持」「ポリスバッジ解除」\n■自分に\n「スキル発動者の最終最大HPの\n{1}％の味方共用バリア」「{2}秒間維持」\n■味方全体に\n「攻撃力{3}％▲」「{4}秒間維持」"
+    },
+    "values": [
+     [
+      23.63,
+      25.45,
+      27.27,
+      29.09,
+      30.91,
+      32.73,
+      34.55,
+      36.36,
+      38.18,
+      40.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      22.27,
+      24.75,
+      27.22,
+      29.7,
+      32.17,
+      34.65,
+      37.12,
+      39.6,
+      42.07,
+      44.55
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ]
+    ]
+   },
+   "s2": {
+    "name": {
+     "ko": "도그 테라피",
+     "en": "That's a Good Boy",
+     "ja": "ドッグセラピー"
+    },
+    "text": {
+     "ko": "■ {5}초 마다 자신과 자신을 제외한 체력이 가장 낮은 아군 {1}기에게\n[방어력 {2}% ▲] [{3}초 유지]\n[받는 대미지 균등 분배] [{4}초 유지]\n■ 폴리스 뱃지 상태 종료 시 자신에게\n[시전자의 최종 최대 체력 비례 {6}% 지속 회복] [1초 간격] [{7}초 유지]",
+     "en": "■ Activates every {5} sec. Affects self and the {1} ally unit(s) with the lowest HP.\nDEF ▲ {2}% for {3} sec.\nEqually shares damage taken for {4} sec.\n■ Activates when Police Badge ends. Affects self.\nRestores HP equal to {6}% of the skill user's final max HP every second for {7} sec.",
+     "ja": "■{5}秒ごとに自分と自分を除く\nHPが最も低い味方{1}機に\n「防御力{2}％▲」「{3}秒間維持」\n「受けるダメージ均等分配」「{4}秒間維持」\n■ポリスバッジ状態が終了した時、自分に\n「スキル発動者の最終最大HPの\n{6}％持続回復」「1秒間隔」「{7}秒間維持」"
+    },
+    "values": [
+     [
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0,
+      2.0
+     ],
+     [
+      11.75,
+      13.06,
+      14.36,
+      15.67,
+      16.97,
+      18.28,
+      19.59,
+      20.89,
+      22.2,
+      23.51
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+     ],
+     [
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0,
+      20.0
+     ],
+     [
+      2.95,
+      3.18,
+      3.41,
+      3.64,
+      3.86,
+      4.09,
+      4.32,
+      4.55,
+      4.77,
+      5.0
+     ],
+     [
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0,
+      5.0
+     ]
+    ]
+   }
+  }
+ },
+ "textHash": "0dcb742bbf6a"
+}

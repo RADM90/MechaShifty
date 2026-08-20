@@ -1,0 +1,245 @@
+{
+ "rid": 321,
+ "name": {
+  "ko": "마르차나",
+  "en": "Marciana",
+  "ja": "マルチャーナ"
+ },
+ "nameCode": 5048,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "Akademeia",
+ "element": "Iron",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 201.5,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 1.5,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "드론 서포터",
+    "en": "Drone Supporter",
+    "ja": "ドローンサポーター"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 아군 전체에게 \n[공격 대미지 비례 {1}% 회복] [{2}초 유지]\n■ 마지막 탄환 명중 시 최종 공격력이 가장 높은 아군 {3}기에게 \n[받는 체력 회복량 {4}%▲] [{5}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects all allies.\nRestores HP equal to {1}% of attack damage. Lasts for {2} sec.\n■ Activates when the last bullet hits the target. Affects {3} ally unit(s) with the highest final ATK.\nIncoming Healing ▲ {4}% for {5} sec.",
+    "ja": "■最後の弾丸が命中した時、味方全体に\n「攻撃ダメージの{1}％回復」「{2}秒間維持」\n■最後の弾丸が命中した時、\n最終攻撃力が最も高い味方{3}機に\n「受けるHP回復量{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     6.47,
+     6.97,
+     7.47,
+     7.96,
+     8.46,
+     8.96,
+     9.46,
+     9.96,
+     10.46,
+     10.95
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     15.94,
+     17.16,
+     18.39,
+     19.62,
+     20.84,
+     22.07,
+     23.3,
+     24.52,
+     25.75,
+     26.98
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "양호 선생님",
+    "en": "School Nurse",
+    "ja": "保健室の先生"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 아군 전체에게\n[시전자 최종 최대 체력 비례 {1}% 회복]",
+    "en": "■ Activates when using Burst Skill. Affects all allies. \nRestores HP equal to {1}% of the skill user's final max HP.",
+    "ja": "■バーストスキルを使用した時、味方全体に\n「スキル発動者の最終最大HPの\n{1}％を回復」"
+   },
+   "values": [
+    [
+     17.31,
+     18.51,
+     19.71,
+     20.91,
+     22.11,
+     23.31,
+     24.51,
+     25.71,
+     26.91,
+     28.11
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "스승의 은혜",
+    "en": "A Teacher's Grace",
+    "ja": "わが師の恩"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[저장 : 시전자 기준 최대 체력 {1}% 까지 초과 받는 체력 회복량 저장] [{2}초 유지]\n[시전자 방어력 비례 {3}% 방어력 ▲] [{4}초 유지]",
+    "en": "■ Affects all allies.\nStorage: Stores excess incoming healing, up to {1}% of the skill user's max HP. Lasts for {2} sec.\nDEF ▲ {3}% of the skill user's DEF for {4} sec.",
+    "ja": "■味方全体に\n「保存：スキル発動者基準で最大HP\n{1}％まで超過するHP回復量保存」\n「{2}秒間維持」\n「スキル発動者の防御力に比例して\n{3}％防御力▲」\n「{4}秒間維持」"
+   },
+   "values": [
+    [
+     16.47,
+     17.74,
+     19.0,
+     20.27,
+     21.54,
+     22.8,
+     24.07,
+     25.34,
+     26.61,
+     27.87
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     12.35,
+     13.3,
+     14.25,
+     15.2,
+     16.15,
+     17.1,
+     18.05,
+     19.0,
+     19.95,
+     20.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "201ec377538a"
+}

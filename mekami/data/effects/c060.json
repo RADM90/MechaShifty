@@ -1,0 +1,54 @@
+{
+  "rid": 60,
+  "name": "벨로타",
+  "textHash": "4ba56d504c1f",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 차지 공격 시 자신에게",
+      "on": "fullChargeHit",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "explosionRange",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "공격 범위 내 적들에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 1
+        },
+        "kind": "skill"
+      }
+    },
+    {
+      "note": "아군 전체에게",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "chargeSpeed",
+          "v": 2,
+          "dur": {
+            "v": 3
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s2] ■ {1}기 이상을 동시에 명중시켰다면 대상에게\n[방어력 {2}% ▼] [{3}초 유지]\n[최종 공격력 {4}% 추가 대미지]"
+  ]
+}

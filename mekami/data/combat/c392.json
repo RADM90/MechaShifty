@@ -1,0 +1,247 @@
+{
+ "rid": 392,
+ "name": {
+  "ko": "라이",
+  "en": "Rei",
+  "ja": "ライ"
+ },
+ "nameCode": 5069,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "SchoolCircle",
+ "element": "Water",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 9.15,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 1.83,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "선배의 응원",
+    "en": "Senior Support",
+    "ja": "先輩の応援"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 아군 전체에게\n[버스트 게이지 충전 {2}%]\n■ 디코이가 있다면 자신에게\n[시전자의 최종 최대 체력 비례 디코이 회복 {3}%]",
+    "en": "■ Activates after performing {1} normal attacks. Affects all allies.\nFills Burst Gauge by {2}%. \n■ Activates when a decoy is present. Affects self.\nRestores decoy HP equal to {3}% of the skill user's final max HP.",
+    "ja": "■通常攻撃で{1}回攻撃した時、味方全体に\n「バーストゲージのチャージ {2}％」\n■デコイが存在する時自分に\n「スキル発動者の最終最大HPのデコイ回復 {3}％」"
+   },
+   "values": [
+    [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    [
+     1.35,
+     1.48,
+     1.6,
+     1.72,
+     1.85,
+     1.97,
+     2.09,
+     2.22,
+     2.34,
+     2.47
+    ],
+    [
+     1.15,
+     1.26,
+     1.36,
+     1.47,
+     1.57,
+     1.68,
+     1.78,
+     1.89,
+     2.0,
+     2.1
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "선배의 기합",
+    "en": "Senior Spirit",
+    "ja": "先輩の気合"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[디코이 : 시전자의 최종 최대 체력 비례 {3}% 분신] [{4}초 유지]",
+    "en": "■ Activates at the start of battle. Affects self.\nDecoy: Creates an avatar with {3}% of the skill user's final max HP that lasts for {4} sec.",
+    "ja": "■戦闘開始時、自分に\n「デコイ：スキル発動者の最終最大HPの\n{3}％の分身」「{4}秒間維持」"
+   },
+   "values": [
+    null,
+    null,
+    [
+     52.8,
+     57.6,
+     62.4,
+     67.2,
+     72.0,
+     76.8,
+     81.6,
+     86.4,
+     91.2,
+     96.0
+    ],
+    [
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0,
+     240.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "선배의 모범",
+    "en": "Model Senior Student",
+    "ja": "先輩のお手本"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[주목 : 적 전체 도발] [{1}초 유지]\n[받는 대미지 {2}% ▼] [{3}초 유지]\n■ 디코이가 있다면 자신에게\n[시전자의 최종 최대 체력 비례 디코이 지속 회복 {4}%] [1초 간격] [{5}초 유지]",
+    "en": "■ Affects self.\nAttract: Taunts all enemies for {1} sec.\nDamage Taken ▼ {2}% for {3} sec.\n■ Activates when a decoy is present. Affects self.\nContinuously restores decoy HP equal to {4}% of the skill user's final max HP every second for {5} sec.",
+    "ja": "■自分に\n「ヘイト：敵全体を挑発」「{1}秒間維持」\n「受けるダメージ{2}％▼」「{3}秒間維持」\n■デコイが存在する時自分に\n「スキル発動者の最終最大HPのデコイ持続回復 {4}％」「1秒間隔」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     7.92,
+     8.64,
+     9.36,
+     10.08,
+     10.8,
+     11.52,
+     12.24,
+     12.96,
+     13.68,
+     14.4
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.61,
+     1.68,
+     1.76,
+     1.83,
+     1.91,
+     1.98,
+     2.05,
+     2.13,
+     2.2,
+     2.27
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "daceb6a49830"
+}

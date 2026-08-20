@@ -1,0 +1,97 @@
+{
+  "rid": 210,
+  "name": "엑시아",
+  "textHash": "5c95fc38d4b6",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "마지막 탄환 명중 시 자신이 해킹 코드 수집 상태라면 대상에게",
+      "on": "lastBullet",
+      "if": {
+        "selfState": "해킹 코드 수집"
+      },
+      "to": "enemy",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dir": "down",
+          "dur": {
+            "v": 2
+          }
+        },
+        {
+          "stat": "defPct",
+          "v": 3,
+          "dir": "down",
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "마지막 탄환 명중 시 자신에게",
+      "on": "lastBullet",
+      "stack": {
+        "name": "해킹 코드 수집",
+        "max": {
+          "v": 2
+        },
+        "add": 1
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dur": {
+            "v": 3
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "최종 방어력이 가장 높은 적 {1}기에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "defPct",
+          "v": 3,
+          "dir": "down",
+          "dur": {
+            "v": 4
+          }
+        }
+      ],
+      "hit": {
+        "ratio": {
+          "v": 2
+        },
+        "kind": "skill"
+      }
+    },
+    {
+      "note": "자신이 해킹 코드 수집 최대 중첩 상태라면 동일 적 대상에게",
+      "on": "burstUse",
+      "if": {
+        "selfState": "해킹 코드 수집 최대 중첩"
+      },
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 5
+        },
+        "kind": "skill",
+        "gauge": false
+      }
+    }
+  ],
+  "unmodeled": []
+}

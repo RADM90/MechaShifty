@@ -1,0 +1,305 @@
+{
+ "rid": 354,
+ "name": {
+  "ko": "마스트 : 로망틱 메이드",
+  "en": "Mast: Romantic Maid",
+  "ja": "マスト：ロマンチックメイド"
+ },
+ "nameCode": 5130,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "Aegis",
+ "element": "Water",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "파이레츠 하트",
+    "en": "A Pirate's Heart",
+    "ja": "パイレーツハート"
+   },
+   "text": {
+    "ko": "■ 버스트 1단계 진입 시 자신에게\n[취기 : 명중률 {1}% ▼] [{2} 중첩] [지속]\n■ 자신이 취기 상태에 한하여 아군 전체에게\n[크리티컬 확률 {3}% ▲] [지속]\n[시전자 기준 공격력 {4}% ▲] [지속]",
+    "en": "■ Activates when entering Burst stage 1. Affects self.\nDrunken: Hit Rate ▼ {1}%, stacks up to {2} times continuously.\n■ Activates only when in Drunken status. Affects all allies.\nCritical Rate ▲ {3}% continuously.\nATK ▲ {4}% of the skill user's ATK continuously.",
+    "ja": "■バースト1段階突入時、自分に\n「ほろ酔い：命中率{1}％▼」\n「{2}スタック」「持続」\n■自分がほろ酔い状態に限り味方全体に\n「クリティカル確率{3}％▲」「持続」\n「スキル発動者基準で攻撃力{4}％▲」\n「持続」"
+   },
+   "values": [
+    [
+     35.92,
+     34.15,
+     32.38,
+     30.62,
+     28.85,
+     27.08,
+     25.31,
+     23.54,
+     21.77,
+     20.0
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     11.85,
+     12.76,
+     13.67,
+     14.58,
+     15.49,
+     16.4,
+     17.32,
+     18.23,
+     19.14,
+     20.05
+    ],
+    [
+     20.69,
+     22.28,
+     23.87,
+     25.46,
+     27.06,
+     28.65,
+     30.24,
+     31.83,
+     33.42,
+     35.02
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "파이레츠 스피릿",
+    "en": "A Pirate's Spirit",
+    "ja": "パイレーツスピリット"
+   },
+   "text": {
+    "ko": "■ 버스트 3단계 진입 시 자신이 취기 상태라면 아군 전체에게\n[분배 대미지 {1}% X 취기 중첩 수 ▲] [{2}초 유지]\n[재장전 속도 {3}% X 취기 중첩 수 ▲] [{4}초 유지]\n■ 풀 버스트 타임 종료 시 자신이 취기 최대 중첩 상태라면 중첩 해제 후 자신에게\n[숙취 : 기절 ] [{5}초 유지]",
+    "en": "■ Activates when entering Burst Stage 3 while in Drunken status. Affects all allies.\nDistributed Damage ▲ {1}% x number of Drunken stacks for {2} sec.\nReload Speed ▲ {3}% x number of Drunken stacks for {4} sec.\n■ Activates when Drunken is at max stacks at the end of Full Burst. Removes all stacks and affects self.\nHangover: Stunned for {5} sec.",
+    "ja": "■バースト3段階突入時、自分がほろ酔い状態なら味方全体に\n「分配ダメージ{1}％×ほろ酔いの\nスタック数▲」「{2}秒間維持」\n「リロード速度{3}％×ほろ酔いの\nスタック数▲」「{4}秒間維持」\n■フルバーストタイムが終了した時、\n自分がほろ酔いのフルスタック状態なら\nスタック解除後、自分に\n「二日酔い：気絶」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     8.88,
+     9.56,
+     10.24,
+     10.93,
+     11.61,
+     12.29,
+     12.98,
+     13.66,
+     14.34,
+     15.03
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     8.73,
+     9.43,
+     10.13,
+     10.83,
+     11.53,
+     12.24,
+     12.94,
+     13.64,
+     14.34,
+     15.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "파이레츠 로망",
+    "en": "A Pirate's Romance",
+    "ja": "パイレーツロマン"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[크리티컬 대미지 {1}% ▲] [{2}초 유지]\n[공격 대미지 {3}% ▲] [{4}초 유지]\n■ 자신이 취기 상태라면 아군 전체에게\n[시전자 기준 공격력 {5}% X 취기 중첩 수 ▲] [{6}초 유지]",
+    "en": "■ Affects all allies.\nCritical Damage ▲ {1}% for {2} sec.\nAttack Damage ▲ {3}% for {4} sec.\n■ Affects all allies if in Drunken status.\nATK ▲ ({5}% * Number of Drunken stacks) of the skill user's ATK for {6} sec.",
+    "ja": "■味方全体に\n「クリティカルダメージ{1}％▲」\n「{2}秒間維持」\n「攻撃ダメージ{3}％▲」「{4}秒間維持」\n■自分がほろ酔い状態なら、味方全体に\n「スキル発動者基準で攻撃力{5}％\n×ほろ酔いのスタック数▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     23.51,
+     25.34,
+     27.18,
+     29.02,
+     30.86,
+     32.69,
+     34.53,
+     36.37,
+     38.2,
+     40.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     8.89,
+     9.57,
+     10.26,
+     10.94,
+     11.62,
+     12.31,
+     12.99,
+     13.68,
+     14.36,
+     15.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     11.85,
+     12.76,
+     13.68,
+     14.59,
+     15.5,
+     16.41,
+     17.32,
+     18.24,
+     19.15,
+     20.06
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "10a2ca01e46b"
+}

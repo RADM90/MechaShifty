@@ -1,0 +1,305 @@
+{
+ "rid": 41,
+ "name": {
+  "ko": "K",
+  "en": "K",
+  "ja": "K"
+ },
+ "nameCode": 5141,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "SiegePerilous",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 4.55,
+  "coreDamage": 200.0,
+  "maxAmmo": 120,
+  "reload": 1.8,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 2,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "정의의 천칭",
+    "en": "Scale of Righteousness",
+    "ja": "正義の天秤"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 공격 시 자신에게\n[기울어지는 천칭 : 크리티컬 확률 {1}% ▲] [{2} 중첩] [지속]\n[기울어지는 천칭 중첩량 {3}개 ▲]\n■ 펠릿이 크리티컬 {4}회 명중 시 대상에게\n[최종 공격력 {5}% 추가 대미지]\n■ 풀 버스트 타임 종료 시 자신에게\n[기울어지는 천칭 제거]",
+    "en": "■ Activates when firing the last bullet. Affects self.\nTilted Scale: Critical Rate ▲ {1}% continuously. Stacks up to {2} times.\nTilted Scale stacks ▲ {3}.\n■ Activates when pellets land a critical hit {4} time(s). Affects the target.\nDeals {5}% of final ATK as additional damage.\n■ Activates when Full Burst ends. Affects self.\nRemoves Tilted Scale.",
+    "ja": "■最後の弾丸で攻撃した時、自分に\n「傾く天秤：クリティカル確率{1}％▲」\n「{2}スタック」「持続」\n「傾く天秤のスタック量{3}個▲」\n■ペレットごとのクリティカル攻撃が\n{4}回命中した時、対象に\n「最終攻撃力の{5}％の追加ダメージ」\n■フルバーストタイムが終了した時、自分に\n「傾く天秤解除」"
+   },
+   "values": [
+    [
+     0.44,
+     0.47,
+     0.51,
+     0.54,
+     0.58,
+     0.61,
+     0.64,
+     0.68,
+     0.71,
+     0.75
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     19.0,
+     19.0,
+     19.0,
+     29.0,
+     29.0,
+     29.0,
+     29.0
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0
+    ],
+    [
+     14.12,
+     15.21,
+     16.3,
+     17.38,
+     18.47,
+     19.56,
+     20.64,
+     21.73,
+     22.82,
+     23.9
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "정의 집행",
+    "en": "Execution of Righteousness",
+    "ja": "正義の執行"
+   },
+   "text": {
+    "ko": "■ 기울어지는 천칭 적용 시 아군 전체에게\n[정의 실현]\n기능 : 최대 장탄 수가 감소하는 대신 공격 대미지 증가\n효과 1 : [최대 장탄 수 {1}% ▼] [{2}초 유지] (동일 효과 중복 불가)\n효과 2 : [공격 대미지 {3}% ▲] [{4}초 유지]\n■ 풀 버스트 타임 종료 시 아군 전체에게\n[정의 실현 제거]",
+    "en": "■ Activates when gaining Tilted Scale. Affects all allies.\nFulfillment of Righteousness\nFunction: Reduces max ammunition capacity but increases attack damage.\nEffect 1: Max ammunition capacity ▼ {1}% for {2} sec. (Similar effects cannot be stacked.)\nEffect 2: Attack damage ▲ {3}% for {4} sec.\n■ Activates when Full Burst ends. Affects all allies.\nRemoves Fulfillment of Righteousness.",
+    "ja": "■傾く天秤が付与された時、味方全体に\n「正義の実現」\n機能：最大装弾数の減少と引き換えに\n攻撃ダメージ増加\n効果1：「最大装弾数{1}％▼」\n「{2}秒間維持」（同一効果は重複不可）\n効果2：「攻撃ダメージ{3}％▲」\n「{4}秒間維持」\n■フルバーストタイムが終了した時、\n味方全体に\n「正義の実現解除」"
+   },
+   "values": [
+    [
+     30.21,
+     32.54,
+     34.86,
+     37.19,
+     39.51,
+     41.84,
+     44.16,
+     46.49,
+     48.81,
+     51.13
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     6.27,
+     6.76,
+     7.24,
+     7.72,
+     8.21,
+     8.69,
+     9.17,
+     9.66,
+     10.14,
+     10.62
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "정의로운 수단",
+    "en": "Means of Righteousness",
+    "ja": "正義への手段"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[사용 무기 변경] : \n대미지 : 최종 공격력 {1}% 대미지\n펠릿 개수 : 10개\n공격 속도 : 90% ▼\n유지시간 : {2}초\n추가 효과\n[시전자 기준 공격력 {3}% ▲] [{4}초 유지]\n[공격 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Affects self.\nChange the weapon in use:\nDamage: {1}% of final ATK\nPellet Count: 10\nAttack Speed: ▼ 90% \nDuration: {2} sec.\nAdditional Effects:\nATK ▲ {3}% of the skill user's ATK for {4} sec.\nAttack Damage ▲ {5}% for {6} sec.",
+    "ja": "■自分に\n「使用武器変更」：\nダメージ：最終攻撃力の{1}％のダメージ\nペレット数：10個\n攻撃速度：90％▼\n持続時間：{2}秒\n追加効果\n「スキル発動者基準で攻撃力{3}％▲」\n「{4}秒間維持」\n「攻撃ダメージ{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     54.66,
+     58.86,
+     63.07,
+     67.27,
+     71.48,
+     75.68,
+     79.89,
+     84.09,
+     88.3,
+     92.5
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     37.44,
+     40.32,
+     43.2,
+     46.08,
+     48.96,
+     51.84,
+     54.72,
+     57.6,
+     60.48,
+     63.36
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     12.48,
+     13.44,
+     14.4,
+     15.36,
+     16.32,
+     17.28,
+     18.24,
+     19.2,
+     20.16,
+     21.12
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "37803306e736"
+}

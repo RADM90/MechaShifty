@@ -1,0 +1,365 @@
+{
+ "rid": 520,
+ "name": {
+  "ko": "브래디",
+  "en": "Bready",
+  "ja": "ブレッディ"
+ },
+ "nameCode": 5135,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "TETRA",
+ "squad": "CookingOil",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "론리 구르메",
+    "en": "Lonely Gourmet",
+    "ja": "ロンリーグルメ"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]\n■ 지속 대미지 증가 효과 적용 시 자신에게\n[머물고 싶은 맛 : 차지 속도 {3}% ▼] [{4}초 유지] [해제 불가]\n[나누고 싶은 맛 삭제]\n■ 분배 대미지 증가 효과 적용 시 지속 대미지 증가 상태가 아니라면 자신에게\n[나누고 싶은 맛 : 차지 속도 {5}% ▼] [{6}초 유지] [해제 불가]\n[머물고 싶은 맛 삭제]",
+    "en": "■ Activates when entering Full Burst. Affects self.\nATK ▲ {1}% for {2} sec.\n■ Activates when gaining a buff that increases sustained damage. Affects self.\nLingering Taste: Charge Speed ▼ {3}% for {4} sec. This effect cannot be removed.\nCancels Recommended Taste.\n■ Activates when gaining a buff that increases distributed damage while not in a state of increased sustained damage. Affects self.\nRecommended Taste: Charge Speed ▼ {5}% for {6} sec. This effect cannot be removed.\nCancels Lingering Taste.",
+    "ja": "■フルバーストタイムが発動した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」\n■持続ダメージ増加効果が適用された時、\n自分に\n「やみつきの味：チャージ速度{3}％▼」「{4}秒間維持」「解除不可」\n「オススメの味消去」\n■分配ダメージ増加効果が適用された時、\n持続ダメージ増加状態でなければ自分に\n「オススメの味：チャージ速度{5}％▼」「{6}秒間維持」「解除不可」\n「やみつきの味消去」"
+   },
+   "values": [
+    [
+     41.37,
+     44.55,
+     47.73,
+     50.91,
+     54.1,
+     57.28,
+     60.46,
+     63.64,
+     66.83,
+     70.01
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "페이버릿 캔디",
+    "en": "Favorite Candy",
+    "ja": "フェイバリット・キャンディー"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 {8}회 명중 시 자신이 머물고 싶은 맛 상태라면 대상에게\n[받는 대미지 {1}% ▲] [{2}초 유지]\n[맛의 여운 : 최종 공격력 {3}% 지속 대미지] [1초 간격] [{4}초 유지]\n■ 풀 차지 공격 명중 시 자신이 나누고 싶은 맛 상태라면 자신에게\n[공격 대미지 {5}% ▲] [{6}초 유지]\n■ 풀 차지 공격 명중 시 자신이 나누고 싶은 맛 상태라면 적 전체에게\n[최종 공격력 {7}% 분배 대미지]",
+    "en": "■ Activates after landing {8} Full Charge attacks while in the Lingering Taste state. Affects the target.\nDamage Taken ▲ {1}% for {2} sec.\nAftertaste: Deals  {3}% of final ATK as sustained damage every second for {4} sec.\n■ Activates when landing a Full Charge attack while in the Recommended Taste state. Affects self.\nAttack Damage ▲ {5}% for {6} sec.\n■ Activates when landing a Full Charge attack while in the Recommended Taste state. Affects all enemies.\nDeals {7}% of final ATK as distributed damage.",
+    "ja": "■フルチャージ攻撃が{8}回命中した時、自分がやみつきの味状態なら、対象に\n「受けるダメージ{1}％▲」「{2}秒間維持」\n「あと味：最終攻撃力の{3}％の\n持続ダメージ」「1秒間隔」「{4}秒間維持」\n■フルチャージ攻撃が命中した時、\n自分がオススメの味状態なら、自分に\n「攻撃ダメージ{5}％▲」「{6}秒間維持」\n■フルチャージ攻撃が命中した時、\n自分がオススメの味状態なら、敵全体に\n「最終攻撃力の{7}％の分配ダメージ」"
+   },
+   "values": [
+    [
+     6.02,
+     6.49,
+     6.95,
+     7.41,
+     7.88,
+     8.34,
+     8.81,
+     9.27,
+     9.73,
+     10.2
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     88.66,
+     95.48,
+     102.3,
+     109.12,
+     115.94,
+     122.76,
+     129.58,
+     136.4,
+     143.22,
+     150.04
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     35.46,
+     38.19,
+     40.92,
+     43.65,
+     46.37,
+     49.1,
+     51.83,
+     54.56,
+     57.29,
+     60.01
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     156.63,
+     168.68,
+     180.73,
+     192.78,
+     204.82,
+     216.87,
+     228.92,
+     240.97,
+     253.02,
+     265.07
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "뉴 플레이버",
+    "en": "New Flavor",
+    "ja": "ニューフレーバー"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격 대미지 {1}% ▲] [{2}초 유지]\n■ 자신이 머물고 싶은 맛 상태라면 자신에게\n[맛의 여운 효과 {3}% ▲] [{4}초 유지]\n■ 자신이 나누고 싶은 맛 상태라면 자신에게\n[공격력 {5}% ▲] [{6}초 유지]",
+    "en": "■ Affects self.\nAttack Damage ▲ {1}% for {2} sec.\n■ Activates when in Lingering Taste status. Affects self.\nAftertaste Effect ▲ {3}% for {4} sec.\n■ Activates when in Recommended Taste status. Affects self.\nATK ▲ {5}% for {6} sec.",
+    "ja": "■自分に\n「攻撃ダメージ{1}％▲」「{2}秒間維持」\n■自分がやみつきの味状態なら自分に\n「あと味効果{3}％▲」「{4}秒間維持」\n■自分がオススメの味状態なら自分に\n「攻撃力{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     35.56,
+     38.3,
+     41.04,
+     43.77,
+     46.51,
+     49.24,
+     51.98,
+     54.72,
+     57.45,
+     60.19
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     206.7,
+     222.6,
+     238.5,
+     254.4,
+     270.3,
+     286.2,
+     302.1,
+     318.0,
+     333.9,
+     349.8
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     41.41,
+     44.6,
+     47.79,
+     50.97,
+     54.16,
+     57.34,
+     60.53,
+     63.72,
+     66.9,
+     70.09
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "fa89c8caa639"
+}

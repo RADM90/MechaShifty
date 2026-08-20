@@ -1,0 +1,209 @@
+{
+ "rid": 862,
+ "name": {
+  "ko": "쿠루미",
+  "en": "Kurumi",
+  "ja": "クルミ"
+ },
+ "nameCode": 3018,
+ "rarity": "SR",
+ "class": "Supporter",
+ "corporation": "ABNORMAL",
+ "squad": "CE008",
+ "element": "Iron",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "악성 코드 주입",
+    "en": "Malicious Code Injection",
+    "ja": "マルウェア注入"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 대상에게\n[해킹 : 최종 공격력 {2}% 지속 대미지] [1초 간격] [{3}초 유지]\n■ 버스트 스킬 사용 시 적 전체에게\n[해킹 : 최종 공격력 {2}% 지속 대미지] [1초 간격] [{3}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks. Affects the target.\nHacked: Deals {2}% of final ATK as sustained damage every second for {3} sec.\n■ Activates when using Burst Skill. Affects all enemies.\nHacked: Deals {2}% of final ATK as sustained damage every second for {3} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、対象に\n「ハッキング：最終攻撃力の\n{2}％の持続ダメージ」「1秒間隔」「{3}秒間維持」\n■バーストスキルを使用した時、敵全体に\n「ハッキング：最終攻撃力の\n{2}％の持続ダメージ」「1秒間隔」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0
+    ],
+    [
+     30.87,
+     33.24,
+     35.62,
+     37.99,
+     40.37,
+     42.74,
+     45.12,
+     47.49,
+     49.86,
+     52.24
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "페이로드 확산",
+    "en": "Payload Diffusion",
+    "ja": "ペイロード分割"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 지속 시간 중 일반 공격 {1}회 명중 시 대상이 해킹 상태라면 대상에게\n[최종 공격력 {2}% 추가 대미지]",
+    "en": "■ Activates during Full Burst after landing {1} normal attacks while the target is in the Hacked state. Affects the target.\nDeals {2}% of final ATK as additional damage.",
+    "ja": "■フルバーストタイムの持続中に通常攻撃が{1}回命中した時、\n対象がハッキング状態なら、対象に\n「最終攻撃力の{2}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0,
+     36.0
+    ],
+    [
+     50.92,
+     54.83,
+     58.75,
+     62.67,
+     66.59,
+     70.5,
+     74.42,
+     78.34,
+     82.25,
+     86.17
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "방어 프로토콜 붕괴",
+    "en": "Defense Protocol Breakdown",
+    "ja": "防御プロトコル破壊"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[받는 대미지 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects all enemies.\nDamage Taken ▲ {1}% for {2} sec.",
+    "ja": "■敵全体に\n「受けるダメージ{1}％▲」\n「{2}秒間維持」"
+   },
+   "values": [
+    [
+     10.67,
+     11.49,
+     12.31,
+     13.13,
+     13.95,
+     14.77,
+     15.59,
+     16.42,
+     17.24,
+     18.06
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "2362422979b0"
+}

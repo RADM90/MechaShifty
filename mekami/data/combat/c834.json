@@ -1,0 +1,365 @@
+{
+ "rid": 834,
+ "name": {
+  "ko": "레이 (가칭)",
+  "en": "Rei (Tentative Name)",
+  "ja": "レイ（仮称）"
+ },
+ "nameCode": 5132,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ABNORMAL",
+ "squad": "CE004",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 14.71,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.5,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 25.0,
+   "perTargetShot": 50.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "섬멸 지원",
+    "en": "Annihilation Support",
+    "ja": "殲滅支援"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 대상이 안티 AT 필드 상태라면 대상에게\n[최종 공격력 {2}% 추가 대미지]\n[안티 AT 필드 중첩량 {3}개 ▲]\n■ 자신이 공격 태세 상태라면 일반 공격 {4}회 명중 시 대상에게\n[최종 공격력 {5}% 추가 대미지]\n■ 풀 버스트 타임 시작 시 섬멸 태세 상태인 아군 전체에게\n[섬멸 태세 추가 효과 적용 대상 {6} ▲] [{7}초 유지]\n[섬멸 태세 추가 효과 공격 범위 {8}% ▲] [{9}초 유지]\n[시전자 기준 공격력 {10}% ▲] [{11}초 유지]",
+    "en": "■ Activates after landing {1} normal attacks against a target in the Anti A.T. Field state. Affects the target.\nDeals {2}% of final ATK as additional damage.\nAnti A.T. Field stacks ▲ {3}.\n■ Activates after landing {4} normal attacks while in Attack State. Affects the target.\nDeals {5}% of final ATK as additional damage.\n■ Activates when entering Full Burst. Affects all allies in Annihilation State.\nUnits affected by Annihilation State's additional effect ▲ {6} for {7} sec.\nAttack range of Annihilation State's additional effect ▲ {8}% for {9} sec.\nATK ▲ {10}% of the skill user's ATK for {11} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、対象がアンチA.T.フィールド状態なら、対象に\n「最終攻撃力の{2}％の追加ダメージ」\n「アンチA.T.フィールドスタック量{3}個▲」\n■自分が攻撃態勢状態なら、通常攻撃が{4}回命中した時、対象に\n「最終攻撃力の{5}％の追加ダメージ」\n■フルバーストタイムが発動した時、殲滅態勢状態の味方全体に\n「殲滅態勢の追加効果適用対象 {6}▲」「{7}秒間維持」\n「殲滅態勢の追加効果攻撃範囲 {8}％▲」「{9}秒間維持」\n「スキル発動者基準で攻撃力{10}％▲」「{11}秒間維持」"
+   },
+   "values": [
+    [
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0,
+     18.0
+    ],
+    [
+     349.01,
+     375.86,
+     402.71,
+     429.55,
+     456.4,
+     483.25,
+     510.1,
+     536.94,
+     563.79,
+     590.64
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0,
+     7.0
+    ],
+    [
+     169.22,
+     182.23,
+     195.25,
+     208.27,
+     221.28,
+     234.3,
+     247.32,
+     260.33,
+     273.35,
+     286.37
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ],
+    [
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0,
+     500.0
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ],
+    [
+     10.4,
+     11.2,
+     12.0,
+     12.8,
+     13.6,
+     14.4,
+     15.2,
+     16.0,
+     16.8,
+     17.6
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "정비 및 보급",
+    "en": "Maintenance and Resupply",
+    "ja": "整備補給"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 직전에 버스트 스킬을 사용한 머신건 아군 전체에게\n[머신건 예열 속도 {1}% ▲] [{2}초 유지]\n■ 풀 버스트 타임 시작 시 아군 전체에게\n[시전자 기준 공격력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates when entering Full Burst. Affects all allies with machine guns who have used their Burst Skills.\nMachine Gun Ramp-Up Speed ▲ {1}% for {2} sec.\n■ Activates when entering Full Burst. Affects all allies.\nATK ▲ {3}% of the skill user's ATK for {4} sec.",
+    "ja": "■フルバーストタイムが発動した時、直前にバーストスキルを使用したマシンガンの味方全体に\n「マシンガン立ち上げ速度 {1}％▲」「{2}秒間維持」\n■フルバーストタイムが発動した時、味方全体に\n「スキル発動者基準で攻撃力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0,
+     13.0
+    ],
+    [
+     6.86,
+     7.39,
+     7.92,
+     8.44,
+     8.97,
+     9.5,
+     10.03,
+     10.56,
+     11.08,
+     11.61
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "공격 태세",
+    "en": "Attack State",
+    "ja": "攻撃態勢"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격 태세] :\n[공격 대미지 {1}% ▲] [{2}초 유지]\n[시전자 기준 공격력 {3}% ▲] [{4}초 유지]\n■ 적 전체에게\n[최종 공격력 {5}% 버스트 스킬 대미지]",
+    "en": "■ Affects self.\nAttack State:\nAttack Damage ▲ {1}% for {2} sec.\nATK ▲ {3}% of the skill user's ATK for {4} sec.\n■ Affects all enemies.\nDeals {5}% of final ATK as Burst Skill damage.",
+    "ja": "■自分に\n「攻撃態勢」：\n「攻撃ダメージ{1}％▲」「{2}秒間維持」\n「スキル発動者基準で攻撃力{3}％▲」「{4}秒間維持」\n■敵全体に\n「最終攻撃力の{5}％のバーストスキルダメージ」"
+   },
+   "values": [
+    [
+     21.21,
+     22.84,
+     24.48,
+     26.11,
+     27.74,
+     29.37,
+     31.0,
+     32.64,
+     34.27,
+     35.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     37.44,
+     40.32,
+     43.2,
+     46.08,
+     48.96,
+     51.84,
+     54.72,
+     57.6,
+     60.48,
+     63.36
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     654.54,
+     691.84,
+     729.13,
+     766.43,
+     803.72,
+     841.02,
+     878.32,
+     915.61,
+     952.91,
+     990.2
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "2a953331ecf5"
+}

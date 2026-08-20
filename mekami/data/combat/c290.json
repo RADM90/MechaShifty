@@ -1,0 +1,329 @@
+{
+ "rid": 290,
+ "name": {
+  "ko": "마나",
+  "en": "Mana",
+  "ja": "マナ"
+ },
+ "nameCode": 1019,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "MMR",
+ "element": "Wind",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Energy",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 15.07,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.67,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 25.0,
+   "perTargetShot": 50.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "매터 감마",
+    "en": "Metal γ",
+    "ja": "マターガンマ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[매터 감마 : 공격력 {1}% ▲] [지속] [전투 중 1회 발동]\n■ 일반 공격 10회 공격 시 자신이 매터 감마 상태라면 아군 전체에게\n[시전자의 최종 최대 체력 비례 {2}% 회복]\n■ 아군 전투불능 시 자신이 매터 감마 상태라면 자신을 제외한 전투불능 상태 최종 공격력이 가장 높은 아군 {3}기에게\n[체력 {4}%로 부활]\n■ 아군 전투불능 시 자신에게\n[매터 감마 해제]",
+    "en": "■ Activates at the start of battle. Affects self. \nMetal γ: ATK ▲ {1}% continuously. Activates once per battle.\n■ Activates when in Metal γ status after performing 10 normal attacks. Affects all allies.\nRestores HP equal to {2}% of the skill user's final max HP.\n■ Activates if the skill user is in Metal γ status when an ally is out of action. Affects {3} incapacitated ally unit(s) with the highest final ATK (except the skill user).\nResurrect with {4}% HP.\n■ Activates when an ally is out of action. Affects self.\nRemoves Metal γ.",
+    "ja": "■戦闘開始時、自分に\n「マターガンマ：攻撃力{1}％▲」\n「持続」「戦闘中1回発動」\n■通常攻撃で10回攻撃した時、\n自分がマターガンマ状態なら味方全体に\n「スキル発動者の最終最大HPの\n{2}％回復」\n■味方が戦闘不能時、自分が\nマターガンマ状態なら\n自分を除く戦闘不能状態の\n最終攻撃力が最も高い味方{3}機に\n「HP{4}％で復活」\n■味方が戦闘不能時、自分に\n「マターガンマ解除」"
+   },
+   "values": [
+    [
+     34.32,
+     36.96,
+     39.6,
+     42.24,
+     44.88,
+     47.52,
+     50.16,
+     52.8,
+     55.44,
+     58.08
+    ],
+    [
+     1.2,
+     1.3,
+     1.39,
+     1.48,
+     1.58,
+     1.67,
+     1.76,
+     1.86,
+     1.95,
+     2.04
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     56.72,
+     61.09,
+     65.45,
+     69.81,
+     74.18,
+     78.54,
+     82.9,
+     87.27,
+     91.63,
+     96.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "매터 시그마",
+    "en": "Metal σ",
+    "ja": "マターシグマ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[매터 시그마 : 버스트 게이지 충전 속도 {1}% ▲] [지속]\n■ 풀 버스트 타임 시작 시 자신이 매터 시그마 상태라면 자신에게\n[공격 대미지 {2}% ▲] [{3}초 유지]\n[공격력 {4}% ▲] [{5}초 유지]\n[매터 시그마 해제]\n■ 풀 버스트 타임 시작 시 기본 차지 시간이 가장 긴 아군 {6}기에게\n[차지 시간 {7}초 ▼] [{8}초 유지]\n■ 풀 버스트 타임 종료 시 직전에 자신이 버스트 스킬을 사용 했다면 자신에게\n[매터 시그마 : 버스트 게이지 충전 속도 {1}% ▲] [지속]",
+    "en": "■ Activates at the start of battle. Affects self.\nMetal σ: Burst Gauge filling speed ▲ {1}% continuously.\n■ Activates when entering Full Burst while in the Metal σ state. Affects self.\nAttack Damage ▲ {2}% for {3} sec.\nATK ▲ {4}% for {5} sec.\nRemoves Metal σ.\n■ Activates when entering Full Burst. Affects the {6} ally unit(s) with the longest base Charge Time.\nCharge Time ▼ {7} sec for {8} sec.\n■ Activates if the skill user used her Burst Skill before the end of Full Burst. Affects self.\nMetal σ: Burst Gauge filling speed ▲ {1}% continuously.",
+    "ja": "■戦闘開始時、自分に\n「マターシグマ：バーストゲージのチャージ速度\n{1}％▲」「持続」\n■フルバーストタイムが発動した時、自分がマターシグマ状態なら自分に\n「攻撃ダメージ{2}％▲」「{3}秒間維持」\n「攻撃力{4}％▲」「{5}秒間維持」\n「マターシグマ解除」\n■フルバーストタイムが発動した時、基本チャージ時間が一番長い味方{6}機に\n「チャージ時間{7}秒▼」「{8}秒間維持」\n■フルバーストタイムが終了した時、直前に自分がバーストスキルを使用していれば自分に\n「マターシグマ：バーストゲージのチャージ速度{1}％▲」「持続」"
+   },
+   "values": [
+    [
+     41.6,
+     44.8,
+     48.0,
+     51.2,
+     54.4,
+     57.6,
+     60.8,
+     64.0,
+     67.2,
+     70.4
+    ],
+    [
+     12.48,
+     13.44,
+     14.4,
+     15.36,
+     16.32,
+     17.28,
+     18.24,
+     19.2,
+     20.16,
+     21.12
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     37.44,
+     40.32,
+     43.2,
+     46.08,
+     48.96,
+     51.84,
+     54.72,
+     57.6,
+     60.48,
+     63.36
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     0.09,
+     0.1,
+     0.11,
+     0.12,
+     0.13,
+     0.14,
+     0.15,
+     0.16,
+     0.17,
+     0.18
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "페이탈 에러!",
+    "en": "Fatal Error!",
+    "ja": "フェイタルエラー！"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[지속 대미지 {1}% ▲] [{2}초 유지]\n■ 조준선에 가장 가까운 적 {3}기에게\n [최종 공격력 {4}% 지속 대미지] [1초 간격] [{5}초 유지]",
+    "en": "■ Affects self.\nSustained Damage ▲ {1}% for {2} sec.\n■ Affects the {3} enemy unit(s) nearest to the crosshair.\n Deals {4}% of final ATK as sustained damage every second for {5} sec.",
+    "ja": "■自分に\n「持続ダメージ{1}％▲」「{2}秒間維持」\n■照準線に最も近い敵{3}機に\n「最終攻撃力の{4}％の持続ダメージ」\n「1秒間隔」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     31.2,
+     33.6,
+     36.0,
+     38.4,
+     40.8,
+     43.2,
+     45.6,
+     48.0,
+     50.4,
+     52.8
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     234.0,
+     252.0,
+     270.0,
+     288.0,
+     306.0,
+     324.0,
+     342.0,
+     360.0,
+     378.0,
+     396.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "32cb054a5a95"
+}

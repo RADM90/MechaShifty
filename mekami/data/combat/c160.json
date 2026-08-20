@@ -1,0 +1,245 @@
+{
+ "rid": 160,
+ "name": {
+  "ko": "유니",
+  "en": "Yuni",
+  "ja": "ユニ"
+ },
+ "nameCode": 5006,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "MISSILIS",
+ "squad": "Wardress",
+ "element": "Fire",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.5,
+   "fullDamage": 350.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "DMNS",
+    "en": "DMNS",
+    "ja": "DMNS"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 아군 전체에게\n[차지 속도 {1}% ▲] [{2}초 유지]",
+    "en": "■ Affects all allies. Activates when entering Full Burst.\nCharge Speed ▲ {1}% for {2} sec.",
+    "ja": "■フルバーストタイムが発動した時、味方全体に\n「チャージ速度{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     4.93,
+     5.38,
+     5.83,
+     6.28,
+     6.73,
+     7.18,
+     7.63,
+     8.08,
+     8.53,
+     8.97
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "SDS",
+    "en": "SDS",
+    "ja": "SDS"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 아군 전체에게\n[방어력 {1}% ▲] [{2}초 유지]\n[공격 대미지 비례 {3}% 회복] [{4}초 유지]\n[최대 장탄 수 {5}발 ▲] [{6}초 유지]",
+    "en": "■ Activates when performing a Full Charge attack. Affects all allies.\nDEF ▲ {1}% for {2} sec. \nRestores HP equal to {3}% of attack damage. Lasts for {4} sec. \nMax Ammunition Capacity ▲ {5} for {6} sec.",
+    "ja": "■フルチャージして攻撃した時、味方全体に\n「防御力{1}％▲」「{2}秒間維持」\n「攻撃ダメージの{3}％回復」\n「{4}秒間維持」\n「最大装弾数{5}発▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     1.52,
+     1.66,
+     1.8,
+     1.94,
+     2.07,
+     2.21,
+     2.35,
+     2.49,
+     2.63,
+     2.77
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.52,
+     1.66,
+     1.8,
+     1.94,
+     2.07,
+     2.21,
+     2.35,
+     2.49,
+     2.63,
+     2.77
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "BDG",
+    "en": "BDG",
+    "ja": "BDG"
+   },
+   "text": {
+    "ko": "■ 공격 범위 내 적들에게\n[최종 공격력 {1}% 대미지]\n[이동 불가] [{2}초 유지]",
+    "en": "■ Affects enemies within attack range. \nDeals {1}% of final ATK as damage. \nImmobilizes the target(s) for {2} sec.",
+    "ja": "■攻撃範囲内の敵に\n「最終攻撃力の{1}％のダメージ」\n「移動不可」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     172.4,
+     192.0,
+     211.59,
+     231.18,
+     250.77,
+     270.36,
+     289.95,
+     309.55,
+     329.14,
+     348.73
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "63b75f2cdb9e"
+}

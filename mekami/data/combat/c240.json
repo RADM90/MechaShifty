@@ -1,0 +1,281 @@
+{
+ "rid": 240,
+ "name": {
+  "ko": "루마니",
+  "en": "Rumani",
+  "ja": "ルマニ"
+ },
+ "nameCode": 3004,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "LifeTonic",
+ "element": "Fire",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 56.38,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 0.6,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 325.0,
+   "perTargetShot": 650.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "머슬 업",
+    "en": "Muscle Up",
+    "ja": "マッスルアップ"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 시 자신에게\n[머슬 업 : 최대 체력 {1}% ▲] [{2} 중첩] [{3}초 유지]\n■ 풀 버스트 타임 지속 시간 중 풀 차지 공격 명중 시 대상에게\n[도발] [{4}초 유지]",
+    "en": "■ Activates when performing a Full Charge attack. Affects self.\nMuscle Up: Max HP ▲ {1}%. Stacks up to {2} times and lasts for {3} sec.\n■ Activates when landing a Full Charge attack during Full Burst. Affects the target.\nTaunts for {4} sec.",
+    "ja": "■フルチャージして攻撃した時、自分に\n「マッスルアップ：最大HP{1}％▲」「{2}スタック」「{3}秒間維持」\n■フルバーストタイムの持続中にフルチャージ攻撃が命中した時、対象に\n「挑発」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     1.79,
+     1.93,
+     2.07,
+     2.21,
+     2.35,
+     2.48,
+     2.62,
+     2.76,
+     2.9,
+     3.04
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "머슬 타임",
+    "en": "Muscle Time",
+    "ja": "マッスルタイム"
+   },
+   "text": {
+    "ko": "■ 대상 파츠 {1}회 명중 시 아군 전체에게\n[파츠 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when hitting a target's Parts for {1} time(s). Affects all allies.\nDamage to Parts ▲ {2}% for {3} sec.",
+    "ja": "■対象のパーツに{1}回命中した時、味方全体に\n「パーツダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.94,
+     6.39,
+     6.85,
+     7.31,
+     7.76,
+     8.22,
+     8.68,
+     9.13,
+     9.59,
+     10.05
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "머슬 올마이티",
+    "en": "Almighty Muscle",
+    "ja": "マッスルオールマイティー"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[최대 체력 {1}% ▲] [{2}초 유지]\n■ 아군 전체에게\n[일반 공격 대미지 {3}% 배율 ▲] [{4}초 유지]\n■ 자신이 머슬 업 최대 중첩 상태라면 자신에게\n[받는 대미지 {5}% ▼] [{6}초 유지]",
+    "en": "■ Affects self.\nMax HP ▲ {1}% for {2} sec.\n■ Affects all allies.\nNormal Attack Damage Multiplier ▲ {3}% for {4} sec.\n■ Activates when Muscle Up is at max stacks. Affects self.\nDamage Taken ▼ {5}% for {6} sec.",
+    "ja": "■自分に\n「最大HP{1}％▲」「{2}秒間維持」\n■味方全体に\n「通常攻撃ダメージ{3}％倍率▲」「{4}秒間維持」\n■自分がマッスルアップのフルスタック状態なら、自分に\n「受けるダメージ{5}％▼」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     8.94,
+     9.63,
+     10.32,
+     11.0,
+     11.69,
+     12.38,
+     13.07,
+     13.76,
+     14.44,
+     15.13
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.94,
+     6.39,
+     6.85,
+     7.31,
+     7.76,
+     8.22,
+     8.68,
+     9.13,
+     9.59,
+     10.05
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     11.85,
+     12.76,
+     13.68,
+     14.59,
+     15.5,
+     16.41,
+     17.32,
+     18.24,
+     19.15,
+     20.06
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "14f5ca70a8cc"
+}

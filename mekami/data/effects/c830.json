@@ -1,0 +1,84 @@
+{
+  "rid": 830,
+  "name": "아스카",
+  "textHash": "24163d9fc07d",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "회복 효과 적용 시 자신에게",
+      "on": "healApplied",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 2,
+          "dur": {
+            "v": 3
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 버스트 타임 시작 시 자신이 보호막 적용 상태라면 자신에게",
+      "on": "fullBurstStart",
+      "if": {
+        "selfState": "보호막 적용"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "elemDmg",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 작열 코드 아군 전체에게",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "coreDmg",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "damageUp",
+          "v": 2,
+          "dur": {
+            "v": 3
+          }
+        },
+        {
+          "stat": "damageUp",
+          "v": 4,
+          "dur": {
+            "v": 5
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s1] ■ 전투 시작 시 자신에게\n[보호막에 가하는 대미지 {1}% ▲] [지속]",
+    "[burst] 관통 특화",
+    "[burst] 명중률 {6}% ▲"
+  ]
+}

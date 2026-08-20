@@ -1,0 +1,257 @@
+{
+ "rid": 822,
+ "name": {
+  "ko": "람",
+  "en": "Ram",
+  "ja": "ラム"
+ },
+ "nameCode": 3013,
+ "rarity": "SR",
+ "class": "Defender",
+ "corporation": "ABNORMAL",
+ "squad": "CE003",
+ "element": "Wind",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "후라",
+    "en": "Fura",
+    "ja": "フーラ"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 명중 시 대상에게\n[공격력 {2}% ▼] [{3}초 유지]\n■ 풀 버스트 타임 종료 시 동일 스쿼드 아군이 있다면 자신에게\n[버스트 스킬 재사용 시간 {4}초 ▼]",
+    "en": "■ Activates after landing {1} normal attacks. Affects the target.\nATK ▼ {2}% for {3} sec.\n■ Activates when Full Burst ends if an ally from the same squad is present. Affects self.\nCooldown of Burst Skill ▼ {4} sec.",
+    "ja": "■通常攻撃が{1}回命中した時、対象に\n「攻撃力{2}％▼」「{3}秒間維持」\n■フルバーストタイムが終了した時、同じ部隊の味方がいれば自分に\n「バーストスキルクールタイム{4}秒▼」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     3.77,
+     4.23,
+     4.7,
+     5.16,
+     5.63,
+     6.09,
+     6.56,
+     7.02,
+     7.49,
+     7.95
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16,
+     20.16
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "언니의 위광",
+    "en": "Sister's Authority",
+    "ja": "姉の威厳"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[최대 체력만 {1}% ▲] [{2}초 유지]\n■ 남은 체력 수치가 가장 낮은 아군 {3}기에게\n[시전자 기준 방어력 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects self.\nMax HP ▲ {1}% without restoring HP for {2} sec.\n■ Affects {3} ally unit(s) with the lowest remaining HP.\nDEF ▲ {4}% of the skill user's DEF for {5} sec.",
+    "ja": "■自分に\n「最大HPのみ{1}％▲」「{2}秒間維持」\n■残りのHPの数値が最も低い味方{3}機に\n「スキル発動者基準での防御力{4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     20.36,
+     22.62,
+     24.88,
+     27.15,
+     29.41,
+     31.67,
+     33.93,
+     36.2,
+     38.46,
+     40.72
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     5.67,
+     6.3,
+     6.93,
+     7.56,
+     8.19,
+     8.82,
+     9.45,
+     10.08,
+     10.71,
+     11.34
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "람을 번거롭게 하지 마",
+    "en": "Don't Bother Ram",
+    "ja": "ラムの手を煩わせないことね"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[시전자 최종 최대 체력 비례 {1}% 보호막] [{2}초 유지]",
+    "en": "■ Affects all allies.\nCreates a shield with HP equal to {1}% of the skill user's final max HP that lasts for {2} sec.",
+    "ja": "■味方全体に\n「スキル発動者の最終最大HPの{1}％のバリア」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     5.04,
+     5.6,
+     6.16,
+     6.72,
+     7.28,
+     7.84,
+     8.4,
+     8.96,
+     9.52,
+     10.08
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "9ad9994eadb5"
+}

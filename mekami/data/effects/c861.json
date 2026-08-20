@@ -1,0 +1,69 @@
+{
+  "rid": 861,
+  "name": "타키나",
+  "textHash": "6afba45df060",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "전투 시작 시와 풀 버스트 타임 종료 시 자신에게",
+      "on": "fullBurstEnd",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 자신에게",
+      "on": "fullBurstStart",
+      "to": "self",
+      "apply": [
+        {
+          "stat": "trueDmg",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [],
+  "burst": [
+    {
+      "note": "자신에게",
+      "on": "burstUse",
+      "weapon": {
+        "dur": {
+          "v": 2
+        },
+        "damage": {
+          "v": 1
+        },
+        "type": "trueDmg",
+        "label": "사용 무기 변경"
+      },
+      "to": "self",
+      "apply": [
+        {
+          "stat": "receivedUp",
+          "v": 4,
+          "dur": {
+            "v": 5
+          }
+        }
+      ]
+    }
+  ],
+  "unmodeled": [
+    "[s2] ■ 적 전체에게\n[받는 대미지 {1}% ▲] [{2}초 유지]\n[기절] [{3}초 유지]",
+    "[s2] ■ 아군 전체에게\n[방어력 무시 대미지 {4}% ▲] [{5}초 유지]",
+    "[burst] 일반 공격을 방어력 무시 대미지로 변경"
+  ]
+}

@@ -1,0 +1,305 @@
+{
+ "rid": 381,
+ "name": {
+  "ko": "비스킷",
+  "en": "Biscuit",
+  "ja": "ビスケット"
+ },
+ "nameCode": 5054,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "HappyZoo",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "해피 퍼피",
+    "en": "Happy Puppy",
+    "ja": "ハッピーパピー"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 종료 시 화력형 아군 전체에게\n[일반 공격 크리티컬 확률 {1}% ▲] [{2}초 유지]\n[시전자의 최종 최대 체력 비례 {3}% 지속 회복] [1초 간격] [{4}초 유지]",
+    "en": "■ Activates at the end of Full Burst. Affects all Attacker allies. \nCritical Rate of normal attacks ▲ {1}% for {2} sec. \nRestores HP equal to {3}% of the skill user's final max HP every second for {4} sec.",
+    "ja": "■フルバーストタイムが終了した時、火力型の味方全体に\n「通常攻撃のクリティカル確率{1}％▲」\n「{2}秒間維持」\n「スキル発動者の最終最大HPの{3}％\n持続回復」「1秒間隔」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     1.13,
+     1.64,
+     2.16,
+     2.68,
+     3.19,
+     3.71,
+     4.22,
+     4.74,
+     5.25,
+     5.77
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.05,
+     1.1,
+     1.16,
+     1.21,
+     1.26,
+     1.32,
+     1.37,
+     1.42,
+     1.48,
+     1.53
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "터그 놀이",
+    "en": "Tug of War",
+    "ja": "引っ張り合い"
+   },
+   "text": {
+    "ko": "■ 방어형 아군 누군가의 체력이 {1}% 이하라면 대상에게\n[무적] [{4}초 유지] [전투 중 {5}회 발동]\n[시전자의 최종 최대 체력 비례 {2}% 회복] [전투 중 {3}회 발동]",
+    "en": "■ Activates when a Defender ally's HP falls below {1}%. Affects the target Defender ally.\nInvincible for {4} sec. Activates {5} time(s) per battle.\nRestores HP equal to {2}% of the skill user's final max HP. Activates {3} time(s) per battle.",
+    "ja": "■防御型の味方の誰かのHPが{1}％以下なら、\n対象に\n「無敵」「{4}秒間維持」「戦闘中{5}回発動」\n「スキル発動者の最終最大HPの{2}％\n回復」「戦闘中{3}回発動」"
+   },
+   "values": [
+    [
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0,
+     50.0
+    ],
+    [
+     12.46,
+     13.66,
+     14.86,
+     16.06,
+     17.26,
+     18.46,
+     19.66,
+     20.86,
+     22.06,
+     23.26
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "산책 훈련",
+    "en": "Walk Training",
+    "ja": "お散歩トレーニング"
+   },
+   "text": {
+    "ko": "■ 엄폐물이 파괴된 아군 무작위 {1}기에게\n[엄폐물 체력 {2}%로 엄폐물 부활]\n■ 지원형 아군 전체에게\n[공격력 {3}% ▲] [{4}초 유지]\n[공격 대미지 비례 {5}% 회복] [{6}초 유지]",
+    "en": "■ Affects {1} random ally unit(s) whose cover has been destroyed.\nRebuilds cover with {2}% HP.\n■ Affects all Supporter allies.\nATK ▲ {3}% for {4} sec.\nRestores HP equal to {5}% of attack damage. Lasts for {6} sec.",
+    "ja": "■遮蔽物が破壊された味方ランダムに{1}機に\n「遮蔽物HP{2}％で遮蔽物復活」\n■支援型の味方全体に\n「攻撃力{3}％▲」「{4}秒間維持」\n「攻撃ダメージの{5}％回復」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     51.48,
+     56.16,
+     60.84,
+     65.52,
+     70.2,
+     74.88,
+     79.56,
+     84.24,
+     88.92,
+     93.6
+    ],
+    [
+     17.42,
+     20.27,
+     23.12,
+     25.97,
+     28.82,
+     31.68,
+     34.53,
+     37.38,
+     40.23,
+     43.08
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     35.39,
+     37.62,
+     39.84,
+     42.07,
+     44.3,
+     46.53,
+     48.75,
+     50.98,
+     53.21,
+     55.44
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "a68623573bbd"
+}

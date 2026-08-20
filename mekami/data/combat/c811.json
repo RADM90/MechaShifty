@@ -1,0 +1,257 @@
+{
+ "rid": 811,
+ "name": {
+  "ko": "A2",
+  "en": "A2",
+  "ja": "A2"
+ },
+ "nameCode": 5095,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ABNORMAL",
+ "squad": "ce002_01",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "ProjectileDirect",
+  "damage": 67.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 1.5,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 130.0,
+   "perTargetShot": 260.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 750
+ },
+ "shotText": "■ 대상에게\n검기를 날려 넓은 범위를 공격합니다.\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "출력 상승",
+    "en": "Output Increased",
+    "ja": "出力上昇"
+   },
+   "text": {
+    "ko": "■ 버스트 스킬 사용 시 자신에게\n[차지 대미지 {1}% ▲] [{2}초 유지]\n[폭발 범위 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates when using Burst Skill. Affects self.\nCharge Damage ▲ {1}% for {2} sec. \nExplosion Radius ▲ {3}% for {4} sec.",
+    "ja": "■バーストスキルを使用した時、自分に\n「チャージダメージ{1}％▲」「{2}秒間維持」\n「爆発範囲{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     66.81,
+     71.66,
+     76.5,
+     81.35,
+     86.2,
+     91.05,
+     95.9,
+     100.75,
+     105.6,
+     110.44
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     60.08,
+     64.6,
+     69.12,
+     73.64,
+     78.15,
+     82.67,
+     87.19,
+     91.7,
+     96.22,
+     100.74
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "완충전 공격",
+    "en": "Slow Charge Attack",
+    "ja": "フルチャージ攻撃"
+   },
+   "text": {
+    "ko": "■ 풀 차지 공격 명중 시 대상에게\n[최종 공격력 {1}% 추가 대미지]\n■ 풀 차지 공격 명중 시 자신에게\n[파츠 대미지 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when hitting a target with Full Charge. Affects the target.\nDeals {1}% of final ATK as additional damage. \n■ Activates when hitting a target with Full Charge. Affects self.\nDamage to Parts ▲ {2}% for {3} sec.",
+    "ja": "■フルチャージ攻撃が命中した時、対象に\n「最終攻撃力の{1}％の追加ダメージ」\n■フルチャージ攻撃が命中した時、自分に\n「パーツダメージ{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     17.78,
+     19.15,
+     20.52,
+     21.89,
+     23.26,
+     24.62,
+     25.99,
+     27.36,
+     28.73,
+     30.1
+    ],
+    [
+     24.16,
+     26.02,
+     27.87,
+     29.73,
+     31.59,
+     33.45,
+     35.31,
+     37.17,
+     39.03,
+     40.88
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "B 모드",
+    "en": "Mode B",
+    "ja": "Bモード"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[B 모드] :\n기능 : 1초 마다 자신의 체력이 감소하는 대신 공격력과 차지 속도 증가. 자신의 체력이 {1}% 이하라면 B 모드 해제.\n효과 1 : [현재 체력 {2}% ▼] [1초 간격]\n효과 2 : [공격력 {3}% ▲]\n효과 3 : [차지 속도 {4}% ▲]",
+    "en": "■ Affects self.\nMode B\nFunction: Reduces HP every second in exchange for increased ATK and Charge Speed. Mode B is removed when this unit's HP drops to {1}% or below.\nEffect 1: Current HP ▼ {2}% every second.\nEffect 2: ATK ▲ {3}%.\nEffect 3: Charge Speed ▲ {4}%.",
+    "ja": "■自分に\n「Bモード」：\n機能：1秒ごとに自分のHPが減少する代わりに、攻撃力とチャージ速度増加。自分のHPが{1}％以下の時、Bモード解除\n効果1：「現在のHP{2}％▼」「1秒間隔」\n効果2：「攻撃力{3}％▲」\n効果3：「チャージ速度{4}％▲」"
+   },
+   "values": [
+    [
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0
+    ],
+    [
+     5.61,
+     5.43,
+     5.25,
+     5.07,
+     4.89,
+     4.71,
+     4.53,
+     4.35,
+     4.17,
+     3.99
+    ],
+    [
+     9.36,
+     10.0,
+     10.65,
+     11.3,
+     11.95,
+     12.6,
+     13.24,
+     13.89,
+     14.54,
+     15.19
+    ],
+    [
+     23.02,
+     24.45,
+     25.88,
+     27.31,
+     28.74,
+     30.17,
+     31.6,
+     33.02,
+     34.45,
+     35.88
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "210911b65431"
+}

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>메카미 · Mekami</title>
+<meta name="description" content="승리의 여신: 니케 스쿼드 DPS 시뮬레이터 — 버프·예열·버스트 순서를 시간축 위에서 계산">
+<link rel="icon" type="image/png" sizes="32x32" href="../assets/icons/title/MechaShifty-32.png">
+<link rel="apple-touch-icon" href="../assets/icons/title/MechaShifty-180.png">
+<!-- 부모 사이트의 스타일을 먼저 읽고 위에 덮는다. 상단바·카드 모양과 1.25× 스케일을
+     그대로 물려받아, 두 화면이 따로 놀지 않는다. -->
+<link rel="stylesheet" href="../assets/style.css">
+<link rel="stylesheet" href="assets/style.css">
+<script>
+  /* 모듈은 defer 라 늦게 뜬다. 첫 페인트 전에 테마를 확정해 깜빡임을 없앤다.
+     부모 사이트와 같은 키를 쓰므로 설정이 그대로 따라온다. */
+  document.documentElement.dataset.theme =
+    localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <h1 class="brand">
+      <a class="mk-home" href="../index.html" title="메카시프티로">←</a>
+      <span data-i18n="app.brand">메카미</span>
+      <span class="brand-sub" data-i18n="app.brandSub">· Mekami</span>
+    </h1>
+    <div class="topbar-right">
+      <div class="langswitch" role="group" data-i18n-aria="ui.langGroup" aria-label="표시 언어">
+        <button type="button" data-lang="ko" class="on">한</button>
+        <button type="button" data-lang="en">EN</button>
+        <button type="button" data-lang="ja">日</button>
+      </div>
+      <button type="button" id="theme" class="themebtn" data-i18n-title="ui.theme" title="테마 전환">
+        <span id="themeIcon">☾</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div id="loading" class="notice" data-i18n="ui.loading">데이터를 불러오는 중…</div>
+  <div id="error" class="notice notice-error" hidden></div>
+
+  <div id="app" hidden>
+    <section class="card mk-squad" aria-labelledby="mk-squadHead">
+      <h3 id="mk-squadHead" data-i18n="mk.squad">스쿼드</h3>
+      <p class="hint" id="mk-squadHint"></p>
+      <div id="mk-slots" class="mk-slots"></div>
+    </section>
+
+    <section class="card mk-cond" aria-labelledby="mk-condHead">
+      <h3 id="mk-condHead" data-i18n="mk.cond">전투 조건</h3>
+      <div id="mk-condBody" class="mk-fields"></div>
+    </section>
+
+    <div id="mk-warn"></div>
+
+    <section class="card wide mk-chart" aria-labelledby="mk-chartHead">
+      <h3 id="mk-chartHead" data-i18n="mk.timeline">타임라인</h3>
+      <p class="hint" data-i18n="mk.timelineHint">막대 = 순간 DPS · 선 = 누적 대미지 · 음영 = 풀버스트 · 위쪽 띠 = 버스트 게이지와 MG 예열</p>
+      <div id="mk-timeline"></div>
+    </section>
+
+    <div class="cards">
+      <section class="card" aria-labelledby="mk-byHead">
+        <h3 id="mk-byHead" data-i18n="mk.byNikke">니케별 기여</h3>
+        <div id="mk-byNikke"></div>
+      </section>
+      <section class="card" aria-labelledby="mk-rotHead">
+        <h3 id="mk-rotHead" data-i18n="mk.rotation">버스트 순서</h3>
+        <div id="mk-rotation"></div>
+      </section>
+    </div>
+
+    <section class="card wide" aria-labelledby="mk-inspectHead">
+      <h3 id="mk-inspectHead" data-i18n="mk.inspect">버프 추적</h3>
+      <p class="hint" data-i18n="mk.inspectHint">그 순간 누구에게 무엇이 걸려 있는지. 결과가 이상하면 여기부터 봅니다 — 합친 값 옆에 그 값을 만든 줄이 출처와 함께 나옵니다.</p>
+      <div id="mk-inspectBody"></div>
+    </section>
+
+    <section class="card wide mk-notes" aria-labelledby="mk-noteHead">
+      <h3 id="mk-noteHead" data-i18n="mk.notes">스킬 원문 · 미반영</h3>
+      <div id="mk-notes"></div>
+    </section>
+  </div>
+</main>
+
+<!-- 니케 고르기 -->
+<div id="mk-sheet" class="sheet" hidden>
+  <div class="sheet-back" data-close></div>
+  <aside class="sheet-body" role="dialog" aria-modal="true">
+    <button type="button" class="sheet-x" data-close data-i18n-aria="ui.close" aria-label="닫기">×</button>
+    <div id="mk-sheetBody"></div>
+  </aside>
+</div>
+
+<footer class="foot"><span id="mk-meta"></span></footer>
+
+<script type="module" src="assets/mekami.js"></script>
+</body>
+</html>

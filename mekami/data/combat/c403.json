@@ -1,0 +1,305 @@
+{
+ "rid": 403,
+ "name": {
+  "ko": "퀀시 : 이스케이프 퀸",
+  "en": "Quency: Escape Queen",
+  "ja": "クエンシー：エスケープクイーン"
+ },
+ "nameCode": 5121,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "MISSILIS",
+ "squad": "RealKindness",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.06,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 1.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 7.4,
+   "perTargetShot": 14.8
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 2,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "루트 확정",
+    "en": "Secure Route",
+    "ja": "ルート確定"
+   },
+   "text": {
+    "ko": "■ 자신이 루트 탐색 1단계 최대 중첩 상태일 때 한하여 자신에게\n[분배 대미지 {1}% ▲] [지속]\n■ 자신이 루트 탐색 2단계 최대 중첩 상태일 때 한하여 자신에게\n[코어 대미지 {2}% ▲] [지속]\n■ 자신이 루트 탐색 3단계 최대 중첩 상태일 때 한하여 자신에게\n[크리티컬 확률 {3}% ▲] [지속]",
+    "en": "■ Activates only when Explore Route Stage 1 is at max stacks. Affects self.\nDistributed Damage ▲ {1}% continuously.\n■ Activates only when Explore Route Stage 2 is at max stacks. Affects self.\nDamage dealt when attacking core ▲ {2}% continuously.\n■ Activates only when Explore Route Stage 3 is at max stacks. Affects self.\nCritical Rate ▲ {3}% continuously.",
+    "ja": "■自分がルート探索1段階フルスタック状態の時のみ自分に\n「分配ダメージ{1}％▲」「持続」\n■自分がルート探索2段階フルスタック状態の時のみ自分に\n「コアダメージ{2}％▲」「持続」\n■自分がルート探索3段階フルスタック状態の時のみ自分に\n「クリティカル確率{3}％▲」「持続」"
+   },
+   "values": [
+    [
+     29.3,
+     31.55,
+     33.81,
+     36.05,
+     38.31,
+     40.57,
+     42.82,
+     45.08,
+     47.32,
+     49.58
+    ],
+    [
+     14.92,
+     16.07,
+     17.21,
+     18.36,
+     19.51,
+     20.65,
+     21.8,
+     22.95,
+     24.1,
+     25.25
+    ],
+    [
+     9.89,
+     10.65,
+     11.41,
+     12.17,
+     12.93,
+     13.69,
+     14.45,
+     15.21,
+     15.97,
+     16.73
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "루트 탐색",
+    "en": "Explore Route",
+    "ja": "ルート探索"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 자신에게\n[단계 별 효과] [하위 효과 중복 적용]\n1단계 : 자신에게\n[명중률 {2}% ▲] [10 중첩] [2초 유지]\n[공격력 {3}% ▲] [10 중첩] [2초 유지]\n2단계 : 루트 탐색 1단계 최대 중첩 상태라면 자신에게\n[명중률 {4}% ▲] [10 중첩] [1초 유지]\n[공격력 {5}% ▲] [10 중첩] [1초 유지]\n3단계 : 루트 탐색 2단계 최대 중첩 상태라면 자신에게\n[명중률 {6}% ▲] [5 중첩] [0.5초 유지]\n[공격력 {7}% ▲] [5 중첩] [0.5초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects self.\nEffects vary for each stage. Each subsequent effect triggers all effects before it:\nStage 1: Affects self.\nHit Rate ▲ {2}%. Stacks up to 10 times and lasts for 2 sec.\nATK ▲ {3}%. Stacks up to 10 times and lasts for 2 sec.\nStage 2: Activates when Explore Route Stage 1 is at max stacks. Affects self.\nHit Rate ▲ {4}%. Stacks up to 10 times and lasts for 1 sec.\nATK ▲ {5}%, stacks up to 10 time(s) and lasts for 1 sec.\nStage 3: Activates when Explore Route Stage 2 is at max stacks. Affects self.\nHit Rate ▲ {6}%. Stacks up to 5 times and lasts for 0.5 sec.\nATK ▲ {7}%. Stacks up to 5 times and lasts for 0.5 sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、自分に\n「段階別の効果」\n「下位効果のスタック適用」\n1段階：自分に\n「命中率{2}％▲」「10スタック」「2秒間維持」\n「攻撃力{3}％▲」「10スタック」「2秒間維持」\n2段階：ルート探索1段階フルスタック状態なら、自分に\n「命中率{4}％▲」「10スタック」「1秒間維持」\n「攻撃力{5}％▲」「10スタック」「1秒間維持」\n3段階：ルート探索2段階フルスタック状態なら、自分に\n「命中率{6}％▲」「5スタック」「0.5秒間維持」\n「攻撃力{7}％▲」「5スタック」「0.5秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     0.79,
+     0.87,
+     0.93,
+     0.99,
+     1.05,
+     1.12,
+     1.16,
+     1.22,
+     1.3,
+     1.36
+    ],
+    [
+     1.43,
+     1.55,
+     1.67,
+     1.78,
+     1.89,
+     2.02,
+     2.1,
+     2.21,
+     2.34,
+     2.45
+    ],
+    [
+     1.6,
+     1.74,
+     1.86,
+     1.97,
+     2.11,
+     2.23,
+     2.34,
+     2.46,
+     2.6,
+     2.71
+    ],
+    [
+     2.88,
+     3.12,
+     3.35,
+     3.56,
+     3.79,
+     4.02,
+     4.23,
+     4.45,
+     4.69,
+     4.9
+    ],
+    [
+     2.4,
+     2.6,
+     2.77,
+     2.98,
+     3.15,
+     3.35,
+     3.52,
+     3.72,
+     3.89,
+     4.08
+    ],
+    [
+     4.34,
+     4.69,
+     5.01,
+     5.36,
+     5.68,
+     6.03,
+     6.36,
+     6.71,
+     7.03,
+     7.36
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "위대한 도둑",
+    "en": "The Great Thief",
+    "ja": "素晴らしき大泥棒"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[공격 대미지 {1}% ▲] [{2}초 유지]\n[재장전 속도 {3}% ▲] [{4}초 유지]\n■ 적 전체에게\n[최종 공격력 {5}% 분배 대미지]",
+    "en": "■ Affects self.\nAttack Damage ▲ {1}% for {2} sec.\nReload Speed ▲ {3}% for {4} sec.\n■ Affects all enemies.\nDeals {5}% of final ATK as distributed damage.",
+    "ja": "■自分に\n「攻撃ダメージ{1}％▲」「{2}秒間維持」\n「リロード速度{3}％▲」「{4}秒間維持」\n■敵全体に\n「最終攻撃力の{5}％の分配ダメージ」"
+   },
+   "values": [
+    [
+     33.72,
+     36.32,
+     38.92,
+     41.5,
+     44.1,
+     46.7,
+     49.3,
+     51.89,
+     54.47,
+     57.08
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     15.28,
+     16.46,
+     17.64,
+     18.81,
+     19.99,
+     21.16,
+     22.34,
+     23.52,
+     24.69,
+     25.87
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1026.0,
+     1104.93,
+     1183.85,
+     1262.77,
+     1341.69,
+     1420.62,
+     1499.54,
+     1578.47,
+     1657.39,
+     1736.31
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "6388c9e3ffe2"
+}

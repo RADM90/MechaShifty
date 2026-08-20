@@ -1,0 +1,317 @@
+{
+ "rid": 450,
+ "name": {
+  "ko": "나가",
+  "en": "Naga",
+  "ja": "ナガ"
+ },
+ "nameCode": 5099,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "MISSILIS",
+ "squad": "DazzlingPearl",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  25
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 204.8,
+  "coreDamage": 200.0,
+  "maxAmmo": 9,
+  "reload": 1.5,
+  "rof": {
+   "start": 90,
+   "end": 90,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 250,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 10,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "우정의 가드",
+    "en": "Guardian of Friendship",
+    "ja": "友情のガード"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 아군 전체에게\n[엄폐물 체력 회복 {2}%]\n■ 보호막 적용 시 아군 전체에게\n[코어 대미지 {3}% ▲] [{4}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks. Affects all allies.\nRestores {2}% of cover HP.\n■ Activates when a shield is placed in front of this unit. Affects all allies.\nDamage dealt when attacking core ▲ {3}% for {4} sec.",
+    "ja": "■通常攻撃で{1}回攻撃した時、味方全体に\n「遮蔽物HP回復{2}％」\n■バリア適用時、味方全体に\n「コアダメージ{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0,
+     12.0
+    ],
+    [
+     8.61,
+     9.27,
+     9.93,
+     10.6,
+     11.26,
+     11.92,
+     12.59,
+     13.25,
+     13.91,
+     14.57
+    ],
+    [
+     50.33,
+     54.2,
+     58.07,
+     61.94,
+     65.82,
+     69.69,
+     73.56,
+     77.43,
+     81.3,
+     85.17
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "우정의 서포트",
+    "en": "Support of Friendship",
+    "ja": "友情のサポート"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {1}회 공격 시 공격력 가장 높은 아군 {2}기에게\n[코어 대미지 {3}% ▲] [{4}초 유지]\n■ 일반 공격 {5}회 공격 시 남은 체력 비율이 가장 낮은 아군 {6}기에게\n[시전자의 최종 최대 체력 비례 {7}% 회복]",
+    "en": "■ Activates after performing {1} normal attacks. Affects the {2} ally unit(s) with the highest ATK.\nDamage dealt when attacking core ▲ {3}% for {4} sec.\n■ Activates after performing {5} normal attacks. Affects the {6} ally unit(s) with the lowest HP percentage.\nRestores HP equal to {7}% of the skill user's final max HP.",
+    "ja": "■通常攻撃で{1}回攻撃した時、攻撃力が最も高い味方{2}機に\n「コアダメージ{3}％▲」「{4}秒間維持」\n■通常攻撃で{5}回攻撃した時、残りのHPの割合が最も低い味方{6}機に\n「スキル発動者の最終最大HPの{7}％回復」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     26.37,
+     27.89,
+     29.42,
+     30.94,
+     32.46,
+     33.98,
+     35.5,
+     37.02,
+     38.55,
+     40.07
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     5.58,
+     6.03,
+     6.47,
+     6.92,
+     7.36,
+     7.8,
+     8.25,
+     8.69,
+     9.14,
+     9.58
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "친구들과 함께라면!",
+    "en": "As Long As We're With Friends",
+    "ja": "友だちと一緒なら！"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[관통 특화] [{1}초 유지]\n■ 아군 전체에게\n[시전자 기준 공격력 {2}% ▲] [{3}초 유지]\n■ 자신이 보호막 적용 상태라면 추가로 아군 전체에게\n[시전자 기준 공격력 {4}% ▲] [{5}초 유지]",
+    "en": "■ Affects self.\nGains Pierce for {1} sec.\n■ Affects all allies.\nATK ▲ {2}% of the skill user's ATK for {3} sec.\n■ Activates if a shield is placed in front of this unit. Affects all allies.\nATK ▲ {4}% of the skill user's ATK for {5} sec.",
+    "ja": "■自分に\n「貫通特化」「{1}秒間維持」\n■味方全体に\n「スキル発動者基準で攻撃力{2}％▲」「{3}秒間維持」\n■自分がバリア適用状態なら、追加で味方全体に\n「スキル発動者基準で攻撃力{4}％▲」\n「{5}秒間維持」"
+   },
+   "values": [
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     9.56,
+     10.29,
+     11.03,
+     11.76,
+     12.5,
+     13.24,
+     13.97,
+     14.71,
+     15.44,
+     16.18
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     17.16,
+     18.7,
+     20.24,
+     21.78,
+     23.32,
+     24.86,
+     26.4,
+     27.94,
+     29.48,
+     31.02
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "772b73bb1375"
+}

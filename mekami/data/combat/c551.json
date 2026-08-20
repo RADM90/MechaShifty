@@ -1,0 +1,269 @@
+{
+ "rid": 551,
+ "name": {
+  "ko": "클레이",
+  "en": "Clay",
+  "ja": "クレイ"
+ },
+ "nameCode": 5115,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "Rewind",
+ "element": "Electronic",
+ "burst": "Step2",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  15,
+  35
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SMG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 10.12,
+  "coreDamage": 250.0,
+  "maxAmmo": 120,
+  "reload": 1.0,
+  "rof": {
+   "start": 1440,
+   "end": 1440,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 110,
+   "end": 110,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 10.0,
+   "perTargetShot": 20.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "DON'T MISS!",
+    "en": "DON'T MISS!",
+    "ja": "DON'T MISS！"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 지속 중 일반 공격 {1}회 공격 시 아군 전체에게\n[승리의 외침 : 방어력 무시 대미지 {2}% ▲] [{3} 중첩] [{4}초 유지]\n[적 발사체 공격 시 해당 발사체에 가하는 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates after performing {1} normal attacks during Full Burst. Affects all allies.\nVictorious Battle Cry: True Damage ▲ {2}%. Stacks up to {3} times and lasts for {4} sec.\nWhen attacking an enemy projectile, damage to that projectile ▲ {5}% for {6} sec.",
+    "ja": "■フルバーストタイム持続中に通常攻撃で{1}回攻撃した時、味方全体に\n「ヴィクトリークライ：防御力無視ダメージ{2}％▲」「{3}スタック」「{4}秒間維持」\n「敵の発射体を攻撃する時、該当の発射体に与えるダメージ{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    [
+     3.81,
+     4.1,
+     4.4,
+     4.69,
+     4.98,
+     5.28,
+     5.57,
+     5.86,
+     6.16,
+     6.45
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    [
+     28.81,
+     30.61,
+     32.42,
+     34.22,
+     36.02,
+     37.83,
+     39.63,
+     41.44,
+     43.24,
+     45.05
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "WAKE UP!",
+    "en": "WAKE UP!",
+    "ja": "WAKE UP！"
+   },
+   "text": {
+    "ko": "■ 버스트 1단계 진입 시 아군 전체에게\n[해로운 효과 면역 {1}개] [{3}초 유지]\n■ 자신이 승리의 외침 상태일 때 한하여 아군 전체에게\n[시전자 기준 공격력 {2}% ▲] [지속]",
+    "en": "■ Activates when entering Burst Stage 1. Affects all allies.\nGains debuff immunity to {1} debuff(s) for {3} sec.\n■ Activates only while in Victorious Battle Cry status. Affects all allies.\nATK ▲ {2}% of the skill user's ATK continuously.",
+    "ja": "■バースト1段階突入時、味方全体に\n「デバフ効果免疫{1}個」「{3}秒間維持」\n■自分がヴィクトリークライ状態の時に限り、味方全体に\n「スキル発動者基準で攻撃力{2}％▲」「持続」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     11.8,
+     12.72,
+     13.64,
+     14.56,
+     15.48,
+     16.39,
+     17.31,
+     18.23,
+     19.15,
+     20.07
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "GO! GO! VICTORY!",
+    "en": "GO! GO! VICTORY!",
+    "ja": "GO！GO！VICTORY！"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[방어력 무시 대미지 {1}% ▲] [{2}초 유지]\n■ 자신에게\n[일반 공격을 방어력 무시 대미지로 적용] [{3}초 유지]",
+    "en": "■ Affects all allies.\nTrue Damage ▲ {1}% for {2} sec.\n■ Affects self.\nNormal attacks deal true damage for {3} sec.",
+    "ja": "■味方全体に\n「防御力無視ダメージ{1}％▲」\n「{2}秒間維持」\n■自分に「通常攻撃を防御無視ダメージとして適用」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     6.86,
+     7.49,
+     8.13,
+     8.76,
+     9.39,
+     10.03,
+     10.66,
+     11.29,
+     11.93,
+     12.56
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "bff1fbf4340d"
+}

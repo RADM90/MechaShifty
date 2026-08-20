@@ -1,0 +1,401 @@
+{
+ "rid": 16,
+ "name": {
+  "ko": "라피 : 레드 후드",
+  "en": "Rapi: Red Hood",
+  "ja": "ラピ：レッドフード"
+ },
+ "nameCode": 5129,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "Counters",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "전황 파악",
+    "en": "Battlefield Assessment",
+    "ja": "戦況把握"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시와 풀 버스트 타임 종료 시\n[스쿼드 구성 별 효과] [해당되는 효과만 적용]\n기본 버스트 단계가 Step 1인 아군이 없다면 자신에게\n[전투 보조 : 버스트 {1}단계로 변경] [지속] [해제 불가]\n기본 버스트 단계가 Step 1인 아군이 있다면 자신에게\n[전투 보조 삭제]\n■ 풀 버스트 타임 시작 시 자신이 전투 보조 상태라면 아군 전체에게\n[버스트 스킬 재사용 시간 {2}초 ▼]\n[공격 대미지 {7}% ▲] [{8}초 유지]\n■ 풀 버스트 타임 시작 시 자신이 전투 보조 상태가 아니라면 자신에게\n[공격력 {3}% ▲] [{4}초 유지]\n[저지 부위 공격 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates at the start of battle and when Full Burst ends.\nEffect varies according to squad formation. Only one effect is applied.\nActivates if there are no standard Burst 1 allies. Affects self.\nCombat Assist: Changes to Burst Stage {1}. This effect is continuous and cannot be removed.\nActivates if there are standard Burst 1 allies. Affects self.\nCancels Combat Assist.\n■ Activates when entering Full Burst while in the Combat Assist state. Affects all allies.\nCooldown of Burst Skill ▼ {2} sec.\nAttack Damage ▲ {7}% for {8} sec.\n■ Activates when entering Full Burst while not in the Combat Assist state. Affects self.\nATK ▲ {3}% for {4} sec.\nDamage to Interruption Parts ▲ {5}% for {6} sec.",
+    "ja": "■戦闘開始時およびフルバーストタイムが終了した時、\n「部隊構成による効果」「該当効果のみ適用」\n基本バースト段階がⅠの味方がいない場合、自分に\n「戦闘補助：バースト{1}に変更」「持続」「解除不可」\n基本バースト段階がⅠの味方がいる場合、自分に\n「戦闘補助消去」\n■フルバーストタイムが発動した時、自分が戦闘補助状態なら、味方全体に\n「バーストスキルクールタイム{2}秒▼」\n「攻撃ダメージ{7}％▲」「{8}秒間維持」\n■フルバーストタイムが発動した時、自分が戦闘補助状態でなければ、自分に\n「攻撃力{3}％▲」「{4}秒間維持」\n「阻止部位の攻撃ダメージ{5}％▲」「{6}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     5.34,
+     5.58,
+     5.82,
+     6.05,
+     6.29,
+     6.53,
+     6.77,
+     7.0,
+     7.24,
+     7.48
+    ],
+    [
+     59.4,
+     63.36,
+     67.32,
+     71.28,
+     75.24,
+     79.2,
+     83.16,
+     87.12,
+     91.08,
+     95.04
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.0,
+     32.0,
+     34.0,
+     36.0,
+     38.0,
+     40.0,
+     42.0,
+     44.0,
+     46.0,
+     48.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.01,
+     5.35,
+     5.68,
+     6.01,
+     6.35,
+     6.68,
+     7.02,
+     7.35,
+     7.69,
+     8.02
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "부착형 유탄",
+    "en": "Attachable Projectiles",
+    "ja": "粘着榴弾"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[전격 코드 적에게 우월 코드 대미지 적용] [지속] [해제 불가]\n[발사체 부착 대미지 {5}% ▲] [지속]\n[발사체 폭발 대미지 {6}% ▲] [지속]\n■ 일반 공격 {1}회 공격 시 자신에게\n[부착형 유탄]\n기능 : 부착형 발사체를 발사하여 적중된 위치에 부착. 풀 버스트 타임 지속 중 폭발.\n발사체 부착 대미지 : 최종 공격력 {2}% 대미지\n발사체 폭발 대미지 : 최종 공격력 {3}% 대미지\n최대 장탄 수 : {4}발",
+    "en": "■ Activates at the start of battle. Affects self.\nConverts damage to Elemental Advantage damage against Electric Code enemies. This effect is continuous and cannot be removed.\nProjectile Attachment Damage ▲ {5}% continuously.\nProjectile Explosion Damage ▲ {6}% continuously.\n■ Activates after performing {1} normal attacks. Affects self. \nAttachable Projectiles\nEffect: Launches attachable projectiles that attach to hit locations. When entering Full Burst, the projectiles explode.\nProjectile Attachment Damage: Deals {2}% of final ATK as damage.\nProjectile Explosion Damage: Deals {3}% of final ATK as damage.\nMax Ammunition Capacity: {4} round(s).",
+    "ja": "■戦闘開始時、自分に\n「電撃コードの敵に有利コードのダメージ適用」「持続」「解除不可」\n「発射体付着ダメージ{5}％▲」「持続」\n「発射体爆発ダメージ{6}％▲」「持続」\n■通常攻撃で{1}回攻撃した時、自分に\n「粘着榴弾」\n機能：粘着する発射体を発射し、命中した位置に付着させる。フルバーストタイム中に起爆される\n発射体付着ダメージ：最終攻撃力の{2}％のダメージ\n発射体爆発ダメージ：最終攻撃力の{3}％のダメージ\n最大装弾数：{4}発"
+   },
+   "values": [
+    [
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0,
+     120.0
+    ],
+    [
+     49.71,
+     53.98,
+     58.25,
+     62.51,
+     66.78,
+     71.05,
+     75.31,
+     79.58,
+     83.85,
+     88.11
+    ],
+    [
+     49.71,
+     53.98,
+     58.25,
+     62.51,
+     66.78,
+     71.05,
+     75.31,
+     79.58,
+     83.85,
+     88.11
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     94.2,
+     100.48,
+     106.76,
+     113.04,
+     119.32,
+     125.6,
+     131.88,
+     138.16,
+     144.44,
+     150.72
+    ],
+    [
+     59.44,
+     64.02,
+     68.59,
+     73.16,
+     77.74,
+     82.31,
+     86.88,
+     91.46,
+     96.03,
+     100.6
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "계승되는 힘",
+    "en": "Power of Inheritance",
+    "ja": "継承される力"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[버스트 스킬 재사용 시간 20초 ▼]\n[폭발 범위 {1}% ▲] [{2}초 유지]\n■ 아군 전체에게\n[시전자 기준 공격력 {3}% ▲] [{4}초 유지]\n\n■ 조준선에서 가장 가까운 적 1기에게\n[최종 공격력 {5}% 추가 대미지]\n■ 자신에게\n[폭발 범위 {1}% ▲] [{2}초 유지]\n[발사체 부착 대미지 {6}% ▲] [{7}초 유지]\n[스킬2 부착형 유탄 발동 횟수 조건 {8}회 ▼] [{9}초 유지]",
+    "en": "When used in Burst Stage 1: Squad Support Action Style\n■ Affects self.\nCooldown of Burst Skill ▼ 20 sec.\nExplosion Radius ▲ {1}% for {2} sec.\n■ Affects all allies.\nATK ▲ {3}% of the skill user's ATK for {4} sec.\nWhen used in Burst Stage 3: High-Mobility Close-Range Combat Weapon\n■ Affects the enemy nearest to the crosshair.\nDeals {5}% of final ATK as additional damage.\n■ Affects self.\nExplosion Radius ▲ {1}% for {2} sec.\nProjectile Attachment Damage ▲ {6}% for {7} sec.\nSkill 2's requirement for triggering attachable projectiles ▼ {8} for {9} sec.",
+    "ja": "『バーストⅠで使用した時：部隊補助行動様式』\n■自分に\n「バーストスキルクールタイム20秒▼」\n「爆発範囲{1}％▲」「{2}秒間維持」\n■味方全体に\n｢スキル発動者基準で攻撃力{3}％▲」「{4}秒間維持」\n『バーストⅢで使用した時：高機動近接型決戦兵器』\n■照準線に最も近い敵1機に\n「最終攻撃力の{5}％の追加ダメージ」\n■自分に\n「爆発範囲{1}％▲」\n「{2}秒間維持」\n「発射体付着ダメージ{6}％▲」\n「{7}秒間維持」\n「スキル2粘着榴弾発動回数条件{8}回▼」\n「{9}秒間維持」"
+   },
+   "values": [
+    [
+     62.88,
+     67.08,
+     71.27,
+     75.46,
+     79.65,
+     83.85,
+     88.04,
+     92.23,
+     96.42,
+     100.62
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     11.16,
+     11.92,
+     12.68,
+     13.44,
+     14.2,
+     14.96,
+     15.72,
+     16.48,
+     17.24,
+     18.01
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1512.0,
+     1656.0,
+     1800.0,
+     1944.0,
+     2088.0,
+     2232.0,
+     2376.0,
+     2520.0,
+     2664.0,
+     2808.0
+    ],
+    [
+     216.0,
+     238.8,
+     261.6,
+     284.4,
+     307.2,
+     330.0,
+     352.8,
+     375.6,
+     398.4,
+     421.2
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0,
+     60.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "b95293eda6c6"
+}

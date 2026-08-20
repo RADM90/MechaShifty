@@ -1,0 +1,401 @@
+{
+ "rid": 75,
+ "name": {
+  "ko": "디젤 : 윈터 스위츠",
+  "en": "Diesel: Winter Sweets",
+  "ja": "ディーゼル：ウィンタースイーツ"
+ },
+ "nameCode": 5159,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "InfinityRail",
+ "element": "Fire",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "아아, 마이크 테스트",
+    "en": "Ah Ah, Mic Test",
+    "ja": "あーあー、マイクテスト"
+   },
+   "text": {
+    "ko": "■ 첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용했다면 자신에게\n[인트로 : 크리티컬 대미지 {1}% ▲] [지속] [해제 불가] [부활 시 유지]\n■ 첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용하지 않았다면 자신에게\n[클라이막스 : 크리티컬 대미지 {2}% ▲] [지속] [해제 불가] [부활 시 유지]\n■ 풀 버스트 타임 시작 시 인트로 상태라면 자신에게\n[지속 대미지 {3}% ▲] [{4}초 유지]\n■ 풀 버스트 타임 시작 시 클라이막스 상태라면 자신에게\n[지속 대미지 {5}% ▲] [{6}초 유지]",
+    "en": "■ Activates when entering Full Burst for the first time after using Burst Skill. Affects self.\nIntro: Critical damage ▲ {1}% continuously. This effect cannot be removed. Effect persists after revival.\n■ Activates when entering Full Burst for the first time without using own Burst Skill. Affects self.\nHighlight: Critical damage ▲ {2}% continuously. This effect cannot be removed. Effect persists after revival.\n■ Activates when entering Full Burst. Affects self if in Intro status.\nSustained damage ▲ {3}% for {4} sec.\n■ Activates when entering Full Burst. Affects self if in Highlight status.\nSustained damage ▲ {5}% for {6} sec.",
+    "ja": "■初めてフルバーストタイムが発動した時、\n直前に自分がバーストスキルを\n使用していれば自分に\n「イントロ：クリティカルダメージ\n{1}％▲」「持続」「解除不可」\n「復活後も維持」\n■初めてフルバーストタイムが発動した時、\n直前に自分がバーストスキルを\n使用していなければ自分に\n「クライマックス：\nクリティカルダメージ{2}％▲」「持続」「解除不可」\n「復活後も維持」\n■フルバーストタイムが発動した時、\nイントロ状態なら自分に\n「持続ダメージ{3}％▲」\n「{4}秒間維持」\n■フルバーストタイムが発動した時、\nクライマックス状態なら自分に\n「持続ダメージ{5}％▲」\n「{6}秒間維持」"
+   },
+   "values": [
+    [
+     11.98,
+     12.9,
+     13.82,
+     14.74,
+     15.67,
+     16.59,
+     17.51,
+     18.43,
+     19.35,
+     20.28
+    ],
+    [
+     11.98,
+     12.9,
+     13.82,
+     14.74,
+     15.67,
+     16.59,
+     17.51,
+     18.43,
+     19.35,
+     20.28
+    ],
+    [
+     35.56,
+     38.3,
+     41.04,
+     43.77,
+     46.51,
+     49.24,
+     51.98,
+     54.72,
+     57.45,
+     60.19
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     138.88,
+     149.56,
+     160.24,
+     170.93,
+     181.61,
+     192.29,
+     202.98,
+     213.66,
+     224.34,
+     235.03
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "노래할게요!",
+    "en": "I'm Gonna Sing Now!",
+    "ja": "歌います！"
+   },
+   "text": {
+    "ko": "■ 자신을 포함한 아군 누군가 파츠 파괴 시 자신을 제외한 아군 전체에게\n[음소거 : 소음 공해 면역] [{1} 중첩] [지속]\n■ 자신을 포함한 아군 누군가 파츠 파괴 시 자신에게\n[지속 대미지 {4}% ▲] [{5}초 유지]\n■ 풀 차지 공격 시 자신에게\n[지속 대미지 {2}% ▲] [{6} 중첩] [{3}초 유지]\n■ 풀 버스트 타임 시작 시 타겟에게\n[최종 공격력 {7}% 지속 대미지] [1초 간격] [{8}초 유지]",
+    "en": "■ Activates when an ally or self destroys an enemy's part. Affects all allies (except self).\nMute: Gains immunity to Noise Pollution continuously. Stacks up to {1} times.\n■ Activates when an ally or self destroys an enemy's part. Affects self.\nSustained Damage ▲ {4}% for {5} sec.\n■ Activates when performing a Full Charge attack. Affects self.\nSustained Damage ▲ {2}% for {3} sec. Stacks up to {6} times.\n■ Activates when entering Full Burst. Affects the stage target.\nDeals {7}% of final ATK as sustained damage every second for {8} sec.",
+    "ja": "■自分を含む味方の誰かが\nパーツを破壊した時自分を除く味方全体に\n「消音：騒音公害免疫」「{1}スタック」\n「持続」\n■自分を含む味方の誰かが\nパーツを破壊した時自分に\n「持続ダメージ{4}％▲」「{5}秒間維持」\n■フルチャージして攻撃した時、自分に\n「持続ダメージ{2}％▲」「{6}スタック」「{3}秒間維持」\n■フルバーストタイムが発動した時、\nターゲットに\n「最終攻撃力の{7}％の持続ダメージ」\n「1秒間隔」「{8}秒間維持」"
+   },
+   "values": [
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     187.99,
+     202.45,
+     216.91,
+     231.37,
+     245.83,
+     260.29,
+     274.75,
+     289.22,
+     303.68,
+     318.14
+    ],
+    [
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0,
+     3.0
+    ],
+    [
+     40.2,
+     43.29,
+     46.39,
+     49.48,
+     52.57,
+     55.67,
+     58.76,
+     61.85,
+     64.94,
+     68.04
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     37.42,
+     40.3,
+     43.18,
+     46.06,
+     48.94,
+     51.82,
+     54.7,
+     57.58,
+     60.45,
+     63.33
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "라라라♬",
+    "en": "La La La ♬",
+    "ja": "ラララ♬"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[받는 대미지 {8}% ▲] [{9}초 유지]\n[최종 공격력 {1}% 지속 대미지] [1초 간격] [{2}초 유지]\n■ 대상이 타겟이라면 동일 적 대상에게\n[최종 공격력 {6}% 지속 대미지] [1초 간격] [{7}초 유지]\n■ 자신이 클라이막스 상태라면 자신을 제외한 아군 전체에게\n[소음 공해 : 명중률 {3}% ▼] [{4}초 유지]\n■ 자신이 클라이막스 상태라면 아군 전체에게\n[음소거 중첩량 {5}개 ▼]",
+    "en": "■ Affects all enemies.\nDamage Taken ▲ {8}% for {9} sec.\nDeals {1}% of final ATK as sustained damage every second for {2} sec.\n■ Affects the enemy if the enemy is the stage target.\nDeals {6}% of final ATK as sustained damage every second for {7} sec.\n■ Activates while this unit is in the Highlight state. Affects all allies (except self).\nNoise Pollution: Hit Rate ▼ {3}% for {4} sec.\n■ Affects all allies if this unit is in the Highlight state.\nMute stacks ▼ {5}.",
+    "ja": "■敵全体に\n「受けるダメージ{8}％▲」\n「{9}秒間維持」\n「最終攻撃力の{1}％の持続ダメージ」\n「1秒間隔」「{2}秒間維持」\n■対象がターゲットなら、同じ敵に\n「最終攻撃力の{6}％の持続ダメージ」\n「1秒間隔」「{7}秒間維持」\n■自分がクライマックス状態なら、\n自分を除く味方全体に\n「騒音公害：命中率{3}％▼」「{4}秒間維持」\n■自分がクライマックス状態なら、\n味方全体に\n「消音スタック量{5}個▼」"
+   },
+   "values": [
+    [
+     10.89,
+     11.72,
+     12.56,
+     13.4,
+     14.24,
+     15.07,
+     15.91,
+     16.75,
+     17.59,
+     18.43
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     107.07,
+     115.31,
+     123.55,
+     131.78,
+     140.02,
+     148.26,
+     156.49,
+     164.73,
+     172.97,
+     181.2
+    ],
+    [
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0,
+     9.0
+    ],
+    [
+     14.82,
+     15.96,
+     17.1,
+     18.24,
+     19.38,
+     20.52,
+     21.66,
+     22.8,
+     23.95,
+     25.09
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "ddc758fd0b80"
+}

@@ -1,0 +1,281 @@
+{
+ "rid": 582,
+ "name": {
+  "ko": "레이블",
+  "en": "Label",
+  "ja": "レーベル"
+ },
+ "nameCode": 5162,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "ELYSION",
+ "squad": "BestSeller",
+ "element": "Iron",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "만남과 이별(상상)",
+    "en": "Meeting and Parting (Imagined)",
+    "ja": "出会いと別れ（想像）"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신에게\n[망상 : 시전자의 최종 최대 체력 비례 {1}% 보호막] [지속]\n■ 망상 상태 종료 시 자신에게\n[망상 파괴] [최대 {2}회] [지속]\n효과 1 : [상상 실연 : 1인 공격 대상에서 제외 직접 피격 시 해제] [{3}초 X 망상 파괴 횟수만큼 유지]\n효과 2 : [기절] [{3}초 X 망상 파괴 횟수만큼 유지]\n■ 일반 공격 시 자신이 망상 상태가 아니라면 자신에게\n[망상 : 시전자의 최종 최대 체력 비례 {1}% 보호막] [지속]\n■ 버스트 스킬 사용 시 자신이 망상 상태가 아니라면 자신에게\n[망상 : 시전자의 최종 최대 체력 비례 {1}% 보호막] [지속]",
+    "en": "■ Activates at the start of battle. Affects self.\nDelusion: Creates a shield with HP equal to {1}% of the skill user's final max HP. This effect is continuous.\n■ Activates when Delusion ends. Affects self.\nDelusion Shattered: Activates up to {2} time(s). This effect is continuous.\nEffect 1: Imagined Heartbreak: Prevents being targeted by single-target attacks for {3} sec x Delusion Shattered count. This effect is removed upon taking a direct hit.\nEffect 2: Stuns for {3} sec per Delusion Shattered stack.\n■ Activates when performing a normal attack while not in the Delusion state. Affects self.\nDelusion: Creates a shield with HP equal to {1}% of the skill user's final max HP. This effect is continuous.\n■ Activates when using Burst Skill while not in the Delusion state. Affects self.\nDelusion: Creates a shield with HP equal to {1}% of the skill user's final max HP. This effect is continuous.",
+    "ja": "■戦闘開始時、自分に\n「妄想：スキル発動者の\n最終最大HPの{1}％のバリア」「持続」\n■妄想状態が終了した時、自分に\n「妄想崩壊」「最大{2}回」「持続」\n効果1：「想像失恋：単一攻撃対象から除外、\n直接攻撃を受けると解除」\n「{3}秒×妄想崩壊回数分だけ維持」\n効果2：「気絶」\n「{3}秒×妄想崩壊回数分だけ維持」\n■通常攻撃をした時、\n自分が妄想状態でなければ自分に\n「妄想：スキル発動者の\n最終最大HPの{1}％のバリア」「持続」\n■バーストスキルを使用した時、\n自分が妄想状態でなければ自分に\n「妄想：スキル発動者の\n最終最大HPの{1}％のバリア」「持続」"
+   },
+   "values": [
+    [
+     17.82,
+     19.19,
+     20.56,
+     21.93,
+     23.3,
+     24.67,
+     26.04,
+     27.41,
+     28.78,
+     30.15
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "연애의 달콤함(상상)",
+    "en": "Sweetness of Love (Imagined)",
+    "ja": "甘い恋愛（想像）"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신을 제외한 아군 전체에게\n[전격 코드 적으로부터 받는 대미지 {5}% ▼] [{7}초 유지] [전투 중 {6}회 발동]\n■ 자신이 망상 상태일 때 한하여 자신에게\n[버스트 게이지 충전 속도 {1}% ▲] [지속]\n[공격력 {2}% ▲] [지속]\n[전격 코드 적으로부터 받는 대미지 {3}% ▼] [지속]\n■ 자신이 망상 공유 상태일 때 한하여 자신을 제외한 아군 전체에게\n[시전자 기준 공격력 {4}% ▲] [지속]",
+    "en": "■ Activates at the start of battle. Affects all allies (except self).\nDamage taken from Electric Code enemies ▼ {5}% for {7} sec. Activates {6} time(s) per battle.\n■ Activates only while in Delusion status. Affects self.\nBurst Gauge filling speed ▲ {1}% continuously.\nATK ▲ {2}% continuously.\nDamage taken from Electric Code enemies ▼ {3}% continuously.\n■ Activates only while in Shared Delusion status. Affects all allies (except self).\nATK ▲ {4}% of the skill user's ATK continuously.",
+    "ja": "■戦闘開始時自分を除く味方全体に\n「電撃コードの敵から受けるダメージ\n{5}％▼」「{7}秒間維持」「戦闘中{6}回発動」\n■自分が妄想状態の時に限り、自分に\n「バーストゲージのチャージ速度{1}％▲」「持続」\n「攻撃力{2}％▲」「持続」\n「電撃コードの敵から受けるダメージ\n{3}％▼」「持続」\n■自分が妄想共有状態の時に限り、\n自分を除く味方全体に\n「スキル発動者基準で攻撃力{4}％▲」\n「持続」"
+   },
+   "values": [
+    [
+     41.6,
+     44.8,
+     48.0,
+     51.2,
+     54.4,
+     57.6,
+     60.8,
+     64.0,
+     67.2,
+     70.4
+    ],
+    [
+     55.18,
+     59.43,
+     63.67,
+     67.92,
+     72.16,
+     76.41,
+     80.65,
+     84.9,
+     89.14,
+     93.39
+    ],
+    [
+     41.6,
+     44.8,
+     48.0,
+     51.2,
+     54.4,
+     57.6,
+     60.8,
+     64.0,
+     67.2,
+     70.4
+    ],
+    [
+     47.48,
+     51.13,
+     54.78,
+     58.44,
+     62.09,
+     65.74,
+     69.39,
+     73.05,
+     76.7,
+     80.36
+    ],
+    [
+     41.6,
+     44.8,
+     48.0,
+     51.2,
+     54.4,
+     57.6,
+     60.8,
+     64.0,
+     67.2,
+     70.4
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "폭발하는 마음",
+    "en": "Bursting Heart",
+    "ja": "爆発する心"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[최대 체력 {1}% ▲] [{2}초 유지]\n[망상 공유 : 자신이 설치한 보호막 무적] [{3}초 유지]",
+    "en": "■ Affects self.\nMax HP ▲ {1}% for {2} sec.\nShared Delusion: The shield created by Label becomes invulnerable for {3} sec.",
+    "ja": "■自分に\n「最大HP{1}％▲」「{2}秒間維持」\n「妄想共有：自分が展開したバリアに\n無敵付与」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     11.97,
+     12.89,
+     13.81,
+     14.73,
+     15.66,
+     16.58,
+     17.5,
+     18.42,
+     19.34,
+     20.26
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "bad505d7dcf8"
+}

@@ -1,0 +1,378 @@
+{
+ "rid": 17,
+ "name": {
+  "ko": "아니스 : 스타",
+  "en": "Anis: Star",
+  "ja": "アニス：スター"
+ },
+ "nameCode": 5169,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "Counters",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 120,
+   "end": 120,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 750
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "스타 폴",
+    "en": "Starfall",
+    "ja": "スターフォール"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시 자신이 생존 상태일 때 한하여 아군 전체에게\n[버스트 게이지 충전 속도 {5}% ▲] [지속]\n■ 전투 시작 시와 풀 버스트 타임 종료 시\n[스쿼드 구성 별 효과] [해당되는 효과만 적용]\n자신을 제외한 기본 버스트 단계가 Step {1}인 아군이 없다면\n효과 1 : 자신에게 [모두의 별 삭제]\n효과 2 : 자신에게 [나만의 별 : 공격력 {2}% ▲] [지속] [해제 불가]\n효과 3 : 아군 전체에게 [버스트 스킬 재사용 시간 {3}초 ▼]\n자신을 제외한 기본 버스트 단계가 Step {1}인 아군이 있다면\n효과 1 : 자신에게 [나만의 별 삭제]\n효과 2 : 자신에게 [모두의 별 : 버스트 재진입 {1}단계로 변경] [지속] [해제 불가]\n■ 풀 차지 공격 명중 시 대상에게\n[최종 공격력 {4}% 추가 대미지]",
+    "en": "■ Activates at the start of battle as long as the skill user is alive. Affects all allies.\nBurst Gauge filling speed ▲ {5}% continuously.\n■ Activates at the start of battle and when Full Burst ends.\nEffects vary according to squad formation. Only one set of effects is applied.\nIf there are no other standard Burst {1} allies:\nEffect 1: Affects self. Cancels Everyone's Star.\nEffect 2: Affects self. My Own Star: ATK ▲ {2}%. This effect is continuous and cannot be removed.\nEffect 3: Affects all allies. Cooldown of Burst Skill ▼ {3} sec.\nIf there are any other Burst {1} allies:\nEffect 1: Affects self. Cancels My Own Star.\nEffect 2: Affects self. Everyone's Star: Re-enters Burst and changes to Stage {1}. This effect is continuous and cannot be removed.\n■ Activates when landing a Full Charge attack. Affects the target.\nDeals {4}% of final ATK as additional damage.",
+    "ja": "■戦闘開始時、自分が生存している限り、味方全体に\n「バーストゲージのチャージ速度{5}％▲」「持続」\n■戦闘開始時およびフルバーストタイムが終了した時、\n「部隊構成による効果」\n「該当効果のみ適用」\n自分を除く基本バースト段階が{1}の味方がいない場合、\n効果1：自分に「みんなの星消去」\n効果2：自分に「私だけの星：\n攻撃力{2}％▲」「持続」「解除不可」\n効果3：味方全体に「バーストスキルクールタイム{3}秒▼」\n自分を除く基本バースト段階が{1}の味方がいる場合、\n効果1：自分に「私だけの星消去」\n効果2：自分に「みんなの星：バースト再突入{1}段階に変更」「持続」「解除不可」\n■フルチャージ攻撃が命中した時、対象に\n「最終攻撃力の{4}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     23.64,
+     25.46,
+     27.28,
+     29.09,
+     30.91,
+     32.73,
+     34.55,
+     36.37,
+     38.19,
+     40.01
+    ],
+    [
+     5.34,
+     5.58,
+     5.82,
+     6.05,
+     6.29,
+     6.53,
+     6.77,
+     7.0,
+     7.24,
+     7.48
+    ],
+    [
+     71.0,
+     76.46,
+     81.92,
+     87.38,
+     92.84,
+     98.3,
+     103.76,
+     109.22,
+     114.68,
+     120.13
+    ],
+    [
+     3.54,
+     3.81,
+     4.09,
+     4.36,
+     4.63,
+     4.91,
+     5.18,
+     5.45,
+     5.72,
+     6.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "스타더스트",
+    "en": "Stardust",
+    "ja": "スターダスト"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 자신이 나만의 별 상태라면 아군 전체에게\n[시전자 기준 공격력 {1}% ▲] [{2}초 유지]\n■ 풀 차지 공격 시 자신이 모두의 별 상태라면 아군 전체에게\n[시전자의 최종 최대 체력 비례 {3}% 회복]\n■ 풀 버스트 타임 시작 시 자신과 자신보다 최종 방어력이 낮은 아군 전체에게\n[발사체 폭발 대미지 {4}% ▲] [{5}초 유지]\n■ 풀 버스트 타임 시작 시 아군 전체에게\n[공격 대미지 {6}% ▲] [{7}초 유지]",
+    "en": "■ Activates when entering Full Burst while in My Own Star status. Affects all allies.\nATK ▲ {1}% of the skill user's ATK for {2} sec.\n■ Activates when performing a Full Charge attack while in Everyone's Star status. Affects all allies.\nRestores {3}% of the skill user's final max HP.\n■ Activates when entering Full Burst. Affects self and all allies with lower final DEF than self.\nProjectile Explosion Damage ▲ {4}% for {5} sec.\n■ Activates when entering Full Burst. Affects all allies.\nAttack Damage ▲ {6}% for {7} sec.",
+    "ja": "■フルバーストタイムが発動した時、\n自分が私だけの星状態なら、味方全体に\n「スキル発動者基準で攻撃力{1}％▲」「{2}秒間維持」\n■フルチャージして攻撃した時、\n自分がみんなの星状態なら、味方全体に\n「スキル発動者の最終最大HPの\n{3}％回復」\n■フルバーストタイムが発動した時、\n自分と自分より最終防御力が低い味方全体に\n「発射体爆発ダメージ{4}％▲」「{5}秒間維持」\n■フルバーストタイムが発動した時、味方全体に\n「攻撃ダメージ{6}％▲」「{7}秒間維持」"
+   },
+   "values": [
+    [
+     20.68,
+     22.28,
+     23.87,
+     25.46,
+     27.05,
+     28.64,
+     30.23,
+     31.82,
+     33.42,
+     35.01
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     0.74,
+     0.8,
+     0.85,
+     0.91,
+     0.97,
+     1.03,
+     1.08,
+     1.14,
+     1.2,
+     1.26
+    ],
+    [
+     54.38,
+     58.56,
+     62.74,
+     66.93,
+     71.11,
+     75.29,
+     79.48,
+     83.66,
+     87.84,
+     92.03
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     20.09,
+     21.63,
+     23.18,
+     24.79,
+     26.27,
+     27.89,
+     29.36,
+     30.91,
+     32.45,
+     34.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "스타 아니스",
+    "en": "Star Anis",
+    "ja": "スターアニス"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[슈팅 스타]\n기능 : 아니스 주변에 작은 별을 생성하여 무작위 대상에게 자동 공격합니다.\n대미지 : 최종 공격력 {1}%\n공격 간격 : 0.25초\n유지 시간 : {2}초\n추가 효과\n[차지 시간 {10}초로 고정] [{2}초 유지]\n[폭발 범위 {3}% ▲] [{2}초 유지]\n[방어력 {5}% ▲] [{2}초 유지]\n■ 자신이 나만의 별 상태라면 자신에게\n[공격 대미지 {6}% ▲] [{7}초 유지]\n■ 자신이 모두의 별 상태라면 아군 전체에게\n[시전자 기준 최대 체력 {8}% ▲] [{9}초 유지]",
+    "en": "■ Affects self.\nShooting Stars\nFunction: Generates stars around Anis that attack random targets automatically.\nDamage: {1}% of final ATK\nAttack Interval: 0.25 sec\nDuration: {2} sec\nAdditional Effects\nCharge time is fixed at {10} sec for {2} sec.\nExplosion Radius ▲ {3}% for {2} sec.\nDEF ▲ {5}% for {2} sec.\n■ Activates while in My Own Star status. Affects self.\nAttack Damage ▲ {6}% for {7} sec.\n■ Activates while in Everyone's Star status. Affects all allies.\nMax HP ▲ {8}% of the skill user's max HP for {9} sec.",
+    "ja": "■自分に\n「シューティングスター」\n機能：アニスの周囲に小さな星が生成され、ランダムな対象に自動攻撃する\nダメージ：最終攻撃力の{1}％\n攻撃間隔：0.25秒\n維持時間：{2}秒\n追加効果\n「チャージ時間{10}秒に固定」\n「{2}秒間維持」\n「爆発範囲{3}％▲」「{2}秒間維持」\n「防御力{5}％▲」「{2}秒間維持」\n■自分が私だけの星状態なら、自分に\n「攻撃ダメージ{6}％▲」「{7}秒間維持」\n■自分がみんなの星状態なら、味方全体に\n「スキル発動者基準で最大HP{8}％▲」「{9}秒間維持」"
+   },
+   "values": [
+    [
+     23.64,
+     25.46,
+     27.28,
+     29.1,
+     30.91,
+     32.73,
+     34.55,
+     36.37,
+     38.19,
+     40.01
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     59.09,
+     63.63,
+     68.18,
+     72.73,
+     77.27,
+     81.82,
+     86.36,
+     90.91,
+     95.45,
+     100.0
+    ],
+    null,
+    [
+     32.44,
+     34.95,
+     37.46,
+     39.96,
+     42.47,
+     44.98,
+     47.49,
+     49.99,
+     52.5,
+     55.01
+    ],
+    [
+     20.8,
+     22.4,
+     24.0,
+     25.6,
+     27.2,
+     28.8,
+     30.4,
+     32.0,
+     33.6,
+     35.2
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     8.87,
+     9.56,
+     10.24,
+     10.92,
+     11.6,
+     12.29,
+     12.97,
+     13.65,
+     14.34,
+     15.02
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7,
+     0.7
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "c138769fbd2f"
+}

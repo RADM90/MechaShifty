@@ -1,0 +1,245 @@
+{
+ "rid": 61,
+ "name": {
+  "ko": "미카",
+  "en": "Mica",
+  "ja": "ミカ"
+ },
+ "nameCode": 3008,
+ "rarity": "SR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "LittleCannon",
+ "element": "Wind",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 140.0,
+   "perTargetShot": 280.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "맛있는 별님",
+    "en": "Wonderous Star",
+    "ja": "美味しいお星さま"
+   },
+   "text": {
+    "ko": "■ {1}회 피격 시 자신에게\n[방어력 {2}% ▲] [{3}초 유지]",
+    "en": "■ Activates when attacked {1} time(s). Affects self.\nDEF ▲ {2}% for {3}S.",
+    "ja": "■{1}回攻撃を受けた時、自分に\n「防御力{2}％▲」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     17.14,
+     19.59,
+     22.04,
+     24.48,
+     26.93,
+     29.38,
+     31.83,
+     34.28,
+     36.73,
+     39.18
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "용감한 별님",
+    "en": "Brave Star",
+    "ja": "勇敢なお星さま"
+   },
+   "text": {
+    "ko": "■ 최종 공격력이 가장 높은 아군 2기에게\n[최대 장탄 수 {1}발 ▲] [{2}초 유지]\n[방어력 {3}% ▲] [{4}초 유지]",
+    "en": "■ Affects the 2 allies with the highest final ATK.\nMax Ammunition Capacity ▲ {1} round(s) for {2} sec. \nDEF ▲ {3}% for {4} sec.",
+    "ja": "■最終攻撃力が最も高い味方2機に\n「最大装弾数{1}発▲」「{2}秒間維持」\n「防御力{3}％▲」「{4}秒間維持」"
+   },
+   "values": [
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     5.57,
+     7.16,
+     8.75,
+     10.34,
+     11.93,
+     13.53,
+     15.12,
+     16.71,
+     18.3,
+     19.89
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "반짝반짝 별님",
+    "en": "Sparkling Star",
+    "ja": "キラキラお星さま"
+   },
+   "text": {
+    "ko": "■ 적 전체에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n[방어력 {2}% ▼] [{3}초 유지]",
+    "en": "■ Affects all enemies.\nDeals {1}% of final ATK as Burst Skill damage.\nDEF ▼ {2}% for {3} sec.",
+    "ja": "■敵全体に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」\n「防御力{2}％▼」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     66.6,
+     76.11,
+     85.62,
+     95.14,
+     104.65,
+     114.17,
+     123.68,
+     133.2,
+     142.71,
+     152.22
+    ],
+    [
+     5.82,
+     6.66,
+     7.49,
+     8.32,
+     9.15,
+     9.99,
+     10.82,
+     11.65,
+     12.48,
+     13.32
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "3d2ef5d037f2"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "mekami",
+  "private": true,
+  "type": "module",
+  "description": "node 가 assets/*.js 를 ES 모듈로 읽게 하려고만 존재한다. 의존성도 빌드도 없고 브라우저는 이 파일을 보지 않는다. 'node mekami/test/run.js' 로 순수 모듈을 검증한다."
+}

@@ -1,0 +1,69 @@
+{
+  "rid": 160,
+  "name": "유니",
+  "textHash": "63b75f2cdb9e",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "chargeSpeed",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        }
+      ]
+    }
+  ],
+  "s2": [
+    {
+      "note": "풀 차지 공격 시 아군 전체에게",
+      "on": "fullChargeHit",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "defPct",
+          "v": 1,
+          "dur": {
+            "v": 2
+          }
+        },
+        {
+          "stat": "damageUp",
+          "v": 3,
+          "dur": {
+            "v": 4
+          }
+        },
+        {
+          "stat": "maxAmmo",
+          "v": 5,
+          "dur": {
+            "v": 6
+          }
+        }
+      ]
+    }
+  ],
+  "burst": [
+    {
+      "note": "공격 범위 내 적들에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 1
+        },
+        "kind": "skill"
+      }
+    }
+  ],
+  "unmodeled": [
+    "[burst] 이동 불가"
+  ]
+}

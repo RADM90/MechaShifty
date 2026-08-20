@@ -1,0 +1,367 @@
+{
+ "rid": 515,
+ "name": {
+  "ko": "신데렐라 : 크리스탈 웨이브",
+  "en": "Cinderella: Crystal Wave",
+  "ja": "シンデレラ：クリスタルウェーブ"
+ },
+ "nameCode": 5175,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "PILGRIM",
+ "squad": "OldTales",
+ "element": "Iron",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "뷰티-풀",
+    "en": "Beauty-Full",
+    "ja": "ビューティー・フル"
+   },
+   "text": {
+    "ko": "■ 최대 장탄 재장전 완료 시 자신이 변경 준비 상태라면 자신에게\n[사용 무기 변경 : 저격 모드] :\n차지 시간 : 1초\n대미지 : 최종 공격력 {1}% 대미지\n풀 차지 대미지 : 250% 대미지\n최대 장탄 수 : 15발 (재장전 완료 시 최대 장탄 수 효과 갱신)\n추가 효과 1 : 관통 특화\n추가 효과 2 : 풀 차지 공격 시 탄환 소모 {2}발\n추가 효과 3 : 차지 시간 1초로 고정\n해제 조건 : 변경 준비 상태에서 최대 장탄 재장전 완료\n■ 전투 시작 시 자신에게\n[뷰티-풀: 공격 대미지 {3}% ▲] [지속]\n■ 최대 장탄 재장전 완료 시 자신에게\n[변경 준비 : 재장전 시간 3초로 고정] [{4}초 유지] [마지막 탄환 공격 시 제거]\n■ {10}초 마다 조준선에 가장 가까운 적 1기에게\n[최종 공격력 {7}% 대미지]\n■ 아군이 소비한 탄의 총합이 {8}발이 될 때마다 아군 전체에게\n[버스트 게이지 충전 {9}%]",
+    "en": "■ Activates upon reloading to max ammunition while in the Preparation for Change state. Affects self.\nChanges the weapon in use: Snipe Mode\nCharge Time: 1 sec\nDamage: {1}% of final ATK\nFull Charge Damage: 250% of damage\nMax Ammunition Capacity: 15 (max ammunition effects refresh after reloading)\nAdditional Effect 1: Gains Pierce.\nAdditional Effect 2: Activates when performing a Full Charge attack. Expends ammo. Amount: {2} round(s).\nAdditional Effect 3: Charge time is fixed at 1 sec.\nRemoval Condition: Reloading to max ammunition while in the Preparation for Change state.\n■ Activates at the start of battle. Affects self.\nBeauty-Full: Attack Damage ▲ {3}% continuously.\n■ Activates upon reloading to max ammunition. Affects self.\nPreparation for Change: Reload time is fixed at 3 sec for {4} sec. Removed upon firing the last bullet.\n■ Activates every {10} sec. Affects the enemy unit nearest to the crosshair.\nDeals {7}% of final ATK as damage.\n■ Activates each time total ammo consumed by allies reaches {8}. Affects all allies.\nFills Burst Gauge by {9}%.",
+    "ja": "■最大弾数のリロードが完了した時、\n自分が変更準備状態なら、自分に\n「使用武器変更：狙撃モード」：\nチャージ時間：1秒\nダメージ：最終攻撃力の{1}％のダメージ\nフルチャージダメージ：250％\n最大装弾数：15発（リロード完了時、\n最大装弾数に対する効果更新）\n追加効果1：貫通特化\n追加効果2：フルチャージして攻撃した時、弾薬消費{2}発\n追加効果3：チャージ時間1秒に固定\n解除条件：変更準備状態で最大弾数の\nリロードを完了した時\n■戦闘開始時、自分に\n「ビューティー・フル：\n攻撃ダメージ{3}％▲」「持続」\n■最大弾数のリロードが完了した時、自分に\n「変更準備：リロード時間を3秒に固定」\n「{4}秒間維持」\n「最後の弾丸で攻撃時解除」\n■{10}秒ごとに照準線に最も近い敵1機に\n「最終攻撃力の{7}％のダメージ」\n■味方が消費した弾の合計が{8}発ごとに、味方全体に\n「バーストゲージのチャージ{9}％」"
+   },
+   "values": [
+    [
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13,
+     62.13
+    ],
+    [
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0,
+     40.0
+    ],
+    [
+     13.2,
+     14.4,
+     15.6,
+     16.8,
+     18.0,
+     19.2,
+     20.4,
+     21.6,
+     22.8,
+     24.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ],
+    null,
+    null,
+    [
+     450.0,
+     500.0,
+     550.0,
+     600.0,
+     650.0,
+     700.0,
+     750.0,
+     800.0,
+     850.0,
+     900.0
+    ],
+    [
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0,
+     200.0
+    ],
+    [
+     7.09,
+     7.64,
+     8.19,
+     8.74,
+     9.29,
+     9.84,
+     10.39,
+     10.94,
+     11.49,
+     12.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "모드 스왑",
+    "en": "Mode Swap",
+    "ja": "モードスワップ"
+   },
+   "text": {
+    "ko": "■ 전투 시작 시와 버스트 스킬 사용 시 자신에게\n[디코이 : 시전자의 최종 최대 체력 비례 {1}% 분신] [지속]\n■ 전투 시작 시 자신에게\n[공격력 {2}% ▲] [지속]\n■ 저격모드 적용 시 자신에게\n[디스트로이 : 파츠 대미지 {3}% ▲] [지속]\n[핀 포인트 해제]\n■ 전투 시작 시와 저격모드 해제 시 자신에게\n[핀 포인트 : 코어 대미지 {4}% ▲] [지속]\n[디스트로이 해제]\n■ 풀 버스트 타임 시작 시 직전에 자신이 버스트 스킬을 사용했다면\n[모드 적용 별 효과] [해당되는 효과만 적용]\n자신이 저격 모드라면 적 전체에게 (파츠 포함)\n효과 1 : [최종 공격력 {5}% 대미지]\n자신이 저격 모드가 아니라면 코어가 활성화된 적 전체에게\n효과 1 : [최종 공격력 {6}% 코어 명중 대미지]",
+    "en": "■ Activates at the start of battle and when using Burst Skill. Affects self.\nDecoy: Creates an avatar with {1}% of the skill user's final max HP. This effect is continuous.\n■ Activates at the start of battle. Affects self.\nATK ▲ {2}% continuously.\n■ Activates when Snipe Mode takes effect. Affects self.\nDestroy: Damage to Parts ▲ {3}% continuously.\nRemoves Pinpoint.\n■ Activates at the start of battle and when Snipe Mode is removed. Affects self.\nPinpoint: Damage dealt when attacking core ▲ {4}% continuously.\nRemoves Destroy.\n■ Activates when entering Full Burst after this unit uses her Burst Skill.\nEffect varies according to this unit's current mode. Only one effect is applied.\nActivates while in Snipe Mode. Affects all enemies (including parts).\nEffect 1: Deals {5}% of final ATK as damage.\nActivates while not in Snipe Mode. Affects all enemies with activated cores.\nEffect 1: Deals {6}% of final ATK as core strike damage.",
+    "ja": "■戦闘開始時およびバーストスキル使用時、\n自分に\n「デコイ：スキル発動者の最終最大HPの\n{1}％の分身」「持続」\n■戦闘開始時、自分に\n「攻撃力{2}％▲」「持続」\n■狙撃モード適用時、自分に\n「デストロイ：パーツダメージ{3}％▲」「持続」\n「ピンポイント解除」\n■戦闘開始時および狙撃モード解除時、\n自分に\n「ピンポイント：コアダメージ{4}％▲」\n「持続」「デストロイ解除」\n■フルバーストタイムが発動した時、直前に自分がバーストスキルを使用していれば\n「モード適用別効果」「該当効果のみ適用」\n自分が狙撃モードなら\n敵全体に（パーツ含む）\n効果1：「最終攻撃力の\n{5}％のダメージ」\n自分が狙撃モードでなければ\nコアが活性化している敵全体に\n効果1：「最終攻撃力の{6}％のコア命中ダメージ」"
+   },
+   "values": [
+    [
+     41.56,
+     44.76,
+     47.95,
+     51.15,
+     54.35,
+     57.55,
+     60.74,
+     63.94,
+     67.14,
+     70.34
+    ],
+    [
+     15.95,
+     17.4,
+     18.85,
+     20.3,
+     21.75,
+     23.2,
+     24.65,
+     26.1,
+     27.55,
+     29.0
+    ],
+    [
+     13.11,
+     14.57,
+     16.03,
+     17.49,
+     18.95,
+     20.41,
+     21.87,
+     23.33,
+     24.79,
+     26.21
+    ],
+    [
+     13.0,
+     14.44,
+     15.88,
+     17.32,
+     18.76,
+     20.2,
+     21.64,
+     23.08,
+     24.52,
+     26.0
+    ],
+    [
+     654.31,
+     713.79,
+     773.27,
+     832.75,
+     892.23,
+     951.71,
+     1011.19,
+     1070.67,
+     1130.15,
+     1189.66
+    ],
+    [
+     458.58,
+     500.27,
+     541.96,
+     583.65,
+     625.34,
+     667.03,
+     708.72,
+     750.41,
+     792.1,
+     833.79
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "유리 구두 풀 컨텍트 W",
+    "en": "Glass Slippers Full Contact W",
+    "ja": "ガラスの靴・フルコンタクトW"
+   },
+   "text": {
+    "ko": "■ 자신에게 \n[공격 대미지 {1}% ▲] [{2}초 유지]\n[공격력 {5}% ▲] [{6}초 유지]\n■ 최종 공격력이 가장 높은 적 1기에게\n[최종 공격력 {4}% 버스트 스킬 대미지]",
+    "en": "■ Affects self.\nAttack Damage ▲ {1}% for {2} sec.\nATK ▲ {5}% for {6} sec.\n■ Affects the enemy with the highest final ATK.\nDeals {4}% of final ATK as Burst Skill damage.",
+    "ja": "■自分に\n「攻撃ダメージ{1}％▲」「{2}秒間維持」\n「攻撃力{5}％▲」「{6}秒間維持」\n■最終攻撃力が最も高い敵1機に\n「最終攻撃力の{4}％の\nバーストスキルダメージ」"
+   },
+   "values": [
+    [
+     46.0,
+     51.11,
+     56.22,
+     61.33,
+     66.44,
+     71.55,
+     76.66,
+     81.77,
+     86.88,
+     92.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0,
+     100.0
+    ],
+    [
+     3299.97,
+     3599.97,
+     3899.97,
+     4199.97,
+     4499.97,
+     4799.97,
+     5099.97,
+     5399.97,
+     5699.97,
+     6000.0
+    ],
+    [
+     35.75,
+     39.0,
+     42.25,
+     45.5,
+     48.75,
+     52.0,
+     55.25,
+     58.5,
+     61.75,
+     65.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "4c8da664dab1"
+}

@@ -1,0 +1,269 @@
+{
+ "rid": 203,
+ "name": {
+  "ko": "루피 : 윈터 쇼퍼",
+  "en": "Rupee: Winter Shopper",
+  "ja": "ルピー：ウィンターショッパー"
+ },
+ "nameCode": 5087,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "TETRA",
+ "squad": "Talentum",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 13.65,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.0,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "윈터 프리미엄",
+    "en": "Winter Premium",
+    "ja": "ウィンタープレミアム"
+   },
+   "text": {
+    "ko": "■ 마지막 탄환 명중 시 아군 전체에게\n[방어력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Activates when the last bullet hits the target. Affects all allies. \nDEF ▲ {1}% for {2} sec.",
+    "ja": "■最後の弾丸が命中した時、味方全体に\n「防御力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     10.46,
+     11.41,
+     12.36,
+     13.31,
+     14.26,
+     15.21,
+     16.17,
+     17.12,
+     18.07,
+     19.02
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "VIP 기프트",
+    "en": "VIP Gift",
+    "ja": "VIPギフト"
+   },
+   "text": {
+    "ko": "■ 아군이 버스트 스킬 사용 시 아군 전체에게\n[쇼핑 : 방어력 {1}% ▲] [{2} 중첩] [{3}초 유지]\n■ 풀 버스트 타임 종료 시 자신이 쇼핑 최대 중첩 상태라면 아군 전체에게\n[버스트 게이지 충전 속도 {4}% ▲] [{5}초 유지]",
+    "en": "■ Activates when an ally uses a Burst Skill. Affects all allies.\nShopping: DEF ▲ {1}%. Stacks up to {2} times and lasts for {3} sec.\n■ Activates if Shopping is at max stacks when Full Burst ends. Affects all allies.\nBurst Gauge filling speed ▲ {4}% for {5} sec.",
+    "ja": "■味方がバーストスキルを使用した時、味方全体に\n「ショッピング：防御力{1}％▲」「{2}スタック」「{3}秒間維持」\n■フルバーストタイムが終了した時、自分がショッピングのフルスタック状態なら、味方全体に\n「バーストゲージのチャージ速度 {4}％▲」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     0.73,
+     0.8,
+     0.86,
+     0.93,
+     0.99,
+     1.06,
+     1.13,
+     1.2,
+     1.26,
+     1.33
+    ],
+    [
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0,
+     4.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     4.34,
+     4.74,
+     5.13,
+     5.53,
+     5.92,
+     6.32,
+     6.72,
+     7.11,
+     7.51,
+     7.9
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "쇼퍼홀릭 데이트",
+    "en": "Shopaholic Date",
+    "ja": "ショッパホリックデート"
+   },
+   "text": {
+    "ko": "■ 자신에게\n[주목 : 적 전체 도발] [{1}초 유지]\n[공격 대미지 비례 {2}% 회복] [{3}초 유지]\n■ 아군 전체에게\n[재장전 속도 {4}% ▲] [{5}초 유지]\n[버스트 재진입 1단계]",
+    "en": "■ Affects self.\nAttract: Taunts all enemies for {1} sec.\nRestores HP equal to {2}% of attack damage. Lasts for {3} sec.\n■ Affects all allies.\nReload Speed ▲ {4}% for {5} sec.\nRe-enters Burst Stage 1.",
+    "ja": "■自分に\n「ヘイト：敵全体を挑発」「{1}秒間維持」\n「攻撃ダメージの{2}％回復」「{3}秒間維持」\n■味方全体に\n「リロード速度{4}％▲」「{5}秒間維持」\n「バースト再突入1段階」"
+   },
+   "values": [
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ],
+    [
+     33.94,
+     35.77,
+     37.61,
+     39.45,
+     41.28,
+     43.12,
+     44.96,
+     46.8,
+     48.63,
+     50.47
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     20.74,
+     25.45,
+     30.17,
+     34.88,
+     39.6,
+     44.31,
+     49.02,
+     53.74,
+     58.45,
+     63.17
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "98c7ea3f8ab5"
+}

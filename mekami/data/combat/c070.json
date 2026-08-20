@@ -1,0 +1,197 @@
+{
+ "rid": 70,
+ "name": {
+  "ko": "브리드",
+  "en": "Brid",
+  "ja": "ブリッド"
+ },
+ "nameCode": 5018,
+ "rarity": "SSR",
+ "class": "Attacker",
+ "corporation": "ELYSION",
+ "squad": "InfinityRail",
+ "element": "Water",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  25,
+  45
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "AR",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 14.29,
+  "coreDamage": 200.0,
+  "maxAmmo": 60,
+  "reload": 1.3,
+  "rof": {
+   "start": 720,
+   "end": 720,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 75,
+   "end": 75,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 20.0,
+   "perTargetShot": 40.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "엑셀러레이션",
+    "en": "Acceleration",
+    "ja": "アクセラレーション"
+   },
+   "text": {
+    "ko": "■ 일반 공격 {3}회 공격 시 자신에게\n[공격력 {1}% ▲] [{2}초 유지]",
+    "en": "■ Activates after performing {3} normal attacks. Affects self.\nATK ▲ {1}% for {2} sec.",
+    "ja": "■通常攻撃で{3}回攻撃した時、自分に\n「攻撃力{1}％▲」「{2}秒間維持」"
+   },
+   "values": [
+    [
+     10.94,
+     11.78,
+     12.63,
+     13.47,
+     14.31,
+     15.15,
+     16.0,
+     16.84,
+     17.68,
+     18.52
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0,
+     30.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "리크",
+    "en": "Leak",
+    "ja": "リーク"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 1기에게\n[최종 공격력 {1}% 대미지]",
+    "en": "■ Affects the enemy with the highest final DEF.\nDeals {1}% of final ATK as damage.",
+    "ja": "■最終防御力が最も高い敵1機に\n「最終攻撃力の{1}％のダメージ」"
+   },
+   "values": [
+    [
+     124.8,
+     134.4,
+     144.0,
+     153.6,
+     163.2,
+     172.8,
+     182.4,
+     192.0,
+     201.6,
+     211.2
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "burst": {
+   "name": {
+    "ko": "AZX",
+    "en": "AZX",
+    "ja": "AZX"
+   },
+   "text": {
+    "ko": "■ 최종 방어력이 가장 높은 적 1기에게\n[최종 공격력 {1}% 버스트 스킬 대미지]\n■ 자신의 체력이 최대라면 동일 적 대상에게\n[최종 공격력 {2}% 추가 대미지]",
+    "en": "■ Affects the enemy with the highest final DEF.\nDeals {1}% of final ATK as Burst Skill damage.\n■ Affects the same target when at max HP.\nDeals {2}% of final ATK as additional damage.",
+    "ja": "■最終防御力が最も高い敵1機に\n「最終攻撃力の{1}％の\nバーストスキルダメージ」\n■自分のHPが最大の場合、同じ敵に\n「最終攻撃力の{2}％の追加ダメージ」"
+   },
+   "values": [
+    [
+     792.0,
+     864.0,
+     936.0,
+     1008.0,
+     1080.0,
+     1152.0,
+     1224.0,
+     1296.0,
+     1368.0,
+     1440.0
+    ],
+    [
+     792.0,
+     864.0,
+     936.0,
+     1008.0,
+     1080.0,
+     1152.0,
+     1224.0,
+     1296.0,
+     1368.0,
+     1440.0
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "17e1c2b43e29"
+}

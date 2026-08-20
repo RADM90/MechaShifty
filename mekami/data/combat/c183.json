@@ -1,0 +1,365 @@
+{
+ "rid": 183,
+ "name": {
+  "ko": "메이든 : 아이스 로즈",
+  "en": "Maiden: Ice Rose",
+  "ja": "メイデン：アイスローズ"
+ },
+ "nameCode": 5127,
+ "rarity": "SSR",
+ "class": "Defender",
+ "corporation": "ELYSION",
+ "squad": "External",
+ "element": "Electronic",
+ "burst": "Step3",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  0,
+  0
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "RL",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "HomingProjectile",
+  "damage": 61.3,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 182.0,
+   "perTargetShot": 364.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 500
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "메디테이션",
+    "en": "Meditation",
+    "ja": "メディテーション"
+   },
+   "text": {
+    "ko": "■ 버스트 1단계 진입 시 자신의 MP가 0 이라면 자신에게\n[MP {1} 회복] [최대 MP 12 축적] [버스트 스킬 사용 시 축적된 모든 MP 삭제]\n■ 풀 버스트 타임 시작 시 자신의 MP가 1 이상이라면 자신에게\n[MP {2} 충전] [최대 MP 12 축적] [버스트 스킬 사용 시 축적된 모든 MP 삭제]\n■ 풀 차지 공격 {6}회 공격 시 자신에게\n[최대 체력만 {3}% ▲] [{4} 중첩] [{5} 초 유지]",
+    "en": "■ Activates when entering Burst Stage 1 if this unit has no MP. Affects self.\nRestores {1} MP, up to a maximum of 12. All MP is removed when using Burst Skill.\n■ Activates when entering Full Burst when this unit has 1 or more MP. Affects self.\nReplenishes {2} MP, up to a maximum of 12. All MP is removed when using Burst Skill.\n■ Activates after performing {6} Full Charge attacks. Affects self.\nMax HP ▲ {3}% (without restoring HP) for {5} sec. Stacks up to {4} times.",
+    "ja": "■バースト1段階突入時、自分のMPが0なら自分に\n「MP{1}回復」「最大12まで蓄積可能」「バーストスキルを使用した時、蓄積したすべてのMPが消滅」\n■フルバーストタイムが発動した時、自分のMPが1以上なら自分に\n「MP{2}チャージ」「最大12まで蓄積可能」「バーストスキルを使用した時、蓄積したすべてのMPが消滅」\n■フルチャージ攻撃で{6}回攻撃した時、自分に\n「最大HPのみ{3}％▲」「{4}スタック」「{5}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     3.74,
+     4.03,
+     4.32,
+     4.61,
+     4.9,
+     5.19,
+     5.47,
+     5.76,
+     6.05,
+     6.34
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0,
+     6.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "블레스 유",
+    "en": "Blessings Upon You",
+    "ja": "ブレス・ユー"
+   },
+   "text": {
+    "ko": "■ MP 충전 시 자신을 제외한 전격 코드 아군 전체에게\n[우월 코드 공격 대미지 {1}% ▲][{2}초 유지]\n[시전자 기준 공격력 {3}% ▲][{4}초 유지]\n■ MP 사용 후 자신에게\n[우월 코드 공격 대미지 {5}% ▲][{6}초 유지]\n[시전자의 최종 최대 체력의 {7}%만큼 공격력 ▲][{8}초 유지]\n■ 풀 차지 공격 {11}회 공격 시 조준선에 가장 가까운 적 {9}기에게\n[최종 공격력 {10}% 대미지]",
+    "en": "■ Activates when MP is replenished. Affects all Electric Code allies except for self.\nElemental Advantage Attack Damage ▲ {1}% for {2} sec.\nATK ▲ {3}% of the skill user's ATK for {4} sec.\n■ Activates when MP is used. Affects self.\nElemental Advantage Attack Damage ▲ {5}% for {6} sec.\nATK ▲ {7}% of the skill user's final max HP for {8} sec.\n■ Activates after performing {11} Full Charge attacks. Affects the {9} enemy unit(s) nearest to the crosshair. \nDeals {10}% of final ATK as damage.",
+    "ja": "■MPチャージ時に自分を除く電撃コードの味方全体に\n「有利コードの攻撃ダメージ{1}％▲」「{2}秒間維持」\n「スキル発動者基準で攻撃力{3}％▲」「{4}秒間維持」\n■MP使用後、自分に\n「有利コードの攻撃ダメージ {5}％▲」「{6}秒間維持」\n「スキル発動者の最終最大HPの{7}％分の攻撃力▲」「{8}秒間維持」\n■フルチャージ攻撃で{11}回攻撃した時、照準線に最も近い敵{9}機に\n「最終攻撃力の{10}％のダメージ」"
+   },
+   "values": [
+    [
+     24.2,
+     26.06,
+     27.91,
+     29.77,
+     31.62,
+     33.48,
+     35.33,
+     37.19,
+     39.04,
+     40.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     12.35,
+     13.3,
+     14.25,
+     15.2,
+     16.15,
+     17.1,
+     18.05,
+     19.0,
+     19.95,
+     20.9
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     18.72,
+     20.16,
+     21.6,
+     23.04,
+     24.48,
+     25.92,
+     27.36,
+     28.8,
+     30.24,
+     31.68
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.89,
+     2.03,
+     2.18,
+     2.32,
+     2.47,
+     2.62,
+     2.76,
+     2.91,
+     3.05,
+     3.2
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     323.58,
+     348.48,
+     373.37,
+     398.26,
+     423.16,
+     448.05,
+     472.94,
+     497.84,
+     522.73,
+     547.62
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "다이아몬드 더스트",
+    "en": "Diamond Dust",
+    "ja": "ダイヤモンドダスト"
+   },
+   "text": {
+    "ko": "■ 조준선에 가장 가까운 적 {1}기에게\n[시전자의 최종 최대 체력의 {2}%를 공격력으로 합산한 {3}% 대미지] [보유 MP 만큼 연속 공격]",
+    "en": "■ Affects the {1} enemy unit(s) nearest to the crosshair.\nDeals damage equal to {3}% of the sum of {2}% of the skill user's final max HP and the skill user's ATK. Attacks repeatedly based on current MP.",
+    "ja": "■照準線に最も近い敵{1}機に\n「スキル発動者の最終最大HPの{2}％を攻撃力に合算して{3}％ダメージ」「所持MP分の連続攻撃」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ],
+    [
+     811.2,
+     873.6,
+     936.0,
+     998.4,
+     1060.8,
+     1123.2,
+     1185.6,
+     1248.0,
+     1310.4,
+     1372.8
+    ]
+   ],
+   "cooldown": [
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0,
+    40.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "a0f6e76f998e"
+}

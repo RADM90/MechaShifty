@@ -1,0 +1,234 @@
+{
+ "rid": 441,
+ "name": {
+  "ko": "아비스타",
+  "en": "Avistar",
+  "ja": "アビスタ"
+ },
+ "nameCode": 5171,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "ELYSION",
+ "squad": "Overseer",
+ "element": "Electronic",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  35,
+  55
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "MG",
+  "attackType": "Metal",
+  "control": "normal",
+  "fireType": "Instant",
+  "damage": 5.57,
+  "coreDamage": 200.0,
+  "maxAmmo": 300,
+  "reload": 2.5,
+  "rof": {
+   "start": 60,
+   "end": 4200,
+   "perShot": 100,
+   "resetStep": 1.0
+  },
+  "acc": {
+   "start": 250,
+   "end": 10,
+   "perShot": 7,
+   "speed": 1.5
+  },
+  "charge": {
+   "time": 0.0,
+   "fullDamage": 100.0
+  },
+  "burstEnergy": {
+   "perShot": 5.0,
+   "perTargetShot": 10.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "애프터쇼",
+    "en": "Aftershow",
+    "ja": "アフターショー"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 종료 시 나의 우상에게\n[애프터 쇼 : 시전자 기준 공격력 {2}% ▲] [풀버스트 진입 시 제거]\n■ 풀 버스트 타임 종료 시 자신에게\n[시전자의 최종 최대 체력 비례 {3}% 회복] [1초 간격] [{4}초 유지]\n[스타 게이저 제거]",
+    "en": "■ Activates when Full Burst ends. Affects her favorite pop star.\nAftershow: ATK ▲ {2}% of the skill user's ATK. This effect is removed when entering Full Burst.\n■ Activates when Full Burst ends. Affects self.\nRestores HP equal to {3}% of the skill user's final max HP every second for {4} sec.\nRemoves Stargazer.",
+    "ja": "■フルバーストタイムが終了した時、自分のアイドルに\n「アフターショー：スキル発動者基準で攻撃力{2}％▲」「フルバーストタイム発動時解除」\n■フルバーストタイムが終了した時、自分に\n「スキル発動者の最終最大HPの{3}％回復」「1秒間隔」「{4}秒間維持」\n「スターゲイザー解除」"
+   },
+   "values": [
+    null,
+    [
+     47.42,
+     51.07,
+     54.72,
+     58.37,
+     62.02,
+     65.66,
+     69.31,
+     72.96,
+     76.61,
+     80.26
+    ],
+    [
+     2.08,
+     2.24,
+     2.4,
+     2.56,
+     2.72,
+     2.88,
+     3.04,
+     3.2,
+     3.36,
+     3.52
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "s2": {
+   "name": {
+    "ko": "애프터 글러우",
+    "en": "Afterglow",
+    "ja": "アフターグロウ"
+   },
+   "text": {
+    "ko": "■ 풀 버스트 타임 시작 시 자신의 체력이 {1}% 이상이고 스타게이저 상태라면 자신에게\n[현재 체력 {2}% ▼]\n■ 풀 버스트 타임 시작 시 자신이 스타게이저 상태일 때 한하여 나의 우상에게\n[발사체 폭발 대미지 {3}% ▲] [지속]\n[공격 대미지 {4}% ▲] [지속]",
+    "en": "■ Activates when entering Full Burst while in Stargazer status with over {1}% HP. Affects self.\nCurrent HP ▼ {2}%\n■ Activates when entering Full Burst while in Stargazer status. Affects her favorite pop star.\nProjectile Explosion Damage ▲ {3}% continuously.\nAttack Damage ▲ {4}% continuously.",
+    "ja": "■フルバーストタイムが発動した時、自分のHPが{1}％以上で、\nスターゲイザー状態なら、自分に\n「現在のHP{2}％▼」\n■フルバーストタイムが発動した時、自分がスターゲイザー状態の時に限り、自分のアイドルに\n「発射体爆発ダメージ{3}％▲」「持続」\n「攻撃ダメージ{4}％▲」「持続」"
+   },
+   "values": [
+    [
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0,
+     25.0
+    ],
+    [
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0,
+     20.0
+    ],
+    [
+     23.71,
+     25.54,
+     27.36,
+     29.18,
+     31.01,
+     32.83,
+     34.66,
+     36.48,
+     38.3,
+     40.13
+    ],
+    [
+     23.71,
+     25.54,
+     27.36,
+     29.18,
+     31.01,
+     32.83,
+     34.66,
+     36.48,
+     38.3,
+     40.13
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "스타게이저",
+    "en": "Stargazer",
+    "ja": "スターゲイザー"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[버스트 재진입 1단계]\n■ 자신에게\n[스타게이저 : 시전자 기준 최대 체력 {1}% ▲] [지속]",
+    "en": "■ Affects all allies.\nRe-enters Burst Stage 1.\n■ Affects self.\nStargazer: Max HP ▲ {1}% of the skill user's max HP continuously.",
+    "ja": "■味方全体に\n「バースト再突入1段階」\n■自分に\n「スターゲイザー：スキル発動者基準で最大HP{1}％▲」「持続」"
+   },
+   "values": [
+    [
+     15.6,
+     16.8,
+     18.0,
+     19.2,
+     20.4,
+     21.6,
+     22.8,
+     24.0,
+     25.2,
+     26.4
+    ],
+    [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "dcbb4ae185dc"
+}

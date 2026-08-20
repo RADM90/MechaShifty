@@ -1,0 +1,233 @@
+{
+ "rid": 311,
+ "name": {
+  "ko": "코코아",
+  "en": "Cocoa",
+  "ja": "ココア"
+ },
+ "nameCode": 5050,
+ "rarity": "SSR",
+ "class": "Supporter",
+ "corporation": "TETRA",
+ "squad": "MaidForYou",
+ "element": "Fire",
+ "burst": "Step1",
+ "burstDuration": 10.0,
+ "burstApplyDelay": 0.01,
+ "range": [
+  45,
+  100
+ ],
+ "crit": {
+  "rate": 15.0,
+  "damage": 150.0
+ },
+ "shot": {
+  "weapon": "SR",
+  "attackType": "Metal",
+  "control": "charge",
+  "fireType": "Instant",
+  "damage": 69.04,
+  "coreDamage": 200.0,
+  "maxAmmo": 6,
+  "reload": 2.0,
+  "rof": {
+   "start": 60,
+   "end": 60,
+   "perShot": 0,
+   "resetStep": 0.0
+  },
+  "acc": {
+   "start": 10,
+   "end": 10,
+   "perShot": 0,
+   "speed": 0.0
+  },
+  "charge": {
+   "time": 1.0,
+   "fullDamage": 250.0
+  },
+  "burstEnergy": {
+   "perShot": 280.0,
+   "perTargetShot": 560.0
+  },
+  "spotDelay": [
+   0.2,
+   0.2
+  ],
+  "shotCount": 1,
+  "pellets": 1,
+  "multiTarget": 0,
+  "penetration": 0,
+  "explosionRange": 0
+ },
+ "shotText": "■ 대상에게\n[공격력 {damage}% 대미지]\n차지 시간: {charge_time}초\n풀 차지 대미지: {full_charge_damage}% 대미지\n[코어 대미지 {core_damage_rate}%]",
+ "skills": {
+  "s1": {
+   "name": {
+    "ko": "프로 종이접기",
+    "en": "Professional Origami",
+    "ja": "プロ折り紙"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[엄폐물 체력 회복 {1}%]\n■ 해로운 효과 소지 아군 중 무작위 아군 {2}기에게\n[해로운 효과 해제 {3}개]",
+    "en": "■ Affects all allies.\nRestores {1}% of cover HP.\n■ Affects {2} random ally unit(s) with debuffs.\nRemoves {3} debuff(s).",
+    "ja": "■味方全体に\n「遮蔽物HP回復 {1}％」\n■デバフ効果がかけられている味方のうち、ランダムに{2}機に\n「デバフ効果解除 {3}個」"
+   },
+   "values": [
+    [
+     9.77,
+     10.66,
+     11.55,
+     12.43,
+     13.32,
+     14.21,
+     15.1,
+     15.99,
+     16.88,
+     17.76
+    ],
+    [
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0,
+     2.0
+    ],
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ]
+   ],
+   "table": "CharacterSkill"
+  },
+  "s2": {
+   "name": {
+    "ko": "프로 케첩",
+    "en": "Professional Tomato Sauce",
+    "ja": "プロケチャップ"
+   },
+   "text": {
+    "ko": "■ 풀차지 공격 시 자신에게\n[프로 케첩 : 받는 대미지 {1}% ▼] [{2} 중첩] [{3}초 유지]",
+    "en": "■ Activates when attacking with Full Charge. Affects self.\nProfessional Tomato Sauce: Damage Taken ▼ {1}%, stacks up to {2} time(s) and lasts for {3} sec.",
+    "ja": "■フルチャージして攻撃した時、自分に\n「プロケチャップ：受けるダメージ{1}％▼」「{2}スタック」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     2.4,
+     2.62,
+     2.84,
+     3.06,
+     3.28,
+     3.5,
+     3.71,
+     3.93,
+     4.15,
+     4.37
+    ],
+    [
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0,
+     15.0
+    ],
+    [
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0,
+     5.0
+    ]
+   ],
+   "table": "StateEffect"
+  },
+  "burst": {
+   "name": {
+    "ko": "프로 메이드장",
+    "en": "Professional Maid Leader",
+    "ja": "プロメイド長"
+   },
+   "text": {
+    "ko": "■ 아군 전체에게\n[해로운 효과 해제 {1}개]\n■ 자신이 프로 케첩 최대 중첩 상태라면 적 전체에게\n[공격력 {2}% ▼] [{3}초 유지]",
+    "en": "■ Affects all allies.\nRemoves {1} debuff(s).\n■ Activates when Professional Tomato Sauce is at max stacks. Affects all enemies.\nATK ▼ {2}% for {3} sec.",
+    "ja": "■味方全体に\n「デバフ効果解除 {1}個」\n■自分がプロケチャップのフルスタック状態なら、敵全体に\n「攻撃力{2}％▼」「{3}秒間維持」"
+   },
+   "values": [
+    [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    [
+     7.47,
+     8.15,
+     8.83,
+     9.51,
+     10.19,
+     10.87,
+     11.55,
+     12.23,
+     12.91,
+     13.59
+    ],
+    [
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0,
+     10.0
+    ]
+   ],
+   "cooldown": [
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0,
+    20.0
+   ]
+  }
+ },
+ "favorite": null,
+ "textHash": "50d972b52111"
+}

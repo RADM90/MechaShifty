@@ -1,0 +1,114 @@
+{
+  "rid": 202,
+  "name": "도라",
+  "textHash": "2179a03740b4",
+  "confidence": "추정",
+  "note": "자동 초안 — 사람이 검수하지 않았다. 원문과 대조해 고칠 것.",
+  "s1": [],
+  "s2": [
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게 — 1회째부터 (하위 효과 중복 적용)",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstCooldown",
+          "v": 1,
+          "dir": "down",
+          "unit": "sec"
+        }
+      ],
+      "nth": 1
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게 — 2회째부터 (하위 효과 중복 적용)",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstCooldown",
+          "v": 2,
+          "dir": "down",
+          "unit": "sec"
+        }
+      ],
+      "nth": 2
+    },
+    {
+      "note": "풀 버스트 타임 시작 시 아군 전체에게 — 3회째부터 (하위 효과 중복 적용)",
+      "on": "fullBurstStart",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "burstCooldown",
+          "v": 3,
+          "dir": "down",
+          "unit": "sec"
+        }
+      ],
+      "nth": 3
+    },
+    {
+      "note": "버스트 스킬 사용 시 아군 전체에게 — 1회째부터 (하위 효과 중복 적용)",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "atkPct",
+          "v": 4,
+          "dur": {
+            "v": 5
+          }
+        }
+      ],
+      "nth": 1
+    },
+    {
+      "note": "버스트 스킬 사용 시 아군 전체에게 — 2회째부터 (하위 효과 중복 적용)",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "critRate",
+          "v": 6,
+          "dur": {
+            "v": 7
+          }
+        }
+      ],
+      "nth": 2
+    },
+    {
+      "note": "버스트 스킬 사용 시 아군 전체에게 — 3회째부터 (하위 효과 중복 적용)",
+      "on": "burstUse",
+      "to": "allies",
+      "apply": [
+        {
+          "stat": "critDmg",
+          "v": 8,
+          "dur": {
+            "v": 9
+          }
+        }
+      ],
+      "nth": 3
+    }
+  ],
+  "burst": [
+    {
+      "note": "최종 방어력이 가장 높은 적 {1}기에게",
+      "on": "burstUse",
+      "to": "self",
+      "hit": {
+        "ratio": {
+          "v": 2
+        },
+        "kind": "burst",
+        "type": "burstSkillDmg"
+      }
+    }
+  ],
+  "unmodeled": [
+    "[s1] ■ 아군 전체에게\n[공격력 {1}% ▲] [{2}초 유지]"
+  ]
+}
