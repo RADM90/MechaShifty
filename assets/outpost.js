@@ -1,30 +1,23 @@
 /* 전초기지 탭 — 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
 
-   레벨 산식은 워크북 `재화_계산기` 시트를 바탕으로 하되, 시트에 없는
-   선지급 1스테이지(BONUS_STAGES)를 실측으로 더했다. 실계정 덤프
-   (`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)와
-   레벨 내 진행도로 맞춰봤다. 아래 LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 주석 참조.
+   레벨 산식은 워크북 `재화_계산기` 시트를 바탕으로 하되, 시트에 없는 선지급 1스테이지(BONUS_STAGES)를 실측으로 더했다.
+   실계정 덤프 (`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)와 레벨 내 진행도로 맞춰봤다.
+   아래 EVEL_STEP / SKIP_REGIONS / BONUS_STAGES 주석 참조.
 
    전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
 
-   진행도는 손으로 고를 수도 있지만, 계산기 탭이 불러다 둔 계정 자료
-   (localStorage `cp.roster`)가 있으면 거기서 끌어온다 — 같은 값을 두 번 고르게
-   할 이유가 없다. 계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
+   진행도는 손으로 고를 수도 있지만, 계산기 탭이 불러다 둔 계정 자료 (localStorage `cp.roster`)가 있으면 거기서 끌어온다
+   — 같은 값을 두 번 고르게 할 이유가 없다. 계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
 
-   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐. 프로필 응답을 직접 밀어
-   넣는 setProgress() 도 내보내지만, 평소 경로는 위의 끌어오기다. */
+   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐. 프로필 응답을 직접 밀어 넣는 setProgress() 도 내보내지만, 평소 경로는 위의 끌어오기다. */
 
 const STORE = 'outpost.input';
 
-/* 스테이지 5개당 전초기지 레벨 1. 레벨은 1부터 시작한다. */
+/* 스테이지 5개당 전초기지 레벨 1. */
 const LEVEL_STEP = 5;
-/* 노멀 지역0~2(총 19스테이지)는 레벨에 반영되지 않는다. 하드는 전부 반영된다.
-   시트의 `- sum(Stage_Data!$A$2:$C$2)` 를 지역 개수로 일반화한 것. */
+/* 노멀 지역0~2(총 19스테이지)는 레벨에 반영되지 않는다. */
 const SKIP_REGIONS = 3;
-/* 지역3 이 열릴 때 1스테이지분이 미리 붙는다. 워크북에는 없는 항이라 실측으로
-   확인했다: 노멀 46-40(보스)·하드 46-39 클리어 = 클리어 3,378스테이지인 계정이
-   게임에서 676레벨 4/5 로 뜬다. 이 항이 없으면 3/5 가 되어 한 칸 어긋난다.
-   (앞서 맞춰본 606레벨 덤프는 3,026 → 나머지 1 이라 두 산식이 같은 값이었다.) */
+/* 지역3 이 열릴 때 1스테이지분이 미리 붙는다. */
 const BONUS_STAGES = 1;
 /* '다음 코어더스트 구간' 카드에 보여줄 정수 구간 개수. */
 const NEXT_TARGETS = 5;
@@ -131,7 +124,7 @@ function build(income, stages, academy) {
 /* ── 진행도 → 레벨 ─────────────────────────────────────────── */
 const stagesOf = region => D.byRegion.get(region) || [];
 
-/* 지역·순번 한 쌍이 누적 몇 번째 스테이지인지. 미선택이면 0. */
+/* 지역·순번 한 쌍이 누적 몇 번째 스테이지인지. */
 function flatIndex(sel) {
   if (!sel || !sel.region) return 0;
   const list = stagesOf(sel.region);
@@ -160,7 +153,7 @@ function derive() {
 /* 목표 레벨에 필요한 누적 클리어 스테이지 수 (선지급분을 뺀 실제 클리어 기준) */
 const totalFor = level => Math.max(0, (level - 1) * LEVEL_STEP - BONUS_STAGES);
 
-/* 현재 위치에서 n 스테이지 더 밀었을 때 도달하는 스테이지. 범위를 넘으면 null. */
+/* 현재 위치에서 n 스테이지 더 밀었을 때 도달하는 스테이지. */
 const advance = (fromIdx, n) => D.flat[fromIdx + n - 1] || null;
 
 const stageLabel = s => s ? (s.kind && s.kind !== 'STAGE' ? `${s.stage} ${s.kind}` : s.stage) : null;
@@ -194,13 +187,7 @@ function load() {
 const save = () => localStorage.setItem(STORE, JSON.stringify(input));
 
 /* ── 불러온 계정에서 진행도 가져오기 ──────────────────────────
-   계산기 탭이 수집한 계정 자료(localStorage 'cp.roster')에 캠페인 진행도가 함께
-   들어 있다. 여기서 끌어 쓴다 — 같은 값을 손으로 또 고르게 할 이유가 없다.
-
-   어느 수집본에서 가져왔는지를 input.from 에 남긴다. 그래서
-     · 같은 수집본이면 두 번 덮어쓰지 않는다 (사용자가 고친 값을 지키려고)
-     · 새로 수집하면 덮어쓴다 (계정 쪽이 언제나 더 최신이라)
-   손으로 스테이지를 바꾸면 from 이 지워져(modeRow 의 set) 다음 수집 전까지 유지된다. */
+   계산기 탭이 수집한 계정 자료(localStorage 'cp.roster')에 캠페인 진행도가 함께 들어 있다. */
 const ROSTER_STORE = 'cp.roster';
 
 function accountData() {
@@ -248,21 +235,14 @@ function normalize(v) {
 }
 
 /* ── Shiftypad 연동 ────────────────────────────────────────────
-   blablalink `GetUserProfile` 의 진행도는 7자리 정수다.
-     6044044 = 노멀 · 지역44 · 그 지역의 44번째 스테이지
-     7040043 = 하드  · 지역40 · 43번째
-   맨 앞 한 자리는 모드(6=노멀 / 7=하드)라 여기서는 쓰지 않는다.
-   순번은 화면에 보이는 스테이지 번호가 아니라 지역 안에서의 순서다
-   (44-17A-1 같은 분기 스테이지가 끼어 있어 둘이 어긋난다).           */
+   blablalink `GetUserProfile` 의 진행도는 7자리 정수다. */
 export function decodeProgress(code) {
   const n = Number(code) || 0;
   if (n <= 0) return { region: null, seq: null };
   return { region: `지역${Math.floor(n / 1000) % 1000}`, seq: n % 1000 };
 }
 
-/* 프로필 응답을 그대로 밀어 넣는 경로. 평소에는 쓰이지 않는다 — 수집한 계정 자료는
-   localStorage 에 남아 있어서 탭에 들어올 때 seedFromAccount() 가 알아서 끌어온다.
-   outpost_battle_level 을 같이 넘기면 계산값과 대조해 어긋날 때 경고를 띄운다. */
+/* 프로필 응답을 그대로 밀어 넣는 경로. */
 export function setProgress(p = {}) {
   if (!D) return false;
   input = normalize({
@@ -349,27 +329,14 @@ function renderForm(root) {
 }
 
 /* ── 기업 타워 ────────────────────────────────────────────────
-   타워는 요일마다 열리는 것이 정해져 있고(아래 TOWERS), 한 번 열리면 세 층까지
-   오른다. '한 번도 막히지 않고 매번 올랐다면' 계정 생성일부터 오늘까지 그 타워가
-   열린 횟수 × 3 이 도달 가능한 최대 층이다. 실제 도달 층이 아니라 상한선이다.
-
-   보상은 층수로 끊긴다.
-     기업 몰드   — 한 층에 1개, 5의 배수 층에서는 5개. 즉 5층마다 4 + 5 = 9개다.
-     퍼펙트 몰드 — 2025-09-24 업데이트로 추가. 3사는 20층마다, 필그림/오버스펙은
-                   30층마다 5개씩이라 각각 200층·300층에 한 번 모집할 수 있다.
-   모집 한 번에 50개가 필요하므로, 그만큼 모으는 데 드는 층수·등반 회차·주 수를
-   같이 낸다 (기업 몰드는 30층 = 10회, 퍼펙트는 200층 = 67회 / 300층 = 100회).
-
-   요일은 브라우저 시간 기준이다. 어차피 '막힘 없이' 라는 가정 위의 상한선이라
-   서버 리셋 시각까지 맞출 필요는 없다. */
+   타워는 요일마다 열리는 것이 정해져 있고(아래 TOWERS), 한 번 열리면 세 층까지 오른다. */
 const TOWER_FLOORS = 3;        // 한 번 열릴 때 오를 수 있는 층
 const MOLD_UNIT = 50;          // 모집 한 번에 드는 개수
 const MOLD_BONUS_STEP = 5;     // 이 배수 층에서는 1개가 아니라
 const MOLD_BONUS = 5;          //   이만큼 준다
 const PERFECT_PER = 5;         // 퍼펙트 몰드를 한 번에 주는 개수
 
-/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나이고, 퍼펙트 몰드 간격도
-   3사(20층)와 다르다(30층). */
+/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나이고, 퍼펙트 몰드 간격도 3사(20층)와 다르다(30층). */
 const TOWERS = [
   { key: 'ELYSION', days: [0, 2, 5], perfectStep: 20 },
   { key: 'MISSILIS', days: [0, 3, 6], perfectStep: 20 },
@@ -385,20 +352,18 @@ function weekdayCount(from, to, d) {
   return first > span ? 0 : Math.floor((span - first) / 7) + 1;
 }
 
-/* f 층까지 올랐을 때 받은 몰드 개수. 5의 배수 층은 1개가 아니라 5개다. */
+/* f 층까지 올랐을 때 받은 몰드 개수. */
 const moldsAt = f => f + (MOLD_BONUS - 1) * Math.floor(f / MOLD_BONUS_STEP);
 const perfectAt = (f, step) => Math.floor(f / step) * PERFECT_PER;
 
-/* 몰드 50개를 채우는 최소 층. 5층마다 9개라 층수가 딱 떨어지지 않아서
-   (29층 49개 · 30층 54개) 근처까지 건너뛴 뒤 한 층씩 맞춘다. */
+/* 몰드 50개를 채우는 최소 층. */
 function floorsForMolds(n) {
   let f = Math.max(0, Math.floor(n / 9) * MOLD_BONUS_STEP - MOLD_BONUS_STEP);
   while (moldsAt(f) < n) f++;
   return f;
 }
 
-/* 층수를 등반 회차와 주 수로. 회차는 올림(반 번 오를 수 없다),
-   주 수는 소수점 둘째 자리에서 올려 한 자리로 (8.24 -> 8.3). */
+/* 층수를 등반 회차와 주 수로. */
 function moldRun(floors, perWeek) {
   const runs = Math.ceil(floors / TOWER_FLOORS);
   return { floors, runs, weeks: Math.ceil((runs / perWeek) * 10) / 10 };
@@ -434,10 +399,7 @@ function renderTower() {
   const towerTitle = tw => `${towerName(tw)} — `
     + t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'));
 
-  /* 표 하나에 층수와 몰드까지 넣었더니 네 열이 카드를 넘쳤다. 게다가 몰드 쪽은
-     타워마다 다른 값이 아니다 — 주 개방 횟수와 퍼펙트 간격만 따지므로 3사가 전부
-     같은 줄이었다. 그래서 '타워별로 다른 것'(층수)과 '무리별로 같은 것'(몰드)을
-     두 표로 가른다. */
+  /* 표 하나에 층수와 몰드까지 넣었더니 네 열이 카드를 넘쳤다. */
   const tbl = el('table', 'grid op-towerTbl');
   const thead = el('thead'), hr = el('tr');
   hr.appendChild(el('th', null, t('op.towerCol')));
@@ -481,10 +443,7 @@ function renderTower() {
   return g;
 }
 
-/* 모집 한 번(50개)을 채우는 데 드는 등반 회차와 주 수. 값을 가르는 건 타워 이름이
-   아니라 '주 몇 번 열리나 + 퍼펙트 간격' 뿐이라, 같은 값을 갖는 타워끼리 한 줄로
-   묶는다 (지금은 3사 / 필그림·오버스펙 두 줄). 줄 이름이 길어져 표를 밀지 않도록
-   묶인 줄은 개수로 적고 이름은 hover 로 넘긴다. */
+/* 모집 한 번(50개)을 채우는 데 드는 등반 회차와 주 수. */
 function moldTable(towerName, towerTitle) {
   const box = el('div', 'op-moldBox');
   box.appendChild(el('h4', 'op-subhead', t('op.towerMoldTbl')));
@@ -558,8 +517,7 @@ function renderHero(d) {
   return head;
 }
 
-/* [키, 라벨, 소수 자릿수 {분, 시, 일}]. 코어더스트만 소수가 의미 있는데,
-   자릿수를 통일하면 하루치가 2,619.3960 처럼 쓸데없이 길어진다. */
+/* [키, 라벨, 소수 자릿수 {분, 시, 일}]. */
 const RES = [
   ['core', 'op.dust', { min: 4, hr: 4, day: 1 }],
   ['cred', 'op.credit', { min: 0, hr: 0, day: 0 }],
@@ -624,9 +582,7 @@ function renderNext(d) {
   const cur = d.row ? d.row.dustAcademy : 0;
   card.appendChild(el('p', 'op-note', t('op.nextHint', dec(cur, 4))));
 
-  /* 한 레벨에서 정수 여러 칸을 한꺼번에 넘기는 구간이 있다 (예: 532→533 이
-     93.4 → 102.2 라 94~102 가 모두 533). 필요 레벨이 같으면 줄을 나눠봐야
-     같은 말이므로 그중 가장 높은 값 하나만 남긴다. */
+  /* 한 레벨에서 정수 여러 칸을 한꺼번에 넘기는 구간이 있다 (예: 532→533 이 93.4 → 102.2 라 94~102 가 모두 533). */
   const targets = [];
   for (let v = Math.floor(cur) + 1; ; v++) {
     const lv = levelForDust(v);
@@ -721,8 +677,7 @@ function renderTable(d, root) {
   const box = scrollBox(tbl);
   card.appendChild(box);
 
-  /* 97~195행짜리 표라 지금 노리는 구간이 한참 아래에 있다. 붙자마자 그 줄로 내린다.
-     scrollIntoView 는 페이지 전체를 움직이므로 상자 안에서만 계산한다. */
+  /* 97~195행짜리 표라 지금 노리는 구간이 한참 아래에 있다. */
   const hit = body.querySelector('.op-first');
   if (hit) {
     queueMicrotask(() => {

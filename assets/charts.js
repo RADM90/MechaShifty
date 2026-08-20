@@ -1,10 +1,8 @@
 /* 통계 탭 — 라이브러리 없이 HTML/SVG 로 직접 그린다.
  *
  * 색 규칙 (dataviz):
- *  - 분포 막대는 전부 단일 시리즈 → 한 가지 색(--series-1). 색이 구분을
- *    나르지 않으므로 CVD 문제가 생기지 않는다.
- *  - 속성만 예외로 게임 색을 쓰되, 항상 속성 이름 텍스트를 함께 찍는다.
- *    (색 단독으로 정체성을 나르지 않음 = 보조 인코딩 상시 동반)
+ *  - 분포 막대는 전부 단일 시리즈 → 한 가지 색(--series-1). 색이 구분을 나르지 않으므로 CVD 문제가 생기지 않는다.
+ *  - 속성만 예외로 게임 색을 쓰되, 항상 속성 이름 텍스트를 함께 찍는다. (색 단독으로 정체성을 나르지 않음 = 보조 인코딩 상시 동반)
  *  - 교차표는 단일 색상 순차 램프(파랑, 어두움=적음 → 밝음=많음).
  */
 
@@ -14,9 +12,7 @@ const NS = 'http://www.w3.org/2000/svg';
 let makeIcon = null;
 let t = k => k;
 
-/* 순차 램프는 CSS 토큰(--ramp-0 … --ramp-10)에서 읽는다. 방향이 테마마다
-   반대라서다 — 라이트는 밝음→어두움, 다크는 어두움→밝음. 어느 쪽이든
-   0 이 표면에 가장 가깝고 최대값이 가장 멀다. 렌더당 한 번만 읽는다. */
+/* 순차 램프는 CSS 토큰(--ramp-0 … --ramp-10)에서 읽는다. */
 const RAMP_STEPS = 11;
 
 const toRgb = h => {
@@ -32,9 +28,7 @@ const contrast = (a, b) => {
   return (x + 0.05) / (y + 0.05);
 };
 
-/* 램프 각 스텝마다 두 잉크 중 대비가 높은 쪽을 고른다. 임계값을 손으로
-   정하면 램프 중간에서 반드시 최악 지점이 생기는데, 스텝별로 재면 그
-   지점이 사라진다. 테마마다 램프 방향이 반대인 것도 자동으로 흡수된다. */
+/* 램프 각 스텝마다 두 잉크 중 대비가 높은 쪽을 고른다. */
 function readRamp() {
   const cs = getComputedStyle(document.documentElement);
   const inkA = cs.getPropertyValue('--ink').trim();
@@ -273,8 +267,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
 
-  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. 예전에는 한 줄을 통째로
-     썼는데(`wide`), 5×3 · 5×5 짜리 표라 남는 자리가 표보다 넓었다. */
+  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. */
   {
     const c = card(t('st.cross', axisLabel('element'), axisLabel('class')), t('st.crossHint'));
     c.classList.add('card-cross');
@@ -348,8 +341,8 @@ export function renderStats(root, nikkes, pickups, ctx) {
     c.appendChild(barList(items, pickups.length));
     cards.appendChild(c);
   }
-  /* '배너 진행 상태' 카드는 없앴다 — 배너 수백 개 중 진행중이 한둘, 예정이 0~1 개고
-     나머지가 전부 종료라, 시간이 갈수록 '종료가 거의 100%' 라는 말만 하는 칸이었다. */
+  /* '배너 진행 상태' 카드는 없앴다 — 배너 수백 개 중 진행중이 한둘, 예정이 0~1 개고 나머지가 전부 종료라, 시간이
+     갈수록 '종료가 거의 100%' 라는 말만 하는 칸이었다. */
 
   /* 5. 복각 주기 */
   {

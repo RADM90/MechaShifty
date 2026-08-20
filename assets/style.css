@@ -45,7 +45,7 @@
   --bd-none:  #9aa0ad;  --bd-break: #dda211;  --bd-core: #a132d6;
   --bd-r:     #2a78d6;  --bd-sr:    #7c3aed;  --bd-fav:  #e2670f;
   --bd-ink:   #12131a;
-  /* 장비 등급 시그니처 색 — 분홍 오버로드 / 주황 9티어 기업 */
+  /* 장비 등급 시그니처 색 — 분홍 오버로드 / 주황 9티어 (기업·일반 같은 색) */
   --gr-ol:    #ea5a97;  --gr-t9:    #e2913a;
   /* 오버로드 옵션 단계 — 인게임은 12~14 를 하늘색 글씨로, 15 를 검은 바탕에
      하늘색 글씨로 쓴다. 15 는 그 조합 자체가 표식이라 두 테마가 같은 색이고,
@@ -741,6 +741,11 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 }
 .cp-gearCell.is-ol { font-weight: 700; color: var(--bd-ink); background: var(--gr-ol); }
 .cp-gearCell.is-t9 { font-weight: 700; color: var(--bd-ink); background: var(--gr-t9); }
+/* 비기업 9티어 — 기업과 인게임 색이 같아 테두리로 가른다. */
+.cp-gearCell.is-t9p {
+  font-weight: 700; color: var(--gr-t9); background: transparent;
+  box-shadow: inset 0 0 0 1px var(--gr-t9);
+}
 
 /* ── 상세정보 카드 (오른쪽 위) ────────────────────────────────
    행 넷: 최종 전투력 3종 / 오버로드 종합 / 부위별 상세 / 1단계당 증가. */
@@ -1394,3 +1399,11 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* 메카미(딜 시뮬레이터)로 가는 링크. 상단바 오른쪽, 테마 단추 앞에 선다. */
+.mklink {
+  padding: 5px 10px; font-size: 14px; text-decoration: none;
+  color: var(--ink-muted); border: 1px solid var(--line); border-radius: 999px;
+}
+.mklink:hover { color: var(--accent); border-color: var(--accent); }
+@media (max-width: 700px) { .mklink { padding: 3.75px 7.5px; font-size: 12.5px; } }
