@@ -13,7 +13,13 @@ export const K = {
   ELEM_DMG: 0.00828, OTHER_OPT: 0.0069,  // 오버로드 옵션 레벨 계수
   CUBE: 0.0092, COLLECTION: 0.0069,      // 큐브 / 소장품 계수
   PER_BREAK: 0.02, PER_CORE: 0.02,       // 돌파·코강 1단계당
-  FIXED: { hp: 3000, atk: 20, def: 100 },// 돌파 1단계당 고정 증가량
+  /* 돌파 1단계당 고정 증가량. 등급마다 다르다 — 니케별 roledata 의 stat_enhance_detail
+     (grade_hp · grade_attack · grade_defence) 에서 왔고, 같은 등급이면 니케·클래스가 달라도 같다. */
+  FIXED: {
+    SSR: { hp: 3000, atk: 20, def: 100 },
+    SR: { hp: 2300, atk: 18, def: 90 },
+    R: { hp: 2300, atk: 16, def: 80 },
+  },
   SKILL_BASE: 130,                       // 스킬계수의 기본값 (÷100)
   R_BONUS: 6.33, SR_BONUS: 10.66,        // 소장품 등급별 가산
   CUBE_LOW: 1, CUBE_HIGH: 4,             // 큐브 Lv<5 / Lv>=5 가산
@@ -225,9 +231,11 @@ export function compute(T, input, level = input.level) {
   const cube = cubeOf(T, input.cube);
   const coll = collectionOf(T, input.collection?.kind || 'none', input.collection?.level);
 
+  const fixed = K.FIXED[input.rarity] || K.FIXED.SSR;
+
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
-    const inner = base[k] * breakK + bond[k] + con[k] + K.FIXED[k] * grade.breaks;
+    const inner = base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks;
     stats[k] = Math.round(inner * coreK + gearStat[k] + cube.stat[k] + coll.stat[k]);
   }
 
