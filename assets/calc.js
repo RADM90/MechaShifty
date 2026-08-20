@@ -629,8 +629,12 @@ function importPanel(root) {
       nikkes: ctx.nikkes, byCode: byCode(),
       bondMax: T.bondMax, levels: ADJ_LEVELS, cpOf, cubes, olTotals: overloadTotals,
       applyResearch: fresh => { applyResearch(fresh); save(); },
-      // 계정이 갈리면 지휘관 줄(싱크로·콘솔)도 갈아 끼워야 한다
-      onAccount: () => paint(root),
+      /* Refresh stale */
+      onAccount: () => {
+        const fresh = importApi.inputFor(ctx.byRid.get(input.rid));
+        if (fresh) { input = adopt(fresh); save(); }
+        paint(root);
+      },
       onPick: picked => { input = adopt(picked); save(); paint(root); reveal(root); },
     });
   }

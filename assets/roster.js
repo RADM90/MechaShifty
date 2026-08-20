@@ -723,6 +723,13 @@ export function renderImport(root, ctx) {
   }
 
   paint();
-  /* 계산기의 지휘관 줄이 싱크로 레벨을 여기서 읽어 간다 (자료가 없으면 null). */
-  return { account: () => (data ? data.account : null) };
+  return {
+
+    account: () => (data ? data.account : null),
+    /* Refresh stale */
+    inputFor: nikke => {
+      const e = data && nikke && data.nikkes.find(x => x.name_code === nikke.name_code);
+      return e ? toInput(e, nikke, data.research, ctx.bondMax) : null;
+    },
+  };
 }
