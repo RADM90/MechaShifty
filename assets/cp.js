@@ -1,47 +1,74 @@
 /* 전투력(CP) 계산 — DOM 을 모르는 순수 모듈.
 
    공식의 출처와 검증 결과는 COMBAT_POWER.md 참고. 요약하면:
-     스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수
-                  + 장비4부위 + 큐브 + 소장품)
+     스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수 + 장비4부위 + 큐브 + 소장품)
      CP   = (round(HP×0.7) + round(ATK×19.35) + round(DEF×70)) × ((4)+(5)) / 100
 
-   시트를 그대로 옮기지 않은 곳이 두 군데 있고, 둘 다 실계정 176명 대조로
-   확인한 것이다:
+   시트를 그대로 옮기지 않은 곳이 두 군데 있고, 둘 다 실계정 176명 대조로 확인한 것이다:
      - 소장품 R0 계수. 시트는 0을 주지만(미착용과 혼동) 실제로는 skill1+6.33.
-     - 레벨 보정. 시트는 전부 상한(cap)으로 짰지만 협전·솔레는 '고정'이라
-       사용자 레벨이 더 낮아도 지정 레벨로 올라간다. mode 로 구분한다. */
+     - 레벨 보정. 시트는 전부 상한(cap)으로 짰지만 협전·솔레는 '고정'이라 사용자 레벨이 더 낮아도 지정 레벨로 올라간다. mode 로 구분한다. */
 
 export const K = {
   HP: 0.7, ATK: 19.35, DEF: 70,          // 스탯 -> CP 환산 계수
   ELEM_DMG: 0.00828, OTHER_OPT: 0.0069,  // 오버로드 옵션 레벨 계수
   CUBE: 0.0092, COLLECTION: 0.0069,      // 큐브 / 소장품 계수
   PER_BREAK: 0.02, PER_CORE: 0.02,       // 돌파·코강 1단계당
-  FIXED: { hp: 3000, atk: 20, def: 100 },// 돌파 1단계당 고정 증가량
+  /* 돌파 1단계당 고정 증가량. 등급마다 다르다 — 니케별 roledata 의 stat_enhance_detail
+     (grade_hp · grade_attack · grade_defence) 에서 왔고, 같은 등급이면 니케·클래스가 달라도 같다. */
+  FIXED: {
+    SSR: { hp: 3000, atk: 20, def: 100 },
+    SR: { hp: 2300, atk: 18, def: 90 },
+    R: { hp: 2300, atk: 16, def: 80 },
+  },
   SKILL_BASE: 130,                       // 스킬계수의 기본값 (÷100)
   R_BONUS: 6.33, SR_BONUS: 10.66,        // 소장품 등급별 가산
   CUBE_LOW: 1, CUBE_HIGH: 4,             // 큐브 Lv<5 / Lv>=5 가산
 };
 
-/* Increase Elemental Damage(우월코드 대미지 증가) 만 계수가 다르다.
-   나머지 8종(명중·장탄·공격력·차지대미지·차지속도·크리확률·크리대미지·방어력)은
-   전부 0.0069. 데이터 쪽 값은 시트 표기인 '우코' 그대로 쓴다.
-   blablalink 옵션 id 에서는 코드 05. */
+/* Increase Elemental Damage(우월코드 대미지 증가) 만 계수가 다르다. */
 export const ELEM_DAMAGE = '우코';
 export const SLOTS = ['머리', '몸', '팔', '다리'];
-export const TIERS = ['9티어_기업', '오버로드'];
 
-/* 오버로드 옵션 이름의 다른 언어 표기.
-   데이터의 키는 언제나 한국어 약어(`equip_option.json` 의 열 라벨)이고, 게임 정식
-   명칭은 칩·표 머리에 넣기엔 너무 길다("Increase Elemental Damage"). 한국어 약어가
-   정식명의 앞 글자를 딴 것처럼(우월코드 → 우코) 같은 방식으로 줄인 표기를 둔다.
-   niparago·계산기·목록이 이 표 하나를 함께 쓴다 — 화면마다 다르게 부르면 안 된다. */
+/* 오버로드 옵션은 한 부위에 칸이 셋이고 가운데가 비어 있을 수 있다. 목록은 빈 칸을 건너뛴 채로
+   오므라들어 오므로 칸 번호(pos)를 보고 제자리에 되돌린다 — 순서대로 깔면 상단·하단에 붙은 옵션이
+   상단·중단에 붙은 것처럼 보인다. 번호가 없는 옛 자료는 있던 순서대로 앞에서부터 채운다. */
+export function olRows(options) {
+  const rows = [null, null, null];
+  const rest = [];
+  for (const o of options || []) {
+    if (!o) continue;
+    const i = Math.round(Number(o.pos)) - 1;
+    if (i >= 0 && i < 3 && !rows[i]) rows[i] = o; else rest.push(o);
+  }
+  for (const o of rest) {
+    const i = rows.indexOf(null);
+    if (i < 0) break;
+    rows[i] = o;
+  }
+  return rows;
+}
+
+/* 장비 등급 — 원본 표에는 티어(T1~T10)뿐이고, '기업' 은 T9 에 붙는 보너스다. */
+export const TIERS = ['9티어_일반', '9티어_기업', '오버로드'];
+const TIER_SEED = {
+  '9티어_일반': ['T9', false],
+  '9티어_기업': ['T9', true],
+  오버로드: ['T10', false],
+};
+
+/* 계수는 곱이 아니라 괄호 하나 안의 합이다 — 5강 기업 장비는 기본의 1.8 배. */
+export const ENHANCE_MAX = 5;
+const GEAR_CORP_BONUS = 0.3;      // 장비 기업 == 니케 기업일 때
+const GEAR_ENHANCE_BONUS = 0.1;   // 강화 1 단계당
+
+/* 오버로드 옵션 이름의 다른 언어 표기. */
 const OPTION_SHORT = {
   en: {
     우코: 'Elem.DMG', 공증: 'ATK', 장탄: 'Ammo', 크댐: 'Crit.DMG', 크확: 'Crit.Rate',
     차속: 'Chg.Speed', 명중: 'Hit', 방어: 'DEF', 차댐: 'Chg.DMG',
   },
-  /* 일본어는 임의로 줄이지 않고 일본 커뮤니티 툴(nikke-tools 등)이 실제로 쓰는
-     표기를 그대로 따른다 — 有利コード·最大装弾数·クリダメ·クリ率 …            */
+  /* 일본어는 임의로 줄이지 않고 일본 커뮤니티 툴(nikke-tools 등)이 실제로 쓰는 표기를 그대로 따른다 —
+     有利コード·最大装弾数·クリダメ·クリ率 … */
   ja: {
     우코: '有利コード', 공증: '攻撃力', 장탄: '装弾数', 크댐: 'クリダメ', 크확: 'クリ率',
     차속: 'チャージ速度', 명중: '命中率', 방어: '防御力', 차댐: 'チャージダメ',
@@ -49,9 +76,7 @@ const OPTION_SHORT = {
 };
 export const optionLabel = (name, lang) => (OPTION_SHORT[lang] || {})[name] || name;
 
-/* 게임 정식 명칭. 좁은 칸에는 위의 약어를 쓰지만, 종합처럼 한 줄을 통째로 쓰는
-   자리에서는 인게임에 적힌 그대로 보여 주는 쪽이 대조하기 좋다.
-   일본어는 임의 번역이 아니라 일본판 인게임 표기를 따른다 (약어는 좁은 칸 전용). */
+/* 게임 정식 명칭. 좁은 칸에는 위의 약어를 쓰지만, 종합처럼 한 줄을 통째로 쓰는 자리에서는 인게임에 적힌 그대로 보여주는 쪽이 대조하기 좋다. */
 const OPTION_FULL = {
   ko: {
     우코: '우월코드 대미지 증가', 공증: '공격력 증가', 장탄: '최대 장탄 수 증가',
@@ -74,9 +99,7 @@ const OPTION_FULL = {
 export const optionFullLabel = (name, lang) =>
   (OPTION_FULL[lang] || OPTION_FULL.ko)[name] || optionLabel(name, lang);
 
-/* 돌파·코강 등급과 장비 등급도 데이터 키가 한국어 문자열이다('3돌'·'오버로드').
-   키 자체는 원본 표에서 오는 값이라 못 바꾸니, 화면에 낼 때만 라벨로 옮긴다.
-   i18n 표는 app.js 에 있으므로 t 를 받아 쓴다 (이 모듈은 DOM 도 STR 도 모른다). */
+/* 돌파·코강 등급과 장비 등급도 데이터 키가 한국어 문자열이다('3돌'·'오버로드'). */
 export function gradeLabel(key, t) {
   const core = /^([1-7])코강$/.exec(key);
   if (core) return t('cp.core', core[1]);
@@ -86,8 +109,7 @@ export function gradeLabel(key, t) {
 export const tierLabel = (key, t) => (key ? t('cp.tier_' + key) : '');
 
 /* ── 원본 표 -> 조회용 인덱스 ────────────────────────────────
-   data/raw/*.json 은 {columns, rows} 배열 형태라 그대로 쓰면 매번 컬럼을
-   찾아야 한다. 계산은 니케 하나당 수십 번 조회하므로 Map 으로 눕힌다. */
+   data/raw/*.json 은 {columns, rows} 배열 형태라 그대로 쓰면 매번 컬럼을 찾아야 한다. */
 export function buildTables(raw) {
   const ix = d => Object.fromEntries(d.columns.map((c, i) => [c.key, i]));
   const T = {};
@@ -111,8 +133,9 @@ export function buildTables(raw) {
   const g = raw.attraction_grade, gi = ix(g);
   T.grades = g.rows.map(r => ({ key: r[gi.grade], breaks: r[gi.limit_break], cores: r[gi.core] }));
 
+  /* 장비는 티어별 기본값만 들고, 강화·기업 보너스는 gearStat() 이 먹인다. */
   const e = raw.equip_stat, ei = ix(e);
-  T.gear = new Map(e.rows.map(r => [`${r[ei.class]}|${r[ei.slot]}|${r[ei.tier]}|${r[ei.enhance]}`,
+  T.gearSeed = new Map(e.rows.map(r => [`${r[ei.class]}|${r[ei.slot]}|${r[ei.tier]}`,
     { hp: r[ei.hp], atk: r[ei.atk], def: r[ei.def] }]));
 
   const o = raw.equip_option, oi = ix(o);
@@ -165,8 +188,7 @@ function cubeOf(T, level) {
   return { stat: row, coef };
 }
 
-/* 소장품. kind 는 'none' | 'R' | 'SR' | '애장품'.
-   애장품은 스탯·계수 모두 SR15 와 같다. */
+/* 소장품. kind 는 'none' | 'R' | 'SR' | '애장품'. */
 function collectionOf(T, kind, level) {
   if (kind === 'none') return { stat: ZERO, coef: 0 };
   if (kind === '애장품') {
@@ -189,18 +211,32 @@ function consoleOf(T, levels) {
   return out;
 }
 
+/* 장비 한 칸의 스탯 — 티어 기본값 × (1 + 기업일치 + 강화). */
+export function gearStat(T, cls, slot, tier, enhance = 0) {
+  const seed = TIER_SEED[tier];
+  const base = seed && T.gearSeed.get(`${cls}|${slot}|${seed[0]}`);
+  if (!base) return null;
+  const k = 1 + (seed[1] ? GEAR_CORP_BONUS : 0)
+    + Math.min(Math.max(enhance, 0), ENHANCE_MAX) * GEAR_ENHANCE_BONUS;
+  return { hp: Math.round(base.hp * k), atk: Math.round(base.atk * k),
+    def: Math.round(base.def * k) };
+}
+
 function gearOf(T, cls, gear) {
-  let stat = ZERO, elemDmg = 0, other = 0;
+  let stat = ZERO, elemDmg = 0, other = 0, optCoef = 0;
   for (const g of gear || []) {
     if (!g || !g.tier) continue;
-    const row = T.gear.get(`${cls}|${g.slot}|${g.tier}|${g.enhance || 0}`);
+    const row = gearStat(T, cls, g.slot, g.tier, g.enhance || 0);
     if (row) stat = add(stat, row);
     for (const o of g.options || []) {
       if (!o || !o.name || !o.level) continue;
-      if (o.name === ELEM_DAMAGE) elemDmg += o.level; else other += o.level;
+      const uco = o.name === ELEM_DAMAGE;
+      if (uco) elemDmg += o.level; else other += o.level;
+      // 옵션은 하나씩 소수 4자리로 끊는다. 묶어서 더한 뒤 끊으면 옵션이 많은 니케에서 최대 12 CP 차이
+      optCoef += round(o.level * (uco ? K.ELEM_DMG : K.OTHER_OPT), 4);
     }
   }
-  return { stat, elemDmg, other };
+  return { stat, elemDmg, other, optCoef };
 }
 
 /* ── 본 계산 ──────────────────────────────────────────────── */
@@ -213,28 +249,32 @@ export function compute(T, input, level = input.level) {
   const coreK = 1 + K.PER_CORE * grade.cores;
   const bond = T.bond.get(`${input.class}|${input.bond}`) || ZERO;
   const con = consoleOf(T, input.console || {});
-  const { stat: gearStat, elemDmg, other } = gearOf(T, input.class, input.gear);
+  const { stat: gearStat, elemDmg, other, optCoef } = gearOf(T, input.class, input.gear);
   const cube = cubeOf(T, input.cube);
   const coll = collectionOf(T, input.collection?.kind || 'none', input.collection?.level);
 
+  const fixed = K.FIXED[input.rarity] || K.FIXED.SSR;
+
+  /* 반올림 자리가 결과를 가른다. 기본×돌파계수까지는 내림 -> 코강계수를 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
+  CP 환산은 스탯마다 내림, 마지막에 정수로 반올림. */
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
-    const inner = base[k] * breakK + bond[k] + con[k] + K.FIXED[k] * grade.breaks;
-    stats[k] = Math.round(inner * coreK + gearStat[k] + cube.stat[k] + coll.stat[k]);
+    const inner = Math.floor(base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks);
+    stats[k] = Math.round(inner * coreK) + gearStat[k] + cube.stat[k] + coll.stat[k];
   }
 
   const s = input.skills || {};
   const skillCoef = (K.SKILL_BASE + (s.s1 || 0) + (s.s2 || 0) + (s.burst || 0) * 2) / 100;
-  const c4 = skillCoef + elemDmg * K.ELEM_DMG + other * K.OTHER_OPT;
-  // 시트가 이 항만 소수 4자리로 반올림한다. 결과가 달라지므로 그대로 따른다.
+  const c4 = skillCoef + optCoef;
+  // 이 항도 소수 4자리로 끊는다. 결과가 달라지므로 그대로 따른다.
   const c5 = round(cube.coef * K.CUBE + coll.coef * K.COLLECTION, 4);
 
   const parts = {
-    hp: Math.round(stats.hp * K.HP),
-    atk: Math.round(stats.atk * K.ATK),
-    def: Math.round(stats.def * K.DEF),
+    hp: Math.floor(stats.hp * K.HP),
+    atk: Math.floor(stats.atk * K.ATK),
+    def: Math.floor(stats.def * K.DEF),
   };
-  const cp = (parts.hp + parts.atk + parts.def) * (c4 + c5) / 100;
+  const cp = Math.round((parts.hp + parts.atk + parts.def) * (c4 + c5) / 100);
 
   return { level, stats, parts, skillCoef, elemDmg, other, c4, c5, cp,
     breaks: grade.breaks, cores: grade.cores };
@@ -243,9 +283,9 @@ export function compute(T, input, level = input.level) {
 const round = (v, d) => { const p = 10 ** d; return Math.round(v * p) / p; };
 
 /* ── 컨텐츠별 보정 전투력 ──────────────────────────────────────
-   cap  = 사용자 레벨이 지정 레벨보다 높을 때만 깎는다 (요격전)
-   fix  = 사용자 레벨과 무관하게 지정 레벨로 고정 (협전·솔레·챔레나)
-   none = 무보정                                                   */
+   cap = 사용자 레벨이 지정 레벨보다 높을 때만 깎는다
+   (요격전) fix = 사용자 레벨과 무관하게 지정 레벨로 고정
+   (협전·솔레·챔레나) none = 무보정 */
 export function adjustedLevel(mode, level, at) {
   if (mode === 'cap') return Math.min(level, at);
   if (mode === 'fix') return at;
@@ -261,8 +301,7 @@ export function byContent(T, input, contents) {
 }
 
 /* ── 전투력 부족 페널티 ────────────────────────────────────────
-   부족률 = round((대상 - 내CP) / 대상, 4) 이고, 표에서 그 값 이하의
-   가장 큰 항목을 고른다. 적용 범위는 캠페인·타워·로스트섹터뿐.        */
+   부족률 = round((대상 - 내CP) / 대상, 4) 이고, 표에서 그 값 이하의 가장 큰 항목을 고른다. */
 export function penalty(T, targetCP, myCP) {
   if (!T.penalty || !targetCP || myCP >= targetCP) return { deficit: 0, penalty: 0 };
   const deficit = round((targetCP - myCP) / targetCP, 4);

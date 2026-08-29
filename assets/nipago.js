@@ -1,19 +1,13 @@
 /* 니파고 탭 — 오버로드 옵션작(수치작) 시뮬레이터.
 
-   MechaShifty 의 단일 HTML 시제품(`sample/nipago.html` + `Module_Nipago.md`)을
-   이 사이트 구조로 옮긴 것이다. 계산 규칙은 그대로 두되 두 가지를 바꿨다.
-
-   1. 옵션 수치·등장확률·레벨 확률을 코드에 박지 않고 `data/raw/equip_option.json`
-      과 `equip_glossary.json` 에서 읽는다. 시제품은 크댐 12% / 크확 10% 였는데
-      이 사이트는 게임 표기(크댐 10% / 크확 12%)를 정본으로 쓴다 (DEVIATIONS §3).
+   1. 옵션 수치·등장확률·레벨 확률을 코드에 박지 않고 `data/raw/equip_option.json` 과 `equip_glossary.json` 에서 읽는다.
    2. 상태를 localStorage 에 남기고, 상태가 바뀌면 패널을 통째로 다시 그린다.
 
-   슬롯 등장확률(100/50/30%)과 잠금 비용(모듈 2·3 / 락키 20·30)은 워크북에 없는
-   공식 수치라 아래 상수로 둔다.
+   슬롯 등장확률(100/50/30%)과 잠금 비용(모듈 2·3 / 락키 20·30)은 워크북에 없는 공식 수치라 아래 상수로 둔다.
 
    app.js 와의 결합은 renderNipago(root, ctx) 한 곳뿐. */
 
-import { optionLabel } from './cp.js';
+import { optionLabel, olRows } from './cp.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
@@ -62,7 +56,7 @@ async function loadAll() {
   const [option, glossary] = await Promise.all(
     NEED.map(k => fetchJSON(`${base}raw/${k}.json`)));
 
-  /* equip_option 은 레벨이 행, 옵션이 열이다. 열 라벨(우코·공증…)로 용어집과 맞춘다. */
+  /* equip_option 은 레벨이 행, 옵션이 열이다. */
   const gi = Object.fromEntries(glossary.columns.map((c, i) => [c.key, i]));
   const byAbbr = Object.fromEntries(glossary.rows.map(r => [r[gi.abbr], r]));
   const opts = [];
@@ -140,16 +134,11 @@ function normalize(v) {
 }
 
 /* ── 밖에서 슬롯 채우기 ───────────────────────────────────────
-   계산기 탭이 보고 있던 니케의 오버로드 장비 한 부위를 그대로 넘겨 준다.
-   목표(goals)와 누적 소모(totalMod·totalKey)는 이 부위만의 값이 아니라 계속
-   쌓아 가는 값이라 그대로 두고, 슬롯과 잠금 이력만 갈아 끼운다 — 이력은 슬롯
-   번호를 가리키고 있어서 슬롯을 바꾸면 되돌리기가 어긋난다.
-
-   탭을 한 번도 안 열었으면 D(옵션 표)도 S 도 없다. 그때는 저장값만 고쳐 두면
-   탭을 열 때 load() 가 집어 가고, 값 검증은 그쪽 normalize 가 맡는다. */
+   계산기 탭이 보고 있던 니케의 오버로드 장비 한 부위를 그대로 넘겨 준다. */
 export function seedSlots(options) {
+  const rows = olRows(options);
   const slots = [0, 1, 2].map(i => {
-    const o = (options || [])[i];
+    const o = rows[i];
     return o && o.name ? { opt: o.name, lv: o.level || 1, lock: 'none' }
       : { opt: '', lv: 11, lock: 'none' };
   });
@@ -166,8 +155,7 @@ export function seedSlots(options) {
 }
 
 /* ── 확률 엔진 (원본 명세 그대로) ─────────────────────────────
-   제외된 옵션의 확률은 남은 옵션들에 비율대로 재분배되고,
-   거기에 슬롯 등장확률을 곱한 값이 그 슬롯의 최종 확률이다.        */
+   제외된 옵션의 확률은 남은 옵션들에 비율대로 재분배되고, 거기에 슬롯 등장확률을 곱한 값이 그 슬롯의 최종 확률이다. */
 function slotProbs(slotIdx, excluded) {
   const sp = SLOT_P[slotIdx];
   const avail = D.opts.filter(o => !excluded.has(o.id));
@@ -217,8 +205,7 @@ const expLR = (minLv, lk) => {
   return p <= 0 ? Infinity : (1 / p) * (lk + 1);
 };
 
-/* 목표를 하나씩 순서대로 달성한다고 보고 단계별 비용을 더한다.
-   한 목표를 잡을 때마다 그 슬롯을 모듈잠금(2개)하고 다음 목표로 넘어간다. */
+/* 목표를 하나씩 순서대로 달성한다고 보고 단계별 비용을 더한다. */
 function expectedTotal() {
   const gList = goalList();
   if (!gList.length) return 0;
@@ -871,26 +858,30 @@ function renderModal() {
 function paint(root) {
   root.textContent = '';
 
+  /* 왼쪽 단은 목표 옵션 한 장, 오른쪽 단은 그 목표로 나오는 것들이 위에서 아래로 쌓인다. */
   const top = el('div', 'np-top');
   top.appendChild(renderGoals());
   const right = el('div', 'np-col');
-  right.appendChild(renderCost());
-  right.appendChild(renderProbBars());
+  /* 소모량과 1회 확률은 둘 다 짧아서 한 줄씩 차지할 이유가 없다 — 반씩 나눠 나란히 둔다. */
+  const pair = el('div', 'np-pair');
+  pair.appendChild(renderCost());
+  pair.appendChild(renderProbBars());
+  right.appendChild(pair);
+  /* 슬롯별 표는 위 두 카드의 근거라 바로 아래에 붙인다. */
+  right.appendChild(renderProbTable());
+  /* 장비 카드와 그 장비를 두고 하는 조언은 나란히 둔다. */
+  const bottom = el('div', 'np-bottom');
+  bottom.appendChild(renderGear());
+  const rec = renderRec();
+  if (rec) bottom.appendChild(rec);
+  right.appendChild(bottom);
   top.appendChild(right);
   root.appendChild(top);
-
-  const mid = el('div', 'np-mid');
-  mid.appendChild(renderGear());
-  mid.appendChild(renderProbTable());
-  root.appendChild(mid);
-
-  const rec = renderRec();
-  if (rec) root.appendChild(rec);
 
   if (ui.pending) root.appendChild(renderModal());
 }
 
-/* 슬롯 패널·자물쇠 메뉴는 바깥을 누르면 닫힌다. 리스너는 한 번만 건다. */
+/* 슬롯 패널·자물쇠 메뉴는 바깥을 누르면 닫힌다. */
 let wired = false;
 function wireOutside() {
   if (wired) return;
@@ -904,7 +895,7 @@ function wireOutside() {
   });
 }
 
-/* app.js 가 부르는 유일한 진입점. 탭을 열 때마다, 언어·테마가 바뀌어도 호출된다. */
+/* app.js 가 부르는 유일한 진입점. */
 export async function renderNipago(root, context) {
   ctx = context;
   mounted = root;

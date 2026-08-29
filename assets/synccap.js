@@ -2,16 +2,12 @@
 
      상한 = 니케 최대 레벨 + Σ등급  N(등급, 날짜) × (1 + 돌파(등급) × 배수)
 
-   · N(등급, 날짜) = 그 날짜까지 출시된 해당 등급 니케 수. 시트는
-     `COUNTIFS(Resource_list[original_rare], 등급, [release_date], "<=" & 날짜)`
-     로 세는데, 여기서는 우리 `data/nikkes.json` 을 그대로 센다. 시트 기준일
-     2026-08-11 에서 SSR 168 · SR 19 · R 9 로 시트 값과 일치하는 것을 확인했다.
-   · 돌파·배수·최대 레벨은 전부 게임 상수라 입력이 아니다. **입력은 날짜 하나뿐**이고,
-     그래서 이 카드는 좁게 둔다 — 옆의 검색 카드가 폭을 최대한 쓰게 하려는 것.
+   · N(등급, 날짜) = 그 날짜까지 출시된 해당 등급 니케 수.
+   · **입력은 날짜 하나뿐**이고, 그래서 이 카드는 좁게 둔다 — 옆의 검색 카드가 폭을 최대한 쓰게 하려는 것.
 
    app.js 와의 결합은 renderSyncCap(root, ctx) 한 곳뿐. */
 
-/* 게임 상수 — 돌파 1단계가 상한에 더해 주는 값. 시트에도 셀 상수로 박혀 있다. */
+/* 게임 상수 — 돌파 1단계가 상한에 더해 주는 값. */
 const STEP = 1.334;
 /* 니케 하나가 도달할 수 있는 최대 레벨 = 상한의 바닥값. */
 const BASE = 200;
@@ -35,8 +31,7 @@ const today = () => {
   return d.toISOString().slice(0, 10);
 };
 
-/* 날짜까지 출시된 등급별 니케 수. 출시일이 비어 있으면 세지 않는다 —
-   날짜별 계산기에서 시점을 모르는 니케를 끼워 넣으면 값이 흔들린다. */
+/* 날짜까지 출시된 등급별 니케 수. */
 function counts(nikkes, date) {
   const c = Object.fromEntries(RARITIES.map(([r]) => [r, 0]));
   let unknown = 0;
@@ -73,7 +68,7 @@ export function renderSyncCap(root, ctx) {
     dateRow.appendChild(di);
     root.appendChild(dateRow);
 
-    /* 시트 H9:L16 과 같은 표 모양 — 등급 3행 + 소계 + 최대 레벨 + 합계. */
+    /* 등급 3행 + 소계 + 최대 레벨 + 합계. */
     const tbl = el('table', 'sc-tbl');
     const thead = el('thead'), hr = el('tr');
     hr.appendChild(el('th'));
@@ -123,7 +118,7 @@ export function renderSyncCap(root, ctx) {
     tbl.appendChild(tfoot);
     root.appendChild(tbl);
 
-    /* 검색 카드와 높이를 맞추면 아래가 남는다. 그 자리를 설명이 받는다. */
+    /* 검색 카드와 높이를 맞추면 아래가 남는다. */
     const note = el('p', 'sc-note', t('sc.how', BASE, STEP));
     if (unknown) note.textContent += ' ' + t('sc.unknown', unknown);
     root.appendChild(note);

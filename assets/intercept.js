@@ -1,24 +1,16 @@
 /* 특특요 탭 — 이상 개체 요격전(특특요)의 하루치 획득 확률 분포.
 
-   워크북의 `특특요_확률분포` / `3.5주년 이전 특특요` 시트에는 이미 계산된
-   분포표가 들어 있지만, 여기서는 그 표를 옮겨 담지 않고 **수급량 표 두 개**
-   (`module_settings` = 3.5주년 이후, `module_settings_pre35` = 이전)만 읽어서
-   분포를 그때그때 계산한다. 두 시트의 값과 소수점 9자리까지 일치하는 것을
-   확인했다 — 시트 쪽 숫자가 반올림돼 있을 뿐 모형은 같다.
+   워크북의 `특특요_확률분포` / `3.5주년 이전 특특요` 시트에는 이미 계산된 분포표가 들어 있지만, 여기서는 그 표를 옮겨담지 않고
+   **수급량 표 두 개** (`module_settings` = 3.5주년 이후, `module_settings_pre35` = 이전)만 읽어서 분포를 그때그때 계산한다.
+   두 시트의 값과 소수점 9자리까지 일치하는 것을 확인했다 — 시트 쪽 숫자가 반올림돼 있을 뿐 모형은 같다.
 
    모형 (시트의 §2·§3·§7 과 동일):
-     · 하루 진입 3회. 풀버스트는 유저가 켜고 끄는 옵션이 아니라 이벤트로
-       적용되는 날이 따로 있는 것이고, 그날은 진입당 2게임이라 G = 3 또는 6.
-     · 모듈 모드(크라켄) — 게임마다 모듈 랜덤박스가 P_box 로 뜨고, 뜨면
-       1/2/3개가 p₁/p₂/p₃ 로 나온다. 하루 분포는 이 단일 게임 분포를
-       G번 합성곱(convolution)한 것. 근사가 아니라 정확한 값이다.
-     · 장비 모드(크라켄 제외 보스) — 게임마다 장비 랜덤박스가 P_eq 로 뜨는
-       이항분포 B(G, P_eq).
-     · 모듈피스는 확률이 아니라 확정 획득이라 분포에 들어가지 않는다.
-       100개마다 모듈 1개가 되는 몫만 분포를 통째로 오른쪽으로 민다.
+     · 하루 진입 3회. 풀버스트는 유저가 켜고 끄는 옵션이 아니라 이벤트로 적용되는 날이 따로 있는 것이고, 그날은 진입당 2게임이라 G = 3 또는 6.
+     · 모듈 모드(크라켄) — 게임마다 모듈 랜덤박스가 P_box 로 뜨고, 뜨면 1/2/3개가 p₁/p₂/p₃ 로 나온다. 하루 분포는 이 단일 게임 분포를 G번 합성곱(convolution)한 것. 근사가 아니라 정확한 값이다.
+     · 장비 모드(크라켄 제외 보스) — 게임마다 장비 랜덤박스가 P_eq 로 뜨는 이항분포 B(G, P_eq).
+     · 모듈피스는 확률이 아니라 확정 획득이라 분포에 들어가지 않는다. 100개마다 모듈 1개가 되는 몫만 분포를 통째로 오른쪽으로 민다.
 
-   이 탭의 목적은 값 자체보다 **3.5주년 전후 비교**라서, 모든 표가 두 시대를
-   나란히 놓고 차이(Δ)를 같이 보여준다.
+   이 탭의 목적은 값 자체보다 **3.5주년 전후 비교**라서, 모든 표가 두 시대를 나란히 놓고 차이(Δ)를 같이 보여준다.
 
    app.js 와의 결합은 renderIntercept(root, ctx) 한 곳뿐. */
 
@@ -44,8 +36,7 @@ const el = (tag, cls, text) => {
 const t = (k, ...a) => ctx.t(k, ...a);
 
 /* ── 숫자 표기 ────────────────────────────────────────────────
-   확률은 0.0000001% 부터 44% 까지 폭이 넓다. 소수 셋째 자리에서 끊되
-   0 이 아닌데 0.000 으로 보이는 칸은 '<0.001' 로 구분한다.            */
+   확률은 0.0000001% 부터 44% 까지 폭이 넓다. */
 const dec = (v, d = 3) => v.toLocaleString(undefined,
   { minimumFractionDigits: d, maximumFractionDigits: d });
 /* 이미 퍼센트 단위로 들어온 값을 표기용 문자열로. */
@@ -74,8 +65,7 @@ async function loadAll() {
   D = build(pre, post);
 }
 
-/* 수급량 표(단계 9행)를 계산하기 좋은 꼴로 편다. 퍼센트는 여기서 한 번만
-   소수로 바꾸고, 표시용 원본 퍼센트도 같이 들고 있는다. */
+/* 수급량 표(단계 9행)를 계산하기 좋은 꼴로 편다. */
 function build(pre, post) {
   const ci = Object.fromEntries(post.columns.map((c, i) => [c.key, i]));
   const era = src => src.rows.map(r => ({
@@ -96,7 +86,7 @@ const convolve = (a, b) => {
   return out;
 };
 
-/* 단일 게임 분포를 G번 합성곱. G 가 3·6 뿐이라 그냥 접는다. */
+/* 단일 게임 분포를 G번 합성곱. */
 function fold(single, games) {
   let d = [1];
   for (let i = 0; i < games; i++) d = convolve(d, single);
@@ -116,8 +106,7 @@ function moments(pmf) {
 
 const games = () => ENTRIES * (S.fb ? 2 : 1);
 
-/* 한 시대·한 단계의 하루 분포. shift=true 면 모듈피스로 확정되는 몫만큼
-   분포를 오른쪽으로 밀어 '하루에 완성되는 모듈 총 개수' 분포로 만든다. */
+/* 한 시대·한 단계의 하루 분포. */
 function derive(eraKey, step) {
   const row = D[eraKey][step - 1];
   const G = games();
@@ -247,8 +236,7 @@ function renderForm(root) {
 }
 
 /* ── 비교 요약 ────────────────────────────────────────────── */
-/* neutral=true 는 '늘어난 게 좋은 것'이 아닌 값(표준편차)용 — 부호만 남기고
-   좋음/나쁨 색은 쓰지 않는다. */
+/* neutral=true 는 '늘어난 게 좋은 것'이 아닌 값(표준편차)용 — 부호만 남기고 좋음/나쁨 색은 쓰지 않는다. */
 function cmpCard(label, before, after, digits, neutral) {
   const c = el('div', 'ic-cmp');
   c.appendChild(el('div', 'ic-cmpLbl', label));
@@ -335,8 +323,7 @@ function renderParams(a, b) {
   for (const [key, lab, digits, isMod] of PARAMS) {
     const i = D.ci[key];
     const before = a.row.raw[i], after = b.row.raw[i];
-    /* 지금 보고 있는 모드에 안 쓰이는 값은 흐리게 — 표에서 빼지는 않는다.
-       (모듈 모드에서도 장비박스 출현율이 같이 올랐다는 게 정보다) */
+    /* 지금 보고 있는 모드에 안 쓰이는 값은 흐리게 — 표에서 빼지는 않는다. */
     const tr = el('tr', (S.mode === 'module') === isMod ? null : 'ic-off');
     tr.appendChild(el('td', null, t(lab)));
     tr.appendChild(el('td', 'num', dec(before, digits)));
@@ -403,8 +390,7 @@ function renderDist(a, b) {
   thead.appendChild(hr); tbl.appendChild(thead);
 
   const body = el('tbody');
-  /* 꼬리 쪽은 양쪽 다 0 인 칸이 이어진다. 시트와 같은 범위를 보여주되
-     완전히 0 인 줄만 잘라낸다. */
+  /* 꼬리 쪽은 양쪽 다 0 인 칸이 이어진다. */
   let last = 0;
   for (let k = 0; k < n; k++) if (at(A, k) > 0 || at(B, k) > 0) last = k;
 
@@ -415,9 +401,7 @@ function renderDist(a, b) {
     tr.appendChild(barCell(before, after, max));
     tr.appendChild(el('td', 'num', pct(before)));
     tr.appendChild(el('td', 'num ic-em', pct(after)));
-    /* 여기서는 초록/빨강을 쓰지 않는다 — k=0 의 확률이 줄어든 것은 상향인데
-       빨강으로 칠하면 정반대로 읽힌다. 대신 '어느 쪽이 큰가'를 범례와 같은
-       계열색으로 말한다. */
+    /* 여기서는 초록/빨강을 쓰지 않는다 — k=0 의 확률이 줄어든 것은 상향인데 빨강으로 칠하면 정반대로 읽힌다. */
     tr.appendChild(el('td', 'num ' + (d > 1e-9 ? 'ic-more' : d < -1e-9 ? 'ic-less' : 'ic-flat'),
       Math.abs(d) < 0.0005 ? '±0' : signed(d)));
     body.appendChild(tr);

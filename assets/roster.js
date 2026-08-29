@@ -1,34 +1,29 @@
 /* 내 계정 — Blablalink 에서 뽑아 온 내 니케 데이터를 계산기에 붙인다.
 
-   데이터를 가져오는 쪽은 이 저장소의 `userscript/mechashifty.user.js`(Tampermonkey)
-   또는 같은 코드를 해시로 고정한 북마클릿이다. 여기서는 받은 payload 를 검증하고,
-   계산기 입력 형태로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
+   데이터를 가져오는 쪽은 이 저장소의 `userscript/mechashifty.user.js`(Tampermonkey) 또는 같은 코드를 해시로 고정한 북마클릿이다.
+   여기서는 받은 payload 를 검증하고, 계산기 입력 형태로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
 
    받는 경로는 셋인데 전부 사용자가 직접 시작한다:
      1) JSON 열기      2) 붙여넣기      3) 수집 스크립트가 연 탭에서 postMessage
 
    3번은 출처(origin)를 확인한다. 계정 데이터라 아무 창이나 밀어 넣을 수 있으면 안 된다.
-   반대로 우리가 보내는 준비 신호도 대상 origin 을 명시해서, blablalink 가 아닌 창에는
-   애초에 배달되지 않게 한다. */
+   반대로 우리가 보내는 준비 신호도 대상 origin 을 명시해서, blablalink 가 아닌 창에는 애초에 배달되지 않게 한다. */
 
 import { optionLabel, gradeLabel, tierLabel } from './cp.js';
 
 const STORE = 'cp.roster';
 const SCHEMA = 'mechashifty.roster/2';
-/* 수집 스크립트가 도는 곳. 여기서 온 메시지만 받는다. */
+/* 수집 스크립트가 도는 곳. */
 const SENDERS = ['https://www.blablalink.com', 'https://blablalink.com'];
 const MAX_NIKKES = 600;
 
 const SLOTS = ['머리', '몸', '팔', '다리'];
 const GRADE = /^(?:[0-3]돌|[1-7]코강)$/;
-const TIERS = ['', '9티어_기업', '오버로드'];
+const TIERS = ['', '9티어_일반', '9티어_기업', '오버로드'];
 const OPTIONS = ['우코', '공증', '장탄', '크댐', '크확', '차속', '명중', '방어', '차댐'];
-/* 옛 약어 → 지금 약어. 이 이름은 `equip_option.json` 의 열 라벨이자 수집 스크립트가
-   내보내는 값이라 데이터의 키다. 이미 받아 둔 JSON·localStorage 를 버리지 않도록
-   읽을 때 한 번 눕힌다 ('데미지' 표기를 '대미지' 로 통일하면서 바뀌었다). */
+/* 옛 약어 → 지금 약어. */
 export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
-/* 목록에 아이콘으로 찍는 축. 여섯 개를 다 넣으면 11px 로 줄여야 해서 아무것도
-   안 보인다. 속성·버스트만 남기고 나머지는 필터 칩과 상세 카드에 맡긴다. */
+/* 목록에 아이콘으로 찍는 축. */
 const AXES = ['element', 'burst'];
 
 const el = (tag, cls, text) => {
@@ -39,11 +34,9 @@ const el = (tag, cls, text) => {
 };
 
 /* ── 정렬 등수 ────────────────────────────────────────────────
-   배지로 찍는 칸들은 화면 값이 글자('3돌'·'SR15')라 그대로는 못 센다.
-   열마다 '많이 키운 쪽이 큰 수' 가 되는 등수를 따로 매긴다. */
+   배지로 찍는 칸들은 화면 값이 글자('3돌'·'SR15')라 그대로는 못 센다. */
 
-/* 돌파와 코어강화는 한 줄로 이어진 단계다 — 코강은 3돌 다음이라
-   0돌(0) … 3돌(3) … 1코강(4) … 7코강(10) 순으로 커진다. */
+/* 돌파와 코어강화는 한 줄로 이어진 단계다 — 코강은 3돌 다음이라 0돌(0) … 3돌(3) … 1코강(4) … 7코강(10) 순으로 커진다. */
 function gradeRank(g) {
   const core = /^([1-7])코강$/.exec(g);
   if (core) return 3 + Number(core[1]);
@@ -56,8 +49,7 @@ function collRank(c) {
   if (!c || c.kind === 'none') return 0;
   return (COLL_RANK[c.kind] || 0) * 100 + (parseInt(c.level, 10) || 0);
 }
-/* 장비는 네 부위를 합쳐 한 수로. 등급 한 칸이 강화 단계 전부보다 무겁게
-   (오버로드 0강 > 9티어 만강) — 실제로 그쪽이 훨씬 세다. */
+/* 장비는 네 부위를 합쳐 한 수로. */
 const gearRank = gear => gear.reduce(
   (s, g) => s + Math.max(0, TIERS.indexOf(g.tier)) * 20 + (g.enhance || 0), 0);
 const int = (v, lo, hi, dflt) => {
@@ -65,8 +57,7 @@ const int = (v, lo, hi, dflt) => {
   return Number.isFinite(n) && n >= lo && n <= hi ? n : dflt;
 };
 const fmt = v => (v == null ? '—' : Math.round(v).toLocaleString());
-/* 전투력 세 열은 자릿수가 여섯이라 표를 밀어낸다. 유효숫자 세 자리 + k 로 줄이고
-   정확한 값은 hover 로 넘긴다 (447,440 -> 447k · 57,759 -> 57.8k). */
+/* 전투력 세 열은 자릿수가 여섯이라 표를 밀어낸다. */
 function kfmt(v) {
   if (v == null) return '–';
   const n = Math.round(v);
@@ -76,13 +67,7 @@ function kfmt(v) {
 }
 
 /* ── 한 칸짜리 배지 ────────────────────────────────────────────
-   모양·색으로 종류를, 가운데 숫자로 단계를 나타낸다. 색만으로 뜻을 나르지
-   않도록 hover 에 원래 표기(3돌·5코강·SR15…)를 그대로 붙인다.
-
-   목록의 표 칸과 계산기 상세 카드가 같은 배지를 쓴다 — 같은 값을 두 화면에서
-   다르게 그리면 눈이 두 번 적응해야 한다. 그래서 도형을 만드는 쪽만 여기 모듈
-   높이로 올려 내보내고, <td> 로 감싸는 건 목록 쪽(renderImport)에 남긴다.
-   이 모듈은 i18n 표를 모르므로 t 를 받아 쓴다. */
+   모양·색으로 종류를, 가운데 숫자로 단계를 나타낸다. */
 export function badge(cls, text, title) {
   const b = el('span', 'cp-badge ' + cls);
   // 두 자리(소장품 15 · 호감도 20…)는 도형 폭을 넘겨서 한 단계 작게 쓴다
@@ -91,9 +76,8 @@ export function badge(cls, text, title) {
   return b;
 }
 
-/* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 최대 돌파 이후 단계라
-   attraction_grade 의 코강 줄은 전부 돌파가 꽉 차 있다) → 배지 하나로 충분하다.
-     회색 별 0 · 금색 별 1~3 · 보라 별 코강 1~7                              */
+/* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 최대 돌파 이후 단계라 attraction_grade 의 코강 줄은 전부 돌파가
+   꽉 차 있다) → 배지 하나로 충분하다. */
 export function gradeBadge(grade, t) {
   const core = /^([1-7])코강$/.exec(grade);
   const brk = /^([0-3])돌$/.exec(grade);
@@ -103,7 +87,7 @@ export function gradeBadge(grade, t) {
   return null;                               // 모르는 표기 — 부르는 쪽이 글자로 쓴다
 }
 
-/* 소장품. R 파랑 · SR 보라 · 애장품 주황. 애장품은 레벨이 '2.0' 꼴이라 정수만. */
+/* 소장품. R 파랑 · SR 보라 · 애장품 주황. */
 const COLL_CLS = { R: 'is-r', SR: 'is-sr', 애장품: 'is-fav' };
 export function collBadge(c, t) {
   if (!c || c.kind === 'none') return null;
@@ -117,10 +101,7 @@ export function collBadge(c, t) {
 export const bondBadge = (bond, t) =>
   badge('is-heart is-bond', String(bond), t('cp.bond') + ' ' + bond);
 
-/* 하모니 큐브 — 아이콘 + 레벨. 종류 이름과 효과는 hover 로 넘긴다 (글자로 쓰면
-   이 한 칸이 표를 밀어낸다). 전투력에는 레벨만 들어가서 종류는 표시 전용이다.
-   cubes.json 은 이 모듈이 안 들고 있으므로 풀어 놓은 정보와 아이콘 만드는 함수를
-   화면 쪽에서 받는다. */
+/* 하모니 큐브 — 아이콘 + 레벨. */
 export function cubeBadge(cube, info, iconEl) {
   if (!cube || !cube.level) return null;
   const box = el('span', 'cp-cubeBadge');
@@ -133,9 +114,7 @@ export function cubeBadge(cube, info, iconEl) {
   return box;
 }
 
-/* 수집 시각. 유저스크립트가 ISO(UTC)로 찍으므로 보는 사람의 지역 시간으로
-   되돌려 분까지 보여준다. 날짜만으로는 오늘 두 번째로 받은 자료인지 알 수 없다.
-   못 읽는 값이면 앞부분을 그대로 내보낸다 (형식이 바뀌어도 화면은 살아 있게). */
+/* 수집 시각. 유저스크립트가 ISO(UTC)로 찍으므로 보는 사람의 지역 시간으로 되돌려 분까지 보여준다. */
 export function stampText(s) {
   if (!s) return '—';
   const d = new Date(s);
@@ -146,8 +125,7 @@ export function stampText(s) {
 }
 
 /* ── 검증 ─────────────────────────────────────────────────────
-   바깥에서 들어온 JSON 이라 형태를 믿지 않는다. 모르는 값은 버리고 기본값으로
-   메운다. 여기서 통과한 것만 계산기 입력으로 쓴다. */
+   바깥에서 들어온 JSON 이라 형태를 믿지 않는다. */
 export function parseRoster(raw) {
   const data = typeof raw === 'string' ? JSON.parse(raw) : raw;
   if (!data || data.schema !== SCHEMA) throw new Error('schema');
@@ -160,11 +138,10 @@ export function parseRoster(raw) {
     schema: SCHEMA,
     generated_at: String(data.generated_at || '').slice(0, 40),
     account: {
-      synchro_level: int(acc.synchro_level, 1, 1200, null),
+      synchro_level: int(acc.synchro_level, 1, 1400, null),
       // Unix 초. 니케 서비스 개시 이전이거나 미래면 버린다.
       created_at: int(acc.created_at, 1667000000, Math.floor(Date.now() / 1000) + 86400, null),
-      /* 캠페인 진행도 — [모드1][지역3][순번3] 7자리 정수. 전초기지 탭이 해독한다
-         (outpost.js decodeProgress). 옛 수집본에는 없어서 null 이 정상값이다. */
+      /* 캠페인 진행도 — [모드1][지역3][순번3] 7자리 정수. */
       progress_normal_campaign: int(acc.progress_normal_campaign, 1, 9999999, null),
       progress_hard_campaign: int(acc.progress_hard_campaign, 1, 9999999, null),
       outpost_battle_level: int(acc.outpost_battle_level, 1, 9999, null),
@@ -194,7 +171,7 @@ function cleanEntry(e) {
   const cube = e.cube || {};
   return {
     name_code: code,
-    level: int(e.level, 1, 1200, 1),
+    level: int(e.level, 1, 1400, 1),
     grade: GRADE.test(e.grade) ? e.grade : '0돌',
     bond: int(e.bond, 1, 999, 1),
     skills: { s1: int(s.s1, 1, 10, 1), s2: int(s.s2, 1, 10, 1), burst: int(s.burst, 1, 10, 1) },
@@ -221,17 +198,18 @@ function cleanGear(gear) {
   });
 }
 
+/* pos 는 그 부위의 몇 번째 옵션 칸인지다 (1~3). 빈 칸을 건너뛰면 목록이 오므라들어
+   상단·하단이 상단·중단으로 보이므로, 걸러 내는 동안에도 칸 번호를 놓치지 않는다. */
 function cleanOptions(options) {
   return (Array.isArray(options) ? options : [])
-    .map(o => (o && OPTION_ALIAS[o.name] ? { ...o, name: OPTION_ALIAS[o.name] } : o))
+    .map((o, i) => (o ? { ...o, name: OPTION_ALIAS[o.name] || o.name, pos: int(o.pos, 1, 3, i + 1) } : o))
     .filter(o => o && OPTIONS.includes(o.name) && int(o.level, 1, 15, 0))
     .slice(0, 3)
-    .map(o => ({ name: o.name, level: int(o.level, 1, 15, 1) }));
+    .map(o => ({ name: o.name, level: int(o.level, 1, 15, 1), pos: o.pos }));
 }
 
 /* ── 계산기 입력으로 ──────────────────────────────────────────
-   콘솔(리사이클 룸)은 계정 단위 표로 받아 두고, 니케의 클래스·기업에 맞는 줄만
-   여기서 골라 넣는다. 호감도 상한은 표에서 오는 값이라 밖에서 받아 자른다. */
+   콘솔(리사이클 룸)은 계정 단위 표로 받아 두고, 니케의 클래스·기업에 맞는 줄만 여기서 골라 넣는다. */
 export function toInput(entry, nikke, research, bondMax) {
   return {
     rid: nikke.rid,
@@ -240,8 +218,7 @@ export function toInput(entry, nikke, research, bondMax) {
     bond: Math.min(entry.bond, bondMax || entry.bond),
     skills: { ...entry.skills },
     cube: entry.cube.level ? String(entry.cube.level) : '미착용',
-    /* 큐브 종류는 전투력에 안 들어가지만(계수는 레벨만 본다) 상세 카드가 이름을
-       보여줘야 해서 같이 넘긴다. 없으면 레벨만 나온다. */
+    /* 큐브 종류는 전투력에 안 들어가지만(계수는 레벨만 본다) 상세 카드가 이름을 보여줘야 해서 같이 넘긴다. */
     cubeTid: entry.cube.level ? entry.cube.tid : null,
     collection: { ...entry.collection },
     console: {
@@ -254,7 +231,7 @@ export function toInput(entry, nikke, research, bondMax) {
 }
 
 /* ── 저장 ─────────────────────────────────────────────────────
-   내 계정 데이터라 서버로 보내지 않는다. 이 브라우저의 localStorage 에만 둔다. */
+   내 계정 데이터라 서버로 보내지 않는다. */
 const save = data => {
   try { localStorage.setItem(STORE, JSON.stringify(data)); } catch { /* 용량 초과 등 */ }
 };
@@ -267,8 +244,7 @@ function restore() {
 }
 
 /* ── 탭 간 수신 ───────────────────────────────────────────────
-   수집 스크립트가 이 페이지를 열면, 우리가 준비됐다고 알린 뒤 답신을 받는다.
-   준비 신호에는 아무 내용도 담기지 않고, 대상 origin 을 하나씩 지정해서 보낸다. */
+   수집 스크립트가 이 페이지를 열면, 우리가 준비됐다고 알린 뒤 답신을 받는다. */
 let listening = false;
 function listen(onData) {
   if (listening) return;
@@ -292,8 +268,7 @@ function listen(onData) {
 }
 
 /* ── 화면 ─────────────────────────────────────────────────── */
-/* 아이콘 칩으로 거를 축. 순서는 app.js 의 AXES 와 맞춘다.
-   계산기의 지휘관 줄도 콘솔 아홉 칸을 이 순서로 세운다 (calc.js renderCommander). */
+/* 아이콘 칩으로 거를 축. */
 export const CHIP_AXES = {
   class: ['Attacker', 'Defender', 'Supporter'],
   element: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'],
@@ -322,8 +297,7 @@ export function renderImport(root, ctx) {
     data = fresh;
     save(fresh);
     status = { text: t('im.received', fresh.nikkes.length, from), bad: false };
-    /* 콘솔은 계정 값이라, 불러오자마자 지금 고른 니케 기준으로 채워 준다.
-       그러지 않으면 카드가 0/0/0 으로 남아 불러온 게 반영 안 된 것처럼 보인다. */
+    /* 콘솔은 계정 값이라, 불러오자마자 지금 고른 니케 기준으로 채워 준다. */
     ctx.applyResearch(fresh.research);
     paint();
     ctx.onAccount();          // 지휘관 줄(싱크로·콘솔)도 새 계정 값으로
@@ -333,8 +307,7 @@ export function renderImport(root, ctx) {
   if (data) ctx.applyResearch(data.research);
 
   /* ── 계정 줄 ────────────────────────────────────────────────
-     불러오기 버튼과 수집 시각 한 줄. 싱크로 레벨과 콘솔 아홉 칸은 계산 결과
-     바로 위(계산기의 지휘관 줄)로 옮겼다 — 여기는 자료를 넣고 빼는 자리다. */
+     불러오기 버튼과 수집 시각 한 줄. */
   function account() {
     const box = el('section', 'cp-account');
 
@@ -347,8 +320,7 @@ export function renderImport(root, ctx) {
       facts.appendChild(f);
     };
     if (data) {
-      /* 계정 생성 시각은 여기서 뺐다 — 이 탭에서는 아무 계산에도 안 쓰이고,
-         전초기지 탭의 타워 카드가 그 값으로 등반 가능 층을 낸다. */
+      /* 계정 생성 시각은 여기서 뺐다 — 이 탭에서는 아무 계산에도 안 쓰이고, 전초기지 탭의 타워 카드가 그 값으로 등반 가능 층을 낸다. */
       add(t('im.collected'), stampText(data.generated_at));
     } else {
       facts.appendChild(el('span', 'cp-acctEmpty', t('im.desc')));
@@ -401,9 +373,7 @@ export function renderImport(root, ctx) {
     };
     btns.appendChild(paste);
 
-    /* 자료를 한 번이라도 불러온 사람은 이미 설치를 끝낸 사람이다. 그 뒤로 설치
-       안내를 문장으로 계속 세워 두면 자리만 차지하니 물음표 한 칸으로 접는다.
-       아직 자료가 없을 때 — 즉 그 안내가 정말 필요한 때 — 만 펼쳐 둔다. */
+    /* 자료를 한 번이라도 불러온 사람은 이미 설치를 끝낸 사람이다. */
     const guide = el('a', data ? 'cp-importHelp' : 'cp-importLink',
       data ? '?' : `${t('im.guide')} →`);
     /* 안내서는 언어별로 파일이 갈려 있다 (한국어가 USER_GUIDE.md, 나머지는 접미사). */
@@ -427,10 +397,7 @@ export function renderImport(root, ctx) {
 
   /* ── 니케 목록 ────────────────────────────────────────────── */
 
-  /* 전체 니케를 한 줄씩. 보유한 것은 전투력을 계산하고, 미보유는 CP 자리를 비운다.
-     정렬은 그리는 쪽(redrawRows)이 맡고 여기서는 이름순으로만 놓는다 — 정렬이
-     안정적이라, 값이 같은 줄끼리는 이 순서가 그대로 남는다.
-     사이트가 모르는 name_code(갓 나온 니케)는 계산할 근거가 없어 세어서 알린다. */
+  /* 전체 니케를 한 줄씩. */
   function rows() {
     const owned = new Map();
     let unknown = 0;
@@ -445,8 +412,7 @@ export function renderImport(root, ctx) {
       const row = { nikke: n, entry: e || null, name: ctx.nameOf(n), cp: null, adj: [], ol: null };
       if (e) {
         row.input = toInput(e, n, data.research, ctx.bondMax);
-        /* 우공합은 칸에도 정렬에도 쓰인다. 비교할 때마다 다시 뽑으면 낭비라
-           여기서 한 번만 모아 둔다. */
+        /* 우공합은 칸에도 정렬에도 쓰인다. */
         row.ol = (ctx.olTotals ? ctx.olTotals(e.gear) : []).filter(o => OL_ATK.includes(o.name));
         const cur = ctx.cpOf(row.input);
         if (cur) {
@@ -460,8 +426,7 @@ export function renderImport(root, ctx) {
     return { out, owned: owned.size, unknown };
   }
 
-  /* 검색은 니케 리스트 탭과 같은 함수를 쓴다 — 이름은 초성('ㄹㅍ')·띄어쓰기 무시,
-     별명·스쿼드는 부분 일치. 검색어가 바뀔 때만 매처를 새로 만든다. */
+  /* 검색은 니케 리스트 탭과 같은 함수를 쓴다 — 이름은 초성('ㄹㅍ')·띄어쓰기 무시, 별명·스쿼드는 부분 일치. */
   let hits = null, hitsFor = null;
   function matcher() {
     if (hitsFor !== filter) {
@@ -474,7 +439,7 @@ export function renderImport(root, ctx) {
     return hits;
   }
 
-  /* 검색어 + 아이콘 칩. 같은 축 안은 OR, 축끼리는 AND — 니케 리스트 탭과 같은 규칙. */
+  /* 검색어 + 아이콘 칩. */
   function keep(r) {
     const m = matcher();
     if (m && !m(r.nikke)) return false;
@@ -514,15 +479,13 @@ export function renderImport(root, ctx) {
     return bar;
   }
 
-  /* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인
-     문구라 ko/en 만 있다. 그래서 블록째가 아니라 항목 단위로 떨어뜨린다 —
-     일본어는 정식 이름 + 영문 약칭·효과가 된다. */
+  /* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인 문구라 ko/en 만 있다. */
   function cubeInfo(tid) {
     const c = tid && ctx.cubes ? ctx.cubes[tid] : null;
     return c ? { ...c.ko, ...c.en, ...c[ctx.lang] } : null;
   }
 
-  /* 큐브는 아이콘이 없어서 셀렉트. 실제로 장착된 것만 추린다. */
+  /* 큐브는 아이콘이 없어서 셀렉트. */
   function cubeSelect() {
     const seen = new Map();
     let none = false;
@@ -547,7 +510,7 @@ export function renderImport(root, ctx) {
     return s;
   }
 
-  /* 등급·기업·속성·클래스·무기·버스트를 아이콘만으로. 이름은 왼쪽 열에 이미 있다. */
+  /* 등급·기업·속성·클래스·무기·버스트를 아이콘만으로. */
   function icons(n) {
     const box = el('div', 'cp-rIcons');
     for (const axis of AXES) {
@@ -557,9 +520,8 @@ export function renderImport(root, ctx) {
     return box;
   }
 
-  /* 장비 4부위를 2×2 로. 위가 머리·몸, 아래가 팔·다리 (구분자 없이 자리로 구분).
-     칸 색이 등급이다 — 분홍 오버로드 · 주황 9티어 기업 (게임 시그니처 색). */
-  const TIER_CLS = { 오버로드: ' is-ol', '9티어_기업': ' is-t9' };
+  /* 장비 4부위를 2×2 로. */
+  const TIER_CLS = { 오버로드: ' is-ol', '9티어_기업': ' is-t9', '9티어_일반': ' is-t9p' };
   function gearGrid(gear) {
     const box = el('div', 'cp-gearGrid');
     for (const slot of SLOTS) {
@@ -575,8 +537,7 @@ export function renderImport(root, ctx) {
     return box;
   }
 
-  /* 배지 자체는 모듈 위쪽에 있다 (계산기 상세 카드와 같은 도형을 쓴다).
-     여기서는 표 칸으로만 감싸고, 값이 없는 칸은 '–' 로 비운다. */
+  /* 배지 자체는 모듈 위쪽에 있다 (계산기 상세 카드와 같은 도형을 쓴다). */
   const badgeCell = node => {
     const td = el('td', 'cp-rBadge');
     if (node) td.appendChild(node); else td.textContent = '–';
@@ -586,10 +547,7 @@ export function renderImport(root, ctx) {
   const collCell = c => badgeCell(collBadge(c, t));
   const bondCell = bond => badgeCell(bondBadge(bond, t));
 
-  /* 우공합 — 오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력).
-     이 둘이 실전 화력을 가르는 옵션이라 목록에서 한 숫자로 보고 싶다. 종합값은
-     계산기 상세 카드와 같은 규칙으로 뽑아야 하므로(같은 단계는 합산 후 반올림)
-     집계 함수를 calc.js 에서 그대로 받아 쓴다 — 여기서 다시 짜면 두 화면이 어긋난다. */
+  /* 우공합 — 오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력). */
   const OL_ATK = ['우코', '공증'];
   const pc = o => Math.round(o.total * 100);
   const olSum = ol => (ol && ol.length ? ol.reduce((a, o) => a + pc(o), 0) : null);
@@ -608,8 +566,8 @@ export function renderImport(root, ctx) {
     return td;
   };
 
-  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨 — 도형은 모듈 위쪽의
-     cubeBadge 가 만든다 (계산기 상세 카드와 같은 모양). */
+  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨 — 도형은 모듈 위쪽의 cubeBadge 가 만든다 (계산기 상세
+     카드와 같은 모양). */
   function cubeCell(cube) {
     const box = cubeBadge(cube, cubeInfo(cube.tid), ctx.iconEl);
     const td = el('td', 'cp-rCube');
@@ -633,14 +591,8 @@ export function renderImport(root, ctx) {
     bar.append(q, chips(), cubeSelect());
     box.appendChild(bar);
 
-    /* 왼쪽은 '무엇을 얼마나 키웠나'(돌파·소장품·호감도·스킬·장비·큐브·우공합),
-       오른쪽은 '그래서 전투력이 얼마인가'(레벨·현재·Lv.40·Lv.400). 키운 것들을
-       훑다가 오른쪽 끝에서 결과를 읽는 순서다.
-
-       val(r) 은 그 열로 정렬할 때 비교할 수. 미보유 줄은 null 을 돌려주는데,
-       어차피 미보유는 열·방향과 무관하게 아래에 고정된다(redrawRows).
-       dir0 는 그 열을 처음 눌렀을 때의 방향 — 키운 정도는 큰 쪽부터,
-       이름은 가나다순부터 보는 게 자연스럽다. */
+    /* 왼쪽은 '무엇을 얼마나 키웠나'(돌파·소장품·호감도·스킬·장비·큐브·우공합), 오른쪽은 '그래서 전투력이
+       얼마인가'(레벨·현재·Lv.40·Lv.400). */
     const rank = (axis, v) => CHIP_AXES[axis].indexOf(v);
     const cols = [
       { key: 'name', label: t('im.colNikke'), dir0: 1, val: r => r.name },
@@ -658,8 +610,7 @@ export function renderImport(root, ctx) {
         val: r => r.entry && gearRank(r.entry.gear) },
       { key: 'cube', label: t('im.colCube'), cls: 'num',
         val: r => r.entry && r.entry.cube.level },
-      /* 우코·공증이 하나도 없으면 칸은 '–' 지만 정렬로는 0 이다 — 가장 약한
-         쪽이라 오름차순 맨 앞이 맞다. 값을 못 구한 것(전투력)과는 다르다. */
+      /* 우코·공증이 하나도 없으면 칸은 '–' 지만 정렬로는 0 이다 — 가장 약한 쪽이라 오름차순 맨 앞이 맞다. */
       { key: 'olatk', label: t('im.colOlAtk'), cls: 'num', title: t('im.colOlAtkNote'),
         val: r => r.entry && (olSum(r.ol) || 0) },
       { key: 'level', label: t('im.colLevel'), cls: 'num', val: r => r.entry && r.entry.level },
@@ -699,10 +650,7 @@ export function renderImport(root, ctx) {
     redrawRows = () => {
       tb.textContent = '';
       const col = cols.find(c => c.key === sort.key) || cols[0];
-      /* 미보유는 어느 열로 정렬하든 맨 아래에 둔다 — 값이 하나도 없는 줄이
-         위로 올라오면 목록을 읽을 수 없다. 값이 빈 칸(null)도 같은 이유로
-         방향과 무관하게 뒤로. 같은 값끼리는 정렬이 안정적이라 out 의
-         이름순이 그대로 남는다. */
+      /* 미보유는 어느 열로 정렬하든 맨 아래에 둔다 — 값이 하나도 없는 줄이 위로 올라오면 목록을 읽을 수 없다. */
       const shown = out.filter(keep).sort((a, b) => {
         if (!a.entry !== !b.entry) return a.entry ? -1 : 1;
         const x = col.val(a), y = col.val(b);
@@ -724,8 +672,8 @@ export function renderImport(root, ctx) {
           };
         }
 
-        /* 이름은 열 폭에 맞춰 잘리지만(hover 로 전체), 오버스펙 도장은 그 바깥에
-           두어 이름이 길어도 잘려 나가지 않게 한다. */
+        /* 이름은 열 폭에 맞춰 잘리지만(hover 로 전체), 오버스펙 도장은 그 바깥에 두어 이름이 길어도 잘려 나가지 않게
+           한다. */
         const name = el('td', 'cp-rName');
         name.title = r.name;
         const nameBox = el('span', 'cp-rNameBox');
@@ -775,6 +723,13 @@ export function renderImport(root, ctx) {
   }
 
   paint();
-  /* 계산기의 지휘관 줄이 싱크로 레벨을 여기서 읽어 간다 (자료가 없으면 null). */
-  return { account: () => (data ? data.account : null) };
+  return {
+
+    account: () => (data ? data.account : null),
+    /* Refresh stale */
+    inputFor: nikke => {
+      const e = data && nikke && data.nikkes.find(x => x.name_code === nikke.name_code);
+      return e ? toInput(e, nikke, data.research, ctx.bondMax) : null;
+    },
+  };
 }

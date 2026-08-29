@@ -45,9 +45,9 @@
     "ja": "シンクロ基本ステータス"
    },
    "note": {
-    "ko": "등급·클래스·레벨(1~1200)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. SR 쪽 빈칸은 해당 조합의 니케가 없다는 뜻.",
-    "en": "Base HP/ATK/DEF by rarity, class and level (1–1200). DEF differs per weapon type; blank SR cells mean no Nikke has that combination.",
-    "ja": "等級・クラス・レベル(1〜1200)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、SRの空欄はその組み合わせが存在しないことを示す。"
+    "ko": "등급·클래스·레벨(1~1400)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. 빈칸은 그 조합의 니케가 없다는 뜻. 예전에는 워크북에서 뽑아 R 등급이 없고 레벨이 1200 에서 끊겼는데, 지금은 CDN 의 니케별 레벨 스탯 목록에서 만든다 — 겹치는 구간은 워크북 값과 전부 일치한다.",
+    "en": "Base HP/ATK/DEF by rarity, class and level (1–1400). DEF differs per weapon type; blank cells mean no Nikke has that combination. This used to come from the workbook, which had no R rarity and stopped at level 1200; it is now built from the CDN's per-nikke level stat lists, which match the workbook exactly over the overlapping range.",
+    "ja": "等級・クラス・レベル(1〜1400)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、空欄はその組み合わせが存在しないことを示す。以前はワークブック由来でR等級が無くレベル1200で途切れていたが、現在はCDNのニケ別レベルステータスから生成する — 重なる区間はワークブックの値と完全に一致する。"
    },
    "rows": 7200,
    "columns": 11
@@ -142,17 +142,17 @@
    "file": "equip_stat.json",
    "group": "gear",
    "title": {
-    "ko": "장비 스탯",
-    "en": "Gear stats",
-    "ja": "装備ステータス"
+    "ko": "장비 기본 스탯",
+    "en": "Gear base stats",
+    "ja": "装備の基本ステータス"
    },
    "note": {
-    "ko": "클래스 × 부위 × 등급 × 강화 단계별 스탯. 기업 소속이 아닌 일반 T9 장비는 자료가 없어 빠져 있다.",
-    "en": "Stats by class, slot, tier and enhancement step. Non-corporation T9 gear is missing — no stat data available.",
-    "ja": "クラス×部位×等級×強化段階のステータス。企業所属でない通常T9装備は資料がなく含まれない。"
+    "ko": "클래스 × 부위 × 티어별 **기본값**이다 — 강화 0 단계, 보너스 없음. 실제 스탯은 여기에 계수를 곱해 낸다: 강화 1 단계당 +10%, 장비 기업이 니케 기업과 맞으면 +30%. 두 계수는 합쳐서 곱한다 (5강 기업 장비 = 기본 × 1.8). 그래서 \"9티어 기업\" 은 별개 장비가 아니라 T9 에 기업 보너스를 먹인 값이고, 비기업 T9 도 같은 줄에서 나온다.",
+    "en": "Base values by class, slot and tier — enhancement 0, no bonus. Real stats come from multiplying these: +10% per enhancement step, +30% when the gear’s manufacturer matches the Nikke’s. The two add up inside one multiplier (a +5 manufacturer piece is base × 1.8). So \"Tier 9 (mfr.)\" is not a separate item but T9 with the manufacturer bonus applied, and non-manufacturer T9 comes from the same row.",
+    "ja": "クラス×部位×ティア別の**基本値**（強化0段階・ボーナス無し）。実際のステータスはこれに係数を掛けて求める — 強化1段階ごとに+10%、装備の企業がニケの企業と一致すれば+30%。二つは足してから掛ける（強化5の企業装備＝基本×1.8）。つまり「T9企業」は別個の装備ではなくT9に企業ボーナスを掛けた値で、非企業T9も同じ行から得られる。"
    },
-   "rows": 144,
-   "columns": 7
+   "rows": 120,
+   "columns": 6
   },
   {
    "key": "equip_option",

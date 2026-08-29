@@ -1,15 +1,13 @@
 import { renderStats } from './charts.js';
 
 /* ── 데이터 위치 ────────────────────────────────────────────────
-   기본은 MechaShifty 레포의 data/ 를 raw 로 읽는다(CORS 허용, 5분 캐시).
-   같은 레포에 data/ 를 두고 싶으면 로컬 사본이 자동으로 우선한다.       */
+   기본은 MechaShifty 레포의 data/ 를 raw 로 읽는다(CORS 허용, 5분 캐시). */
 const REMOTE = 'https://raw.githubusercontent.com/RADM90/MechaShifty/main/data/';
 const LOCAL = './data/';
 const FILES = ['nikkes', 'pickups', 'taxonomy', 'meta'];
 
 /* ── 축 정의 ───────────────────────────────────────────────────
-   order 는 표시 순서. element 순서는 dataviz 검증기를 통과한 인접
-   순서라서 임의로 바꾸면 인접쌍 대비가 깨진다.                        */
+   order 는 표시 순서. */
 export const AXES = {
   corporation: { order: ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'] },
   element: { order: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'] },
@@ -26,13 +24,9 @@ const PICKUP_AXES = {
 /* 축 이름은 UI 문구라 t() 로, 축의 값(엘리시온/작열…)은 taxonomy 라 L() 로 간다 */
 export const axisLabel = axis => t('ax.' + axis);
 /* ── UI 문자열 ─────────────────────────────────────────────────
-   [ko, en, ja] 순서. 값이 함수면 인자를 받아 문자열을 만든다.
-   데이터 쪽 라벨(기업/속성/스쿼드…)은 taxonomy.json 이 담당하고,
-   여기는 순수 UI 문구만 둔다. 초성 검색은 한국어에서만 의미가 있어서
-   검색 안내 예시도 언어별로 다르다.                                  */
+   [ko, en, ja] 순서. */
 const LANGS = ['ko', 'en', 'ja'];
-/* 오버로드 슬롯은 일본 커뮤니티에서 번호가 아니라 칸 위치로 부른다
-   (슬롯1=上段 … 슬롯3=下段). 잠금 순서 설명도 이 말로 굴러간다. */
+/* 오버로드 슬롯은 일본 커뮤니티에서 번호가 아니라 칸 위치로 부른다 (슬롯1=上段 … 슬롯3=下段). */
 const JA_SLOT = n => ['', '上段', '中段', '下段'][n] || `${n}枠目`;
 const STR = {
   'app.title': ['메카시프티 · Mecha Shifty', 'Mecha Shifty', 'メカシフティ · Mecha Shifty'],
@@ -55,12 +49,12 @@ const STR = {
   // 큐브 종류는 전투력에 안 들어가지만(레벨만 쓴다) 상태 줄에 이름을 내려면 필요하다
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
   'cp.favorite': ['애장품', 'Favorite item', '宝もの'],
-  /* 돌파·코강·장비 등급은 데이터 키가 한국어라('3돌'·'오버로드') 그대로 쓰면 EN/JA
-     화면에 한국어가 남는다. cp.js 의 gradeLabel/tierLabel 이 이 키들로 옮긴다. */
+  /* 돌파·코강·장비 등급은 데이터 키가 한국어라('3돌'·'오버로드') 그대로 쓰면 EN/JA 화면에 한국어가 남는다. */
   'cp.break': [n => `${n}돌`, n => `Break ${n}`, n => `${n}凸`],
   'cp.core': [n => `${n}코강`, n => `Core ${n}`, n => `コア${n}`],
   'cp.tier_오버로드': ['오버로드', 'Overload', 'オーバーロード'],
   'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', 'T9企業'],
+  'cp.tier_9티어_일반': ['9티어 일반', 'Tier 9 (plain)', 'T9通常'],
   'cp.none': ['미착용', 'None', '未装着'],
   'cp.consoleOf': [
     n => `${n} 연구 레벨`,
@@ -200,8 +194,7 @@ const STR = {
     'Imported data is stored in this browser only — nothing is sent to a server.',
     '読み込んだデータはこのブラウザにのみ保存され、サーバーには送信されません。',
   ],
-  /* 지휘관 줄은 한 줄에 싱크로 + 콘솔 넉 칸이 들어가야 한다. '레벨' 을 붙이면
-     좁은 화면에서 줄이 넘어간다 — 옆이 전부 레벨 숫자라 붙일 이유도 없다. */
+  /* 지휘관 줄은 한 줄에 싱크로 + 콘솔 넉 칸이 들어가야 한다. */
   'im.synchro': ['싱크로', 'Synchro', 'シンクロ'],
   'im.collected': ['수집 시각', 'Collected', '収集日時'],
   'im.colBasic': ['기본', 'Basics', '基本'],
@@ -242,12 +235,12 @@ const STR = {
     n => `サイトが未収録のニケ${n}体はスキップしました。`,
   ],
   'im.gearNote': [
-    '장비 칸은 위가 머리·몸, 아래가 팔·다리이고 숫자는 강화 단계입니다. 분홍이 오버로드, 주황이 9티어 기업. '
-      + '오버로드 옵션이 하나도 없는 장비는 9티어로 잡히니 다르면 입력 수정에서 고치세요.',
+    '장비 칸은 위가 머리·몸, 아래가 팔·다리이고 숫자는 강화 단계입니다. 분홍이 오버로드, '
+      + '꽉 찬 주황이 9티어 기업, 테두리만 있는 주황이 9티어 일반입니다.',
     'In the gear cell the top row is head and body, the bottom row arm and leg; the number is the enhance step. '
-      + 'Pink is overload, orange is tier-9 manufacturer. Gear with no overload option reads as tier-9 — fix it in Edit inputs if that is wrong.',
-    '装備欄は上段が頭・胴、下段が腕・足で、数字は強化段階です。ピンクがオーバーロード、オレンジがT9企業装備。'
-      + 'OPが一つも無い装備はT9として扱われるので、違う場合は入力を編集してください。',
+      + 'Pink is overload, filled orange is tier-9 manufacturer, outlined orange is plain tier-9.',
+    '装備欄は上段が頭・胴、下段が腕・足で、数字は強化段階です。ピンクがオーバーロード、'
+      + '塗りつぶしのオレンジがT9企業装備、枠線だけのオレンジが通常T9です。',
   ],
 
   /* 전초기지 탭 (outpost.js 에서 ctx.t 로 받아 쓴다) */
@@ -671,6 +664,9 @@ const STR = {
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
   'ui.reset': ['필터 초기화', 'Reset filters', '絞り込みクリア'],
+  /* 메카미(딜 시뮬레이터)로 가는 링크. */
+  'ui.mekami': ['메카미 — 스쿼드 DPS 시뮬레이터', 'Mekami — squad DPS simulator',
+                'メカミ — スクワッドDPSシミュレータ'],
   'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
   'ui.close': ['닫기', 'Close', '閉じる'],
   'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
@@ -854,7 +850,7 @@ export const ELEMENT_COLOR = {
 };
 
 /* ── 아이콘 ────────────────────────────────────────────────────
-   assets/icons/ 아래 게임 아이콘. 파일명은 데이터 코드를 소문자로 내린 것. */
+   assets/icons/ 아래 게임 아이콘. */
 const ICON_DIR = {
   element: 'element', class: 'class', weapon_type: 'weapon',
   burst: 'burst', rarity: 'rarity',
@@ -862,14 +858,13 @@ const ICON_DIR = {
   cube: 'cube',
 };
 
-/* 테두리를 뺀 판(_wob)과 단순화한 판(_simple)이 작은 크기에서 훨씬 잘 읽힌다.
-   무기 쪽만 파일명이 대문자다 (AR_simple.webp). */
+/* 테두리를 뺀 판(_wob)과 단순화한 판(_simple)이 작은 크기에서 훨씬 잘 읽힌다. */
 const ICON_VARIANT = { burst: '_simple', weapon_type: '_simple' };
 
 export function iconSrc(axis, code) {
   if (!code) return null;
-  /* 기업은 소속을 그대로 보이고, 오버스펙은 소속을 덮지 않는 별개의 도장이라
-     기업 아이콘에 섞지 않고 이름 옆에 따로 찍는다 (overspec_simple.webp). */
+  /* 기업은 소속을 그대로 보이고, 오버스펙은 소속을 덮지 않는 별개의 도장이라 기업 아이콘에 섞지 않고 이름 옆에 따로
+     찍는다 (overspec_simple.webp). */
   if (axis === 'corporation') return `assets/icons/company/${String(code).toLowerCase()}_wob.webp`;
   if (axis === 'corporation_sub_type') return `assets/icons/company/${String(code).toLowerCase()}_simple.webp`;
   const dir = ICON_DIR[axis];
@@ -880,8 +875,7 @@ export function iconSrc(axis, code) {
   return `assets/icons/${dir}/${file}${variant}.webp`;
 }
 
-/* 아이콘은 항상 텍스트 라벨 옆에 붙는 장식이라 alt 는 비운다.
-   코드가 새로 생겨 파일이 없으면 조용히 사라지게 한다(화면이 깨지지 않게). */
+/* 아이콘은 항상 텍스트 라벨 옆에 붙는 장식이라 alt 는 비운다. */
 export function iconEl(axis, code, opts = {}) {
   const src = iconSrc(axis, code);
   if (!src) return null;
@@ -896,8 +890,8 @@ export function iconEl(axis, code, opts = {}) {
   return img;
 }
 
-/* 오버스펙 도장. 기업 아이콘에 섞지 않고 니케 이름 옆에 붙인다 — 소속을 대체하는
-   값이 아니라 그 위에 얹히는 표시라서다. 글자 라벨은 hover 로 남긴다. */
+/* 오버스펙 도장. 기업 아이콘에 섞지 않고 니케 이름 옆에 붙인다 — 소속을 대체하는 값이 아니라 그 위에 얹히는
+   표시라서다. */
 export function overspecMark(sub) {
   if (!sub) return null;
   const ic = iconEl('corporation_sub_type', sub, { cls: 'ic-ovr' });
@@ -929,9 +923,7 @@ const state = {
   rerun: 'all', timeline: false,
   sort: { key: 'release_date', dir: -1 },
   sel: Object.fromEntries([...Object.keys(AXES), ...Object.keys(PICKUP_AXES)].map(k => [k, new Set()])),
-  /* 칩 필터를 펼쳐 둘지 — 탭마다 따로 기억한다. 픽업/통계는 표와 차트가
-     주인공이라 접은 채로 시작해서 첫 화면에 내용이 더 들어가게 한다.
-     검색창은 접히는 칸 밖이라 언제나 보인다. */
+  /* 칩 필터를 펼쳐 둘지 — 탭마다 따로 기억한다. */
   filtersOpen: { nikkes: true, pickups: false, stats: false },
 };
 
@@ -945,8 +937,7 @@ const el = (tag, cls, text) => {
 };
 
 /* ── 라벨 ─────────────────────────────────────────────────────
-   taxonomy -> 현재 언어 -> en -> 원본 코드 순으로 폴백한다.
-   새 스쿼드/태그가 추가돼도 화면이 깨지지 않게 하는 안전장치.        */
+   taxonomy -> 현재 언어 -> en -> 원본 코드 순으로 폴백한다. */
 export function L(axis, code) {
   if (code == null || code === '') return '—';
   const e = D.taxonomy[axis]?.[code];
@@ -997,27 +988,18 @@ function statusOf(p, now = Date.now()) {
 }
 
 /* ── 검색 (초성 지원) ──────────────────────────────────────────
-   한글 음절은 U+AC00 부터 초성 하나당 588자(중성 21 × 종성 28)씩
-   연속으로 배치돼 있다. 그래서 초성 자모 하나는 곧 588자짜리 범위
-   하나이고, 쿼리를 문자 단위로 정규식에 옮기면 초성/완성형 혼용이
-   자연스럽게 처리된다. 'ㄹㅍ' → /[ㄹ라-맇][ㅍ파-핗]/ → '라피'.       */
+   한글 음절은 U+AC00 부터 초성 하나당 588자(중성 21 × 종성 28)씩 연속으로 배치돼 있다. */
 const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ',
   'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 const HANGUL_BASE = 0xAC00, PER_CHO = 588;
 
-/* '라피 : 레드 후드' 처럼 구분자가 낀 이름을 '라피레드후드' 로 붙여서
-   비교한다 — 사용자가 띄어쓰기/콜론을 그대로 칠 이유가 없다. */
+/* '라피 : 레드 후드' 처럼 구분자가 낀 이름을 '라피레드후드' 로 붙여서 비교한다 — 사용자가 띄어쓰기/콜론을 그대로 칠
+   이유가 없다. */
 const compact = s => s.replace(/[\s:·・]/g, '');
 const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const u = n => '\\u' + n.toString(16).padStart(4, '0');
 
-/* 매처 두 벌을 만든다.
-     name  — 니케 이름(한/영/일) 전용. 초성 + 완성형 혼용을 받는다.
-     plain — 스쿼드·별명용. 부분 일치만 하고 초성 확장은 하지 않는다.
-   초성 확장을 이름 밖으로 넓히면 검색이 금방 무의미해진다. 별명은 'ㄱ' 하나에
-   개·곰·깡이 전부 걸리고, 스쿼드는 'ㄹㅍ' 하나에 리플레이스·세라핌 소속이
-   통째로 딸려온다. 둘 다 통으로 쳐서 찾는 이름이라 부분 일치면 충분하다.
-   별명 자체가 초성인 것들('ㄹㅊㄹ', 'ㅋㄷ')은 부분 일치로 그대로 잡힌다. */
+/* 매처 두 벌을 만든다. */
 function buildMatcher(raw) {
   const q = compact(raw.trim());
   if (!q) return null;
@@ -1050,10 +1032,7 @@ function matcher() {
   return state._match;
 }
 
-/* 스쿼드는 내부 코드가 아니라 화면에 보이는 표시명으로 찾는다.
-   코드로 매칭하면 콜라보 스쿼드(ce_01, ce002_01, CE006_01)에 들어 있는
-   숫자 때문에 '1' 같은 검색어에 엉뚱한 니케가 걸리고, 반대로 '카운터스'
-   처럼 실제로 보이는 이름으로는 못 찾는다. 라벨이 없는 새 코드만 코드로 폴백. */
+/* 스쿼드는 내부 코드가 아니라 화면에 보이는 표시명으로 찾는다. */
 const squadText = code => {
   if (!code) return [];
   const e = D.taxonomy.squad?.[code];
@@ -1067,16 +1046,15 @@ function hitsNikke(m, n) {
     || (n.aliases || []).some(m.plain);
 }
 
-/* 계산기 목록(roster.js)도 같은 규칙으로 찾게 한다 — 탭마다 검색이 다르게 굴면
-   'ㄹㅍ' 이 여기선 되고 저기선 안 되는 이유를 알 길이 없다. 검색어가 바뀔 때만
-   부르고 결과 함수를 행마다 돌린다(정규식을 행마다 새로 짜지 않게). */
+/* 계산기 목록(roster.js)도 같은 규칙으로 찾게 한다 — 탭마다 검색이 다르게 굴면 'ㄹㅍ' 이 여기선 되고 저기선 안 되는
+   이유를 알 길이 없다. */
 export function nikkeMatcher(q) {
   const m = buildMatcher(q);
   return m ? n => hitsNikke(m, n) : null;
 }
 
 /* ── 필터 ─────────────────────────────────────────────────────
-   except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용.     */
+   except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용. */
 function matchNikke(n, except) {
   for (const axis of Object.keys(AXES)) {
     if (axis === except) continue;
@@ -1330,19 +1308,16 @@ function iconCell(axis, code, opts) {
 }
 
 /* ── 픽업 표 / 타임라인 ────────────────────────────────────── */
-/* start/end 는 이미 KST 오프셋이 붙은 ISO 문자열이다. Date 로 돌려서
-   toISOString 하면 UTC 로 넘어가 하루가 밀리므로 문자열을 그대로 자른다. */
+/* start/end 는 이미 KST 오프셋이 붙은 ISO 문자열이다. */
 const fmtDate = iso => iso.slice(0, 10);
 const fmtRange = p => `${fmtDate(p.start)} ~ ${fmtDate(p.end)}`;
 const dday = p => Math.ceil((p._start.getTime() - Date.now()) / 86400000);
-/* 남은 날은 올림이 아니라 내림이다 — 스물세 시간 남았으면 '하루 남음'이 아니라
-   '오늘 닫힘'(D-0) 이어야 한다. 진행 중인 배너에만 쓴다. */
+/* 남은 날은 올림이 아니라 내림이다 — 스물세 시간 남았으면 '하루 남음'이 아니라 '오늘 닫힘'(D-0) 이어야 한다. */
 const ddayEnd = p => Math.max(0, Math.floor((p._end.getTime() - Date.now()) / 86400000));
 
 function statusTag(p) {
   const s = statusOf(p);
-  /* 진행 중이면 '진행중' 대신 마감까지 남은 날. 지금 뽑을지 말지를 가르는 건
-     진행 여부가 아니라 남은 시간이다. 정확한 마감 일시는 hover 로. */
+  /* 진행 중이면 '진행중' 대신 마감까지 남은 날. */
   const text = s === 'upcoming' ? `${statusLabel('upcoming')} ${t('msg.dday', dday(p))}`
     : s === 'ongoing' ? t('msg.ddayEnd', ddayEnd(p))
       : statusLabel(s);
@@ -1504,8 +1479,7 @@ function openSheet(n) {
 }
 const closeSheet = () => { $('#sheet').hidden = true; };
 
-/* 필터 오른쪽 칸(싱크로 상한). 니케 리스트 탭에서만 붙이고, 모듈은 처음 켤 때
-   한 번만 받아 온다. 언어·데이터가 바뀌면 그리는 쪽에서 다시 칠한다. */
+/* 필터 오른쪽 칸(싱크로 상한). */
 function syncCap(on) {
   const side = $('#synccap');
   side.hidden = !on;
@@ -1514,8 +1488,7 @@ function syncCap(on) {
   import('./synccap.js').then(m => m.renderSyncCap(side, { t, lang: lang(), nikkes: D.nikkes }));
 }
 
-/* 접힌 채로도 무엇이 걸려 있는지는 알아야 하므로 단추에 개수를 붙인다.
-   검색어는 접히는 칸 밖에 그대로 보이니 세지 않는다. */
+/* 접힌 채로도 무엇이 걸려 있는지는 알아야 하므로 단추에 개수를 붙인다. */
 function activeFilters() {
   let n = Object.values(state.sel).reduce((s, v) => s + v.size, 0);
   if (state.overspec) n++;
@@ -1552,8 +1525,7 @@ function render() {
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
   $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
   paintFold();
-  /* 싱크로 상한 계산기는 니케 리스트 탭에서만. 필터가 좁아지므로 다른 탭에서는
-     칸째로 빼서 폭을 돌려준다. 언어가 바뀌면 다시 그려야 해서 매번 호출한다. */
+  /* 싱크로 상한 계산기는 니케 리스트 탭에서만. */
   syncCap(state.tab === 'nikkes');
 
   if (state.tab === 'nipago') {
@@ -1607,8 +1579,7 @@ function wire() {
 
   let fillSquads;   // 스쿼드 옵션 재생성 (아래에서 채워짐)
 
-  /* index.html 의 data-i18n* 속성을 현재 언어로 채운다.
-     텍스트는 data-i18n, 속성은 data-i18n-{placeholder,title,aria}. */
+  /* index.html 의 data-i18n* 속성을 현재 언어로 채운다. */
   const paintStatic = () => {
     $$('[data-i18n]').forEach(n => { n.textContent = t(n.dataset.i18n); });
     $$('[data-i18n-placeholder]').forEach(n => { n.placeholder = t(n.dataset.i18nPlaceholder); });
@@ -1634,7 +1605,7 @@ function wire() {
   });
   paintLang();
 
-  /* 테마 — 기본 라이트. <head> 인라인 스크립트가 이미 stamp 해 둔 값을 이어받는다. */
+  /* 테마 — 기본 라이트. */
   function paintTheme() {
     const dark = document.documentElement.dataset.theme === 'dark';
     $('#themeIcon').textContent = dark ? '☀' : '☾';
