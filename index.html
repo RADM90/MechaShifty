@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>메카시프티 · Mecha Shifty</title>
-<meta name="description" content="승리의 여신: 니케 도구 모음 — 캐릭터 목록·픽업일정·통계·전투력 계산기·전초기지·오버로드 옵션작·특특요 확률">
+<meta name="description" content="승리의 여신: 니케 도구 모음 — 캐릭터 목록·픽업일정·통계·전투력 계산기·전초기지·오버로드 옵션작·특특요 확률·스쿼드 DPS 시뮬레이터">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/title/MechaShifty-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/title/MechaShifty-192.png">
 <link rel="apple-touch-icon" href="assets/icons/title/MechaShifty-180.png">
@@ -30,8 +30,6 @@
         <button type="button" data-lang="en">EN</button>
         <button type="button" data-lang="ja">日</button>
       </div>
-      <a class="mklink" href="mekami/index.html" data-i18n-title="ui.mekami"
-         title="메카미 — 스쿼드 DPS 시뮬레이터">메카미</a>
       <button type="button" id="theme" class="themebtn" aria-pressed="false"
               data-i18n-title="ui.theme" title="테마 전환">
         <span id="themeIcon">☾</span>
@@ -46,6 +44,7 @@
     <button type="button" role="tab" data-tab="outpost" aria-selected="false" data-i18n="tab.outpost">전초기지</button>
     <button type="button" role="tab" data-tab="nipago" aria-selected="false" data-i18n="tab.nipago">오버로드 옵션작</button>
     <button type="button" role="tab" data-tab="intercept" aria-selected="false" data-i18n="tab.intercept">특특요 확률</button>
+    <button type="button" role="tab" data-tab="mekami" aria-selected="false" data-i18n="tab.mekami">메카미</button>
   </nav>
 </header>
 
@@ -153,6 +152,11 @@
     <!-- ── 탭 7: 특특요 확률분포 ──────────────────────────── -->
     <section id="panel-intercept" class="panel" hidden>
       <div id="intercept"></div>
+    </section>
+
+    <!-- ── 탭 8: 메카미 — 스쿼드 DPS 시뮬레이터 ───────────── -->
+    <section id="panel-mekami" class="panel" hidden>
+      <div id="mekami" class="mkwrap"></div>
     </section>
 
   </div>

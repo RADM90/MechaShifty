@@ -40,6 +40,7 @@ const STR = {
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オバロ厳選'],
   'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体'],
+  'tab.mekami': ['메카미', 'Mekami', 'メカミ'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -664,9 +665,6 @@ const STR = {
 
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
   'ui.reset': ['필터 초기화', 'Reset filters', '絞り込みクリア'],
-  /* 메카미(딜 시뮬레이터)로 가는 링크. */
-  'ui.mekami': ['메카미 — 스쿼드 DPS 시뮬레이터', 'Mekami — squad DPS simulator',
-                'メカミ — スクワッドDPSシミュレータ'],
   'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
   'ui.close': ['닫기', 'Close', '閉じる'],
   'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
@@ -1120,7 +1118,7 @@ function writeHash() {
 }
 
 /* 없어진 탭(#tab=raw 같은 옛 북마크)으로 들어오면 패널이 없어 렌더가 깨진다 */
-const TABS = ['nikkes', 'pickups', 'stats', 'calc', 'outpost', 'nipago', 'intercept'];
+const TABS = ['nikkes', 'pickups', 'stats', 'calc', 'outpost', 'nipago', 'intercept', 'mekami'];
 
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -1520,10 +1518,11 @@ function render() {
   $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
+  $('#panel-mekami').hidden = state.tab !== 'mekami';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
   $('#tlwrap').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept', 'mekami'].includes(state.tab);
   paintFold();
   /* 싱크로 상한 계산기는 니케 리스트 탭에서만. */
   syncCap(state.tab === 'nikkes');
@@ -1536,6 +1535,13 @@ function render() {
   if (state.tab === 'intercept') {
     writeHash();
     import('./intercept.js').then(m => m.renderIntercept($('#intercept'), { t, L, lang: lang() }));
+    return;
+  }
+  /* 메카미는 문구 표를 따로 든다 (`assets/i18n.js`) — 계산 쪽 어휘라 이 표와 겹치지
+     않는다. 여기서는 지금 언어만 넘기고, 그리는 일은 저쪽이 한다. */
+  if (state.tab === 'mekami') {
+    writeHash();
+    import('./mekami.js').then(m => m.renderMekami($('#mekami'), { lang: lang() }));
     return;
   }
   if (state.tab === 'outpost') {
@@ -1618,7 +1624,7 @@ function wire() {
     localStorage.setItem('theme', next);
     paintTheme();
     // 차트는 토큰을 JS 로 읽어 그리므로 테마가 바뀌면 다시 그려야 한다
-    if (state.tab === 'stats') render();
+    if (state.tab === 'stats' || state.tab === 'mekami') render();
   };
   paintTheme();
 
