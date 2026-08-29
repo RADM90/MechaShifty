@@ -858,21 +858,25 @@ function renderModal() {
 function paint(root) {
   root.textContent = '';
 
+  /* 왼쪽 단은 목표 옵션 한 장, 오른쪽 단은 그 목표로 나오는 것들이 위에서 아래로 쌓인다. */
   const top = el('div', 'np-top');
   top.appendChild(renderGoals());
   const right = el('div', 'np-col');
-  right.appendChild(renderCost());
-  right.appendChild(renderProbBars());
+  /* 소모량과 1회 확률은 둘 다 짧아서 한 줄씩 차지할 이유가 없다 — 반씩 나눠 나란히 둔다. */
+  const pair = el('div', 'np-pair');
+  pair.appendChild(renderCost());
+  pair.appendChild(renderProbBars());
+  right.appendChild(pair);
+  /* 슬롯별 표는 위 두 카드의 근거라 바로 아래에 붙인다. */
+  right.appendChild(renderProbTable());
+  /* 장비 카드와 그 장비를 두고 하는 조언은 나란히 둔다. */
+  const bottom = el('div', 'np-bottom');
+  bottom.appendChild(renderGear());
+  const rec = renderRec();
+  if (rec) bottom.appendChild(rec);
+  right.appendChild(bottom);
   top.appendChild(right);
   root.appendChild(top);
-
-  const mid = el('div', 'np-mid');
-  mid.appendChild(renderGear());
-  mid.appendChild(renderProbTable());
-  root.appendChild(mid);
-
-  const rec = renderRec();
-  if (rec) root.appendChild(rec);
 
   if (ui.pending) root.appendChild(renderModal());
 }
