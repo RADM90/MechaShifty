@@ -1,25 +1,19 @@
 /* ── 토큰 ──────────────────────────────────────────────────────
-   라이트가 기본, 다크는 data-theme="dark" 로 선택한다.
-   다크는 라이트의 자동 반전이 아니라 각 표면에 맞춰 따로 고른 스텝이다.
+   라이트가 기본, 다크는 data-theme="dark" 로 고른다.
+   다크는 라이트를 반전한 게 아니라 표면마다 따로 고른 스텝이다.
 
-   차트 색은 눈으로 고르지 않고 dataviz 검증기로 확정했다.
-     라이트 · surface #ffffff · 인접쌍 → 전 항목 PASS
-       (최악 인접쌍 normal ΔE 20.8 / CVD ΔE 19.9, 대비 전부 ≥3:1)
-     다크   · surface #0f1e35 · 인접쌍 → 전 항목 PASS
-       (최악 인접쌍 normal ΔE 20.9 / CVD ΔE 17.3)
-   전 쌍(all-pairs) 기준으로는 전격↔수냉이 적록색약에서 갈리지 않으므로
-   속성 색은 언제나 속성 이름 텍스트와 함께만 쓴다.
+   차트 색은 dataviz 검증기로 확정했다.
+     라이트 · surface #ffffff · 인접쌍 → 전 항목 PASS (최악 normal ΔE 20.8 / CVD ΔE 19.9, 대비 전부 ≥3:1)
+     다크   · surface #0f1e35 · 인접쌍 → 전 항목 PASS (최악 normal ΔE 20.9 / CVD ΔE 17.3)
+   전 쌍 기준으로는 전격↔수냉이 적록색약에서 안 갈리므로 속성 색은 항상 속성 이름과 같이 쓴다.
 
    ── 크기 배율 ──
-   이 파일의 px 은 전부 한 번 1.25 배로 올려 둔 값이다. QHD 에서 100% 로 보면
-   본문이 작고 폭(1180px)이 화면의 절반도 안 차서, 브라우저 줌 125% 로 봐야 할
-   만하다는 지적을 반영한 것이다. 줌 125% 가 만들던 렌더링(폭 1475 device px,
-   본문 17.5px)을 100% 에서 그대로 내도록 폭·글자·여백을 함께 곱했다.
-   그래서 눈에 익은 값들이 한 단계씩 밀려 있다 — 본문 17.5px, 표 16.5px,
-   보조 15px, 잔글씨 12.5~14px, 여백 --pad 20px.
+   이 파일의 px 은 전부 1.25 배로 올린 값이다.
+   QHD 100% 에서 본문이 작고 폭(1180px)이 화면 절반도 안 차서, 줌 125% 렌더링을 100% 에서 내도록 폭·글자·여백을 함께 곱했다.
+   기준값은 본문 17.5px, 표 16.5px, 보조 15px, 잔글씨 12.5~14px, 여백 --pad 20px.
 
-   새 규칙을 더할 때도 이 배율 위에서 고른다 (11px 같은 옛 눈금을 그대로 쓰면
-   그 줄만 작아 보인다). 테두리 1px 과 그림자는 배율과 무관하므로 그대로 뒀다. */
+   새 규칙도 이 배율 위에서 고른다 (11px 같은 옛 눈금은 그 줄만 작아 보인다).
+   테두리 1px 과 그림자는 배율과 무관하다. */
 :root {
   color-scheme: light;
 
@@ -47,10 +41,8 @@
   --bd-ink:   #12131a;
   /* 장비 등급 시그니처 색 — 분홍 오버로드 / 주황 9티어 (기업·일반 같은 색) */
   --gr-ol:    #ea5a97;  --gr-t9:    #e2913a;
-  /* 오버로드 옵션 단계 — 인게임은 12~14 를 하늘색 글씨로, 15 를 검은 바탕에
-     하늘색 글씨로 쓴다. 15 는 그 조합 자체가 표식이라 두 테마가 같은 색이고,
-     12~14 는 흰 바탕에서 하늘색 글씨가 읽히지 않아 라이트만 한 단계 내렸다
-     (#0b6f9e on #ffffff = 4.9:1). */
+  /* 오버로드 옵션 단계 — 인게임은 12~14 를 하늘색 글씨, 15 를 검은 바탕에 하늘색 글씨로 쓴다.
+     15 는 그 조합이 표식이라 두 테마가 같고, 12~14 는 흰 바탕에서 안 읽혀 라이트만 한 단계 내렸다 (#0b6f9e on #ffffff = 4.9:1). */
   --ol-hi:      #0b6f9e;   --ol-hi-bg:  rgba(11, 111, 158, .10);
   --ol-max-bg:  #12131a;   --ol-max-ink: #7fd7ff;
 
@@ -149,8 +141,7 @@
 
 * { box-sizing: border-box; }
 
-/* display:flex/grid 를 준 요소는 hidden 속성이 무시된다 — 전역으로 되돌린다.
-   (안 하면 숨긴 상세 시트의 백드롭이 페이지 전체 클릭을 먹는다) */
+/* display:flex/grid 를 준 요소는 hidden 이 무시되므로 전역으로 되돌린다 (안 하면 숨긴 시트의 백드롭이 클릭을 먹는다). */
 [hidden] { display: none !important; }
 
 body {
@@ -216,19 +207,16 @@ main { max-width: 1480px; margin: 0 auto; padding: var(--pad); }
 .notice-error code { color: var(--ink-2); word-break: break-all; }
 
 /* ── 필터 ───────────────────────────────────────────────────── */
-/* 필터 영역은 카드가 아니라 카드를 담는 칸이다. 니케 리스트 탭에서는 오른쪽에
-   싱크로 상한 카드가 하나 더 붙고, 다른 탭에서는 .split 이 빠져 검색 카드가
-   폭을 다 쓴다. 오른쪽 카드는 내용이 적으니 폭을 최소로 잡는다. */
+/* 필터 영역은 카드를 담는 칸이다.
+   니케 리스트 탭에서는 오른쪽에 싱크로 상한 카드가 붙고, 다른 탭에서는 .split 이 빠져 검색 카드가 폭을 다 쓴다. */
 .filters { margin-bottom: 17.5px; }
 .filters-main, .filters-side {
   background: var(--bg-panel); border: 1px solid var(--line);
   border-radius: var(--r); padding: 15px; box-shadow: var(--shadow); min-width: 0;
 }
-/* 두 카드는 높이를 맞춰 세운다 (그리드 기본 stretch). 싱크로 쪽이 짧아 남는
-   자리는 표를 아래로 붙여 균형을 잡는다. */
+/* 두 카드는 높이를 맞춘다 (그리드 기본 stretch). */
 .filters.split { display: grid; gap: 15px; grid-template-columns: minmax(0, 1fr) 340px; }
-/* 표는 자연 높이로 두고, 검색 카드와 높이를 맞추느라 남는 자리는 맨 아래
-   설명이 받는다 — 행을 늘리거나 빈칸을 두는 것보다 낫다. */
+/* 싱크로 쪽 표는 자연 높이로 두고, 남는 자리는 맨 아래 설명이 받는다. */
 .filters-side { display: flex; flex-direction: column; }
 .filters-side .sc-note { margin-top: auto; padding-top: 10px; }
 @media (max-width: 975px) { .filters.split { grid-template-columns: minmax(0, 1fr); } }
@@ -317,21 +305,18 @@ td.name { font-weight: 600; white-space: normal; min-width: 225px; }
 .empty { color: var(--ink-muted); text-align: center; padding: 40px; }
 
 /* ── 아이콘 ─────────────────────────────────────────────────────
-   게임 아이콘은 언제나 텍스트 라벨 옆의 보조 표시다. 아이콘만으로
-   의미를 나르는 자리는 없으므로 alt 는 비워 스크린리더에서 감춘다. */
+   게임 아이콘은 늘 텍스트 라벨 옆의 보조 표시라 alt 를 비워 스크린리더에서 감춘다. */
 .ic {
   height: 20px; width: auto; flex: none;
   object-fit: contain; vertical-align: -3.75px;
 }
 .ic-lg { height: 25px; }
-/* 오버스펙 도장 — 이름 바로 뒤에 붙는다. 이름과 붙어 보이지 않게 앞에 여백. */
+/* 오버스펙 도장 — 이름 바로 뒤에 붙고, 이름과 붙어 보이지 않게 앞에 여백을 둔다. */
 .ic-ovr { height: 19px; margin-left: 6.5px; vertical-align: -2.5px; }
 .iconlbl { display: inline-flex; align-items: center; gap: 6.5px; white-space: nowrap; }
 
-/* 실루엣 아이콘 보정 — 네 축(class·burst·weapon·company)과 오버스펙 도장은
-   순백 실루엣이라 (측정 lum 255 / 채도 0) 라이트 표면에서 그대로 사라진다.
-   채도가 0 이라 검게 눕혀도 잃을 색이 없다. element·rarity 는 유채색이라
-   손대지 않는다. */
+/* 실루엣 아이콘 보정 — 네 축(class·burst·weapon·company)과 오버스펙 도장은 순백(lum 255 / 채도 0)이라 라이트 표면에서 사라진다.
+   채도가 0 이라 검게 바꿔도 잃을 색이 없고, element·rarity 는 유채색이라 손대지 않는다. */
 :root:not([data-theme="dark"]) .ic[data-axis="class"],
 :root:not([data-theme="dark"]) .ic[data-axis="burst"],
 :root:not([data-theme="dark"]) .ic[data-axis="weapon_type"],
@@ -339,10 +324,8 @@ td.name { font-weight: 600; white-space: normal; min-width: 225px; }
 :root:not([data-theme="dark"]) .ic[data-axis="corporation_sub_type"] {
   filter: brightness(0) opacity(.72);
 }
-/* 눌린 칩은 배경이 액센트라 위 규칙을 그대로 두면 대비가 무너진다 —
-   라이트는 액센트가 짙은 청록(흰 글자), 다크는 밝은 청록(검은 글자)이다.
-   다만 검게 눕히는 건 **실루엣 축만**이다. 속성·등급은 유채색 아이콘이라
-   눌렀을 때 검게 만들면 불꽃/물방울이 통째로 사라져 무엇을 골랐는지 모른다. */
+/* 눌린 칩은 배경이 액센트라 위 규칙으로는 대비가 무너진다 (라이트는 짙은 청록에 흰 글자, 다크는 밝은 청록에 검은 글자).
+   검게 바꾸는 건 실루엣 축만이고, 속성·등급까지 검게 하면 불꽃/물방울이 사라져 무엇을 골랐는지 모른다. */
 :root:not([data-theme="dark"]) .chip[aria-pressed="true"] .ic { filter: none; }
 :root[data-theme="dark"] .chip[aria-pressed="true"] .ic[data-axis="class"],
 :root[data-theme="dark"] .chip[aria-pressed="true"] .ic[data-axis="burst"],
@@ -386,8 +369,7 @@ td.name { font-weight: 600; white-space: normal; min-width: 225px; }
 .tl-row.is-on { border-color: var(--st-good); }
 
 /* ── 통계 ───────────────────────────────────────────────────── */
-/* min() 없이 minmax(400px, …) 만 쓰면 폭이 400px 아래인 화면에서 칸이 줄지 않아
-   카드가 창 밖으로 나가고 페이지에 가로 스크롤이 생긴다. 좁으면 폭을 따라간다. */
+/* min() 이 없으면 400px 보다 좁은 화면에서 카드가 창 밖으로 나가 가로 스크롤이 생긴다. */
 .cards {
   display: grid; gap: 17.5px;
   grid-template-columns: repeat(auto-fit, minmax(min(400px, 100%), 1fr));
@@ -431,10 +413,8 @@ td.name { font-weight: 600; white-space: normal; min-width: 225px; }
 svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
 svg.chart .gridline { stroke: var(--grid); stroke-width: 1; }
 svg.chart .axis { stroke: var(--line-strong); stroke-width: 1; }
-/* 이 값만 위의 1.25 배율을 안 따른다 — 차트 안쪽은 CSS 픽셀이 아니라 viewBox
-   사용자 단위다 (charts.js 가 720×190 으로 잡고 width:100% 로 늘린다). 카드가
-   넓어지면 SVG 가 통째로 커지면서 글자도 같이 커지므로, 여기서 또 곱하면 두 번
-   커져서 y축 라벨이 padL(26 단위) 밖으로 삐져나온다. */
+/* 이 값만 1.25 배율을 안 따른다 — 차트 안쪽은 viewBox 단위다 (charts.js 가 720×190 을 width:100% 로 늘린다).
+   SVG 가 카드 따라 통째로 커지므로 여기서 또 곱하면 y축 라벨이 padL(26 단위) 밖으로 나간다. */
 svg.chart text { fill: var(--ink-muted); font-size: 10px; }
 svg.chart rect.mark { fill: var(--series-1); rx: 3; }
 svg.chart rect.hit { fill: transparent; }
@@ -484,8 +464,7 @@ svg.chart rect.hit { fill: transparent; }
 .hist-item .when { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 
 /* ── 전투력 계산기 탭 ───────────────────────────────────────── */
-/* 왼쪽(계정 카드 + 니케 목록 + 입력 폼)이 열 열한 개짜리 표를 안고 있어서
-   오른쪽 결과 칸보다 훨씬 넓어야 한다. 오른쪽은 고른 니케 하나만 보여준다. */
+/* 왼쪽은 열 11개짜리 니케 목록을 안고 있어 고른 니케 하나만 보이는 오른쪽보다 훨씬 넓다. */
 .cp-wrap {
   display: grid; grid-template-columns: minmax(0, 2.55fr) minmax(0, 1fr);
   gap: 20px; align-items: start; font-size: 16.5px;
@@ -496,8 +475,8 @@ svg.chart rect.hit { fill: transparent; }
 .cp-out { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12.5px; min-width: 0; }
 
 /* ── 지휘관 줄 (결과 칸 맨 위) ────────────────────────────────
-   두 줄 고정 — 싱크로 + 공용·클래스 셋 / 기업 다섯. 읽기 전용이라 입력칸이 없다.
-   지금 니케에 적용되는 칸만 진하게 두고 나머지는 흐린다. */
+   두 줄 고정 — 싱크로 + 공용·클래스 셋 / 기업 다섯.
+   읽기 전용이고, 지금 니케에 적용되는 칸만 진하게 둔다. */
 .cp-cmdr {
   display: grid; gap: 5px;
   background: var(--bg-panel); border: 1px solid var(--line);
@@ -519,7 +498,7 @@ svg.chart rect.hit { fill: transparent; }
 .cp-cmdrCell.is-on { color: var(--ink); }
 .cp-cmdrCell.is-on .ic { opacity: 1; }
 .cp-cmdr .cp-tagSep { min-height: 17.5px; margin: 0 2.5px; }
-/* 상세 카드 머리 — 축은 아이콘으로만. 이름은 hover 로 붙어 있다. */
+/* 상세 카드 머리 — 축은 아이콘으로만 두고 이름은 hover 로 붙인다. */
 .cp-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6.5px; }
 .cp-tags .ic { height: 21.5px; }
 .cp-tag {
@@ -529,8 +508,7 @@ svg.chart rect.hit { fill: transparent; }
 .cp-tag-warn {
   background: var(--st-bad-bg); border-color: var(--st-bad-line); color: var(--st-bad-ink);
 }
-/* HP·공격력·방어력은 카드 하나 안에 세 칸으로. 카드를 셋으로 나누면 좁은 오른쪽
-   단에서 숫자가 줄바꿈된다 (7,948,4 / 07). */
+/* HP·공격력·방어력은 카드 하나에 세 칸으로 — 카드를 셋으로 나누면 좁은 단에서 숫자가 끊긴다 (7,948,4 / 07). */
 .cp-stats {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 2.5px 12.5px; padding: 10px 15px;
@@ -555,9 +533,8 @@ table.cp-break td:first-child { color: var(--ink-2); }
 .cp-total td { font-weight: 700; border-top: 1px solid var(--line-strong); }
 
 /* ── 전투력 툴팁 ──────────────────────────────────────────────
-   전투력 숫자를 누르면 뜨는 상자. 카드가 아니라 떠 있는 판이라 body 에 붙고,
-   위치는 열 때 계산해 넣는다 (calc.js openCpTip). 차트 hover 팁(.tip)과 달리
-   눌러서 여는 것이라 pointer-events 를 살려 둔다 — 안쪽 표를 긁을 수 있어야 한다. */
+   전투력 숫자를 누르면 뜨는 판으로, body 에 붙고 위치는 열 때 잡는다 (calc.js openCpTip).
+   차트 hover 팁(.tip)과 달리 안쪽 표를 긁을 수 있게 pointer-events 를 살려 둔다. */
 .cp-tip {
   position: fixed; z-index: 70; width: min(425px, calc(100vw - 20px));
   background: var(--bg-panel); border: 1px solid var(--line-strong);
@@ -580,8 +557,7 @@ table.cp-break td:first-child { color: var(--ink-2); }
 .cp-tipBody .cp-note { margin: 7.5px 0 0; font-size: 13px; line-height: 1.45; }
 
 /* ── 내 계정 줄 ───────────────────────────────────────────────
-   카드가 아니라 한 줄짜리 머리글이다 — 수집 시각 + 불러오기 버튼.
-   싱크로·콘솔은 결과 칸 위의 지휘관 줄(.cp-cmdr)로 옮겼다. */
+   카드가 아니라 한 줄짜리 머리글이다 — 수집 시각 + 불러오기 버튼. */
 .cp-account {
   display: grid; gap: 7.5px;
   background: var(--bg-panel); border: 1px solid var(--line);
@@ -598,8 +574,7 @@ table.cp-break td:first-child { color: var(--ink-2); }
 
 
 .cp-importLink { font-size: 15px; align-self: center; white-space: nowrap; }
-/* 자료를 불러온 뒤의 설치 안내 — 문장 대신 물음표 한 칸. 옆 버튼들과 높이를
-   맞춰 두어 줄이 흐트러지지 않는다. */
+/* 자료를 불러온 뒤의 설치 안내는 물음표 한 칸으로, 옆 버튼과 높이를 맞춘다. */
 .cp-importHelp {
   display: inline-flex; align-items: center; justify-content: center;
   width: 27.5px; height: 27.5px; align-self: center;
@@ -623,7 +598,7 @@ table.cp-break td:first-child { color: var(--ink-2); }
 .cp-account .cp-note { margin: 12.5px 0 0; }
 
 /* ── 보유 니케 목록 ───────────────────────────────────────────
-   열이 많아 표 자체를 한 단계 작게 쓴다. 정렬은 전투력 고정이라 헤더는 클릭 안 됨. */
+   열이 많아 표를 한 단계 작게 쓴다. */
 .cp-roster { display: grid; gap: 7.5px; }
 .cp-rosterBar { display: flex; flex-wrap: wrap; align-items: center; gap: 7.5px 12.5px; }
 .cp-rosterBar input[type="search"] {
@@ -649,15 +624,13 @@ table.cp-break td:first-child { color: var(--ink-2); }
 .cp-rosterRow.is-unowned { cursor: default; color: var(--ink-muted); }
 .cp-rosterRow.is-unowned:hover td { background: transparent; }
 .cp-rosterRow.is-unowned .ic { opacity: .45; }
-/* 목록이 이 탭의 본체다. 화면 높이를 최대한 주고, 대신 행 높이를 깎는다. */
+/* 목록이 이 탭의 본체라 화면 높이를 최대한 주고 행 높이를 깎는다. */
 .cp-roster .cp-scroll { max-height: min(78vh, 1300px); min-height: 525px; overflow-y: auto; }
-/* table.grid 의 기본값(16.5px · padding 10px 12.5px)을 이기려면 선택자에 table 이
-   붙어야 한다 — 클래스만으로는 특이도가 낮아 조용히 무시된다. */
+/* table.grid 기본값(16.5px · padding 10px 12.5px)을 이기려면 특이도 때문에 선택자에 table 이 붙어야 한다. */
 table.cp-rosterTable { font-size: 14.5px; }
 table.cp-rosterTable th, table.cp-rosterTable td { padding: 1.5px 4px; line-height: 1.25; }
-/* 머리글은 줄바꿈을 허용한다 — EN/JA 는 라벨이 길어(Collection·コレクション)
-   한 줄로 두면 배지 한 칸짜리 열이 라벨 폭에 끌려 표가 넘친다. */
-/* 머리글을 누르면 그 열로 정렬한다 (table.grid 의 pointer 를 그대로 쓴다). */
+/* 머리글을 누르면 그 열로 정렬한다 (table.grid 의 pointer 를 그대로 쓴다).
+   줄바꿈을 허용해 EN/JA 라벨(Collection·コレクション)이 배지 한 칸짜리 열을 넓히지 않게 한다. */
 table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-height: 1.2; }
 .cp-rosterRow { cursor: pointer; }
 .cp-rosterRow:hover td, .cp-rosterRow:focus-visible td { background: var(--hover); }
@@ -668,12 +641,11 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-rName .ic-ovr { height: 16.5px; margin-left: 4px; }
 .cp-rSkill { font-variant-numeric: tabular-nums; color: var(--ink-2); }
 /* ── 한 칸짜리 배지 ───────────────────────────────────────────
-   돌파(별)·코어강화(원)·소장품(원)·호감도(하트). 모양과 색이 종류를, 가운데
-   숫자가 단계를 나타낸다. 색만으로 뜻이 갈리지 않게 hover 에 원래 표기를 붙인다.
+   돌파(별)·코어강화(원)·소장품(원)·호감도(하트).
+   모양과 색이 종류를, 가운데 숫자가 단계를 나타내고 hover 에 원래 표기를 붙인다.
 
-   숫자는 도형보다 크게 잡아야 14px 표에서 읽힌다. 도형 밖으로 삐져나오는 만큼은
-   도형 색 후광으로 받쳐 주고, 글자색은 바탕 밝기에 맞춰 배지마다 --bd-fg 로
-   고른다 (금색·회색·주황 위에는 어두운 글자, 보라·파랑·빨강 위에는 흰 글자). */
+   숫자는 도형보다 크게 잡아야 14px 표에서 읽히고, 삐져나온 만큼은 도형 색 후광으로 받친다.
+   글자색은 배지마다 --bd-fg 로 고른다 (금색·회색·주황 위에는 어두운 글자, 보라·파랑·빨강 위에는 흰 글자). */
 .cp-badge {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   width: 22.5px; height: 22.5px; vertical-align: -5px;
@@ -682,21 +654,18 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-badge > b {
   position: relative; font-size: 13px; font-weight: 800; line-height: 1;
   color: var(--bd-fg, #fff); font-variant-numeric: tabular-nums;
-  /* 후광은 도형 색(--bd-bg)으로, 좁게. currentColor 를 쓰면 글자색과 같아져
-     후광 노릇을 못 하고, 넓게 퍼뜨리면 하트처럼 작은 도형이 통째로 흐려진다. */
+  /* 후광은 도형 색(--bd-bg)으로 좁게 — currentColor 면 글자색과 같아지고, 넓으면 하트 같은 작은 도형이 흐려진다. */
   text-shadow: 0 0 1px var(--bd-bg), 0 0 2px var(--bd-bg), 0 0 2px var(--bd-bg);
 }
 .cp-badge > b.is-2 { font-size: 12px; letter-spacing: -0.25px; }
 /* 네 꼭짓점이 모서리를 향하는 사각별 (게임 돌파 표기와 같은 모양).
-   꼭짓점은 상자 네 귀퉁이까지 뻗고, 변 가운데는 20% 만 파인다 — 더 깊게 파면
-   허리가 숫자보다 좁아져 글자가 도형 밖으로 걸친다 (22.5px 에 13px 글자). */
+   변 가운데는 20% 만 판다 — 더 파면 허리가 숫자보다 좁아진다 (22.5px 에 13px 글자). */
 .cp-badge.is-star::before {
   clip-path: polygon(0 0, 50% 20%, 100% 0, 80% 50%,
                      100% 100%, 50% 80%, 0 100%, 20% 50%);
 }
 .cp-badge.is-round::before { border-radius: 50%; }
-/* 하트는 호감도라 두 자리가 기본이다. 세로는 그대로 두고 가로만 넓혀
-   숫자가 앉을 자리를 만든다 (mask 가 contain 이라 모양은 안 찌그러진다). */
+/* 하트(호감도)는 두 자리가 기본이라 가로만 넓힌다 (mask 가 contain 이라 모양은 안 찌그러진다). */
 .cp-badge.is-heart { width: 29px; }
 .cp-badge.is-heart::before {
   --heart: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 21.2 3.7 12.9a5.6 5.6 0 1 1 7.9-7.9l.4.4.4-.4a5.6 5.6 0 1 1 7.9 7.9z'/%3E%3C/svg%3E");
@@ -705,8 +674,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 }
 .cp-badge.is-heart > b { transform: translateY(-1.25px); }
 
-/* 도형 색은 --bd-bg 하나로 두고, 글자색(--bd-fg)은 그 위에서 읽히는 쪽으로.
-   금색·회색·주황처럼 밝은 도형에는 어두운 글자, 나머지에는 흰 글자. */
+/* 도형 색(--bd-bg)과 그 위에서 읽히는 글자색(--bd-fg). */
 .cp-badge { color: var(--bd-bg); }
 .cp-badge.is-none  { --bd-bg: var(--bd-none);  --bd-fg: var(--bd-ink); }
 .cp-badge.is-break { --bd-bg: var(--bd-break); --bd-fg: var(--bd-ink); }
@@ -718,7 +686,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-rBadge { text-align: center; padding-left: 2.5px; padding-right: 2.5px; }
 .cp-rosterRow.is-unowned .cp-badge { opacity: .4; }
 
-/* 큐브는 아이콘 + 레벨. 종류 이름은 hover 로 (글자로 쓰면 이 열이 표를 밀어낸다).
+/* 큐브는 아이콘 + 레벨이고 종류 이름은 hover 로 뺀다 (글자로 쓰면 표가 밀린다).
    도형(.cp-cubeBadge)은 상세 카드와 공용이고 여기서는 칸만 맞춘다. */
 .cp-rCube { white-space: nowrap; text-align: left; }
 .cp-cubeName {
@@ -730,7 +698,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-rIcons { display: flex; align-items: center; gap: 4px; }
 .cp-rIcons .ic { height: 17.5px; }
 
-/* 장비 4부위 2×2. 위가 머리·몸, 아래가 팔·다리라 구분자를 두지 않는다. */
+/* 장비 4부위 2×2 — 위가 머리·몸, 아래가 팔·다리라 구분자를 두지 않는다. */
 .cp-gearGrid {
   display: grid; grid-template-columns: repeat(2, 16.5px); gap: 1.5px;
   font-variant-numeric: tabular-nums;
@@ -788,7 +756,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-simBtn:hover:not(:disabled) { background: var(--accent); color: var(--accent-ink); }
 .cp-simBtn:disabled { color: var(--ink-muted); border-color: var(--line); cursor: default; }
 
-/* 부위 고르기 — 어느 장비로 이어 갈지. 칸 모양은 부위별 표와 같은 걸 쓴다. */
+/* 부위 고르기 — 어느 장비로 이어 갈지 고르고, 칸 모양은 부위별 표와 같다. */
 .cp-simHint { margin: 0 0 7.5px; font-size: 14px; color: var(--ink-muted); }
 .cp-simItem {
   display: flex; align-items: center; gap: 10px; width: 100%; margin-bottom: 5px;
@@ -803,12 +771,12 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-simOpts .cp-olCell { padding: 1.5px 6.5px; }
 .cp-detailRow .cp-note { margin: 10px 0 0; }
 
-/* 1행 — 최종 전투력 3종. 셋을 같은 크기로 두고 현재 레벨만 색으로 가른다. */
+/* 1행 — 최종 전투력 3종, 같은 크기로 두고 현재 레벨만 색으로 가른다. */
 .cp-cpRow { display: flex; flex-wrap: wrap; gap: 7.5px 22.5px; align-items: flex-end; }
 .cp-cpCell { display: grid; gap: 0; }
 .cp-cpLbl { font-size: 13px; color: var(--ink-muted); }
 /* 숫자 자체가 버튼이다 — 누르면 그 레벨의 계산식·스탯이 툴팁으로 열린다.
-   버튼처럼 보이면 숫자 셋이 나란한 줄이 시끄러워지므로, 점선 밑줄로만 알린다. */
+   버튼 모양은 시끄러워서 점선 밑줄로만 알린다. */
 .cp-cpNum {
   padding: 0; border: 0; background: none; font: inherit; color: inherit;
   font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
@@ -819,10 +787,9 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-cpNum:disabled { cursor: default; border-bottom-color: transparent; color: var(--ink-muted); }
 .cp-cpCell.is-now .cp-cpNum { color: var(--accent); font-weight: 800; }
 
-/* 2·3행 — 오버로드 옵션. 인게임 옵션 창과 같은 배치다.
+/* 2·3행 — 오버로드 옵션, 인게임 옵션 창과 같은 배치다.
    2행(종합)은 [정식 명칭] + 합계를 한 줄씩, 3행(부위별)은 부위가 열·옵션이 행.
-
-   2행: 좁은 오른쪽 단에서는 한 줄, 폼 아래로 내려오는 넓은 화면에서는 두 줄. */
+   2행은 좁은 오른쪽 단에서 한 열, 넓은 화면에서 두 열이다. */
 .cp-olList {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(237.5px, 1fr)); gap: 2.5px 10px;
 }
@@ -841,24 +808,21 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 /* 몇 부위에서 온 합인지 (종합 줄만) */
 .cp-olCount { font-size: 12.5px; opacity: .75; }
 
-/* 3행 — 부위 4열 × 옵션 3행. 자리는 calc.js 가 직접 지정한다. */
+/* 3행 — 부위 4열 × 옵션 3행, 자리는 calc.js 가 직접 지정한다. */
 .cp-olGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.5px; }
 .cp-olHead {
   text-align: center; font-size: 13px; color: var(--ink-muted); padding-bottom: 1.5px;
 }
-/* 칸은 언제나 한 줄이다. 줄바꿈을 허용하면 내용 길이에 따라 어떤 칸은 한 줄,
-   옆 칸은 두 줄이 되어 표가 들쭉날쭉해진다 — 폭이 모자라면 줄을 늘리는 대신
-   이름을 말줄임으로 자르고, 정식 명칭·단계는 칸 hover 로 넘긴다. */
+/* 칸은 언제나 한 줄이다 — 줄바꿈을 허용하면 칸마다 높이가 들쭉날쭉해진다.
+   폭이 모자라면 이름을 말줄임으로 자르고 정식 명칭·단계는 hover 로 넘긴다. */
 .cp-olCell {
   display: flex; flex-wrap: nowrap; align-items: baseline;
   justify-content: center; gap: 0 2.5px;
   padding: 2.5px 1.5px; border-radius: var(--r-s); font-size: 12.5px; line-height: 1.5;
   background: var(--bg-raise); border: 1px solid var(--line);
 }
-/* 수치 자리를 미리 잡아 둔다. 한국어 약어는 전부 두 글자라 이름 폭은 이미 고정인데
-   수치만 '9.70%'(5칸)와 '24.96%'(6칸)로 갈려서, 그 한 칸 차이가 칸 폭을 갈랐다.
-   가장 긴 값(장탄 Lv.15 = 85.37%)에 딱 맞춘다 — 여기서 더 잡으면 그만큼 이름이
-   밀려 '[공…' 으로 잘린다. 칸 하나가 105px 밖에 안 돼서 여유가 없다. */
+/* 수치 자리를 미리 잡아 '9.70%' 와 '24.96%' 의 한 칸 차이가 칸 폭을 흔들지 않게 한다.
+   가장 긴 값(장탄 Lv.15 = 85.37%)에 딱 맞춘다 — 칸이 105px 라 더 잡으면 이름이 '[공…' 으로 잘린다. */
 .cp-olGrid .cp-olVal { flex: none; min-width: 5.8ch; text-align: center; }
 /* 이름은 한 덩어리로 두되, 좁으면 이쪽이 줄어든다 (수치는 자리가 고정이라 안 밀린다).
    nowrap 이 없으면 일본어가 대괄호 안에서 끊겨 '[有利コー / ド]' 가 된다. */
@@ -877,8 +841,8 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 }
 .cp-olCell.is-off { align-items: center; }
 
-/* 옵션 단계 — 인게임 표기 그대로. 12~14 하늘색 글씨, 15 검은 바탕 + 하늘색 글씨.
-   색만으로 뜻이 갈리지 않도록 hover 에는 언제나 'Lv.15' 가 그대로 들어 있다. */
+/* 옵션 단계 — 인게임 표기대로 12~14 는 하늘색 글씨, 15 는 검은 바탕 + 하늘색 글씨.
+   색만으로 뜻이 갈리지 않게 hover 에는 언제나 'Lv.15' 가 들어 있다. */
 .cp-olRow.is-lv12, .cp-olCell.is-lv12 {
   background: var(--ol-hi-bg); border-color: var(--ol-hi); color: var(--ol-hi);
 }
@@ -895,10 +859,8 @@ table.cp-marginTbl tbody tr { cursor: default; }
 .cp-detailRow .cp-note { font-size: 13px; line-height: 1.45; }
 
 
-/* 한 단으로 접히면 목록이 먼저 오고 결과가 화면 밖으로 밀린다. 이 탭에서 보려는 건
-   고른 니케의 결과이므로 순서를 뒤집는다 (자료를 불러온 뒤에만 — 아직 없는 사람에게는
-   불러오기 카드가 먼저다). 목록은 자기 안에서 스크롤하니 화면 절반만 쓰게 눌러 둔다.
-   그래도 뒤로 밀리는 만큼은 니케를 고를 때 결과 칸으로 데려다준다 (calc.js reveal). */
+/* 한 단으로 접히면 결과가 목록 뒤로 밀리므로, 자료를 불러온 뒤에는 결과를 위로 올린다.
+   목록은 안에서 스크롤하니 화면 절반으로 눌러 두고, 니케를 고르면 결과 칸으로 데려간다 (calc.js reveal). */
 @media (max-width: 1125px) {
   .cp-wrap { grid-template-columns: minmax(0, 1fr); }
   .cp-wrap.has-roster .cp-out { order: -1; }
@@ -931,9 +893,8 @@ table.op-towerTbl { font-size: 14.5px; margin-top: 2.5px; }
 table.op-towerTbl th, table.op-towerTbl td { padding: 4px 5px; line-height: 1.3; }
 table.op-towerTbl thead th { cursor: default; font-size: 13px; }
 table.op-towerTbl tbody tr { cursor: default; }
-/* 이 표만 줄바꿈을 허용한다 (table.grid 는 기본이 nowrap). 언어마다 이름이
-   크게 달라서 — '필그림 / 오버스펙' 이 EN·JA 에서는 두 배가 된다 — 한 줄로
-   묶어 두면 세 열이 왼쪽 단(425px)이나 휴대폰 폭을 넘긴다. 넘치느니 접는다. */
+/* 이 표만 줄바꿈을 허용한다 (table.grid 는 nowrap).
+   '필그림 / 오버스펙' 이 EN·JA 에서 두 배 길이라 한 줄이면 왼쪽 단(425px)이나 휴대폰 폭을 넘긴다. */
 table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal; }
 .op-towerName .ic { height: 16.5px; margin-right: 5px; vertical-align: -2.5px; }
 .op-runs { font-variant-numeric: tabular-nums; font-weight: 600; }
@@ -1012,16 +973,15 @@ table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal;
 }
 
 /* ── 니파고 탭 (오버로드 옵션작) ──────────────────────────────
-   슬롯 바·확률 표 색은 전부 기존 토큰으로만 만든다. 모듈잠금 = 액센트,
-   락키잠금 = amber, 목표 달성 = st-good 로 다른 탭과 뜻이 겹치지 않게. */
+   색은 기존 토큰만 쓴다 — 모듈잠금 = 액센트, 락키잠금 = amber, 목표 달성 = st-good. */
 .npwrap { display: grid; gap: 17.5px; }
 .np-top, .np-bottom {
   display: grid; grid-template-columns: minmax(0, 475px) minmax(0, 1fr);
   gap: 17.5px; align-items: start;
 }
 .np-col { display: grid; gap: 17.5px; min-width: 0; align-content: start; }
-/* 소모량 + 1회 확률 — 반반. 줄 수가 서로 달라도 두 카드의 밑단은 맞춘다(늘어나는 쪽은
-   소모량 카드고, 안쪽 모듈·락키 두 칸이 같이 늘어나 빈 바닥이 남지 않는다). */
+/* 소모량 + 1회 확률 — 반반.
+   줄 수가 달라도 밑단을 맞추고, 늘어나는 소모량 카드는 안쪽 모듈·락키 두 칸이 같이 늘어난다. */
 .np-pair {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 17.5px;
 }
@@ -1252,17 +1212,14 @@ table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal;
   .np-top { grid-template-columns: minmax(0, 1fr); }
   .np-panel { right: 0; }
 }
-/* 오른쪽 단 안에서 나눠 쓰는 두 줄은 한 단으로 접힌 뒤에도 폭이 남아 더 늦게 푼다 —
-   반반으로 두면 소모량 표(모듈·락키 두 칸)와 슬롯 바가 눌리는 폭이 이쯤이다. */
+/* 오른쪽 단 안의 반반 배치는 한 단으로 접힌 뒤에도 폭이 남아 더 늦게 푼다 (소모량 표와 슬롯 바가 눌리는 폭). */
 @media (max-width: 850px) {
   .np-pair, .np-bottom { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ── 특특요 탭 (확률 분포 · 3.5주년 전후 비교) ────────────────
-   두 시대를 비교하는 탭이라 색이 두 개만 필요하다. dataviz 검증기를 통과한
-   2분류 대비쌍(series-1 / series-2)을 이전/이후에 배정하고, 색만으로 구분되지
-   않도록 표에는 항상 이전/이후 열과 부호(+/−)를 함께 둔다.
-   틀(.op-wrap/.op-group/.op-note/.op-scroll)은 전초기지 탭 것을 그대로 쓴다.  */
+   이전/이후에 series-1 / series-2 를 쓰고, 색만으로 구분되지 않게 표에는 이전/이후 열과 부호(+/−)를 같이 둔다.
+   틀(.op-wrap/.op-group/.op-note/.op-scroll)은 전초기지 탭 것을 그대로 쓴다. */
 .ic-pre { background: var(--series-1); }
 .ic-post { background: var(--series-2); }
 
@@ -1328,8 +1285,7 @@ table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal;
 
 /* ── 싱크로 레벨 상한 (필터 오른쪽 카드) ────────────────────── */
 .sc-title { margin: 0 0 10px; font-size: 15px; font-weight: 700; line-height: 1.35; }
-/* 날짜 칸은 필터의 '출시일' 과 같은 물건이라 .field 를 그대로 쓴다.
-   여기서만 다른 건 좁은 카드라 입력이 남은 폭을 다 먹는다는 것뿐. */
+/* 날짜 칸은 필터의 '출시일' 과 같은 .field 이고, 좁은 카드라 입력이 남은 폭을 다 쓴다. */
 .sc-date { margin-bottom: 12.5px; }
 .sc-date input[type="date"] { flex: 1 1 auto; min-width: 0; }
 /* 워크북 시트의 표를 그대로 옮긴 모양 — 등급 3행 · 소계 · 최대 레벨 · 합계 */
@@ -1358,9 +1314,8 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
 }
 
 /* ── 반응형 ─────────────────────────────────────────────────── */
-/* 손에 쥐는 화면(700px 아래)에서는 상단바가 세로 공간을 너무 먹는다. 제목·언어
-   단추·탭을 한 단계씩 줄이고, 영문 부제는 뺀다 — 좁은 폭에서 제목이 두 줄로
-   접히는 원인이고, 어차피 고른 언어의 이름이 이미 앞에 있다. */
+/* 700px 아래에서는 상단바가 세로 공간을 너무 먹는다.
+   제목·언어 단추·탭을 한 단계씩 줄이고, 제목을 두 줄로 접히게 하는 영문 부제는 뺀다. */
 @media (max-width: 700px) {
   .topbar-in { gap: 10px; padding: 9px var(--pad) 7px; }
   .brand { font-size: 17px; white-space: nowrap; }
@@ -1368,8 +1323,8 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
   .langswitch button { font-size: 13.5px; padding: 4px 9px; }
   .themebtn { font-size: 15px; padding: 4px 9px; }
   .tabs button { font-size: 15px; padding: 7px 10px; }
-  /* 지휘관 줄은 한 줄에 다섯 칸이 남아야 한다. 싱크로가 네 자리(1200)까지,
-     콘솔이 세 자리(280)까지 가므로 글자·아이콘·여백을 한 단계씩 더 깎는다. */
+  /* 지휘관 줄은 한 줄에 다섯 칸이 들어가야 한다.
+     싱크로는 네 자리(1200), 콘솔은 세 자리(280)까지 가므로 글자·아이콘·여백을 한 단계 더 깎는다. */
   .cp-cmdrRow { gap: 3px 5px; }
   .cp-cmdr { padding: 8px 10px; }
   .cp-cmdr .cp-tagSep { margin: 0; }
@@ -1380,17 +1335,16 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
   .cp-cmdr .cp-fact { gap: 4px; }
   /* 계정 줄은 수집 시각과 버튼 넉 개가 한 줄을 다투다 시각 쪽이 3px 로 눌린다 */
   .cp-acctFacts { flex-basis: 100%; }
-  /* 출시일 두 칸과 스쿼드 셀렉트는 더 못 줄어서 필터 상자를 넘긴다. 한 칸이
-     한 줄을 통째로 쓰게 두고(그래야 100% 가 줄 폭으로 풀린다) 안쪽을 접는다. */
+  /* 출시일 두 칸과 스쿼드 셀렉트는 더 못 줄어 필터 상자를 넘긴다.
+     한 칸이 한 줄을 다 쓰게 두고(그래야 100% 가 줄 폭이 된다) 안쪽을 접는다. */
   .filter-row { gap: 10px; }
   .filter-row .field { flex-basis: 100%; min-width: 0; }
   .field, .range { flex-wrap: wrap; }
   .field select, .field input[type="date"] { min-width: 0; max-width: 100%; }
   /* 옵션 이름이 EN 에서 길어져 목표 줄이 카드를 넘긴다 — 줄 안에서 접히게 */
   .np-goalhead { flex-wrap: wrap; }
-  /* 교차표 — 칸을 깎고, 열 머리의 아이콘과 글자를 위아래로 세운다. 옆으로 두면
-     머리 한 칸이 48px 이라 일곱 열이 카드를 넘겨 안쪽에 또 스크롤이 생긴다.
-     줄 머리(기업 이름)는 그대로 옆으로 — 세워도 글자 폭은 안 줄어든다. */
+  /* 교차표 — 칸을 깎고 열 머리의 아이콘과 글자를 위아래로 세운다 (옆으로 두면 일곱 열이 카드를 넘긴다).
+     줄 머리(기업 이름)는 세워도 폭이 안 줄어 그대로 둔다. */
   .card-cross .hm td { min-width: 28px; padding: 5px 1.5px; }
   .card-cross .hm th { padding: 1.5px 1.5px; }
   .card-cross .hm thead .iconlbl { flex-direction: column; gap: 1px; }
@@ -1412,7 +1366,7 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
   * { transition: none !important; animation: none !important; }
 }
 
-/* 메카미(딜 시뮬레이터)로 가는 링크. 상단바 오른쪽, 테마 단추 앞에 선다. */
+/* 메카미(딜 시뮬레이터) 링크 — 상단바 오른쪽, 테마 단추 앞에 선다. */
 .mklink {
   padding: 5px 10px; font-size: 14px; text-decoration: none;
   color: var(--ink-muted); border: 1px solid var(--line); border-radius: 999px;

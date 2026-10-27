@@ -1,20 +1,20 @@
 /* 전투력(CP) 계산 — DOM 을 모르는 순수 모듈.
 
-   공식의 출처와 검증 결과는 COMBAT_POWER.md 참고. 요약하면:
+   공식의 출처와 검증은 COMBAT_POWER.md 참고.
      스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수 + 장비4부위 + 큐브 + 소장품)
      CP   = (round(HP×0.7) + round(ATK×19.35) + round(DEF×70)) × ((4)+(5)) / 100
 
-   시트를 그대로 옮기지 않은 곳이 두 군데 있고, 둘 다 실계정 176명 대조로 확인한 것이다:
-     - 소장품 R0 계수. 시트는 0을 주지만(미착용과 혼동) 실제로는 skill1+6.33.
-     - 레벨 보정. 시트는 전부 상한(cap)으로 짰지만 협전·솔레는 '고정'이라 사용자 레벨이 더 낮아도 지정 레벨로 올라간다. mode 로 구분한다. */
+   시트와 다른 곳이 두 군데 있고, 둘 다 실계정 176명으로 확인했다:
+     - 소장품 R0 계수: 시트는 0(미착용과 혼동)이지만 실제로는 skill1+6.33.
+     - 레벨 보정: 시트는 전부 상한(cap)이지만 협전·솔레는 고정이라 레벨이 낮아도 지정 레벨로 올린다 (mode). */
 
 export const K = {
   HP: 0.7, ATK: 19.35, DEF: 70,          // 스탯 -> CP 환산 계수
   ELEM_DMG: 0.00828, OTHER_OPT: 0.0069,  // 오버로드 옵션 레벨 계수
   CUBE: 0.0092, COLLECTION: 0.0069,      // 큐브 / 소장품 계수
   PER_BREAK: 0.02, PER_CORE: 0.02,       // 돌파·코강 1단계당
-  /* 돌파 1단계당 고정 증가량. 등급마다 다르다 — 니케별 roledata 의 stat_enhance_detail
-     (grade_hp · grade_attack · grade_defence) 에서 왔고, 같은 등급이면 니케·클래스가 달라도 같다. */
+  /* 돌파 1단계당 고정 증가량.
+     roledata 의 stat_enhance_detail(grade_hp·grade_attack·grade_defence) 값으로, 등급만 같으면 니케·클래스와 무관하다. */
   FIXED: {
     SSR: { hp: 3000, atk: 20, def: 100 },
     SR: { hp: 2300, atk: 18, def: 90 },
@@ -29,9 +29,9 @@ export const K = {
 export const ELEM_DAMAGE = '우코';
 export const SLOTS = ['머리', '몸', '팔', '다리'];
 
-/* 오버로드 옵션은 한 부위에 칸이 셋이고 가운데가 비어 있을 수 있다. 목록은 빈 칸을 건너뛴 채로
-   오므라들어 오므로 칸 번호(pos)를 보고 제자리에 되돌린다 — 순서대로 깔면 상단·하단에 붙은 옵션이
-   상단·중단에 붙은 것처럼 보인다. 번호가 없는 옛 자료는 있던 순서대로 앞에서부터 채운다. */
+/* 오버로드 옵션은 부위당 세 칸이고 가운데가 빌 수 있다.
+   목록은 빈 칸을 건너뛰고 오므로 칸 번호(pos)로 제자리에 되돌린다 — 안 그러면 상단·하단이 상단·중단으로 보인다.
+   번호가 없는 옛 자료는 앞에서부터 채운다. */
 export function olRows(options) {
   const rows = [null, null, null];
   const rest = [];
@@ -67,8 +67,7 @@ const OPTION_SHORT = {
     우코: 'Elem.DMG', 공증: 'ATK', 장탄: 'Ammo', 크댐: 'Crit.DMG', 크확: 'Crit.Rate',
     차속: 'Chg.Speed', 명중: 'Hit', 방어: 'DEF', 차댐: 'Chg.DMG',
   },
-  /* 일본어는 임의로 줄이지 않고 일본 커뮤니티 툴(nikke-tools 등)이 실제로 쓰는 표기를 그대로 따른다 —
-     有利コード·最大装弾数·クリダメ·クリ率 … */
+  /* 일본어는 커뮤니티 툴(nikke-tools 등)이 쓰는 표기를 따른다 (有利コード·最大装弾数·クリダメ·クリ率 …). */
   ja: {
     우코: '有利コード', 공증: '攻撃力', 장탄: '装弾数', 크댐: 'クリダメ', 크확: 'クリ率',
     차속: 'チャージ速度', 명중: '命中率', 방어: '防御力', 차댐: 'チャージダメ',
@@ -76,7 +75,7 @@ const OPTION_SHORT = {
 };
 export const optionLabel = (name, lang) => (OPTION_SHORT[lang] || {})[name] || name;
 
-/* 게임 정식 명칭. 좁은 칸에는 위의 약어를 쓰지만, 종합처럼 한 줄을 통째로 쓰는 자리에서는 인게임에 적힌 그대로 보여주는 쪽이 대조하기 좋다. */
+/* 게임 정식 명칭 — 종합처럼 자리가 넉넉한 곳은 인게임 표기 그대로 써야 대조하기 좋다. */
 const OPTION_FULL = {
   ko: {
     우코: '우월코드 대미지 증가', 공증: '공격력 증가', 장탄: '최대 장탄 수 증가',
@@ -163,7 +162,7 @@ export function buildTables(raw) {
 
   if (raw.cp_penalty) {
     const p = raw.cp_penalty, pi = ix(p);
-    // 부족률 오름차순. 조회는 '주어진 값 이하 중 가장 큰 항목'.
+    // 부족률 오름차순 — 조회는 '주어진 값 이하 중 가장 큰 항목'
     T.penalty = p.rows.map(r => [r[pi.deficit], r[pi.penalty]]).sort((x, y) => x[0] - y[0]);
   }
   return T;
@@ -188,7 +187,7 @@ function cubeOf(T, level) {
   return { stat: row, coef };
 }
 
-/* 소장품. kind 는 'none' | 'R' | 'SR' | '애장품'. */
+/* 소장품 — kind 는 'none' | 'R' | 'SR' | '애장품'. */
 function collectionOf(T, kind, level) {
   if (kind === 'none') return { stat: ZERO, coef: 0 };
   if (kind === '애장품') {
@@ -232,7 +231,7 @@ function gearOf(T, cls, gear) {
       if (!o || !o.name || !o.level) continue;
       const uco = o.name === ELEM_DAMAGE;
       if (uco) elemDmg += o.level; else other += o.level;
-      // 옵션은 하나씩 소수 4자리로 끊는다. 묶어서 더한 뒤 끊으면 옵션이 많은 니케에서 최대 12 CP 차이
+      // 옵션은 하나씩 소수 4자리로 끊는다 — 묶어서 끊으면 최대 12 CP 어긋난다
       optCoef += round(o.level * (uco ? K.ELEM_DMG : K.OTHER_OPT), 4);
     }
   }
@@ -255,8 +254,9 @@ export function compute(T, input, level = input.level) {
 
   const fixed = K.FIXED[input.rarity] || K.FIXED.SSR;
 
-  /* 반올림 자리가 결과를 가른다. 기본×돌파계수까지는 내림 -> 코강계수를 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
-  CP 환산은 스탯마다 내림, 마지막에 정수로 반올림. */
+  /* 반올림 자리가 결과를 가른다.
+     기본×돌파계수는 내림 -> 코강계수 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
+     CP 환산은 스탯마다 내림, 마지막에 반올림. */
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
     const inner = Math.floor(base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks);
@@ -266,7 +266,7 @@ export function compute(T, input, level = input.level) {
   const s = input.skills || {};
   const skillCoef = (K.SKILL_BASE + (s.s1 || 0) + (s.s2 || 0) + (s.burst || 0) * 2) / 100;
   const c4 = skillCoef + optCoef;
-  // 이 항도 소수 4자리로 끊는다. 결과가 달라지므로 그대로 따른다.
+  // 이 항도 소수 4자리로 끊는다 (안 끊으면 결과가 달라진다)
   const c5 = round(cube.coef * K.CUBE + coll.coef * K.COLLECTION, 4);
 
   const parts = {
@@ -283,9 +283,9 @@ export function compute(T, input, level = input.level) {
 const round = (v, d) => { const p = 10 ** d; return Math.round(v * p) / p; };
 
 /* ── 컨텐츠별 보정 전투력 ──────────────────────────────────────
-   cap = 사용자 레벨이 지정 레벨보다 높을 때만 깎는다
-   (요격전) fix = 사용자 레벨과 무관하게 지정 레벨로 고정
-   (협전·솔레·챔레나) none = 무보정 */
+   cap  = 내 레벨이 지정 레벨보다 높을 때만 깎는다 (요격전)
+   fix  = 내 레벨과 무관하게 지정 레벨로 고정 (협전·솔레·챔레나)
+   none = 무보정 */
 export function adjustedLevel(mode, level, at) {
   if (mode === 'cap') return Math.min(level, at);
   if (mode === 'fix') return at;

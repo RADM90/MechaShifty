@@ -1,21 +1,16 @@
 /* MechaShifty 내보내기 — 북마클릿 판 (Tampermonkey 를 못 쓰는 환경용)
  *
- * 하는 일은 mechashifty.user.js 를 받아서 실행하는 것뿐이다. 다만 받은 내용의 SHA-256 을 아래 EXPECT 와 대조해서, 한
- * 글자라도 다르면 실행하지 않는다. 즉 이 북마클릿을 한 번 저장해 두면 그 시점의 코드에 고정된다 — 나중에 배포본이
- * 바뀌어도 (개발자가 몰래 바꾸더라도) 사용자가 다시 복사하기 전에는 실행되지 않는다.
+ * mechashifty.user.js 를 받아 SHA-256 이 아래 EXPECT 와 맞을 때만 실행한다.
+ * 저장한 시점의 코드에 고정되므로 배포본이 바뀌면 다시 저장하기 전까지 실행되지 않는다.
+ * 스크립트를 고치면 EXPECT 를 갱신하고 사용자는 북마크를 다시 저장해야 한다 — 자동 업데이트는 일부러 막았다.
  *
- * 그래서 스크립트를 고칠 때마다 EXPECT 도 같이 갱신해야 하고, 사용자는 북마크를 다시 저장해야 한다. 자동 업데이트가 안
- * 되는 게 아니라 일부러 안 되게 한 것이다.
+ * Tampermonkey 를 쓸 수 있으면 그쪽이 낫다 (실행할 때마다 네트워크로 받지 않는다).
  *
- * Tampermonkey 를 쓸 수 있으면 그쪽이 낫다. 코드가 브라우저에 저장돼 있어서 실행할 때마다 네트워크로 받아 오지 않는다.
+ * 화면 문구는 mechashifty.user.js 가 한/영/일로 낸다.
+ * 아래 alert 둘은 그 스크립트가 뜨기 전에 실패했을 때만 보이므로 여기서 세 언어를 따로 든다.
  *
- * 실행되고 나면 화면 문구는 mechashifty.user.js 가 한/영/일로 알아서 낸다. 여기 두 개의 alert 은 그 스크립트가 뜨기
- * *전에* 실패했을 때만 보이는 것이라 이 파일에서 따로 세 언어를 들고 있는다.
- *
- * EN: this bookmarklet only fetches mechashifty.user.js and runs it if the
- *     SHA-256 matches EXPECT below — pinning you to the exact code you reviewed.
- * JA: このブックマークレットは mechashifty.user.js を取得し、SHA-256 が下の
- *     EXPECT と一致した場合にのみ実行します（確認済みのコードに固定されます）。
+ * EN: this bookmarklet only fetches mechashifty.user.js and runs it if the SHA-256 matches EXPECT below — pinning you to the exact code you reviewed.
+ * JA: このブックマークレットは mechashifty.user.js を取得し、SHA-256 が下の EXPECT と一致した場合にのみ実行します（確認済みのコードに固定されます）。
  *
  * 해시 갱신:
  *   shasum -a 256 userscript/mechashifty.user.js

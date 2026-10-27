@@ -10,8 +10,8 @@
 <link rel="apple-touch-icon" href="assets/icons/title/MechaShifty-180.png">
 <link rel="stylesheet" href="assets/style.css">
 <script>
-  /* 모듈 스크립트는 defer 라 늦게 뜬다. 첫 페인트 전에 테마를 확정해서
-     라이트→다크 깜빡임을 없앤다. 기본값은 라이트. */
+  /* 모듈 스크립트는 defer 라 늦게 뜬다.
+     첫 페인트 전에 테마를 정해 라이트→다크 깜빡임을 막는다. */
   document.documentElement.dataset.theme =
     localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
 </script>

@@ -222,7 +222,7 @@ const STR = {
     'Sort order: Break 0 → Break 3 → Core 1 → Core 7',
     '並び順: 0凸 → 3凸 → コア1 → コア7',
   ],
-  // 오버로드 옵션 중 우코 + 공증 종합값의 합. 실전 성능을 한 숫자로 가늠하는 자리다
+  // 오버로드 옵션 중 우코 + 공증 종합값의 합 — 실전 성능을 한 숫자로 가늠한다
   'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
   'im.colOlAtkNote': [
     '오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력) 합계',
@@ -866,8 +866,7 @@ const ICON_VARIANT = { burst: '_simple', weapon_type: '_simple' };
 
 export function iconSrc(axis, code) {
   if (!code) return null;
-  /* 기업은 소속을 그대로 보이고, 오버스펙은 소속을 덮지 않는 별개의 도장이라 기업 아이콘에 섞지 않고 이름 옆에 따로
-     찍는다 (overspec_simple.webp). */
+  /* 오버스펙(corporation_sub_type)은 기업 아이콘에 섞지 않고 별도 도장으로 찍는다 (overspecMark). */
   if (axis === 'corporation') return `assets/icons/company/${String(code).toLowerCase()}_wob.webp`;
   if (axis === 'corporation_sub_type') return `assets/icons/company/${String(code).toLowerCase()}_simple.webp`;
   const dir = ICON_DIR[axis];
@@ -893,8 +892,7 @@ export function iconEl(axis, code, opts = {}) {
   return img;
 }
 
-/* 오버스펙 도장. 기업 아이콘에 섞지 않고 니케 이름 옆에 붙인다 — 소속을 대체하는 값이 아니라 그 위에 얹히는
-   표시라서다. */
+/* 오버스펙 도장 — 소속을 대체하지 않고 그 위에 얹는 표시라 이름 옆에 붙인다. */
 export function overspecMark(sub) {
   if (!sub) return null;
   const ic = iconEl('corporation_sub_type', sub, { cls: 'ic-ovr' });
@@ -996,8 +994,7 @@ const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ
   'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 const HANGUL_BASE = 0xAC00, PER_CHO = 588;
 
-/* '라피 : 레드 후드' 처럼 구분자가 낀 이름을 '라피레드후드' 로 붙여서 비교한다 — 사용자가 띄어쓰기/콜론을 그대로 칠
-   이유가 없다. */
+/* '라피 : 레드 후드' 처럼 구분자가 낀 이름은 '라피레드후드' 로 붙여서 비교한다. */
 const compact = s => s.replace(/[\s:·・]/g, '');
 const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const u = n => '\\u' + n.toString(16).padStart(4, '0');
@@ -1049,8 +1046,7 @@ function hitsNikke(m, n) {
     || (n.aliases || []).some(m.plain);
 }
 
-/* 계산기 목록(roster.js)도 같은 규칙으로 찾게 한다 — 탭마다 검색이 다르게 굴면 'ㄹㅍ' 이 여기선 되고 저기선 안 되는
-   이유를 알 길이 없다. */
+/* 계산기 목록(roster.js)도 같은 규칙으로 찾는다 — 탭마다 다르면 'ㄹㅍ' 이 한쪽에서만 걸린다. */
 export function nikkeMatcher(q) {
   const m = buildMatcher(q);
   return m ? n => hitsNikke(m, n) : null;
@@ -1315,7 +1311,7 @@ function iconCell(axis, code, opts) {
 const fmtDate = iso => iso.slice(0, 10);
 const fmtRange = p => `${fmtDate(p.start)} ~ ${fmtDate(p.end)}`;
 const dday = p => Math.ceil((p._start.getTime() - Date.now()) / 86400000);
-/* 남은 날은 올림이 아니라 내림이다 — 스물세 시간 남았으면 '하루 남음'이 아니라 '오늘 닫힘'(D-0) 이어야 한다. */
+/* 남은 날은 내림이다 — 23시간 남았으면 D-0. */
 const ddayEnd = p => Math.max(0, Math.floor((p._end.getTime() - Date.now()) / 86400000));
 
 function statusTag(p) {

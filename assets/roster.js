@@ -1,13 +1,13 @@
 /* 내 계정 — Blablalink 에서 뽑아 온 내 니케 데이터를 계산기에 붙인다.
 
-   데이터를 가져오는 쪽은 이 저장소의 `userscript/mechashifty.user.js`(Tampermonkey) 또는 같은 코드를 해시로 고정한 북마클릿이다.
-   여기서는 받은 payload 를 검증하고, 계산기 입력 형태로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
+   수집은 `userscript/mechashifty.user.js`(Tampermonkey) 또는 같은 코드를 해시로 고정한 북마클릿이 한다.
+   여기서는 payload 를 검증해 계산기 입력으로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
 
-   받는 경로는 셋인데 전부 사용자가 직접 시작한다:
+   받는 경로는 셋이고 전부 사용자가 시작한다:
      1) JSON 열기      2) 붙여넣기      3) 수집 스크립트가 연 탭에서 postMessage
 
-   3번은 출처(origin)를 확인한다. 계정 데이터라 아무 창이나 밀어 넣을 수 있으면 안 된다.
-   반대로 우리가 보내는 준비 신호도 대상 origin 을 명시해서, blablalink 가 아닌 창에는 애초에 배달되지 않게 한다. */
+   3번은 계정 데이터라 출처(origin)를 확인한다.
+   보내는 준비 신호도 대상 origin 을 지정해 blablalink 가 아닌 창에는 가지 않게 한다. */
 
 import { optionLabel, gradeLabel, tierLabel } from './cp.js';
 
@@ -76,8 +76,7 @@ export function badge(cls, text, title) {
   return b;
 }
 
-/* 돌파와 코어강화는 동시에 성립하지 않는다 (코강은 최대 돌파 이후 단계라 attraction_grade 의 코강 줄은 전부 돌파가
-   꽉 차 있다) → 배지 하나로 충분하다. */
+/* 코강은 최대 돌파 다음 단계라 돌파와 겹치지 않으므로 배지 하나로 충분하다. */
 export function gradeBadge(grade, t) {
   const core = /^([1-7])코강$/.exec(grade);
   const brk = /^([0-3])돌$/.exec(grade);
@@ -87,7 +86,7 @@ export function gradeBadge(grade, t) {
   return null;                               // 모르는 표기 — 부르는 쪽이 글자로 쓴다
 }
 
-/* 소장품. R 파랑 · SR 보라 · 애장품 주황. */
+/* 소장품 — R 파랑 · SR 보라 · 애장품 주황. */
 const COLL_CLS = { R: 'is-r', SR: 'is-sr', 애장품: 'is-fav' };
 export function collBadge(c, t) {
   if (!c || c.kind === 'none') return null;
@@ -114,7 +113,7 @@ export function cubeBadge(cube, info, iconEl) {
   return box;
 }
 
-/* 수집 시각. 유저스크립트가 ISO(UTC)로 찍으므로 보는 사람의 지역 시간으로 되돌려 분까지 보여준다. */
+/* 수집 시각 — ISO(UTC)를 보는 사람의 지역 시간으로 바꿔 분까지 보여준다. */
 export function stampText(s) {
   if (!s) return '—';
   const d = new Date(s);
@@ -139,7 +138,7 @@ export function parseRoster(raw) {
     generated_at: String(data.generated_at || '').slice(0, 40),
     account: {
       synchro_level: int(acc.synchro_level, 1, 1400, null),
-      // Unix 초. 니케 서비스 개시 이전이거나 미래면 버린다.
+      // Unix 초 — 니케 서비스 개시 이전이거나 미래면 버린다
       created_at: int(acc.created_at, 1667000000, Math.floor(Date.now() / 1000) + 86400, null),
       /* 캠페인 진행도 — [모드1][지역3][순번3] 7자리 정수. */
       progress_normal_campaign: int(acc.progress_normal_campaign, 1, 9999999, null),
@@ -198,8 +197,8 @@ function cleanGear(gear) {
   });
 }
 
-/* pos 는 그 부위의 몇 번째 옵션 칸인지다 (1~3). 빈 칸을 건너뛰면 목록이 오므라들어
-   상단·하단이 상단·중단으로 보이므로, 걸러 내는 동안에도 칸 번호를 놓치지 않는다. */
+/* pos 는 부위 안의 옵션 칸 번호(1~3)다.
+   빈 칸을 건너뛰면 상단·하단이 상단·중단으로 보이므로 걸러 내는 동안에도 번호를 지킨다. */
 function cleanOptions(options) {
   return (Array.isArray(options) ? options : [])
     .map((o, i) => (o ? { ...o, name: OPTION_ALIAS[o.name] || o.name, pos: int(o.pos, 1, 3, i + 1) } : o))
@@ -320,7 +319,7 @@ export function renderImport(root, ctx) {
       facts.appendChild(f);
     };
     if (data) {
-      /* 계정 생성 시각은 여기서 뺐다 — 이 탭에서는 아무 계산에도 안 쓰이고, 전초기지 탭의 타워 카드가 그 값으로 등반 가능 층을 낸다. */
+      /* 계정 생성 시각은 전초기지 탭 타워 카드만 쓰므로 여기서는 보여주지 않는다. */
       add(t('im.collected'), stampText(data.generated_at));
     } else {
       facts.appendChild(el('span', 'cp-acctEmpty', t('im.desc')));
@@ -566,8 +565,7 @@ export function renderImport(root, ctx) {
     return td;
   };
 
-  /* 하모니 큐브. 아이콘(assets/icons/cube/<tid>.webp) + 레벨 — 도형은 모듈 위쪽의 cubeBadge 가 만든다 (계산기 상세
-     카드와 같은 모양). */
+  /* 하모니 큐브 — 도형은 위쪽 cubeBadge 가 만든다 (계산기 상세 카드와 같은 모양). */
   function cubeCell(cube) {
     const box = cubeBadge(cube, cubeInfo(cube.tid), ctx.iconEl);
     const td = el('td', 'cp-rCube');
@@ -591,8 +589,7 @@ export function renderImport(root, ctx) {
     bar.append(q, chips(), cubeSelect());
     box.appendChild(bar);
 
-    /* 왼쪽은 '무엇을 얼마나 키웠나'(돌파·소장품·호감도·스킬·장비·큐브·우공합), 오른쪽은 '그래서 전투력이
-       얼마인가'(레벨·현재·Lv.40·Lv.400). */
+    /* 왼쪽은 키운 정도(돌파·소장품·호감도·스킬·장비·큐브·우공합), 오른쪽은 전투력(레벨·현재·Lv.40·Lv.400). */
     const rank = (axis, v) => CHIP_AXES[axis].indexOf(v);
     const cols = [
       { key: 'name', label: t('im.colNikke'), dir0: 1, val: r => r.name },
@@ -672,8 +669,7 @@ export function renderImport(root, ctx) {
           };
         }
 
-        /* 이름은 열 폭에 맞춰 잘리지만(hover 로 전체), 오버스펙 도장은 그 바깥에 두어 이름이 길어도 잘려 나가지 않게
-           한다. */
+        /* 이름은 열 폭에서 잘리므로(hover 로 전체) 오버스펙 도장은 그 바깥에 둔다. */
         const name = el('td', 'cp-rName');
         name.title = r.name;
         const nameBox = el('span', 'cp-rNameBox');

@@ -3,14 +3,14 @@
 
    리롤 규칙 (2026-09, NIPAGO_REROLL.md)
    - 같은 효과가 다시 나오면 수치는 직전과 다르게 나온다.
-   - 결과를 보고 적용 여부를 고른다. 비용은 버튼을 누를 때 나간다. */
+   - 결과를 보고 적용 여부를 고르고, 비용은 버튼을 누를 때 나간다. */
 
 import { optionLabel, olRows } from './cp.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
 
-/* 데이터에 없는 공식 수치. 잠금 비용은 [다른 잠금 없음, 있음] */
+/* 데이터에 없는 공식 수치 — 잠금 비용은 [다른 잠금 없음, 있음] */
 const SLOT_P = [1, 0.5, 0.3];
 const COST_MOD = [2, 3];
 const COST_KEY = [20, 30];
@@ -187,7 +187,8 @@ const costMod = n => (n === 0 ? COST_MOD[0] : COST_MOD[1]);
 const costKey = n => (n === 0 ? COST_KEY[0] : COST_KEY[1]);
 
 /* 효과 변경으로 슬롯 i 에 g 가 떴을 때 수치까지 맞을 확률.
-   now 는 다음 판 기준이라 지금 효과가 다시 뜨면 지금 수치를 뺀다. 여러 판은 기본 분포로 근사. */
+   now 는 다음 판 기준이라 지금 효과가 다시 뜨면 지금 수치를 뺀다.
+   여러 판은 기본 분포로 근사. */
 const lvF = (i, g, now) => {
   if (S.mode !== 'lv' || !g.minLv) return 1;
   const s = S.slots[i];
@@ -212,7 +213,8 @@ const expEC = (freeIdxs, gList, lk) => {
 };
 
 /* 수치 재설정으로 T 이상을 띄우는 기대 횟수 (지금 수치별).
-   직전 수치가 빠지니 1/p 가 아니다. 실패한 판은 흔한 구간을 쥐는 쪽을 고른다고 본다.
+   직전 수치가 빠지니 1/p 가 아니다.
+   실패한 판은 흔한 구간을 쥐는 쪽을 고른다고 본다.
    tools/nipago_reroll.mjs 의 lvTries(T, 'opt') 와 같다. */
 const lvMemo = {};
 function lvTries(T) {
@@ -324,7 +326,7 @@ function rollLevel(prev = 0) {
   }
 }
 
-/* 같은 효과가 다시 나오면 수치는 prev 를 피한다. 빈 슬롯은 다시 빈 슬롯일 수 있다. */
+/* 같은 효과가 다시 나오면 수치는 prev 를 피한다 (빈 슬롯은 다시 빈 슬롯일 수 있다). */
 function rollSlot(i, excluded, prev) {
   if (Math.random() >= SLOT_P[i]) return { opt: '', lv: 11 };
   const avail = D.opts.filter(o => !excluded.has(o.id));
@@ -364,7 +366,7 @@ const keyDue = () => S.history
   .filter(h => !h.committed && h.type === 'key' && S.slots[h.slot].lock === 'key')
   .reduce((a, h) => a + h.key, 0);
 
-/* 비용을 확정하고 결과는 미리보기로 띄운다. 이후로 잠금은 무를 수 없다. */
+/* 비용을 확정하고 결과는 미리보기로 띄운다 — 이후로 잠금은 무를 수 없다. */
 function roll(kind) {
   const next = kind === 'lv' ? simulateReset() : simulateChange();
   S.totalMod += lockCount() + 1;

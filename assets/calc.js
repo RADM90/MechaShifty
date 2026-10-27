@@ -1,8 +1,8 @@
 /* 보정 전투력 계산기 탭.
 
-   계산은 cp.js 가 전부 하고 여기는 결과 표만 그린다. 입력은 손으로 넣지 않고 불러온 계정(roster.js)에서 온다.
-   원본 스탯표(data/raw/*.json)와 도메인 규칙(data/cp_rules.json)은 이 탭을 처음 열 때만 받아온다
-   — syncro_stat 하나가 500KB라 첫 화면에 같이 얹지 않는다. */
+   계산은 cp.js 가 하고 여기는 결과 표만 그린다.
+   입력은 불러온 계정(roster.js)에서 온다.
+   원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 — syncro_stat 하나가 500KB 다. */
 
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
   K, SLOTS, olRows } from './cp.js';
@@ -65,15 +65,15 @@ async function loadAll() {
 }
 
 /* ── 등급별 돌파 한계 ──────────────────────────────────────────
-   attraction_grade 표는 SSR 기준이라 0돌~3돌·1~7코강을 전부 담고 있지만, 실제로 갈 수 있는 데까지는 니케 등급이 가른다
-   — SR 은 2돌에서 끝나고, R 은 돌파 자체가 없으며, 코어강화는 SSR 전용이다 (data/cp_rules.json 의 limit_break). */
+   attraction_grade 표는 SSR 기준이라 3돌·7코강까지 다 있지만 실제 한계는 등급이 가른다.
+   SR 은 2돌까지, R 은 돌파 없음, 코강은 SSR 전용 (data/cp_rules.json 의 limit_break). */
 const limits = rarity => (rules.limit_break || {})[rarity] || { break: 3, core: 7 };
 const gradesFor = rarity => {
   const lim = limits(rarity);
   return T.grades.filter(g => g.breaks <= lim.break && g.cores <= lim.core);
 };
-/* 못 가는 등급이 입력에 남아 있으면(SR 로 바꿨는데 7코강) 갈 수 있는 가장 높은 단계로 내린다 — 셀렉트에 없는 값이
-   남으면 칸이 통째로 비어 보이고, 계산은 그 니케가 도달할 수 없는 전투력을 낸다. */
+/* 못 가는 단계가 입력에 남아 있으면(SR 로 바꿨는데 7코강) 갈 수 있는 최고 단계로 내린다.
+   그냥 두면 셀렉트가 비어 보이고 도달할 수 없는 전투력이 나온다. */
 function clampGrade(grade, rarity) {
   const ok = gradesFor(rarity);
   if (ok.some(g => g.key === grade)) return grade;
@@ -112,7 +112,7 @@ const adopt = v => {
   return r;
 };
 
-/* 옛 약어로 저장된 폼 입력(크피·차뎀)을 지금 이름으로 눕힌다 — 그냥 두면 옵션 셀렉트가 값을 못 찾아 조용히 '없음'으로 떨어진다. */
+/* 옛 약어(크피·차뎀)로 저장된 입력을 지금 이름으로 바꾼다 — 안 그러면 셀렉트가 '없음'으로 떨어진다. */
 function renameOptions(v) {
   for (const g of v.gear || []) {
     for (const o of g.options || []) if (OPTION_ALIAS[o.name]) o.name = OPTION_ALIAS[o.name];
@@ -318,7 +318,7 @@ function simButton(n) {
   return btn;
 }
 
-/* 부위별 상세. 어느 장비에 무엇이 붙어 있는지 그대로 편다. */
+/* 부위별 상세 — 어느 장비에 무엇이 붙어 있는지 그대로 편다. */
 function renderOverloadBySlot(n) {
   const box = el('div', 'cp-detailRow');
   const head = el('div', 'cp-rowHead');
@@ -347,7 +347,7 @@ function renderOverloadBySlot(n) {
       grid.appendChild(cell);
       return;
     }
-    /* 여기는 부위에 실제로 붙어 있는 값이라 원표 그대로 쓴다. 빈 칸이 있으면 그 자리를 비워 둔다. */
+    /* 부위에 실제로 붙은 값이라 원표 그대로 쓰고, 빈 칸은 비워 둔다. */
     const rows = olRows(g.options);
     for (let i = 0; i < 3; i++) {
       const o = rows[i];
@@ -369,7 +369,7 @@ function renderOverloadBySlot(n) {
   return box;
 }
 
-/* 부위별 칸이 한 줄에 들어가는지는 언어와 화면 폭이 가른다 — 한국어 약어는 두 글자라 '[공증] 9.70%' 가 그대로 들어가지만 'Crit.Rate' 는 못 들어간다. */
+/* 부위별 칸이 한 줄에 들어가는지는 언어와 폭이 가른다 ('[공증] 9.70%' 는 들어가고 'Crit.Rate' 는 안 들어간다). */
 function fitOlGrid(root) {
   for (const grid of root.querySelectorAll('.cp-olGrid')) {
     grid.classList.remove('is-stacked');
@@ -607,7 +607,7 @@ function renderResult(root) {
     return out;
   }
 
-  /* 스탯 3종과 계산 분해는 여기 카드로 있었지만, 늘 보고 있을 값이 아니라 전투력 숫자를 눌렀을 때 뜨는 툴팁으로 옮겼다 (cpBreakdown). */
+  /* 스탯 3종과 계산 분해는 전투력 숫자를 누르면 뜨는 툴팁에 있다 (cpBreakdown). */
   out.appendChild(renderDetail(root, n, r));
   return out;
 }

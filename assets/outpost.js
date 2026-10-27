@@ -1,15 +1,15 @@
 /* 전초기지 탭 — 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
 
-   레벨 산식은 워크북 `재화_계산기` 시트를 바탕으로 하되, 시트에 없는 선지급 1스테이지(BONUS_STAGES)를 실측으로 더했다.
-   실계정 덤프 (`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)와 레벨 내 진행도로 맞춰봤다.
-   아래 EVEL_STEP / SKIP_REGIONS / BONUS_STAGES 주석 참조.
+   레벨 산식은 워크북 `재화_계산기` 시트에, 시트에 없는 선지급 1스테이지(BONUS_STAGES)를 실측으로 더한 것이다.
+   실계정 덤프(`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)로 맞춰 봤다 (LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 참고).
 
    전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
 
-   진행도는 손으로 고를 수도 있지만, 계산기 탭이 불러다 둔 계정 자료 (localStorage `cp.roster`)가 있으면 거기서 끌어온다
-   — 같은 값을 두 번 고르게 할 이유가 없다. 계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
+   진행도는 손으로 고를 수도 있지만 계산기 탭이 불러 둔 계정 자료(localStorage `cp.roster`)가 있으면 거기서 가져온다.
+   계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
 
-   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐. 프로필 응답을 직접 밀어 넣는 setProgress() 도 내보내지만, 평소 경로는 위의 끌어오기다. */
+   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐.
+   프로필 응답을 직접 넣는 setProgress() 도 내보내지만 평소에는 위처럼 가져온다. */
 
 const STORE = 'outpost.input';
 
@@ -82,7 +82,7 @@ function build(income, stages, academy) {
   }
   const maxLevel = Math.max(...levels.keys());
 
-  // 스테이지를 지역 순서대로 한 줄로 편다. flat[i] 의 i+1 이 누적 순번.
+  // 스테이지를 지역 순서대로 한 줄로 편다 (flat[i] 의 누적 순번은 i+1)
   const cs = Object.fromEntries(stages.columns.map((c, i) => [c.key, i]));
   const order = [];                          // 등장 순서대로의 지역명
   const byRegion = new Map();
@@ -115,7 +115,7 @@ function build(income, stages, academy) {
     comm: 0,                                 // 지휘관 경험치는 부스트 대상이 아니다
   };
 
-  // 코어더스트/시(아카데미 적용) → 그 값에 처음 닿는 레벨. 표가 단조증가라 한 번만 훑는다.
+  // 코어더스트/시(아카데미 적용) → 그 값에 처음 닿는 레벨 (표가 단조증가라 한 번만 훑는다)
   const dust = income.rows.map(r => ({ level: r[ci.level], hr: r[ci.dust_academy] }));
 
   return { levels, maxLevel, flat, order, byRegion, skip, boost, dust };
@@ -138,7 +138,7 @@ function derive() {
   const normal = Math.max(0, nIdx - D.skip);
   const hard = hIdx;
   const total = normal + hard;
-  // 레벨을 세는 카운터에는 지역3 개방분 1이 얹힌다. total 은 실제 클리어 수 그대로 둔다.
+  // 레벨 카운터에만 지역3 개방분 1을 얹고, total 은 실제 클리어 수 그대로 둔다
   const counter = total + BONUS_STAGES;
   const raw = Math.floor(counter / LEVEL_STEP) + 1;
   const level = Math.min(D.maxLevel, raw);
@@ -336,7 +336,7 @@ const MOLD_BONUS_STEP = 5;     // 이 배수 층에서는 1개가 아니라
 const MOLD_BONUS = 5;          //   이만큼 준다
 const PERFECT_PER = 5;         // 퍼펙트 몰드를 한 번에 주는 개수
 
-/* 0=일 … 6=토. 필그림/오버스펙은 둘이 아니라 타워 하나이고, 퍼펙트 몰드 간격도 3사(20층)와 다르다(30층). */
+/* 0=일 … 6=토 — 필그림/오버스펙은 타워 하나이고 퍼펙트 몰드 간격이 30층이다 (3사는 20층). */
 const TOWERS = [
   { key: 'ELYSION', days: [0, 2, 5], perfectStep: 20 },
   { key: 'MISSILIS', days: [0, 3, 6], perfectStep: 20 },
@@ -399,7 +399,7 @@ function renderTower() {
   const towerTitle = tw => `${towerName(tw)} — `
     + t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'));
 
-  /* 표 하나에 층수와 몰드까지 넣었더니 네 열이 카드를 넘쳤다. */
+  /* 층수와 몰드를 한 표에 넣으면 카드를 넘쳐서 둘로 나눈다. */
   const tbl = el('table', 'grid op-towerTbl');
   const thead = el('thead'), hr = el('tr');
   hr.appendChild(el('th', null, t('op.towerCol')));
@@ -425,7 +425,7 @@ function renderTower() {
     fl.title = t('op.towerOpens', opens);
     tr.appendChild(fl);
 
-    // 지금까지 쌓였을 몰드 — 기업 / 퍼펙트 순. 가운뎃점이 없으면 두 수가 붙어 읽힌다
+    // 지금까지 쌓였을 몰드 (기업 / 퍼펙트) — 가운뎃점이 없으면 두 수가 붙어 읽힌다
     const have = el('td', 'num');
     have.appendChild(el('span', 'op-runs', int(moldsAt(floors))));
     have.appendChild(el('span', 'op-weeks', '· ' + int(perfectAt(floors, tw.perfectStep))));
@@ -526,7 +526,7 @@ const RES = [
 ];
 const num = (v, d) => (d ? dec(v, d) : int(v));
 
-/* 부스트 적용값. 코어더스트는 원본에 아카데미 적용 열이 따로 있어 그걸 쓴다. */
+/* 부스트 적용값 — 코어더스트는 원본의 아카데미 적용 열을 쓴다. */
 function applied(row, key) {
   if (!row) return null;
   if (key === 'core') return { hr: row.dustAcademy, min: row.dustAcademy / 60 };
