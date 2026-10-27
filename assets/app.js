@@ -465,9 +465,9 @@ const STR = {
     (n, opt, min) => `${JA_SLOT(n)} · ${opt}の数値再設定 → lv${min}+`,
   ],
   'np.recLvDesc': [
-    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). 달성 확률 ${p}, 기대 ${exp}모듈.`,
-    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). ${p} chance, ~${exp} modules.`,
-    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want})。達成率 ${p}、期待 ${exp}カスモ。`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). 이번 판 달성 확률 ${p}, 기대 ${exp}모듈. 못 맞힌 판은 더 낮은 구간(1~5 › 6~10 › 11~)이 나왔을 때만 적용.`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want}). ${p} chance this roll, ~${exp} modules. On a miss, apply only if it lands in a lower band (1–5 › 6–10 › 11+).`,
+    (lv, cur, min, want, p, exp) => `lv${lv}(${cur}) → lv${min}+(${want})。今回の達成率 ${p}、期待 ${exp}カスモ。外れた回は、より低い帯(1~5 › 6~10 › 11~)が出たときだけ適用。`,
   ],
   'np.recRoll': [
     s => `효과변경 — ${s} 탐색`,
@@ -503,6 +503,9 @@ const STR = {
   'np.none': ['효과 미획득', 'No effect', '効果なし'],
   'np.keep': ['효과 유지', 'Keep', '維持'],
   'np.apply': ['효과 변경', 'Change', '変更'],
+  'np.modalTitleLv': ['수치 재설정 미리보기', 'Value reroll preview', '数値再設定プレビュー'],
+  'np.keepLv': ['수치 유지', 'Keep', '維持'],
+  'np.applyLv': ['수치 변경', 'Change', '変更'],
 
   /* 특특요 탭 (intercept.js 에서 ctx.t 로 받아 쓴다) */
   'ic.loading': ['수급량 표를 불러오는 중…', 'Loading drop-rate tables…', '排出率表を読み込み中…'],

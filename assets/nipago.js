@@ -1,26 +1,23 @@
-/* 니파고 탭 — 오버로드 옵션작(수치작) 시뮬레이터.
+/* 니파고 탭 — 오버로드 옵션작 시뮬레이터.
+   옵션 수치와 확률은 data/raw/equip_option·equip_glossary 에서 읽는다.
 
-   1. 옵션 수치·등장확률·레벨 확률을 코드에 박지 않고 `data/raw/equip_option.json` 과 `equip_glossary.json` 에서 읽는다.
-   2. 상태를 localStorage 에 남기고, 상태가 바뀌면 패널을 통째로 다시 그린다.
-
-   슬롯 등장확률(100/50/30%)과 잠금 비용(모듈 2·3 / 락키 20·30)은 워크북에 없는 공식 수치라 아래 상수로 둔다.
-
-   app.js 와의 결합은 renderNipago(root, ctx) 한 곳뿐. */
+   리롤 규칙 (2026-09, NIPAGO_REROLL.md)
+   - 같은 효과가 다시 나오면 수치는 직전과 다르게 나온다.
+   - 결과를 보고 적용 여부를 고른다. 비용은 버튼을 누를 때 나간다. */
 
 import { optionLabel, olRows } from './cp.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
 
-/* 슬롯 1·2·3 이 아예 등장할 확률. */
+/* 데이터에 없는 공식 수치. 잠금 비용은 [다른 잠금 없음, 있음] */
 const SLOT_P = [1, 0.5, 0.3];
-/* 잠금 비용 — [다른 잠금이 없을 때, 있을 때] */
 const COST_MOD = [2, 3];
 const COST_KEY = [20, 30];
-/* 잠금 추천 기본값이 켜져 있는 옵션 (원본 명세의 기본 목표) */
+/* 3번 슬롯 잠금 추천이 기본으로 켜지는 옵션 */
 const DEFAULT_S3 = ['우코', '공증'];
 
-/* 옛 약어로 저장된 목표(크피·차뎀)를 지금 이름으로 눕힌다 — roster.js 와 같은 표 */
+/* 옛 약어 → 지금 이름 (roster.js 와 같은 표) */
 const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
 
 let ctx = null, D = null, base = './data/', mounted = null;
@@ -37,7 +34,6 @@ const t = (k, ...a) => ctx.t(k, ...a);
 const pct = v => (Math.round(v * 1000) / 10).toFixed(1) + '%';
 const val = (o, lv) => (o.vals[lv - 1] * 100).toFixed(2) + '%';
 
-/* 옵션 표시 이름 — 한국어는 데이터의 약어, 그 외에는 그 언어의 줄임말. */
 const optLabel = o => optionLabel(o.id, ctx.lang);
 const optFull = o => o[ctx.lang] || o.en;
 
@@ -78,8 +74,14 @@ async function loadAll() {
 }
 
 const gO = id => D.opts.find(o => o.id === id);
-/* 레벨 min 이상이 뜰 확률 */
+/* min 이상이 뜰 확률 */
 const cumLP = min => D.lp.slice(min - 1).reduce((a, b) => a + b, 0);
+/* cur 를 뺀 분포에서 min 이상이 뜰 확률 */
+function lvP(min, cur) {
+  let p = 0;
+  for (let lv = min; lv <= D.lp.length; lv++) if (lv !== cur) p += D.lp[lv - 1];
+  return p / (1 - D.lp[cur - 1]);
+}
 
 /* ── 상태 ─────────────────────────────────────────────────── */
 function makeGoal(id) {
@@ -88,6 +90,7 @@ function makeGoal(id) {
 }
 
 const defaults = () => ({
+  ver: 2,                           // 2부터 락키를 리롤 때 차감
   mode: 'opt',
   slots: [0, 1, 2].map(() => ({ opt: '', lv: 11, lock: 'none' })),
   goals: {},
@@ -100,12 +103,12 @@ function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE));
     if (saved && Array.isArray(saved.slots)) return normalize(saved);
-  } catch { /* 저장값이 깨졌으면 기본값 */ }
+  } catch {}
   return defaults();
 }
 const save = () => localStorage.setItem(STORE, JSON.stringify(S));
 
-/* 저장값이 지금 데이터와 안 맞을 수 있으니(옵션 이름 변경 등) 한 번 걸러낸다. */
+/* 옵션 이름이 바뀌었을 수 있어 저장값을 한 번 걸러낸다. */
 function normalize(v) {
   const d = defaults();
   const fix = id => OPTION_ALIAS[id] || id;
@@ -124,17 +127,19 @@ function normalize(v) {
     const id = fix(rawId);
     if (gO(id)) goals[id] = { ...makeGoal(id), ...g };
   }
+  const history = Array.isArray(v.history) ? v.history : [];
+  // 이전 버전은 잠글 때 락키를 차감했다
+  if (v.ver !== 2) history.forEach(h => { if (h.type === 'key') h.committed = true; });
   return {
-    ...d, ...v, slots, goals,
+    ...d, ...v, slots, goals, history,
+    ver: 2,
     mode: v.mode === 'lv' ? 'lv' : 'opt',
     totalMod: +v.totalMod || 0,
     totalKey: +v.totalKey || 0,
-    history: Array.isArray(v.history) ? v.history : [],
   };
 }
 
-/* ── 밖에서 슬롯 채우기 ───────────────────────────────────────
-   계산기 탭이 보고 있던 니케의 오버로드 장비 한 부위를 그대로 넘겨 준다. */
+/* ── 계산기 탭에서 슬롯 채우기 ────────────────────────────── */
 export function seedSlots(options) {
   const rows = olRows(options);
   const slots = [0, 1, 2].map(i => {
@@ -149,13 +154,13 @@ export function seedSlots(options) {
     return;
   }
   let saved = null;
-  try { saved = JSON.parse(localStorage.getItem(STORE)); } catch { /* 깨졌으면 기본값 */ }
+  try { saved = JSON.parse(localStorage.getItem(STORE)); } catch {}
   localStorage.setItem(STORE,
     JSON.stringify({ ...defaults(), ...(saved || {}), slots, history: [] }));
 }
 
-/* ── 확률 엔진 (원본 명세 그대로) ─────────────────────────────
-   제외된 옵션의 확률은 남은 옵션들에 비율대로 재분배되고, 거기에 슬롯 등장확률을 곱한 값이 그 슬롯의 최종 확률이다. */
+/* ── 확률 ─────────────────────────────────────────────────── */
+/* 제외된 옵션 몫은 남은 옵션에 비율대로 나누고, 슬롯 등장확률을 곱한다. */
 function slotProbs(slotIdx, excluded) {
   const sp = SLOT_P[slotIdx];
   const avail = D.opts.filter(o => !excluded.has(o.id));
@@ -181,31 +186,58 @@ const lockCount = (except = -1) =>
 const costMod = n => (n === 0 ? COST_MOD[0] : COST_MOD[1]);
 const costKey = n => (n === 0 ? COST_KEY[0] : COST_KEY[1]);
 
-/* 자유 슬롯 중 하나라도 목표를 뽑을 확률 */
-function pFreeGoal(freeIdxs, gList) {
+/* 효과 변경으로 슬롯 i 에 g 가 떴을 때 수치까지 맞을 확률.
+   now 는 다음 판 기준이라 지금 효과가 다시 뜨면 지금 수치를 뺀다. 여러 판은 기본 분포로 근사. */
+const lvF = (i, g, now) => {
+  if (S.mode !== 'lv' || !g.minLv) return 1;
+  const s = S.slots[i];
+  return now && s.opt === g.id ? lvP(g.minLv, s.lv) : cumLP(g.minLv);
+};
+
+/* 자유 슬롯 중 하나라도 목표가 뜰 확률 */
+function pFreeGoal(freeIdxs, gList, now = true) {
   const locked = new Set(S.slots.filter(s => s.lock === 'mod' && s.opt).map(s => s.opt));
   let none = 1;
   for (const i of freeIdxs) {
     const probs = slotProbs(i, locked);
     let no = 1;
-    for (const g of gList) {
-      const lvF = (S.mode === 'lv' && g.minLv) ? cumLP(g.minLv) : 1;
-      no -= (probs[g.id] || 0) * lvF;
-    }
+    for (const g of gList) no -= (probs[g.id] || 0) * lvF(i, g, now);
     none *= Math.max(0, no);
   }
   return 1 - none;
 }
 const expEC = (freeIdxs, gList, lk) => {
-  const p = pFreeGoal(freeIdxs, gList);
-  return p <= 0 ? Infinity : (1 / p) * (lk + 1);
-};
-const expLR = (minLv, lk) => {
-  const p = cumLP(minLv);
+  const p = pFreeGoal(freeIdxs, gList, false);
   return p <= 0 ? Infinity : (1 / p) * (lk + 1);
 };
 
-/* 목표를 하나씩 순서대로 달성한다고 보고 단계별 비용을 더한다. */
+/* 수치 재설정으로 T 이상을 띄우는 기대 횟수 (지금 수치별).
+   직전 수치가 빠지니 1/p 가 아니다. 실패한 판은 흔한 구간을 쥐는 쪽을 고른다고 본다.
+   tools/nipago_reroll.mjs 의 lvTries(T, 'opt') 와 같다. */
+const lvMemo = {};
+function lvTries(T) {
+  if (lvMemo[T]) return lvMemo[T];
+  const lp = D.lp, E = new Array(lp.length + 1).fill(0);
+  for (let L = 1; L < T; L++) E[L] = 1 / cumLP(T);
+  for (let it = 0; it < 100000; it++) {
+    let diff = 0;
+    for (let L = 1; L < T; L++) {
+      const den = 1 - lp[L - 1];
+      let s = 1;
+      for (let m = 1; m < T; m++) if (m !== L) s += lp[m - 1] / den * Math.min(E[L], E[m]);
+      diff = Math.max(diff, Math.abs(s - E[L]));
+      E[L] = s;
+    }
+    if (diff < 1e-9) break;
+  }
+  return (lvMemo[T] = E);
+}
+const expLR = (minLv, cur, lk) => {
+  if (cur >= minLv) return 0;
+  return cumLP(minLv) <= 0 ? Infinity : lvTries(minLv)[cur] * (lk + 1);
+};
+
+/* 목표를 하나씩 띄우고 잠근다고 보고 단계별 비용을 더한다. */
 function expectedTotal() {
   const gList = goalList();
   if (!gList.length) return 0;
@@ -227,10 +259,7 @@ function expectedTotal() {
     for (const i of freeIdxs) {
       const probs = slotProbs(i, lockedOpts);
       let no = 1;
-      for (const g of targets) {
-        const lvF = (S.mode === 'lv' && g.minLv) ? cumLP(g.minLv) : 1;
-        no -= (probs[g.id] || 0) * lvF;
-      }
+      for (const g of targets) no -= (probs[g.id] || 0) * lvF(i, g, false);
       none *= Math.max(0, no);
     }
     const p = 1 - none;
@@ -245,7 +274,7 @@ function expectedTotal() {
 
   if (S.mode === 'lv') {
     for (const s of S.slots) {
-      if (isLvShort(s) && s.lock === 'none') total += expLR(S.goals[s.opt].minLv || 1, lockCount());
+      if (isLvShort(s) && s.lock === 'none') total += expLR(S.goals[s.opt].minLv || 1, s.lv, lockCount());
     }
   }
   return total;
@@ -263,7 +292,7 @@ function lockRec(i) {
   }
   if (i === 1) {
     if (!g.s2rec || s.lv < (g.s2recMinLv || 11)) return null;
-    // 보수적 기준: 이 슬롯을 다시 뽑는 기대비용의 절반이 잠금비용보다 커야 권한다
+    // 다시 뽑는 기대비용의 절반이 잠금비용보다 클 때만 권한다
     const locked = new Set(S.slots.filter((x, j) => x.lock === 'mod' && x.opt && j !== i).map(x => x.opt));
     const probs = slotProbs(1, locked);
     const sum = goalList().reduce((a, x) => a + (probs[x.id] || 0), 0);
@@ -285,27 +314,33 @@ function pickWeighted(avail) {
   return avail.at(-1).id;
 }
 
-function rollLevel() {
-  let cum = 0; const r = Math.random();
-  for (let lv = 1; lv <= D.lp.length; lv++) { cum += D.lp[lv - 1]; if (r < cum) return lv; }
-  return D.lp.length;
+/* prev 와 다른 수치가 나올 때까지 뽑는다. */
+function rollLevel(prev = 0) {
+  for (;;) {
+    let cum = 0, lv = D.lp.length;
+    const r = Math.random();
+    for (let k = 1; k <= D.lp.length; k++) { cum += D.lp[k - 1]; if (r < cum) { lv = k; break; } }
+    if (lv !== prev) return lv;
+  }
 }
 
-function rollSlot(i, excluded) {
+/* 같은 효과가 다시 나오면 수치는 prev 를 피한다. 빈 슬롯은 다시 빈 슬롯일 수 있다. */
+function rollSlot(i, excluded, prev) {
   if (Math.random() >= SLOT_P[i]) return { opt: '', lv: 11 };
   const avail = D.opts.filter(o => !excluded.has(o.id));
   if (!avail.length) return { opt: '', lv: 11 };
-  return { opt: pickWeighted(avail), lv: rollLevel() };
+  const opt = pickWeighted(avail);
+  return { opt, lv: rollLevel(prev.opt === opt ? prev.lv : 0) };
 }
 
-/* 효과변경 1회. 모듈잠금은 그대로, 락키잠금은 값을 지키고 잠금만 풀린다. */
+/* 모듈잠금은 유지, 락키잠금은 이번 판만 지키고 풀린다. */
 function simulateChange() {
   const next = S.slots.map(s => ({ ...s }));
   const decided = new Set(next.filter(s => s.lock !== 'none' && s.opt).map(s => s.opt));
   for (let i = 0; i < 3; i++) {
     if (next[i].lock === 'mod') continue;
     if (next[i].lock === 'key') { next[i].lock = 'none'; continue; }
-    const r = rollSlot(i, decided);
+    const r = rollSlot(i, decided, S.slots[i]);
     next[i].opt = r.opt;
     next[i].lv = r.lv;
     if (r.opt) decided.add(r.opt);
@@ -313,8 +348,31 @@ function simulateChange() {
   return next;
 }
 
+/* 효과가 있는 자유 슬롯만 굴린다. */
+function simulateReset() {
+  return S.slots.map(s => {
+    const n = { ...s };
+    if (n.lock === 'key') n.lock = 'none';
+    else if (n.lock !== 'mod' && n.opt) n.lv = rollLevel(n.lv);
+    return n;
+  });
+}
+
 /* ── 액션 ─────────────────────────────────────────────────── */
-const commit = () => S.history.forEach(h => { h.committed = true; });
+/* 다음 리롤 때 나갈 락키 */
+const keyDue = () => S.history
+  .filter(h => !h.committed && h.type === 'key' && S.slots[h.slot].lock === 'key')
+  .reduce((a, h) => a + h.key, 0);
+
+/* 비용을 확정하고 결과는 미리보기로 띄운다. 이후로 잠금은 무를 수 없다. */
+function roll(kind) {
+  const next = kind === 'lv' ? simulateReset() : simulateChange();
+  S.totalMod += lockCount() + 1;
+  S.totalKey += keyDue();
+  S.history.forEach(h => { h.committed = true; });
+  S.slots.forEach(s => { if (s.lock === 'key') s.lock = 'none'; });
+  ui.pending = { kind, slots: next };
+}
 
 function apply(fn) {
   fn();
@@ -330,9 +388,8 @@ function doLock(i, type) {
     S.totalMod += c;
     S.history.push({ slot: i, prevLock: prev, type: 'mod', mod: c, key: 0, committed: false });
   } else if (type === 'key' && prev === 'none') {
-    const c = costKey(other);
-    S.totalKey += c;
-    S.history.push({ slot: i, prevLock: prev, type: 'key', mod: 0, key: c, committed: false });
+    // 차감은 roll() 에서
+    S.history.push({ slot: i, prevLock: prev, type: 'key', mod: 0, key: costKey(other), committed: false });
   } else if (type === 'none') {
     S.history = S.history.filter(h => h.slot !== i);
   }
@@ -344,30 +401,16 @@ function cancelLock(i) {
   const idx = S.history.map(h => h.slot).lastIndexOf(i);
   if (idx === -1 || S.history[idx].committed) return;
   const h = S.history[idx];
-  S.totalMod -= h.mod;
-  S.totalKey -= h.key;
+  S.totalMod -= h.mod;              // 락키는 아직 차감 전
   S.slots[i].lock = h.prevLock;
   S.history.splice(idx, 1);
   ui.lock = -1;
 }
 
-function applyChange() {
+function applyRoll() {
   if (!ui.pending) return;
-  commit();
-  S.totalMod += lockCount() + 1;
-  S.slots = ui.pending.map(s => ({ ...s }));
+  S.slots = ui.pending.slots.map(s => ({ ...s }));
   ui.pending = null;
-}
-
-/* 수치재설정은 미리보기 없이 바로 실행된다 (원본과 동일). */
-function applyLevelReset() {
-  commit();
-  S.totalMod += lockCount() + 1;
-  for (const s of S.slots) {
-    if (s.lock === 'key') { s.lock = 'none'; continue; }
-    if (s.lock === 'mod' || !s.opt) continue;
-    s.lv = rollLevel();
-  }
 }
 
 /* ── 렌더: 목표 옵션 ───────────────────────────────────────── */
@@ -473,10 +516,11 @@ function renderCost() {
     [t('np.spent'), t('np.pieces', S.totalMod)],
     [t('np.perRoll'), t('np.perRollN', lk + 1)],
   ]));
+  const due = keyDue();
   grid.appendChild(box(t('np.lockkey'), 'np-k', [
     [t('np.expected'), '—'],
     [t('np.spent'), t('np.pieces', S.totalKey)],
-    [t('np.perRoll'), '—'],
+    [t('np.perRoll'), due ? t('np.pieces', due) : '—'],
   ]));
   card.appendChild(grid);
   return card;
@@ -494,8 +538,7 @@ function renderProbBars() {
   const locked = new Set(S.slots.filter(s => s.lock !== 'none' && s.opt).map(s => s.opt));
   const perSlot = i => {
     const probs = slotProbs(i, locked);
-    return gList.reduce((a, g) => a + (probs[g.id] || 0)
-      * (S.mode === 'lv' ? cumLP(g.minLv || 1) : 1), 0);
+    return gList.reduce((a, g) => a + (probs[g.id] || 0) * lvF(i, g, true), 0);
   };
   const free = [0, 1, 2].filter(i => S.slots[i].lock === 'none');
   const rows = [[t('np.freeAll'), pFreeGoal(free, gList)]]
@@ -528,10 +571,10 @@ function renderGear() {
   const acts = el('div', 'np-acts');
   const change = el('button', 'np-act np-act-ec', '↺ ' + t('np.btnChange'));
   change.type = 'button';
-  change.onclick = () => { ui.pending = simulateChange(); paint(mounted); };
+  change.onclick = () => apply(() => roll('opt'));
   const reset = el('button', 'np-act np-act-lr', '% ' + t('np.btnReset'));
   reset.type = 'button';
-  reset.onclick = () => apply(applyLevelReset);
+  reset.onclick = () => apply(() => roll('lv'));
   acts.append(change, reset);
   card.appendChild(acts);
 
@@ -594,7 +637,7 @@ function slotRow(s, i) {
 
 function slotPanel(s, i) {
   const panel = el('div', 'np-panel');
-  // 슬롯1 과 모듈잠금 슬롯의 옵션은 다른 슬롯에서 다시 고를 수 없다
+  // 슬롯1·모듈잠금 슬롯의 옵션은 다른 슬롯에서 못 고른다
   const used = new Set(S.slots
     .filter((x, j) => j !== i && x.opt && (j === 0 || x.lock === 'mod'))
     .map(x => x.opt));
@@ -638,7 +681,10 @@ function slotPanel(s, i) {
   ok.type = 'button';
   ok.onclick = () => apply(() => {
     const opt = sel.value;
-    if (opt !== S.slots[i].opt && S.slots[i].lock !== 'none') S.slots[i].lock = 'none';
+    if (opt !== S.slots[i].opt && S.slots[i].lock !== 'none') {
+      S.slots[i].lock = 'none';
+      S.history = S.history.filter(h => h.slot !== i || h.committed);
+    }
     S.slots[i].opt = opt;
     S.slots[i].lv = Math.min(15, Math.max(1, +num.value || 11));
     ui.slot = -1;
@@ -657,14 +703,16 @@ function lockMenu(s, i) {
     menu.appendChild(b);
   };
   const other = lockCount(i);
-  item('np-i-mod', '🔒 ' + t('np.lockMod', costMod(other)), () => doLock(i, 'mod'));
-  item('np-i-key', '🗝 ' + t('np.lockKey', costKey(other)), () => doLock(i, 'key'));
-  if (s.lock !== 'none') item('np-i-off', '🔓 ' + t('np.unlock'), () => doLock(i, 'none'));
+  // 잠금 종류를 바꾸려면 먼저 푼다 (게임과 같음)
+  if (s.lock === 'none') {
+    item('np-i-mod', '🔒 ' + t('np.lockMod', costMod(other)), () => doLock(i, 'mod'));
+    item('np-i-key', '🗝 ' + t('np.lockKey', costKey(other)), () => doLock(i, 'key'));
+  } else item('np-i-off', '🔓 ' + t('np.unlock'), () => doLock(i, 'none'));
 
+  // 돌려받을 비용은 모듈잠금에만 있다
   const h = [...S.history].reverse().find(x => x.slot === i);
-  if (h && !h.committed) {
-    item('np-i-cancel', '✕ ' + t('np.cancelLock',
-      h.type === 'mod' ? t('np.pieces', h.mod) : t('np.pieces', h.key)), () => cancelLock(i));
+  if (h && !h.committed && h.type === 'mod') {
+    item('np-i-cancel', '✕ ' + t('np.cancelLock', t('np.pieces', h.mod)), () => cancelLock(i));
   }
   return menu;
 }
@@ -750,12 +798,12 @@ function renderRec() {
     S.slots.forEach((s, i) => {
       if (!isLvShort(s) || s.lock !== 'none') return;
       const min = S.goals[s.opt].minLv || 1;
-      const p = cumLP(min);
+      const p = lvP(min, s.lv);
       recs.push({
         ico: '📈', pri: 'hot',
         title: t('np.recLv', i + 1, optLabel(gO(s.opt)), min),
         desc: t('np.recLvDesc', s.lv, val(gO(s.opt), s.lv), min, val(gO(s.opt), min),
-          pct(p), Math.round(expLR(min, lk))),
+          pct(p), Math.round(expLR(min, s.lv, lk))),
         p: p * 100,
       });
     });
@@ -801,16 +849,19 @@ function renderRec() {
   return card;
 }
 
-/* ── 렌더: 효과변경 미리보기 ───────────────────────────────── */
+/* ── 렌더: 리롤 미리보기 ───────────────────────────────────── */
+/* 비용은 roll() 에서 이미 나갔다. */
 function renderModal() {
+  const lv = ui.pending.kind === 'lv';
+  const keep = () => apply(() => { ui.pending = null; });
   const bg = el('div', 'np-modalbg');
   const box = el('div', 'np-modal');
 
   const head = el('div', 'np-modalhead');
-  head.appendChild(el('span', null, t('np.modalTitle')));
+  head.appendChild(el('span', null, t(lv ? 'np.modalTitleLv' : 'np.modalTitle')));
   const x = el('button', 'np-modalx', '✕');
   x.type = 'button';
-  x.onclick = () => { ui.pending = null; paint(mounted); };
+  x.onclick = keep;
   head.appendChild(x);
   box.appendChild(head);
 
@@ -832,25 +883,21 @@ function renderModal() {
     return s;
   };
   body.appendChild(side(t('np.cur'), S.slots, false));
-  body.appendChild(side(t('np.next'), ui.pending, true));
+  body.appendChild(side(t('np.next'), ui.pending.slots, true));
   box.appendChild(body);
 
   const btns = el('div', 'np-modalbtns');
-  const keep = el('button', 'np-mb np-mb-keep', '↺ ' + t('np.keep'));
-  keep.type = 'button';
-  keep.onclick = () => apply(() => {
-    // 유지해도 락키 잠금은 이번 회차로 풀린다
-    S.slots.forEach(s => { if (s.lock === 'key') s.lock = 'none'; });
-    ui.pending = null;
-  });
-  const go = el('button', 'np-mb np-mb-apply', '✓ ' + t('np.apply'));
+  const stay = el('button', 'np-mb np-mb-keep', '↺ ' + t(lv ? 'np.keepLv' : 'np.keep'));
+  stay.type = 'button';
+  stay.onclick = keep;
+  const go = el('button', 'np-mb np-mb-apply', '✓ ' + t(lv ? 'np.applyLv' : 'np.apply'));
   go.type = 'button';
-  go.onclick = () => apply(applyChange);
-  btns.append(keep, go);
+  go.onclick = () => apply(applyRoll);
+  btns.append(stay, go);
   box.appendChild(btns);
 
   bg.appendChild(box);
-  bg.onclick = e => { if (e.target === bg) { ui.pending = null; paint(mounted); } };
+  bg.onclick = e => { if (e.target === bg) keep(); };
   return bg;
 }
 
@@ -858,18 +905,15 @@ function renderModal() {
 function paint(root) {
   root.textContent = '';
 
-  /* 왼쪽 단은 목표 옵션 한 장, 오른쪽 단은 그 목표로 나오는 것들이 위에서 아래로 쌓인다. */
+  // 왼쪽은 목표, 오른쪽은 소모량·확률 / 슬롯별 표 / 장비·추천
   const top = el('div', 'np-top');
   top.appendChild(renderGoals());
   const right = el('div', 'np-col');
-  /* 소모량과 1회 확률은 둘 다 짧아서 한 줄씩 차지할 이유가 없다 — 반씩 나눠 나란히 둔다. */
   const pair = el('div', 'np-pair');
   pair.appendChild(renderCost());
   pair.appendChild(renderProbBars());
   right.appendChild(pair);
-  /* 슬롯별 표는 위 두 카드의 근거라 바로 아래에 붙인다. */
   right.appendChild(renderProbTable());
-  /* 장비 카드와 그 장비를 두고 하는 조언은 나란히 둔다. */
   const bottom = el('div', 'np-bottom');
   bottom.appendChild(renderGear());
   const rec = renderRec();
@@ -881,7 +925,7 @@ function paint(root) {
   if (ui.pending) root.appendChild(renderModal());
 }
 
-/* 슬롯 패널·자물쇠 메뉴는 바깥을 누르면 닫힌다. */
+/* 바깥을 누르면 슬롯 패널·잠금 메뉴를 닫는다. */
 let wired = false;
 function wireOutside() {
   if (wired) return;
@@ -895,7 +939,6 @@ function wireOutside() {
   });
 }
 
-/* app.js 가 부르는 유일한 진입점. */
 export async function renderNipago(root, context) {
   ctx = context;
   mounted = root;
