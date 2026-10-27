@@ -144,6 +144,9 @@ export function parseRoster(raw) {
       progress_normal_campaign: int(acc.progress_normal_campaign, 1, 9999999, null),
       progress_hard_campaign: int(acc.progress_hard_campaign, 1, 9999999, null),
       outpost_battle_level: int(acc.outpost_battle_level, 1, 9999, null),
+      /* 타워별 클리어 층 — 1.5.0 이전 유저스크립트가 만든 파일에는 없다. */
+      ...Object.fromEntries(['elysion', 'missilis', 'tetra', 'pilgrim', 'tribe'].map(k =>
+        [`progress_${k}_tower`, int(acc[`progress_${k}_tower`], 1, 99999, null)])),
     },
     research: {
       common: int(res.common, 0, 999, 0),

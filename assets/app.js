@@ -63,7 +63,7 @@ const STR = {
   ],
   'cp.console_공용': ['공용', 'Shared', '共用'],
   'cp.console_클래스': ['클래스', 'Class', 'クラス'],
-  'cp.console_기업': ['기업', 'Corporation', '企業'],
+  'cp.console_기업': ['기업', 'Manufacturer', '企業'],
   'cp.slot_머리': ['머리', 'Head', '頭'],
   'cp.slot_몸': ['몸', 'Torso', '胴'],
   'cp.slot_팔': ['팔', 'Arm', '腕'],
@@ -278,7 +278,7 @@ const STR = {
     '戦闘力計算機タブでアカウント資料を読み込むと、この進行度が自動で入ります。手動で選んだ値は次の収集まで保たれます。',
   ],
   /* 기업 타워 카드 — 계정 생성일 기준 '막힘 없이 올랐다면' 도달 가능한 최대 층 */
-  'op.tower': ['기업 타워', 'Corp towers', 'トライブタワー'],
+  'op.tower': ['기업 타워', 'Manufacturer Towers', '企業別タワー'],
   'op.created': ['계정 생성', 'Account created', 'アカウント作成'],
   'op.sinceDays': [n => `· ${n.toLocaleString()}일째`, n => `· day ${n.toLocaleString()}`, n => `· ${n.toLocaleString()}日目`],
   'op.towerHint': [
@@ -286,6 +286,19 @@ const STR = {
     n => `Ceiling if you cleared ${n} floors every time the tower opened, never blocked.`,
     n => `一度も詰まらず、開くたびに${n}階ずつ登った場合の到達可能な階です。`,
   ],
+  'op.towerHintReal': [
+    '층수는 게임이 알려준 클리어 층입니다. 옆의 회색 숫자는 한 번도 막히지 않고 열릴 때마다 끝까지 올랐다면 도달했을 층이고, 몰드는 클리어 층으로 셉니다.',
+    'Floors are what the game reports as cleared. The grey number beside each is where you would be if you had climbed every opening without getting stuck; molds are counted from the cleared floor.',
+    '階数はゲームが返したクリア階です。横の灰色の数字は、一度も詰まらず開くたびに登り切った場合の到達階で、モールドはクリア階で数えます。',
+  ],
+  'op.towerFloorReal': ['클리어 층 / 최대', 'Cleared / max', 'クリア階 / 最大'],
+  'op.towerGap': [n => `최대보다 ${n}층 아래`, n => `${n} below the ceiling`, n => `最大より${n}階下`],
+  'op.towerHaveReal': [
+    (m, p) => `몰드 ${m.toLocaleString()}개 · 퍼펙트 ${p.toLocaleString()}개`,
+    (m, p) => `${m.toLocaleString()} molds · ${p.toLocaleString()} perfect`,
+    (m, p) => `モールド${m.toLocaleString()}個・パーフェクト${p.toLocaleString()}個`,
+  ],
+  'op.tribeTower': ['트라이브 타워', 'Tribe Tower', 'トライブタワー'],
   'op.towerNeedAcct': [
     '전투력 계산기 탭에서 계정 자료를 불러오면 계정 생성일 기준으로 계산합니다.',
     'Import your account in the CP calculator tab to compute this from your account age.',
@@ -301,7 +314,7 @@ const STR = {
   'op.towerOpens': [o => `지금까지 ${o}회 열림`, o => `${o} openings so far`, o => `これまで${o}回開放`],
   'op.towerMoldTbl': ['모집 한 번(50개)까지', 'To one recruit (50)', '募集1回（50個）まで'],
   'op.towerGroupCol': ['타워 무리', 'Towers', 'タワー'],
-  'op.towerGroupN': [n => `기업 ${n}사`, n => `${n} corps`, n => `企業${n}社`],
+  'op.towerGroupN': [n => `기업 ${n}사`, n => `${n} manufacturers`, n => `企業${n}社`],
   'op.floorN': [n => `${n.toLocaleString()}층`, n => `F${n.toLocaleString()}`, n => `${n.toLocaleString()}階`],
   'op.runN': [n => `${n}회`, n => `${n} runs`, n => `${n}回`],
   'op.weekN': [n => `${n}주`, n => `${n} wk`, n => `${n}週`],
@@ -321,7 +334,7 @@ const STR = {
   ],
   'op.towerMoldNote': [
     (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 아래 표의 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다 — 값을 가르는 건 타워 이름이 아니라 주 개방 횟수와 퍼펙트 간격뿐이라 3사는 한 줄로 묶었습니다.`,
-    (s, b, p, u) => `Corp molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the second table gives the runs and weeks to get there. Only the weekly openings and the perfect interval change the numbers, so the big three share one row.`,
+    (s, b, p, u) => `Manufacturer molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the second table gives the runs and weeks to get there. Only the weekly openings and the perfect interval change the numbers, so the big three share one row.`,
     (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 — 下の表は そこまでの登攀回数と週数です。値を分けるのは週の開放回数とパーフェクト間隔だけなので、3社は1行にまとめています。`,
   ],
   'op.fromAccount': [
@@ -699,7 +712,7 @@ const STR = {
   'f.timeline': ['타임라인 보기', 'Timeline view', 'タイムライン表示'],
   'f.all': ['전체', 'All', 'すべて'],
 
-  'ax.corporation': ['기업', 'Corp', '企業'],
+  'ax.corporation': ['기업', 'Manufacturer', '企業'],
   'ax.element': ['속성', 'Element', '属性'],
   'ax.class': ['클래스', 'Class', 'クラス'],
   'ax.weapon_type': ['무기', 'Weapon', '武器'],

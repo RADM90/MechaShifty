@@ -896,6 +896,8 @@ table.op-towerTbl tbody tr { cursor: default; }
 /* 이 표만 줄바꿈을 허용한다 (table.grid 는 nowrap).
    '필그림 / 오버스펙' 이 EN·JA 에서 두 배 길이라 한 줄이면 왼쪽 단(425px)이나 휴대폰 폭을 넘긴다. */
 table.op-towerTbl th, table.op-towerTbl td, .op-towerName { white-space: normal; }
+/* 숫자 칸은 '805階 / 843' 이 꺾이면 읽기 어려워 묶어 두고, 줄어드는 몫은 이름 칸이 진다. 휴대폰 폭에서는 다시 푼다. */
+table.op-towerTbl tbody td.num { white-space: nowrap; }
 .op-towerName .ic { height: 16.5px; margin-right: 5px; vertical-align: -2.5px; }
 .op-runs { font-variant-numeric: tabular-nums; font-weight: 600; }
 .op-weeks { margin-left: 5px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
@@ -1351,6 +1353,8 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
   /* 기업 타워의 두 표도 세 열이라 한 단계 눌러야 안쪽 스크롤이 안 생긴다 */
   table.op-towerTbl { font-size: 13.5px; }
   table.op-towerTbl th, table.op-towerTbl td { padding: 4px 3px; }
+  table.op-towerTbl tbody td.num { white-space: normal; }
+  table.op-towerTbl .op-runs, table.op-towerTbl .op-weeks { white-space: nowrap; }  /* 꺾여도 '22.4週' 는 한 덩어리 */
   .op-weeks { margin-left: 3px; }
 }
 

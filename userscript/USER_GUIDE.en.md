@@ -146,11 +146,12 @@ Press *Clear* in the calculator to delete it.
   slots with their overload options · harmony cube (kind and level) · collection item /
   favourite item · bond
 - Account: synchro level · outpost Recycling Room research levels · account creation time ·
-  campaign progress (last cleared Normal / Hard stage) · outpost level
+  campaign progress (last cleared Normal / Hard stage) · outpost level · cleared floor of each
+  tower (four Manufacturer Towers and the Tribe Tower)
 
 The account values are used by the **Outpost tab** too — campaign progress fills in the
-outpost level and resource income, and the creation time is what the Tribe Tower card uses to
-work out how many floors you could have climbed.
+outpost level and resource income, and the Manufacturer Tower card shows each tower's cleared
+floor next to the ceiling worked out from your account creation time.
 
 Only values that appear on a calculator screen or feed the combat power formula are kept.
 Everything else is discarded during collection, so it never reaches the file at all.

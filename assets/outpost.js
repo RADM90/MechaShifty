@@ -6,7 +6,7 @@
    전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
 
    진행도는 손으로 고를 수도 있지만 계산기 탭이 불러 둔 계정 자료(localStorage `cp.roster`)가 있으면 거기서 가져온다.
-   계정 생성 시각은 기업 타워 카드가 쓴다 (renderTower).
+   계정 생성 시각과 타워별 클리어 층(`progress_*_tower`)은 기업 타워 카드가 쓴다 (renderTower).
 
    app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐.
    프로필 응답을 직접 넣는 setProgress() 도 내보내지만 평소에는 위처럼 가져온다. */
@@ -373,27 +373,40 @@ function renderTower() {
   const g = el('div', 'op-group');
   g.appendChild(el('h3', null, t('op.tower')));
 
-  const acc = accountData();
-  const created = acc && acc.created_at ? new Date(acc.created_at * 1000) : null;
-  if (!created) {
+  const acc = accountData() || {};
+  const created = acc.created_at ? new Date(acc.created_at * 1000) : null;
+  /* 게임이 알려준 클리어 층. 1.5.0 이전 유저스크립트로 만든 자료에는 없어서 생성일로 낸 최대 층만 보인다. */
+  const cleared = tw => acc[`progress_${tw.key.toLowerCase()}_tower`] || null;
+  const hasReal = TOWERS.some(cleared);
+  if (!created && !hasReal) {
     g.appendChild(el('p', 'op-note', t('op.towerNeedAcct')));
     return g;
   }
 
-  /* 계정 생성 — 날짜만으로는 '오늘 만든 계정'과 구분이 안 돼 시각까지 적는다 */
-  const pad = n => String(n).padStart(2, '0');
-  const stamp = `${created.getFullYear()}-${pad(created.getMonth() + 1)}-${pad(created.getDate())}`
-    + ` ${pad(created.getHours())}:${pad(created.getMinutes())}`;
-  const from = new Date(created); from.setHours(0, 0, 0, 0);
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const days = Math.max(0, Math.floor((today - from) / 86400000)) + 1;
+  let from = null, today = null;
+  if (created) {
+    /* 계정 생성 — 날짜만으로는 '오늘 만든 계정'과 구분이 안 돼 시각까지 적는다 */
+    const pad = n => String(n).padStart(2, '0');
+    const stamp = `${created.getFullYear()}-${pad(created.getMonth() + 1)}-${pad(created.getDate())}`
+      + ` ${pad(created.getHours())}:${pad(created.getMinutes())}`;
+    from = new Date(created); from.setHours(0, 0, 0, 0);
+    today = new Date(); today.setHours(0, 0, 0, 0);
+    const days = Math.max(0, Math.floor((today - from) / 86400000)) + 1;
 
-  const head = el('p', 'op-note op-created');
-  head.appendChild(el('span', 'op-createdLbl', t('op.created')));
-  head.appendChild(el('span', 'op-createdVal', stamp));
-  head.appendChild(el('span', 'op-createdSub', t('op.sinceDays', days)));
-  g.appendChild(head);
-  g.appendChild(el('p', 'op-note', t('op.towerHint', TOWER_FLOORS)));
+    const head = el('p', 'op-note op-created');
+    head.appendChild(el('span', 'op-createdLbl', t('op.created')));
+    head.appendChild(el('span', 'op-createdVal', stamp));
+    head.appendChild(el('span', 'op-createdSub', t('op.sinceDays', days)));
+    g.appendChild(head);
+  }
+  // 트라이브 타워는 매일 열리고 몰드도 없어 표에 넣지 않고 층수만 적는다
+  if (acc.progress_tribe_tower) {
+    const tribe = el('p', 'op-note op-created');
+    tribe.appendChild(el('span', 'op-createdLbl', t('op.tribeTower')));
+    tribe.appendChild(el('span', 'op-createdVal', t('op.floorN', acc.progress_tribe_tower)));
+    g.appendChild(tribe);
+  }
+  g.appendChild(el('p', 'op-note', hasReal ? t('op.towerHintReal') : t('op.towerHint', TOWER_FLOORS)));
 
   const towerName = tw => (tw.label ? t(tw.label) : ctx.L('corporation', tw.key));
   const towerTitle = tw => `${towerName(tw)} — `
@@ -403,15 +416,17 @@ function renderTower() {
   const tbl = el('table', 'grid op-towerTbl');
   const thead = el('thead'), hr = el('tr');
   hr.appendChild(el('th', null, t('op.towerCol')));
-  hr.appendChild(el('th', 'num', t('op.towerFloor')));
+  hr.appendChild(el('th', 'num', t(hasReal ? 'op.towerFloorReal' : 'op.towerFloor')));
   hr.appendChild(el('th', 'num', t('op.towerHaveCol')));
   thead.appendChild(hr);
   tbl.appendChild(thead);
 
   const tb = el('tbody');
   for (const tw of TOWERS) {
-    const opens = tw.days.reduce((a, d) => a + weekdayCount(from, today, d), 0);
-    const floors = opens * TOWER_FLOORS;
+    const opens = created ? tw.days.reduce((a, d) => a + weekdayCount(from, today, d), 0) : null;
+    const ceiling = created ? opens * TOWER_FLOORS : null;
+    const real = cleared(tw);
+    const floors = real ?? ceiling ?? 0;     // 몰드는 실제 층이 있으면 그걸로 센다
 
     const tr = el('tr');
     const nameTd = el('td', 'op-towerName');
@@ -421,15 +436,27 @@ function renderTower() {
     nameTd.title = towerTitle(tw);
     tr.appendChild(nameTd);
 
-    const fl = el('td', 'num', t('op.floorN', floors));
-    fl.title = t('op.towerOpens', opens);
+    const fl = el('td', 'num');
+    if (hasReal) {
+      fl.appendChild(el('span', 'op-runs', real ? t('op.floorN', real) : '—'));
+      if (ceiling != null) fl.appendChild(el('span', 'op-weeks', '/ ' + int(ceiling)));
+      const tip = [];
+      if (opens != null) tip.push(t('op.towerOpens', opens));
+      if (real && ceiling != null) tip.push(t('op.towerGap', Math.max(0, ceiling - real)));
+      fl.title = tip.join(' · ');
+    } else {
+      fl.textContent = t('op.floorN', floors);
+      fl.title = t('op.towerOpens', opens);
+    }
     tr.appendChild(fl);
 
     // 지금까지 쌓였을 몰드 (기업 / 퍼펙트) — 가운뎃점이 없으면 두 수가 붙어 읽힌다
     const have = el('td', 'num');
     have.appendChild(el('span', 'op-runs', int(moldsAt(floors))));
     have.appendChild(el('span', 'op-weeks', '· ' + int(perfectAt(floors, tw.perfectStep))));
-    have.title = t('op.towerHave', opens, moldsAt(floors), perfectAt(floors, tw.perfectStep));
+    have.title = opens != null
+      ? t('op.towerHave', opens, moldsAt(floors), perfectAt(floors, tw.perfectStep))
+      : t('op.towerHaveReal', moldsAt(floors), perfectAt(floors, tw.perfectStep));
     tr.appendChild(have);
 
     tb.appendChild(tr);

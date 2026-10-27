@@ -131,7 +131,7 @@
    },
    "note": {
     "ko": "콘솔 1레벨당 증가량. 니케마다 공용 + 자기 클래스 + 자기 기업 세 가지가 적용된다.",
-    "en": "Stat gain per console level. Each Nikke gets the shared one plus the ones for its class and corporation.",
+    "en": "Stat gain per console level. Each Nikke gets the shared one plus the ones for its class and manufacturer.",
     "ja": "コンソール1レベルあたりの増加量。共用＋自分のクラス・企業の3つが適用される。"
    },
    "rows": 3,

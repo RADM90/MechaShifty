@@ -10,7 +10,7 @@
   {"key": "campaign", "mode": "none", "level": null, "penalty": true,
    "label": {"ko": "캠페인", "en": "Campaign", "ja": "キャンペーン"}},
   {"key": "tower", "mode": "none", "level": null, "penalty": true,
-   "label": {"ko": "타워 (기업 · 트라이브)", "en": "Tower (Corp / Tribe)", "ja": "タワー"}},
+   "label": {"ko": "타워 (기업 · 트라이브)", "en": "Tower (Manufacturer / Tribe)", "ja": "タワー"}},
   {"key": "lost_sector", "mode": "none", "level": null, "penalty": true,
    "label": {"ko": "로스트 섹터", "en": "Lost Sector", "ja": "ロストセクター"}},
   {"key": "simulation", "mode": "none", "level": null, "penalty": false,

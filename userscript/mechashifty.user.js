@@ -3,7 +3,7 @@
 // @name:en      MechaShifty — Export my Nikke roster
 // @name:ja      MechaShifty — 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.4.1
+// @version      1.5.0
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -153,12 +153,12 @@
 
     note: [
       '담기는 값: 니케별 레벨·돌파·스킬·장비·큐브·소장품·호감도, 전초기지 연구 레벨, '
-        + '싱크로 레벨, 계정 생성 시각. 계산기가 쓰지 않는 값(닉네임·서버·계정 식별자)은 담기지 않습니다.',
+        + '싱크로 레벨, 계정 생성 시각, 캠페인 진행도, 타워 층수. 계산기가 쓰지 않는 값(닉네임·서버·계정 식별자)은 담기지 않습니다.',
       'Included: per-Nikke level, limit break, skills, gear, cube, collection and bond; '
-        + 'outpost research levels; synchro level; account creation time. Anything the calculator '
-        + 'does not use — nickname, server, account identifiers — is not included.',
+        + 'outpost research levels; synchro level; account creation time; campaign progress; tower floors. '
+        + 'Anything the calculator does not use — nickname, server, account identifiers — is not included.',
       '含まれる値: ニケごとのレベル・凸・スキル・装備・キューブ・コレクション・好感度、'
-        + '前哨基地の研究レベル、シンクロレベル、アカウント作成時刻。計算機が使わない値'
+        + '前哨基地の研究レベル、シンクロレベル、アカウント作成時刻、キャンペーン進行度、タワーの階数。計算機が使わない値'
         + '（ニックネーム・サーバー・アカウント識別子）は含まれません。',
     ],
   };
@@ -270,7 +270,8 @@
     return null;
   }
 
-  /* 계정 생성 시각과 캠페인 진행도는 같은 응답에서 온다 — 한 번만 부른다. */
+  /* 계정 생성 시각·캠페인 진행도·타워 층수는 같은 응답에서 온다 — 한 번만 부른다. */
+  const TOWER_KEYS = ['elysion', 'missilis', 'tetra', 'pilgrim', 'tribe'];
   async function basicInfo(openId, area) {
     try {
       const j = await post(API_BASIC,
@@ -279,6 +280,9 @@
         created_at: findCreatedAt(j),
         progress_normal_campaign: findByKey(j, /^progress_normal_campaign$/i),
         progress_hard_campaign: findByKey(j, /^progress_hard_campaign$/i),
+        /* 타워별 클리어 층 (progress_elysion_tower …). 오버스펙은 필그림 타워와 같은 값이다. */
+        ...Object.fromEntries(TOWER_KEYS.map(k =>
+          [`progress_${k}_tower`, findByKey(j, new RegExp(`^progress_${k}_tower$`, 'i'))])),
       };
     } catch { return {}; }
   }
@@ -425,6 +429,9 @@
         progress_normal_campaign: basic.progress_normal_campaign || null,
         progress_hard_campaign: basic.progress_hard_campaign || null,
         outpost_battle_level: num(outpost && outpost.outpost_battle_level) || null,
+        /* 전초기지 탭의 기업 타워 카드용. */
+        ...Object.fromEntries(TOWER_KEYS.map(k =>
+          [`progress_${k}_tower`, basic[`progress_${k}_tower`] || null])),
       },
       research: researchOf(outpost),
       nikkes,
