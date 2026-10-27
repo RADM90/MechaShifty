@@ -298,6 +298,11 @@ const STR = {
     (m, p) => `${m.toLocaleString()} molds · ${p.toLocaleString()} perfect`,
     (m, p) => `モールド${m.toLocaleString()}個・パーフェクト${p.toLocaleString()}個`,
   ],
+  'op.towerNeedReimport': [
+    '실제 클리어 층이 없는 계정 자료입니다. 유저스크립트를 1.5.0 이상으로 업데이트한 뒤 다시 불러오면 타워별 클리어 층이 표시됩니다.',
+    'This account data has no cleared floors. Update the userscript to 1.5.0 or later and import again to see each tower\'s cleared floor.',
+    'クリア階が入っていないアカウント資料です。ユーザースクリプトを1.5.0以上に更新して読み込み直すと、タワーごとのクリア階が表示されます。',
+  ],
   'op.tribeTower': ['트라이브 타워', 'Tribe Tower', 'トライブタワー'],
   'op.towerNeedAcct': [
     '전투력 계산기 탭에서 계정 자료를 불러오면 계정 생성일 기준으로 계산합니다.',

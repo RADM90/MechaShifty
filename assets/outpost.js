@@ -407,6 +407,8 @@ function renderTower() {
     g.appendChild(tribe);
   }
   g.appendChild(el('p', 'op-note', hasReal ? t('op.towerHintReal') : t('op.towerHint', TOWER_FLOORS)));
+  // 계정 자료는 있는데 층수가 없으면 옛 유저스크립트로 만든 것 — 다시 불러오라고 알려 준다
+  if (!hasReal) g.appendChild(el('p', 'op-note op-warn', t('op.towerNeedReimport')));
 
   const towerName = tw => (tw.label ? t(tw.label) : ctx.L('corporation', tw.key));
   const towerTitle = tw => `${towerName(tw)} — `
