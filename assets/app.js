@@ -1012,6 +1012,12 @@ const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ
   'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 const HANGUL_BASE = 0xAC00, PER_CHO = 588;
 
+/* 자음만 이어 치면 IME 가 ㄹ+ㅌ 을 ㄾ 으로 묶는다 — 'ㅂㄾ' 도 'ㅂㄹㅌ'(벨로타) 처럼 찾게 풀어 둔다. */
+const SPLIT_JAMO = {
+  'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ', 'ㄼ': 'ㄹㅂ',
+  'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ',
+};
+
 /* '라피 : 레드 후드' 처럼 구분자가 낀 이름은 '라피레드후드' 로 붙여서 비교한다. */
 const compact = s => s.replace(/[\s:·・]/g, '');
 const escapeRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -1019,7 +1025,7 @@ const u = n => '\\u' + n.toString(16).padStart(4, '0');
 
 /* 매처 두 벌을 만든다. */
 function buildMatcher(raw) {
-  const q = compact(raw.trim());
+  const q = compact(raw.trim()).replace(/[ㄳㄵㄶㄺ-ㅀㅄ]/g, c => SPLIT_JAMO[c]);
   if (!q) return null;
 
   const lower = q.toLowerCase();
