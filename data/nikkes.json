@@ -4981,5 +4981,93 @@
   "attack_type": "Metal",
   "burst": "Step2",
   "release_date": "2026-08-13"
+ },
+ {
+  "rid": "c104",
+  "resource_id": 104,
+  "id": 110401,
+  "name_code": 5181,
+  "name": {
+   "ko": "드레이크 : 그레이트 빌런",
+   "en": "Drake: Great Villain",
+   "ja": "ドレイク：グレイトヴィラン"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Defender",
+  "corporation": "MISSILIS",
+  "corporation_sub_type": null,
+  "squad": "Matis",
+  "element": "Wind",
+  "weapon_type": "SG",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-09-03"
+ },
+ {
+  "rid": "c404",
+  "resource_id": 404,
+  "id": 140401,
+  "name_code": 5182,
+  "name": {
+   "ko": "길티 : 마이티 바니",
+   "en": "Guilty: Mighty Bunny",
+   "ja": "ギルティ：マイティバニー"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "MISSILIS",
+  "corporation_sub_type": null,
+  "squad": "RealKindness",
+  "element": "Water",
+  "weapon_type": "SR",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-09-17"
+ },
+ {
+  "rid": "c405",
+  "resource_id": 405,
+  "id": 140501,
+  "name_code": 5183,
+  "name": {
+   "ko": "신 : 스위프트 바니",
+   "en": "Sin: Swift Bunny",
+   "ja": "シン：スウィフトバニー"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "MISSILIS",
+  "corporation_sub_type": null,
+  "squad": "RealKindness",
+  "element": "Water",
+  "weapon_type": "SR",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-09-24"
+ },
+ {
+  "rid": "c063",
+  "resource_id": 63,
+  "id": 306301,
+  "name_code": 5184,
+  "name": {
+   "ko": "벨로타 : 펌킨 위치",
+   "en": "Belorta: Pumpkin Witch",
+   "ja": "ベロータ：パンプキンウィッチ"
+  },
+  "aliases": [],
+  "rarity": "SSR",
+  "class": "Supporter",
+  "corporation": "TETRA",
+  "corporation_sub_type": null,
+  "squad": "LittleCannon",
+  "element": "Water",
+  "weapon_type": "RL",
+  "attack_type": "Metal",
+  "burst": "Step2",
+  "release_date": "2026-10-08"
  }
 ]

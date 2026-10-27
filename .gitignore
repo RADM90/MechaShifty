@@ -10,6 +10,7 @@
 squad_table.csv
 nikke_alias_v1.csv
 tools/
+data/raw
 
 # 프로젝트 문서 — 아직 리포지토리에 올리지 않은 로컬 작업 노트.
 # UPDATE_METHOD.md 는 tools/ 사용법이라 tools/ 와 같이 움직인다.
@@ -21,6 +22,7 @@ UPDATE_METHOD.md
 .claude/
 
 # OS 잡파일
+.vscode/
 .DS_Store
 
 # 니케별 전투·스킬 원본 (mekami/data/combat/c???.json, 199장 1.7MB)
