@@ -1356,7 +1356,7 @@ const PICKUP_COLS = [
 ];
 
 function renderPickups() {
-  const rows = filteredPickups().sort((a, b) => b._start - a._start);
+  const rows = filteredPickups().sort((a, b) => b._start - a._start || b.no - a.no);
 
   const head = $('#pickupHead');
   head.textContent = '';
@@ -1478,7 +1478,7 @@ function openSheet(n) {
     c.appendChild(box);
   }
 
-  const hist = (pickupsByRid.get(n.rid) || []).slice().sort((a, b) => a._start - b._start);
+  const hist = (pickupsByRid.get(n.rid) || []).slice().sort((a, b) => a._start - b._start || a.no - b.no);
   c.appendChild(el('h4', null, t('sheet.history', hist.length)));
   if (!hist.length) {
     c.appendChild(el('p', 'sub', t('msg.noPickup')));
