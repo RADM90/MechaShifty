@@ -716,6 +716,14 @@ const STR = {
   'f.firstOnly': ['최초 픽업만', 'First run only', '初回のみ'],
   'f.timeline': ['타임라인 보기', 'Timeline view', 'タイムライン表示'],
   'f.all': ['전체', 'All', 'すべて'],
+  'f.keyword': ['키워드', 'Keyword', 'キーワード'],
+  'f.keywordSearch': [
+    '스킬 키워드 · 초성 검색 (예: 보호막, ㄴㅇ)',
+    'Search skill keywords (e.g. Brand, shield)',
+    'スキルキーワードで検索（例: 烙印、バリア）',
+  ],
+  'f.kwSection1': ['계산 관련', 'Damage calc', 'ダメージ計算'],
+  'f.kwSection2': ['효과/규칙', 'Effects & rules', '効果・ルール'],
 
   'ax.corporation': ['기업', 'Manufacturer', '企業'],
   'ax.element': ['속성', 'Element', '属性'],
@@ -940,6 +948,8 @@ const state = {
   q: '',
   squad: '', overspec: false, relFrom: '', relTo: '',
   rerun: 'all', timeline: false,
+  /* 스킬 키워드 — 고른 키워드(한국어 이름), 키워드 글자 검색, 펼친 분류(## 제목) */
+  kw: new Set(), kwq: '', kwOpen: null,
   sort: { key: 'release_date', dir: -1 },
   sel: Object.fromEntries([...Object.keys(AXES), ...Object.keys(PICKUP_AXES)].map(k => [k, new Set()])),
   /* 칩 필터를 펼쳐 둘지 — 탭마다 따로 기억한다. */
@@ -976,16 +986,21 @@ async function loadFrom(base) {
 }
 
 async function load() {
-  let data;
+  let data, base = LOCAL;
   try {
     // 로컬 사본이 있으면 그쪽을 먼저 쓴다(개발 중 / 같은 레포 배치 대응)
     const probe = await fetch(LOCAL + 'meta.json', { cache: 'no-cache' });
     if (!probe.ok) throw 0;
     data = await loadFrom(LOCAL);
   } catch {
+    base = REMOTE;
     data = await loadFrom(REMOTE);
   }
   Object.assign(D, data);
+  // 키워드 색인은 없어도 나머지는 돈다 — 키워드 줄만 감춘다
+  D.keywords = await fetch(base + 'keywords.json', { cache: 'no-cache' })
+    .then(r => (r.ok ? r.json() : null)).catch(() => null);
+  indexKeywords();
 
   D.nikkes.forEach(n => byRid.set(n.rid, n));
   D.pickups.forEach(p => {
@@ -1076,6 +1091,47 @@ export function nikkeMatcher(q) {
   return m ? n => hitsNikke(m, n) : null;
 }
 
+/* ── 스킬 키워드 ───────────────────────────────────────────────
+   data/keywords.json — NIKKE_KEYWORDS.md 의 분류 트리와 니케별 키워드 ID (tools/update_data.py 가 만든다).
+   키워드는 한국어 이름으로 부른다. 한 ID 가 두 키워드에 걸리기도 하고(균등/차등 분배) 그 반대도 있다. */
+const KW = { all: [], groups: new Map(), byRid: new Map() };
+
+function indexKeywords() {
+  const doc = D.keywords;
+  if (!doc) return;
+  const grouped = doc.sections.flatMap(s => s.groups);
+  grouped.forEach(g => KW.groups.set(g.title, g));
+  // 문서에 설명이 없는 키워드(others)는 분류 줄에 없고 글자 검색으로만 걸린다
+  KW.all = [...grouped.flatMap(g => g.keywords), ...doc.others];
+  for (const [rid, ids] of Object.entries(doc.nikkes)) {
+    const have = new Set(ids);
+    KW.byRid.set(rid, new Set(KW.all.filter(k => k.ids.some(i => have.has(i))).map(k => k.name.ko)));
+  }
+}
+
+const kwName = k => k.name[state.lang] || k.name.ko;
+
+/* 키워드 칸 글자에 걸린 키워드 — 이름 검색과 같은 매처라 초성도 된다. state.kwq 가 바뀔 때만 다시 고른다 */
+function kwHits() {
+  if (state._kwq !== state.kwq) {
+    state._kwq = state.kwq;
+    const m = buildMatcher(state.kwq);
+    state._kwHits = m
+      ? new Set(KW.all.filter(k => Object.values(k.name).some(m.name)).map(k => k.name.ko))
+      : null;
+  }
+  return state._kwHits;
+}
+
+/* 고른 키워드는 전부 있어야 하고(AND), 글자는 걸린 키워드 중 하나만 있으면 된다 */
+function kwMatch(n) {
+  if (!D.keywords) return true;
+  const have = KW.byRid.get(n.rid);
+  for (const k of state.kw) if (!have?.has(k)) return false;
+  const hits = kwHits();
+  return !hits || [...hits].some(k => have?.has(k));
+}
+
 /* ── 필터 ─────────────────────────────────────────────────────
    except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용. */
 function matchNikke(n, except) {
@@ -1090,6 +1146,8 @@ function matchNikke(n, except) {
   if (state.relTo && (!n.release_date || n.release_date > state.relTo)) return false;
   const m = matcher();
   if (m && !hitsNikke(m, n)) return false;
+  // 키워드 줄은 니케 리스트 탭에만 있다 — 통계 탭에 보이지 않는 조건이 걸리면 안 된다
+  if (state.tab === 'nikkes' && !kwMatch(n)) return false;
   return true;
 }
 
@@ -1138,6 +1196,8 @@ function writeHash() {
   if (state.relFrom) p.set('from', state.relFrom);
   if (state.relTo) p.set('to', state.relTo);
   if (state.rerun !== 'all') p.set('rerun', state.rerun);
+  if (state.kw.size) p.set('kw', [...state.kw].join(','));
+  if (state.kwq) p.set('kwq', state.kwq);
   const s = p.toString();
   history.replaceState(null, '', s ? '#' + s : location.pathname + location.search);
 }
@@ -1158,47 +1218,70 @@ function readHash() {
   state.relFrom = p.get('from') || '';
   state.relTo = p.get('to') || '';
   state.rerun = p.get('rerun') || 'all';
+  state.kw = new Set(p.get('kw') ? p.get('kw').split(',') : []);
+  state.kwq = p.get('kwq') || '';
   // 필터가 걸린 링크로 들어왔으면 접힌 칸에 숨기지 않고 펼쳐서 보여준다
   if (activeFilters()) state.filtersOpen[state.tab] = true;
 }
 
 /* ── 칩 필터 ───────────────────────────────────────────────── */
+/* 니케 리스트 탭의 아이콘 칩 두 줄 */
+const CHIP_LINES = [['corporation', 'element', 'burst'], ['class', 'weapon_type', 'rarity']];
+
 function buildChips() {
   const wrap = $('#chipfilters');
   wrap.textContent = '';
   const axes = state.tab === 'pickups'
     ? { ...PICKUP_AXES, ...AXES }
     : AXES;
+  /* 니케 리스트 탭은 축마다 아이콘이 다 있어서 라벨·개수를 빼고 아이콘만 남긴다.
+     축 이름 칸도 빼고 한 줄에 이어 붙여 두세 줄로 접는다. 라벨과 개수는 title 로 옮긴다 (updateChipCounts). */
+  const iconOnly = state.tab === 'nikkes';
+  wrap.classList.toggle('compact', iconOnly);
+  /* 아이콘 칩은 두 줄에 다 들어가므로 줄을 정해 둔다 — 넓어도 한 줄로 몰리지 않고 좁아도 축이 섞이지 않는다 */
+  const lines = iconOnly
+    ? CHIP_LINES.map(axesInLine => {
+      const line = el('div', 'chipline');
+      wrap.appendChild(line);
+      return [axesInLine, line];
+    })
+    : [];
+  const home = axis => lines.find(([axesInLine]) => axesInLine.includes(axis))?.[1] || wrap;
+
+  const chip = (cls, axis, code, icAxis, label, pressed) => {
+    const b = el('button', cls + (iconOnly ? ' chip-ic' : ''));
+    b.type = 'button';
+    b.dataset.axis = axis;
+    b.dataset.code = code;
+    b.dataset.label = label;
+    b.setAttribute('aria-pressed', pressed);
+    const ic = iconEl(icAxis, code);
+    if (ic) b.appendChild(ic);
+    if (iconOnly) {
+      b.setAttribute('aria-label', label);
+      if (!ic) b.appendChild(el('span', null, label));
+    } else {
+      b.appendChild(el('span', null, label));
+      b.appendChild(el('span', 'n'));
+    }
+    return b;
+  };
 
   for (const [axis, def] of Object.entries(axes)) {
     const row = el('div', 'chiprow');
-    row.appendChild(el('span', 'lbl', axisLabel(axis)));
-    for (const code of def.order) {
-      const b = el('button', 'chip');
-      b.type = 'button';
-      b.dataset.axis = axis;
-      b.dataset.code = code;
-      b.setAttribute('aria-pressed', state.sel[axis].has(code));
-      const ic = iconEl(axis, code);
-      if (ic) b.appendChild(ic);
-      b.appendChild(el('span', null, chipLabel(axis, code)));
-      b.appendChild(el('span', 'n'));
-      row.appendChild(b);
+    if (iconOnly) {
+      row.setAttribute('role', 'group');
+      row.setAttribute('aria-label', axisLabel(axis));
+    } else {
+      row.appendChild(el('span', 'lbl', axisLabel(axis)));
     }
+    for (const code of def.order)
+      row.appendChild(chip('chip', axis, code, axis, chipLabel(axis, code), state.sel[axis].has(code)));
     // 오버스펙은 기업을 대체하지 않는 부가 속성이라 기업 행에 붙인다
-    if (axis === 'corporation') {
-      const b = el('button', 'chip chip-ovr');
-      b.type = 'button';
-      b.dataset.axis = '_overspec';
-      b.dataset.code = 'OVERSPEC';
-      b.setAttribute('aria-pressed', state.overspec);
-      const ic = iconEl('corporation_sub_type', 'OVERSPEC');
-      if (ic) b.appendChild(ic);
-      b.appendChild(el('span', null, L('corporation_sub_type', 'OVERSPEC')));
-      b.appendChild(el('span', 'n'));
-      row.appendChild(b);
-    }
-    wrap.appendChild(row);
+    if (axis === 'corporation')
+      row.appendChild(chip('chip chip-ovr', '_overspec', 'OVERSPEC', 'corporation_sub_type',
+        L('corporation_sub_type', 'OVERSPEC'), state.overspec));
+    home(axis).appendChild(row);
   }
   wrap.onclick = e => {
     const b = e.target.closest('.chip');
@@ -1217,6 +1300,13 @@ function chipLabel(axis, code) {
   return L(axis, code);
 }
 
+/* 아이콘만 남긴 칩은 .n 이 없어서 개수를 title 에 싣는다 */
+function setChipCount(b, n) {
+  const span = b.querySelector('.n');
+  if (span) span.textContent = n;
+  else b.title = `${b.dataset.label} (${n})`;
+}
+
 function updateChipCounts() {
   for (const b of $$('#chipfilters .chip')) {
     const { axis, code } = b.dataset;
@@ -1225,7 +1315,7 @@ function updateChipCounts() {
       n = state.tab === 'pickups'
         ? filteredPickups('_overspec').filter(p => p.corporation_sub_type).length
         : filteredNikkes('_overspec').filter(x => x.corporation_sub_type).length;
-      b.querySelector('.n').textContent = n;
+      setChipCount(b, n);
       b.setAttribute('aria-pressed', state.overspec);
       b.disabled = n === 0 && !state.overspec;
       b.style.opacity = b.disabled ? .4 : '';
@@ -1241,22 +1331,102 @@ function updateChipCounts() {
     } else {
       n = filteredNikkes(axis).filter(x => x[axis] === code).length;
     }
-    b.querySelector('.n').textContent = n;
+    setChipCount(b, n);
     b.setAttribute('aria-pressed', state.sel[axis].has(code));
     b.disabled = n === 0 && !state.sel[axis].has(code);
     b.style.opacity = b.disabled ? .4 : '';
   }
 }
 
+/* ── 키워드 줄 ─────────────────────────────────────────────────
+   분류(##)마다 머리 단추를 두고, 누른 분류의 키워드(###)를 그 줄 아래에 체크박스로 펼친다. 한 번에 하나만 펼친다. */
+function buildKeywords() {
+  const box = $('#kwgroups');
+  box.textContent = '';
+  if (!D.keywords) return;
+  D.keywords.sections.forEach((sec, i) => {
+    const line = el('div', 'kwline');
+    line.appendChild(el('span', 'kwlbl', t('f.kwSection' + (i + 1))));
+    const heads = el('div', 'kwheads');
+    for (const g of sec.groups) {
+      const b = el('button', 'kwhead');
+      b.type = 'button';
+      b.dataset.group = g.title;
+      b.setAttribute('aria-expanded', state.kwOpen === g.title);
+      b.setAttribute('aria-controls', 'kwpanel');
+      b.append(el('span', null, g.title), el('span', 'n'));
+      heads.appendChild(b);
+    }
+    line.appendChild(heads);
+    box.appendChild(line);
+    const open = sec.groups.find(g => g.title === state.kwOpen);
+    if (open) box.appendChild(kwPanel(open));
+  });
+  box.onclick = e => {
+    const b = e.target.closest('.kwhead');
+    if (!b) return;
+    const group = b.dataset.group;
+    state.kwOpen = state.kwOpen === group ? null : group;
+    buildKeywords();
+    updateKwCounts();
+    // 다시 그리면 단추가 새로 생기므로 포커스를 돌려 놓는다
+    $$('#kwgroups .kwhead').find(x => x.dataset.group === group)?.focus();
+  };
+  box.onchange = e => {
+    const cb = e.target.closest('.kwitem input');
+    if (!cb) return;
+    cb.checked ? state.kw.add(cb.value) : state.kw.delete(cb.value);
+    render();
+  };
+}
+
+function kwPanel(g) {
+  const p = el('div', 'kwpanel');
+  p.id = 'kwpanel';
+  for (const k of g.keywords) {
+    const lab = el('label', 'check kwitem');
+    const cb = el('input');
+    cb.type = 'checkbox';
+    cb.value = k.name.ko;
+    cb.checked = state.kw.has(k.name.ko);
+    lab.append(cb, el('span', null, kwName(k)), el('span', 'n'));
+    p.appendChild(lab);
+  }
+  return p;
+}
+
+/* 키워드 옆 숫자는 지금 조건에 그 키워드를 더했을 때 남는 니케 수 (AND 라서 고른 키워드는 지금 결과 수) */
+function updateKwCounts() {
+  if (!D.keywords) return;
+  const pool = filteredNikkes();
+  const hits = kwHits();
+  for (const b of $$('#kwgroups .kwhead')) {
+    const keys = KW.groups.get(b.dataset.group).keywords.map(k => k.name.ko);
+    const on = keys.filter(k => state.kw.has(k)).length;
+    b.querySelector('.n').textContent = on ? `(${on})` : '';
+    b.classList.toggle('on', on > 0);
+    b.classList.toggle('hit', !!hits && keys.some(k => hits.has(k)));
+  }
+  for (const lab of $$('#kwpanel .kwitem')) {
+    const cb = lab.querySelector('input');
+    const n = pool.filter(x => KW.byRid.get(x.rid)?.has(cb.value)).length;
+    lab.querySelector('.n').textContent = n;
+    cb.checked = state.kw.has(cb.value);
+    cb.disabled = n === 0 && !cb.checked;
+    lab.classList.toggle('hit', !!hits && hits.has(cb.value));
+  }
+}
+
 /* ── 니케 표 ───────────────────────────────────────────────── */
+/* 등급·버스트는 아이콘이 곧 글자(SSR, Ⅰ~Ⅲ)라 라벨을 빼고 좁게 둔다 (cls: 'ic-only') */
 const NIKKE_COLS = [
+  { key: 'rarity', axis: 'rarity', cls: 'ic-only' },
   { key: 'name', str: 'col.name', cls: 'name' },
-  { key: 'rarity', axis: 'rarity' },
   { key: 'corporation', axis: 'corporation' },
   { key: 'element', axis: 'element' },
   { key: 'class', axis: 'class' },
   { key: 'weapon_type', axis: 'weapon_type' },
-  { key: 'burst', axis: 'burst' },
+  { key: 'burst', axis: 'burst', cls: 'ic-only' },
   { key: 'squad', str: 'col.squad' },
   { key: 'release_date', str: 'col.release', cls: 'num' },
   { key: 'pickups', str: 'col.pickups', cls: 'num' },
@@ -1283,7 +1453,7 @@ function renderNikkes() {
   const head = $('#nikkeHead');
   head.textContent = '';
   for (const c of NIKKE_COLS) {
-    const th = el('th', c.cls === 'num' ? 'num' : null, colLabel(c));
+    const th = el('th', c.cls || null, colLabel(c));
     if (state.sort.key === c.key) th.appendChild(el('span', 'arrow', state.sort.dir > 0 ? ' ▲' : ' ▼'));
     th.onclick = () => {
       state.sort = state.sort.key === c.key
@@ -1300,18 +1470,18 @@ function renderNikkes() {
     const tr = el('tr');
     tr.onclick = () => openSheet(n);
 
+    tr.appendChild(iconOnlyCell('rarity', n.rarity));
     const tdName = el('td', 'name');
     tdName.appendChild(el('span', null, nameOf(n)));
     const mark = overspecMark(n.corporation_sub_type);
     if (mark) tdName.appendChild(mark);
     tr.appendChild(tdName);
 
-    tr.appendChild(iconCell('rarity', n.rarity));
     tr.appendChild(iconCell('corporation', n.corporation));
     tr.appendChild(iconCell('element', n.element));
     tr.appendChild(iconCell('class', n.class));
     tr.appendChild(iconCell('weapon_type', n.weapon_type));
-    tr.appendChild(iconCell('burst', n.burst));
+    tr.appendChild(iconOnlyCell('burst', n.burst));
     tr.appendChild(el('td', null, L('squad', n.squad)));
     tr.appendChild(el('td', 'num', n.release_date || '—'));
     tr.appendChild(el('td', 'num', String(pickupsByRid.get(n.rid)?.length || 0)));
@@ -1327,6 +1497,18 @@ function iconCell(axis, code, opts) {
   const td = el('td');
   if (!code) { td.textContent = '—'; return td; }
   td.appendChild(labelWith(axis, code, L(axis, code), opts));
+  return td;
+}
+
+/* 라벨 없이 아이콘만 — 라벨은 툴팁과 alt 로 옮기고, 아이콘을 못 읽으면 글자로 되돌린다 */
+function iconOnlyCell(axis, code) {
+  const td = el('td', 'ic-only');
+  const label = code ? L(axis, code) : '—';
+  const ic = code && iconEl(axis, code);
+  if (!ic) { td.textContent = label; return td; }
+  ic.alt = ic.title = label;
+  ic.onerror = () => ic.replaceWith(label);
+  td.appendChild(ic);
   return td;
 }
 
@@ -1519,6 +1701,7 @@ function activeFilters() {
   if (state.relFrom) n++;
   if (state.relTo) n++;
   if (state.rerun !== 'all') n++;
+  if (state.tab === 'nikkes') n += state.kw.size + (state.kwq ? 1 : 0);
   return n;
 }
 
@@ -1544,6 +1727,7 @@ function render() {
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
+  $('#kwfilters').hidden = state.tab !== 'nikkes' || !D.keywords;
   $('#tlwrap').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
   $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
@@ -1576,6 +1760,7 @@ function render() {
   }
 
   updateChipCounts();
+  if (state.tab === 'nikkes') updateKwCounts();
 
   if (state.tab === 'nikkes') renderNikkes();
   else if (state.tab === 'pickups') renderPickups();
@@ -1624,6 +1809,7 @@ function wire() {
     localStorage.setItem('lang', state.lang);
     paintLang();
     buildChips();
+    buildKeywords();
     render();
   });
   paintLang();
@@ -1651,6 +1837,13 @@ function wire() {
     qTimer = setTimeout(() => { state.q = e.target.value.trim(); render(); }, 150);
   };
   $('#q').value = state.q;
+
+  let kwTimer;
+  $('#kwq').oninput = e => {
+    clearTimeout(kwTimer);
+    kwTimer = setTimeout(() => { state.kwq = e.target.value.trim(); render(); }, 150);
+  };
+  $('#kwq').value = state.kwq;
 
   const sq = $('#squad');
   const squadCodes = [...new Set(D.nikkes.map(n => n.squad).filter(Boolean))];
@@ -1684,8 +1877,9 @@ function wire() {
 
   $('#reset').onclick = () => {
     Object.keys(state.sel).forEach(k => state.sel[k].clear());
-    Object.assign(state, { q: '', squad: '', overspec: false, relFrom: '', relTo: '', rerun: 'all' });
-    $('#q').value = ''; sq.value = '';
+    state.kw.clear();
+    Object.assign(state, { q: '', squad: '', overspec: false, relFrom: '', relTo: '', rerun: 'all', kwq: '' });
+    $('#q').value = ''; $('#kwq').value = ''; sq.value = '';
     $('#relFrom').value = ''; $('#relTo').value = ''; $('#rerun').value = 'all';
     render();
   };
@@ -1710,5 +1904,6 @@ function wire() {
   $('#app').hidden = false;
   wire();
   buildChips();
+  buildKeywords();
   render();
 })();

@@ -88,6 +88,16 @@
         </label>
       </div>
 
+      <!-- 스킬 키워드 — 니케 리스트 탭에서만. 분류 줄은 data/keywords.json 으로 채운다 -->
+      <div class="filter-row kwfilters" id="kwfilters" hidden>
+        <label class="kwline">
+          <span class="kwlbl" data-i18n="f.keyword">키워드</span>
+          <input type="search" id="kwq" autocomplete="off" spellcheck="false"
+                 data-i18n-placeholder="f.keywordSearch">
+        </label>
+        <div id="kwgroups"></div>
+      </div>
+
       <div class="filter-row" id="pickupfilters" hidden>
         <label class="field">
           <span data-i18n="f.rerun">복각</span>
