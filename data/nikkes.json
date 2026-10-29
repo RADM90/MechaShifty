@@ -5069,5 +5069,83 @@
   "attack_type": "Metal",
   "burst": "Step2",
   "release_date": "2026-10-08"
+ },
+ {
+  "rid": "c019",
+  "resource_id": 19,
+  "id": 401901,
+  "name_code": 5185,
+  "name": {
+   "ko": "마리안 : 퀸",
+   "en": "Marian: Queen",
+   "ja": "マリアン：クイーン"
+  },
+  "aliases": [
+   "퀸",
+   "랩쳐련",
+   "ㄹ"
+  ],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "PILGRIM",
+  "corporation_sub_type": "OVERSPEC",
+  "squad": "Counters",
+  "element": "Fire",
+  "weapon_type": "MG",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-10-29"
+ },
+ {
+  "rid": "c472",
+  "resource_id": 472,
+  "id": 447201,
+  "name_code": 5186,
+  "name": {
+   "ko": "홍련 : 신살",
+   "en": "Scarlet: Goddeath",
+   "ja": "紅蓮：神殺"
+  },
+  "aliases": [
+   "홍삼이",
+   "구렌",
+   "구렌신사츠",
+   "스칼렛갓데스"
+  ],
+  "rarity": "SSR",
+  "class": "Attacker",
+  "corporation": "PILGRIM",
+  "corporation_sub_type": "OVERSPEC",
+  "squad": "Goddess",
+  "element": "Fire",
+  "weapon_type": "AR",
+  "attack_type": "Metal",
+  "burst": "Step3",
+  "release_date": "2026-11-05"
+ },
+ {
+  "rid": "c473",
+  "resource_id": 473,
+  "id": 447301,
+  "name_code": 5187,
+  "name": {
+   "ko": "라푼젤 : 생츄어리",
+   "en": "Rapunzel: Sanctuary",
+   "ja": "ラプンツェル：サンクチュアリ"
+  },
+  "aliases": [
+   "삼푼젤",
+   "변푼젤"
+  ],
+  "rarity": "SSR",
+  "class": "Supporter",
+  "corporation": "PILGRIM",
+  "corporation_sub_type": "OVERSPEC",
+  "squad": "Goddess",
+  "element": "Fire",
+  "weapon_type": "RL",
+  "attack_type": "Metal",
+  "burst": "Step2",
+  "release_date": "2026-10-29"
  }
 ]
