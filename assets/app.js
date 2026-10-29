@@ -545,11 +545,19 @@ const STR = {
   'ic.burst': ['풀버스트 이벤트', 'Full Burst event', 'フルバーストデイ'],
   'ic.burstOff': ['평상시', 'Normal day', '通常日'],
   'ic.burstOn': ['적용일', 'Event day', '適用日'],
+  'ic.sync': ['싱크로 부스트', 'Synchro Boost', 'シンクロブースト'],
+  'ic.syncBelow': [lv => `${lv} 미만`, lv => `Below ${lv}`, lv => `${lv}未満`],
+  'ic.syncAt': [lv => `${lv} 이상`, lv => `${lv}+`, lv => `${lv}以上`],
+  'ic.syncAtFull': [
+    (lv, n) => `싱크로 디바이스 ${lv}레벨 — 요격전 부스트 ${n}단계, 요격 횟수 +${n}`,
+    (lv, n) => `Synchro Device Lv. ${lv} — Interception Boost ${n}, +${n} interception entries`,
+    (lv, n) => `シンクロデバイス Lv.${lv} — 迎撃戦ブースト${n}段階、迎撃回数 +${n}`,
+  ],
   'ic.step': ['단계', 'Step', '段階'],
   'ic.gamesNote': [
-    (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 풀버스트는 골라 쓰는 게 아니라 이벤트로 적용되는 날이 따로 있고, 그날은 진입당 2게임이 된다.`,
-    (e, g) => `${e} entries a day → ${g} games. Full Burst is not something you switch on — it applies on event days, and those days give 2 games per entry.`,
-    (e, g) => `1日${e}回進入・${g}ゲーム。フルバーストデイは自分で選ぶものではなく適用される日が決まっていて、その日は進入あたり2ゲームになる。`,
+    (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 진입 횟수는 기본 3회에 싱크로 부스트(싱크로 디바이스 400·600레벨)마다 1회씩 늘어난다. 풀버스트는 골라 쓰는 게 아니라 이벤트로 적용되는 날이 따로 있고, 그날은 진입당 2게임이 된다.`,
+    (e, g) => `${e} entries a day → ${g} games. The base 3 entries go up by one at each Synchro Boost (Synchro Device Lv. 400 and 600). Full Burst is not something you switch on — it applies on event days, and those days give 2 games per entry.`,
+    (e, g) => `1日${e}回進入・${g}ゲーム。進入回数は基本3回に、シンクロブースト（シンクロデバイス Lv.400・600）ごとに1回ずつ増える。フルバーストデイは自分で選ぶものではなく適用される日が決まっていて、その日は進入あたり2ゲームになる。`,
   ],
 
   'ic.view': ['보기', 'View', '表示'],

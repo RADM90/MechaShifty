@@ -4,7 +4,8 @@
    워크북 `특특요_확률분포` / `3.5주년 이전 특특요` 시트와 소수점 9자리까지 맞는다.
 
    모형 (시트 §2·§3·§7):
-     · 하루 진입 3회, 풀버스트 이벤트 날은 진입당 2게임이라 G = 3 또는 6.
+     · 하루 진입 3회 + 싱크로 부스트(400레벨 +1, 600레벨 +1), 풀버스트 이벤트 날은 진입당 2게임.
+       그래서 G = 3·4·5 또는 6·8·10.
      · 모듈 모드(크라켄) — 게임마다 랜덤박스가 P_box 로 뜨고 1/2/3개가 p₁/p₂/p₃ 로 나오며, 하루 분포는 이를 G번 합성곱한 정확한 값이다.
      · 장비 모드(크라켄 외 보스) — 게임마다 장비 박스가 P_eq 로 뜨는 이항분포 B(G, P_eq).
      · 모듈피스는 확정 획득이라 100개당 모듈 1개 몫만큼 분포를 오른쪽으로 민다.
@@ -16,8 +17,10 @@
 const STORE = 'intercept.input';
 const NEED = ['module_settings_pre35', 'module_settings'];
 
-/* 하루 진입 횟수 — 풀버스트 이벤트 날은 진입당 2게임이다. */
+/* 하루 기본 진입 횟수 — 풀버스트 이벤트 날은 진입당 2게임이다. */
 const ENTRIES = 3;
+/* 싱크로 부스트(4주년~) — 싱크로 디바이스 레벨이 이 값에 닿을 때마다 요격 횟수 +1. */
+const SYNC_BOOST = [400, 600];
 /* 모듈피스 100개 = 완성 모듈 1개. */
 const PIECES_PER_MODULE = 100;
 /* 장비 랜덤박스에서 나올 수 있는 종류 = 4부위 × 5기업, 전부 같은 확률. */
@@ -103,7 +106,8 @@ function moments(pmf) {
   return { mean: m, sd: Math.sqrt(Math.max(0, m2 - m * m)) };
 }
 
-const games = () => ENTRIES * (S.fb ? 2 : 1);
+const entries = () => ENTRIES + S.boost;
+const games = () => entries() * (S.fb ? 2 : 1);
 
 /* 한 시대·한 단계의 하루 분포. */
 function derive(eraKey, step) {
@@ -140,6 +144,7 @@ const series = d => (S.view === 'cum' ? tail(d.pmf) : d.pmf);
 const defaults = () => ({
   mode: 'module',      // module = 크라켄(모듈) / equip = 그 외 보스(기업장비)
   fb: false,           // 풀버스트 이벤트 적용일인지
+  boost: 0,            // 싱크로 부스트로 늘어난 요격 횟수 (0 ~ SYNC_BOOST.length)
   step: 9,
   view: 'pmf',         // pmf = P(X=k) / cum = P(X≥k)
   pieces: false,       // 모듈피스 확정분을 분포에 더할지
@@ -153,6 +158,7 @@ function load() {
       return {
         mode: v.mode === 'equip' ? 'equip' : 'module',
         fb: !!v.fb,
+        boost: Math.min(SYNC_BOOST.length, Math.max(0, Math.trunc(Number(v.boost)) || 0)),
         step: Math.min(9, Math.max(1, Number(v.step) || d.step)),
         view: v.view === 'cum' ? 'cum' : 'pmf',
         pieces: !!v.pieces,
@@ -204,10 +210,16 @@ function renderForm(root) {
     { value: false, label: t('ic.burstOff') },
     { value: true, label: t('ic.burstOn') },
   ], S.fb, v => set({ fb: v }))));
+  cond.appendChild(subfield(t('ic.sync'), seg([
+    { value: 0, label: t('ic.syncBelow', SYNC_BOOST[0]) },
+    ...SYNC_BOOST.map((lv, i) => ({
+      value: i + 1, label: t('ic.syncAt', lv), title: t('ic.syncAtFull', lv, i + 1),
+    })),
+  ], S.boost, v => set({ boost: v }))));
   cond.appendChild(subfield(t('ic.step'), seg(
     D.post.map(r => ({ value: r.step, label: String(r.step) })),
     S.step, v => set({ step: v }))));
-  cond.appendChild(el('p', 'op-note', t('ic.gamesNote', ENTRIES, games())));
+  cond.appendChild(el('p', 'op-note', t('ic.gamesNote', entries(), games())));
   form.appendChild(cond);
 
   const view = group(t('ic.view'));

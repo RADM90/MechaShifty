@@ -215,11 +215,11 @@
     "ja": "スキルチップ入手先"
    },
    "note": {
-    "ko": "시뮬레이션 룸 단계별 · 일일퀘스트 · 이벤트상점에서 얻는 스킬칩 수량.",
-    "en": "Chips obtained from Simulation Room stages, daily quests and the event shop.",
-    "ja": "シミュレーションルーム段階別・デイリー・イベントショップの入手量。"
+    "ko": "시뮬레이션 룸 단계별 · 일일퀘스트 · 이벤트상점에서 얻는 스킬칩 수량. '오버클럭' 0~25단은 기본 보상이고, '오버클럭 부스트' 두 묶음은 4주년에 추가된 싱크로 부스트의 **추가분**이다 — 싱크로 디바이스 300레벨부터 1단계, 500레벨부터 2단계가 기본 보상 위에 더해진다 (500레벨 = 기본 + 1단계 + 2단계).",
+    "en": "Chips obtained from Simulation Room stages, daily quests and the event shop. The 'Overclock' tiers 0–25 are the base reward; the two 'Overclock Boost' blocks are the **extra** chips from the Synchro Boost added at the 4th anniversary — Boost 1 from Synchro Device Lv. 300 and Boost 2 from Lv. 500, each stacked on top of the base (Lv. 500 = base + Boost 1 + Boost 2).",
+    "ja": "シミュレーションルーム段階別・デイリー・イベントショップの入手量。「オーバークロック」0〜25段は基本報酬で、「オーバークロックブースト」の2ブロックは4周年で追加されたシンクロブーストの**追加分** — シンクロデバイス Lv.300 から1段階、Lv.500 から2段階が基本報酬に上乗せされる（Lv.500 = 基本 + 1段階 + 2段階）。"
    },
-   "rows": 44,
+   "rows": 96,
    "columns": 8
   },
   {
@@ -266,11 +266,11 @@
     "ja": "キャンペーンステージ"
    },
    "note": {
-    "ko": "지역 0~46의 스테이지 순서와 보스 구간.",
-    "en": "Stage order and boss nodes for areas 0–46.",
-    "ja": "地域0〜46のステージ順とボス区間。"
+    "ko": "지역 0~50의 스테이지 순서와 보스 구간.",
+    "en": "Stage order and boss nodes for areas 0–50.",
+    "ja": "地域0〜50のステージ順とボス区間。"
    },
-   "rows": 1787,
+   "rows": 1875,
    "columns": 4
   },
   {
