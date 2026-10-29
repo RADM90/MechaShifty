@@ -890,7 +890,7 @@
       {
        "name": {
         "ko": "차지 속도 증가 효과 면역",
-        "en": "immunity to Increase Charge Speed effects",
+        "en": "immunity to effects that increase charge speed",
         "ja": "チャージ速度増加効果無効"
        },
        "ids": [
@@ -900,7 +900,7 @@
       {
        "name": {
         "ko": "차지 속도 감소 효과 면역",
-        "en": "immunity to Decrease Charge Speed effects",
+        "en": "immunity to effects that decrease charge speed",
         "ja": "チャージ速度減少効果無効"
        },
        "ids": [
@@ -910,7 +910,7 @@
       {
        "name": {
         "ko": "기절 면역",
-        "en": "immunity to Stun",
+        "en": "immunity to stun",
         "ja": "気絶免疫"
        },
        "ids": [
@@ -940,7 +940,7 @@
       {
        "name": {
         "ko": "중첩량 증감 효과 면역",
-        "en": "immune to stack count increase or decrease effects",
+        "en": "Immune to stack count increase or decrease effects",
         "ja": "スタック量増減効果無効"
        },
        "ids": [
@@ -1264,6 +1264,14 @@
    10025,
    10039,
    10105
+  ],
+  "c019": [
+   10025,
+   10050,
+   10073,
+   10085,
+   10104,
+   10111
   ],
   "c020": [
    10024,
@@ -1913,6 +1921,19 @@
    10095,
    10096,
    10097
+  ],
+  "c472": [
+   10025,
+   10084,
+   10111
+  ],
+  "c473": [
+   10023,
+   10025,
+   10031,
+   10092,
+   10093,
+   10111
   ],
   "c500": [
    10007,
