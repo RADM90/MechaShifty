@@ -1,41 +1,55 @@
-/* 니파고 탭 — 오버로드 옵션작 시뮬레이터.
-   옵션 수치와 확률은 data/raw/equip_option·equip_glossary 에서 읽는다.
+/* 니파고 탭 — 오버로드 옵션작 경로 추천.
+   니케 한 명의 네 부위를 함께 보고, 결과가 나올 때마다 다음 한 번을 다시 계산한다.
 
-   리롤 규칙 (2026-09, NIPAGO_REROLL.md)
-   - 같은 효과가 다시 나오면 수치는 직전과 다르게 나온다.
-   - 결과를 보고 적용 여부를 고르고, 비용은 버튼을 누를 때 나간다. */
+   로직은 assets/nipago/ 에 있다 (DOM 없음 — tools/nipago_check.mjs 가 그대로 검증한다).
+     rules.js      게임 규칙·비용·버전, 니케별 차속 분류
+     effective.js  차속·장탄 동일 단계 묶음 반올림
+     engine.js     부위 MDP · 네 부위 배분 · 유지/적용 · 예산 몬테카를로 · 추첨
+     service.js    추천 한 건 조립 — worker.js 가 돌린다
 
-import { optionLabel, olRows } from './cp.js';
+   흐름 (명세 23.4): 확정 상태 → 다음 설정 → 실행(이때 재화 차감) → 새 결과(미확정)
+                    → 유지/적용 비교 → 실제 선택 → 다음 행동 재계산 */
+
+import { optionLabel, olRows, SLOTS } from './cp.js';
+import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, buildData } from './nipago/rules.js';
+import { effValue, fmtEff, explainEff } from './nipago/effective.js';
+import { roll, progress, isDone, validateResult, lineProbs, effCfg } from './nipago/engine.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
+const E = () => ({ opt: '', lv: 0 });
 
-/* 데이터에 없는 공식 수치 — 잠금 비용은 [다른 잠금 없음, 있음] */
-const SLOT_P = [1, 0.5, 0.3];
-const COST_MOD = [2, 3];
-const COST_KEY = [20, 30];
-/* 3번 슬롯 잠금 추천이 기본으로 켜지는 옵션 */
-const DEFAULT_S3 = ['우코', '공증'];
+let ctx = null, D = null, RAW = null, base = './data/', mounted = null;
+let S = null;                        // 저장되는 상태
+let ui = { edit: null, rec: null, recFor: 0, busy: false, cmp: null, draft: null, manual: false, err: null, detail: false, logOpen: false };
 
-/* 옛 약어 → 지금 이름 (roster.js 와 같은 표) */
-const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
-
-let ctx = null, D = null, base = './data/', mounted = null;
-let S = null;                       // 저장되는 상태
-let ui = { slot: -1, lock: -1, pending: null };
-
-const el = (tag, cls, text) => {
+/* ── 작은 도우미 ─────────────────────────────────────────── */
+function h(tag, attrs, ...kids) {
   const n = document.createElement(tag);
-  if (cls) n.className = cls;
-  if (text != null) n.textContent = text;
+  if (typeof attrs === 'string') n.className = attrs;
+  else if (attrs) {
+    for (const [k, v] of Object.entries(attrs)) {
+      if (v == null || v === false) continue;
+      if (k === 'class') n.className = v;
+      else if (k.startsWith('on')) n[k] = v;
+      else if (k === 'text') n.textContent = v;
+      else if (k in n && typeof v !== 'string') n[k] = v;
+      else n.setAttribute(k, v === true ? '' : v);
+    }
+  }
+  for (const k of kids.flat()) if (k != null && k !== false) n.append(k.nodeType ? k : String(k));
   return n;
-};
+}
+const btn = (cls, text, onclick, extra = {}) => h('button', { type: 'button', class: cls, onclick, ...extra }, text);
 const t = (k, ...a) => ctx.t(k, ...a);
-const pct = v => (Math.round(v * 1000) / 10).toFixed(1) + '%';
-const val = (o, lv) => (o.vals[lv - 1] * 100).toFixed(2) + '%';
-
-const optLabel = o => optionLabel(o.id, ctx.lang);
-const optFull = o => o[ctx.lang] || o.en;
+const opt = id => D.byId[id];
+const short = id => optionLabel(id, ctx.lang);
+const full = id => opt(id)?.[ctx.lang] || opt(id)?.en || id;
+const pctOf = (id, lv) => (opt(id).vals[lv - 1] * 100).toFixed(2) + '%';
+const p1 = v => (v * 100).toFixed(1) + '%';
+const num = v => (v == null || !Number.isFinite(v) ? '—' : v >= 100 || Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v).toLocaleString() : v.toFixed(1));
+const tierCls = lv => (lv >= 15 ? 'black' : lv >= 12 ? 'blue' : '');
+const lvBand = lv => (lv <= 5 ? 1 : lv <= 10 ? 2 : lv <= 12 ? 3 : lv <= 14 ? 4 : 5);
 
 /* ── 로드 ─────────────────────────────────────────────────── */
 async function fetchJSON(url) {
@@ -43,901 +57,901 @@ async function fetchJSON(url) {
   if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
   return r.json();
 }
-
 async function loadAll() {
   const probe = async b => { await fetchJSON(b + 'raw/equip_glossary.json'); return b; };
   try { base = await probe('./data/'); }
   catch { base = await probe('https://raw.githubusercontent.com/RADM90/MechaShifty/main/data/'); }
-
-  const [option, glossary] = await Promise.all(
-    NEED.map(k => fetchJSON(`${base}raw/${k}.json`)));
-
-  /* equip_option 은 레벨이 행, 옵션이 열이다. */
-  const gi = Object.fromEntries(glossary.columns.map((c, i) => [c.key, i]));
-  const byAbbr = Object.fromEntries(glossary.rows.map(r => [r[gi.abbr], r]));
-  const opts = [];
-  option.columns.forEach((c, i) => {
-    if (!c.key.startsWith('opt')) return;
-    const id = c.label.ko;
-    const g = byAbbr[id];
-    opts.push({
-      id,
-      ko: g ? g[gi.full] : id,
-      en: g ? g[gi.en] : id,
-      ja: g ? g[gi.ja] : id,
-      pct: g ? g[gi.rate] : 0,
-      vals: option.rows.map(r => r[i]),
-    });
-  });
-  const rate = option.columns.findIndex(c => c.key === 'rate');
-  D = { opts, lp: option.rows.map(r => r[rate]) };
+  const [option, glossary] = await Promise.all(NEED.map(k => fetchJSON(`${base}raw/${k}.json`)));
+  RAW = { option, glossary };
+  D = buildData(option, glossary);
 }
 
-const gO = id => D.opts.find(o => o.id === id);
-/* min 이상이 뜰 확률 */
-const cumLP = min => D.lp.slice(min - 1).reduce((a, b) => a + b, 0);
-/* cur 를 뺀 분포에서 min 이상이 뜰 확률 */
-function lvP(min, cur) {
-  let p = 0;
-  for (let lv = min; lv <= D.lp.length; lv++) if (lv !== cur) p += D.lp[lv - 1];
-  return p / (1 - D.lp[cur - 1]);
+/* ── 계산 — 워커, 안 되면 같은 코드를 화면 쪽에서 ───────────── */
+let worker = null, wid = 0, inline = null;
+const waiting = new Map();
+async function compute(type, payload) {
+  if (worker === null) {
+    try {
+      worker = new Worker(new URL('./nipago/worker.js', import.meta.url), { type: 'module' });
+      worker.onmessage = e => {
+        const w = waiting.get(e.data.id);
+        if (!w) return;
+        waiting.delete(e.data.id);
+        e.data.ok ? w.res(e.data.out) : w.rej(new Error(e.data.err));
+      };
+      worker.onerror = () => { worker = false; for (const w of waiting.values()) w.rej(new Error('worker')); waiting.clear(); };
+      await post('init', RAW);
+    } catch { worker = false; }
+  }
+  if (worker) {
+    try { return await post(type, payload); } catch { worker = false; }
+  }
+  if (!inline) inline = (await import('./nipago/service.js')).createService(RAW.option, RAW.glossary);
+  return type === 'compare' ? inline.compare(payload.st, payload.keep, payload.acc) : inline.recommend(payload.st);
+}
+function post(type, payload) {
+  return new Promise((res, rej) => {
+    const id = ++wid;
+    waiting.set(id, { res, rej });
+    worker.postMessage({ id, type, payload });
+  });
 }
 
 /* ── 상태 ─────────────────────────────────────────────────── */
-function makeGoal(id) {
-  const def = DEFAULT_S3.includes(id);
-  return { minLv: 12, s2rec: false, s2recMinLv: 11, s3rec: def, s3recMinLv: def ? 1 : 11 };
-}
-
+const emptyPiece = slot => ({ slot, overloaded: false, lines: [E(), E(), E()], perm: [false, false, false] });
 const defaults = () => ({
-  ver: 2,                           // 2부터 락키를 리롤 때 차감
-  mode: 'opt',
-  slots: [0, 1, 2].map(() => ({ opt: '', lv: 11, lock: 'none' })),
-  goals: {},
-  totalMod: 0,
-  totalKey: 0,
-  history: [],                      // { slot, prevLock, type, mod, key, committed }
+  ver: 3,
+  nikke: { rid: null, baseAmmo: null, chargeTime: null },
+  gear: PIECES.map(emptyPiece),
+  goals: { mode: 'opt', items: {} },
+  keep: { allowDrop: false },
+  budget: { mod: null, key: null, reserveMod: 0, reserveKey: 0 },
+  pref: 'balanced',
+  source: 'sim',
+  spent: { mod: 0, key: 0 },
+  log: [],
+  pending: null,
+  plan: null,                       // 직접 설정 { piece, kind, prot: { [line]: 'perm' | 'key' } }
+  stateNo: 1,
+  goalNo: 1,
 });
 
 function load() {
   try {
     const saved = JSON.parse(localStorage.getItem(STORE));
-    if (saved && Array.isArray(saved.slots)) return normalize(saved);
+    if (saved && saved.ver === 3) return normalize(saved);
+    if (saved && Array.isArray(saved.slots)) return fromV2(saved);
   } catch {}
   return defaults();
 }
-const save = () => localStorage.setItem(STORE, JSON.stringify(S));
+const save = () => { try { localStorage.setItem(STORE, JSON.stringify(S)); } catch {} };
 
-/* 옵션 이름이 바뀌었을 수 있어 저장값을 한 번 걸러낸다. */
+const cleanLine = l => {
+  const id = l && l.opt ? fixOpt(l.opt) : '';
+  return id && opt(id) ? { opt: id, lv: Math.min(15, Math.max(1, +l.lv || FIRST_LV)) } : E();
+};
 function normalize(v) {
   const d = defaults();
-  const fix = id => OPTION_ALIAS[id] || id;
-  const slots = [0, 1, 2].map(i => {
-    const s = { ...(v.slots?.[i] || {}) };
-    s.opt = s.opt ? fix(s.opt) : s.opt;
-    const ok = s.opt && gO(s.opt);
-    return {
-      opt: ok ? s.opt : '',
-      lv: Math.min(15, Math.max(1, +s.lv || 11)),
-      lock: ok && ['mod', 'key'].includes(s.lock) ? s.lock : 'none',
-    };
+  const gear = PIECES.map((slot, p) => {
+    const g = v.gear?.[p] || {};
+    const lines = [0, 1, 2].map(i => cleanLine(g.lines?.[i]));
+    const perm = [0, 1, 2].map(i => (lines[i].opt ? (g.perm?.[i] === 'unknown' ? 'unknown' : g.perm?.[i] === true) : false));
+    return { slot, overloaded: !!g.overloaded, lines, perm };
   });
-  const goals = {};
-  for (const [rawId, g] of Object.entries(v.goals || {})) {
-    const id = fix(rawId);
-    if (gO(id)) goals[id] = { ...makeGoal(id), ...g };
+  const items = {};
+  for (const [raw, g] of Object.entries(v.goals?.items || {})) {
+    const id = fixOpt(raw);
+    if (!opt(id)) continue;
+    items[id] = { count: Math.min(4, Math.max(1, +g.count || 1)), minLv: Math.min(15, Math.max(1, +g.minLv || 12)), eff: EFF_OPTS[id] && g.eff ? { min: +g.eff.min || 0, model: g.eff.model === 'time' ? 'time' : 'pct' } : null };
   }
-  const history = Array.isArray(v.history) ? v.history : [];
-  // 이전 버전은 잠글 때 락키를 차감했다
-  if (v.ver !== 2) history.forEach(h => { if (h.type === 'key') h.committed = true; });
-  return {
-    ...d, ...v, slots, goals, history,
-    ver: 2,
-    mode: v.mode === 'lv' ? 'lv' : 'opt',
-    totalMod: +v.totalMod || 0,
-    totalKey: +v.totalKey || 0,
-  };
+  return { ...d, ...v, gear, goals: { mode: v.goals?.mode === 'lv' ? 'lv' : 'opt', items },
+    budget: { ...d.budget, ...(v.budget || {}) }, spent: { ...d.spent, ...(v.spent || {}) },
+    log: Array.isArray(v.log) ? v.log : [], nikke: { ...d.nikke, ...(v.nikke || {}) } };
+}
+/* v2 — 장비 한 부위였다. 첫 부위에 넣고 나머지는 미개조로 둔다. */
+function fromV2(v) {
+  const d = defaults();
+  const lines = [0, 1, 2].map(i => cleanLine(v.slots[i]));
+  d.gear[0] = { slot: PIECES[0], overloaded: lines.some(l => l.opt), lines,
+    perm: [0, 1, 2].map(i => lines[i].opt && v.slots[i]?.lock === 'mod') };
+  for (const [raw, g] of Object.entries(v.goals || {})) {
+    const id = fixOpt(raw);
+    if (opt(id)) d.goals.items[id] = { count: 1, minLv: Math.min(15, Math.max(1, +g.minLv || 12)), eff: null };
+  }
+  d.goals.mode = v.mode === 'lv' ? 'lv' : 'opt';
+  d.spent = { mod: +v.totalMod || 0, key: +v.totalKey || 0 };
+  return d;
 }
 
-/* ── 계산기 탭에서 슬롯 채우기 ────────────────────────────── */
-export function seedSlots(options) {
-  const rows = olRows(options);
-  const slots = [0, 1, 2].map(i => {
-    const o = rows[i];
-    return o && o.name ? { opt: o.name, lv: o.level || 1, lock: 'none' }
-      : { opt: '', lv: 11, lock: 'none' };
-  });
+/* 상태를 바꾸면 번호가 오르고 추천을 다시 계산한다 */
+function commit(fn, { goal = false } = {}) {
+  fn();
+  S.stateNo++;
+  if (goal) S.goalNo++;
+  save();
+  paint();
+  requestRec();
+}
+const repaint = fn => { if (fn) fn(); paint(); };
+
+/* ── 계산기 탭에서 네 부위 채우기 ─────────────────────────── */
+/* 계산기 자료에는 영구 잠금 정보가 없다 — 미확인으로 둔다 (명세 22.3). */
+export function seedGear({ rid, gear }) {
+  const apply = st => {
+    st.gear = PIECES.map((slot, p) => {
+      const g = (gear || []).find(x => x.slot === SLOTS[p]);
+      if (!g || g.tier !== '오버로드' || !g.options?.length) return emptyPiece(slot);
+      const rows = olRows(g.options);
+      const lines = rows.map(o => (o && o.name ? cleanLineRaw(o.name, o.level) : E()));
+      return { slot, overloaded: true, lines, perm: lines.map(l => (l.opt ? 'unknown' : false)) };
+    });
+    if (rid) st.nikke = { rid, baseAmmo: null, chargeTime: null };
+    st.pending = null; st.plan = null;
+    st.stateNo++;
+  };
   if (S) {
-    S = { ...S, slots, history: [] };
-    save();
-    if (mounted) { ui = { slot: -1, lock: -1, pending: null }; paint(mounted); }
+    apply(S); save();
+    if (mounted) { ui.cmp = null; ui.draft = null; loadNikkeStats(); paint(); requestRec(); }
     return;
   }
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(STORE)); } catch {}
-  localStorage.setItem(STORE,
-    JSON.stringify({ ...defaults(), ...(saved || {}), slots, history: [] }));
+  const st = saved && saved.ver === 3 ? saved : defaults();
+  apply(st);
+  localStorage.setItem(STORE, JSON.stringify(st));
+}
+/* 데이터를 아직 못 읽었을 때도 쓸 수 있게 — 옵션 확인은 normalize 가 한다 */
+const cleanLineRaw = (name, level) => ({ opt: fixOpt(name), lv: Math.min(15, Math.max(1, +level || FIRST_LV)) });
+
+/* 기본 장탄수·기준 차지 시간 — data/weapons.json (update_data.py 가 전투 원본에서 뽑는다).
+   비어 있는 값만 채우고, 사용자가 고친 값은 건드리지 않는다. */
+let weapons = null;
+async function loadNikkeStats() {
+  const rid = S.nikke.rid;
+  if (!rid || (S.nikke.baseAmmo != null && S.nikke.chargeTime != null)) return;
+  try {
+    if (!weapons) weapons = (await fetchJSON(`${base}weapons.json`)).nikkes || {};
+    const w = weapons[rid];
+    if (!w || S.nikke.rid !== rid) return;
+    commit(() => {
+      if (S.nikke.baseAmmo == null) S.nikke.baseAmmo = w.ammo ?? null;
+      if (S.nikke.chargeTime == null) S.nikke.chargeTime = w.charge || null;
+    });
+  } catch {}
 }
 
-/* ── 확률 ─────────────────────────────────────────────────── */
-/* 제외된 옵션 몫은 남은 옵션에 비율대로 나누고, 슬롯 등장확률을 곱한다. */
-function slotProbs(slotIdx, excluded) {
-  const sp = SLOT_P[slotIdx];
-  const avail = D.opts.filter(o => !excluded.has(o.id));
-  const sum = avail.reduce((a, o) => a + o.pct, 0);
-  if (sum <= 0) return {};
-  const out = {};
-  for (const o of avail) out[o.id] = sp * (o.pct / sum);
+/* ── 엔진에 넘길 상태 ─────────────────────────────────────── */
+const engineGear = gear => gear.map(g => ({ ...g, perm: g.perm.map(x => x === true) }));
+const engineState = () => ({
+  gear: engineGear(S.gear),
+  goals: S.goals,
+  nikke: { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 },
+  budget: S.budget.mod == null ? null : S.budget,
+  pref: S.pref, keep: S.keep, stateNo: S.stateNo, goalNo: S.goalNo,
+});
+
+let recTimer = 0;
+function requestRec() {
+  clearTimeout(recTimer);
+  if (!Object.keys(S.goals.items).length) { ui.rec = null; ui.recFor = S.stateNo; paint(); return; }
+  ui.busy = true;
+  recTimer = setTimeout(async () => {
+    const want = S.stateNo;
+    try {
+      const out = await compute('rec', { st: engineState() });
+      if (out.stateNo !== S.stateNo) return;      // 그 사이 상태가 바뀌었다 — 버린다
+      ui.rec = out; ui.recFor = want; ui.err = null;
+    } catch (err) {
+      if (want === S.stateNo) ui.err = String(err.message || err);
+    }
+    if (want === S.stateNo) { ui.busy = false; paint(); }
+  }, 120);
+}
+
+async function requestCompare() {
+  const pd = S.pending;
+  if (!pd || !pd.result || pd.kind === 'first') return;
+  const tryId = pd.tryId;
+  ui.cmp = { busy: true, tryId };
+  paint();
+  const keep = engineGear(S.gear);
+  const acc = keep.map((g, i) => (i === pd.piece ? { ...g, lines: pd.result.map(l => ({ ...l })) } : g));
+  try {
+    const out = await compute('compare', { st: engineState(), keep, acc });
+    if (S.pending?.tryId !== tryId) return;
+    ui.cmp = { ...out, tryId };
+  } catch (err) { ui.cmp = { err: String(err.message || err), tryId }; }
+  paint();
+}
+
+/* ── 실행 · 선택 (명세 23.3~23.4, 24.5) ───────────────────── */
+/* 지금 실행할 행동 — 직접 설정이 우선, 아니면 추천 */
+function currentAction() {
+  if (ui.manual && S.plan) {
+    const g = S.gear[S.plan.piece];
+    if (!g.overloaded) return { piece: S.plan.piece, kind: 'first', protect: [], unlock: [], cost: { mod: 1, key: 0 }, manual: true };
+    const protect = Object.entries(S.plan.prot || {})
+      .filter(([i]) => g.lines[+i].opt)
+      .map(([i, mat]) => ({ line: +i, mat, fresh: !(mat === 'perm' && g.perm[+i] === true) }));
+    const unlock = [0, 1, 2].filter(i => g.perm[i] === true && !protect.some(p => p.line === i));
+    return { piece: S.plan.piece, kind: S.plan.kind, protect, unlock, cost: tryCost(protect, 0.1), manual: true };
+  }
+  const r = ui.rec;
+  if (!r || r.stateNo !== S.stateNo || !r.alts) return null;
+  const a = r.alts[r.pick];
+  return a && a.ok ? { piece: a.piece, kind: a.act.kind, protect: a.act.protect, unlock: a.act.unlock, cost: a.act.cost } : null;
+}
+
+function actionProblems(a) {
+  if (!a) return [];
+  const g = S.gear[a.piece];
+  const out = [];
+  if (a.kind !== 'first' && g.perm.some(x => x === 'unknown')) out.push('unknownLock');
+  if (a.kind !== 'first' && !g.lines[0].opt) out.push('line1');
+  if (a.protect.length > 2) out.push('tooMany');
+  if (a.kind === 'reset' && !g.lines.some((l, i) => l.opt && !a.protect.some(p => p.line === i))) out.push('nothing');
+  if (S.budget.mod != null && (a.cost.mod > S.budget.mod || a.cost.key > (S.budget.key ?? 0))) out.push('afford');
   return out;
 }
 
-const goalList = () => Object.entries(S.goals)
-  .map(([id, g]) => ({ id, minLv: g.minLv }));
-
-const isDone = s => {
-  if (!s.opt || !S.goals[s.opt]) return false;
-  return S.mode === 'opt' || s.lv >= (S.goals[s.opt].minLv || 1);
-};
-const isLvShort = s =>
-  S.mode === 'lv' && s.opt && S.goals[s.opt] && s.lv < (S.goals[s.opt].minLv || 1);
-
-const lockCount = (except = -1) =>
-  S.slots.filter((s, j) => s.lock !== 'none' && j !== except).length;
-const costMod = n => (n === 0 ? COST_MOD[0] : COST_MOD[1]);
-const costKey = n => (n === 0 ? COST_KEY[0] : COST_KEY[1]);
-
-/* 효과 변경으로 슬롯 i 에 g 가 떴을 때 수치까지 맞을 확률.
-   now 는 다음 판 기준이라 지금 효과가 다시 뜨면 지금 수치를 뺀다.
-   여러 판은 기본 분포로 근사. */
-const lvF = (i, g, now) => {
-  if (S.mode !== 'lv' || !g.minLv) return 1;
-  const s = S.slots[i];
-  return now && s.opt === g.id ? lvP(g.minLv, s.lv) : cumLP(g.minLv);
-};
-
-/* 자유 슬롯 중 하나라도 목표가 뜰 확률 */
-function pFreeGoal(freeIdxs, gList, now = true) {
-  const locked = new Set(S.slots.filter(s => s.lock === 'mod' && s.opt).map(s => s.opt));
-  let none = 1;
-  for (const i of freeIdxs) {
-    const probs = slotProbs(i, locked);
-    let no = 1;
-    for (const g of gList) no -= (probs[g.id] || 0) * lvF(i, g, now);
-    none *= Math.max(0, no);
-  }
-  return 1 - none;
-}
-const expEC = (freeIdxs, gList, lk) => {
-  const p = pFreeGoal(freeIdxs, gList, false);
-  return p <= 0 ? Infinity : (1 / p) * (lk + 1);
-};
-
-/* 수치 재설정으로 T 이상을 띄우는 기대 횟수 (지금 수치별).
-   직전 수치가 빠지니 1/p 가 아니다.
-   실패한 판은 흔한 구간을 쥐는 쪽을 고른다고 본다.
-   tools/nipago_reroll.mjs 의 lvTries(T, 'opt') 와 같다. */
-const lvMemo = {};
-function lvTries(T) {
-  if (lvMemo[T]) return lvMemo[T];
-  const lp = D.lp, E = new Array(lp.length + 1).fill(0);
-  for (let L = 1; L < T; L++) E[L] = 1 / cumLP(T);
-  for (let it = 0; it < 100000; it++) {
-    let diff = 0;
-    for (let L = 1; L < T; L++) {
-      const den = 1 - lp[L - 1];
-      let s = 1;
-      for (let m = 1; m < T; m++) if (m !== L) s += lp[m - 1] / den * Math.min(E[L], E[m]);
-      diff = Math.max(diff, Math.abs(s - E[L]));
-      E[L] = s;
+function execute() {
+  if (S.pending) return;                           // 버튼 두 번 — 한 번만
+  const a = currentAction();
+  if (!a || actionProblems(a).some(x => x !== 'afford')) return;
+  commit(() => {
+    const g = S.gear[a.piece];
+    const tryId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
+    S.spent.mod += a.cost.mod; S.spent.key += a.cost.key;
+    if (S.budget.mod != null) S.budget.mod = Math.max(0, S.budget.mod - a.cost.mod);
+    if (S.budget.key != null) S.budget.key = Math.max(0, S.budget.key - a.cost.key);
+    const before = g.lines.map(l => ({ ...l }));
+    const prevPerm = g.perm.slice();
+    /* 새 영구 잠금은 지금 확정된다 — 결과를 유지해도 남는다. 락키·해제한 줄은 잠금이 없다. */
+    g.perm = [0, 1, 2].map(i => a.protect.some(p => p.line === i && p.mat === 'perm'));
+    const protectLines = a.protect.map(p => p.line);
+    let result = null;
+    if (S.source === 'sim') {
+      result = roll(D, { ...g, lines: before }, a.kind, protectLines, Math.random);
     }
-    if (diff < 1e-9) break;
-  }
-  return (lvMemo[T] = E);
-}
-const expLR = (minLv, cur, lk) => {
-  if (cur >= minLv) return 0;
-  return cumLP(minLv) <= 0 ? Infinity : lvTries(minLv)[cur] * (lk + 1);
-};
-
-/* 목표를 하나씩 띄우고 잠근다고 보고 단계별 비용을 더한다. */
-function expectedTotal() {
-  const gList = goalList();
-  if (!gList.length) return 0;
-  const remain = gList.filter(g => !S.slots.some(s => isDone(s) && s.opt === g.id));
-  if (!remain.length) return 0;
-
-  let locked = S.slots.filter(s => s.lock === 'mod').length;
-  const lockedOpts = new Set(S.slots.filter(s => s.lock === 'mod' && s.opt).map(s => s.opt));
-  let free = 3 - locked;
-  let total = 0;
-
-  for (let step = 0; step < remain.length; step++) {
-    const targets = remain.slice(step);
-    const freeIdxs = [];
-    for (let i = 0; i < 3 && freeIdxs.length < free; i++) {
-      if (S.slots[i].lock !== 'mod') freeIdxs.push(i);
-    }
-    let none = 1;
-    for (const i of freeIdxs) {
-      const probs = slotProbs(i, lockedOpts);
-      let no = 1;
-      for (const g of targets) no -= (probs[g.id] || 0) * lvF(i, g, false);
-      none *= Math.max(0, no);
-    }
-    const p = 1 - none;
-    if (p <= 0) return Infinity;
-    total += (1 / p) * (locked + 1);
-    if (step < remain.length - 1) {
-      total += COST_MOD[0];
-      locked++; free--;
-      lockedOpts.add(remain[step].id);
-    }
-  }
-
-  if (S.mode === 'lv') {
-    for (const s of S.slots) {
-      if (isLvShort(s) && s.lock === 'none') total += expLR(S.goals[s.opt].minLv || 1, s.lv, lockCount());
-    }
-  }
-  return total;
-}
-
-/* ── 잠금 추천 ─────────────────────────────────────────────── */
-function lockRec(i) {
-  const s = S.slots[i];
-  if (s.lock !== 'none' || !s.opt || !S.goals[s.opt] || !isDone(s)) return null;
-  const g = S.goals[s.opt];
-
-  if (i === 0) {
-    if (s.lv < 15) return null;
-    return { type: 'mod', why: t('np.whyBlack') };
-  }
-  if (i === 1) {
-    if (!g.s2rec || s.lv < (g.s2recMinLv || 11)) return null;
-    // 다시 뽑는 기대비용의 절반이 잠금비용보다 클 때만 권한다
-    const locked = new Set(S.slots.filter((x, j) => x.lock === 'mod' && x.opt && j !== i).map(x => x.opt));
-    const probs = slotProbs(1, locked);
-    const sum = goalList().reduce((a, x) => a + (probs[x.id] || 0), 0);
-    if (sum <= 0) return null;
-    const loss = (1 / sum) * 0.5;
-    if (loss <= costMod(lockCount(i))) return null;
-    return { type: s.lv >= 12 ? 'mod' : 'key', why: t('np.whyLoss', loss.toFixed(1)) };
-  }
-  if (!g.s3rec || s.lv < (g.s3recMinLv || 11)) return null;
-  return { type: s.lv >= 12 ? 'mod' : 'key', why: t('np.whySlot3') };
-}
-
-/* ── 리롤 ─────────────────────────────────────────────────── */
-function pickWeighted(avail) {
-  const sum = avail.reduce((a, x) => a + x.pct, 0);
-  if (sum <= 0) return null;
-  let r = Math.random() * sum, cum = 0;
-  for (const x of avail) { cum += x.pct; if (r < cum) return x.id; }
-  return avail.at(-1).id;
-}
-
-/* prev 와 다른 수치가 나올 때까지 뽑는다. */
-function rollLevel(prev = 0) {
-  for (;;) {
-    let cum = 0, lv = D.lp.length;
-    const r = Math.random();
-    for (let k = 1; k <= D.lp.length; k++) { cum += D.lp[k - 1]; if (r < cum) { lv = k; break; } }
-    if (lv !== prev) return lv;
-  }
-}
-
-/* 같은 효과가 다시 나오면 수치는 prev 를 피한다 (빈 슬롯은 다시 빈 슬롯일 수 있다). */
-function rollSlot(i, excluded, prev) {
-  if (Math.random() >= SLOT_P[i]) return { opt: '', lv: 11 };
-  const avail = D.opts.filter(o => !excluded.has(o.id));
-  if (!avail.length) return { opt: '', lv: 11 };
-  const opt = pickWeighted(avail);
-  return { opt, lv: rollLevel(prev.opt === opt ? prev.lv : 0) };
-}
-
-/* 모듈잠금은 유지, 락키잠금은 이번 판만 지키고 풀린다. */
-function simulateChange() {
-  const next = S.slots.map(s => ({ ...s }));
-  const decided = new Set(next.filter(s => s.lock !== 'none' && s.opt).map(s => s.opt));
-  for (let i = 0; i < 3; i++) {
-    if (next[i].lock === 'mod') continue;
-    if (next[i].lock === 'key') { next[i].lock = 'none'; continue; }
-    const r = rollSlot(i, decided, S.slots[i]);
-    next[i].opt = r.opt;
-    next[i].lv = r.lv;
-    if (r.opt) decided.add(r.opt);
-  }
-  return next;
-}
-
-/* 효과가 있는 자유 슬롯만 굴린다. */
-function simulateReset() {
-  return S.slots.map(s => {
-    const n = { ...s };
-    if (n.lock === 'key') n.lock = 'none';
-    else if (n.lock !== 'mod' && n.opt) n.lv = rollLevel(n.lv);
-    return n;
+    S.pending = { tryId, piece: a.piece, kind: a.kind, protect: a.protect, unlock: a.unlock, cost: a.cost,
+      before, prevPerm, result, followed: !a.manual };
+    S.log.push({ tryId, at: Date.now(), piece: a.piece, kind: a.kind, protect: a.protect, cost: a.cost,
+      before, prevPerm, result: null, choice: null, followed: !a.manual, src: S.source });
+    if (S.log.length > 300) S.log.splice(0, S.log.length - 300);
   });
+  ui.cmp = null;
+  ui.draft = S.pending.result ? null : draftFrom(S.pending);
+  if (S.pending.result) requestCompare();
 }
 
-/* ── 액션 ─────────────────────────────────────────────────── */
-/* 다음 리롤 때 나갈 락키 */
-const keyDue = () => S.history
-  .filter(h => !h.committed && h.type === 'key' && S.slots[h.slot].lock === 'key')
-  .reduce((a, h) => a + h.key, 0);
-
-/* 비용을 확정하고 결과는 미리보기로 띄운다 — 이후로 잠금은 무를 수 없다. */
-function roll(kind) {
-  const next = kind === 'lv' ? simulateReset() : simulateChange();
-  S.totalMod += lockCount() + 1;
-  S.totalKey += keyDue();
-  S.history.forEach(h => { h.committed = true; });
-  S.slots.forEach(s => { if (s.lock === 'key') s.lock = 'none'; });
-  ui.pending = { kind, slots: next };
+function draftFrom(pd) {
+  if (pd.kind === 'first') return [E(), E(), E()];
+  return pd.before.map(l => ({ ...l }));
 }
 
-function apply(fn) {
-  fn();
-  save();
-  paint(mounted);
+/* 실전 기록 — 입력한 결과를 확정해 비교로 넘긴다 */
+function submitDraft() {
+  const pd = S.pending;
+  const errs = validateResult({ lines: pd.before }, pd.kind, pd.protect.map(p => p.line), ui.draft);
+  if (errs.length) return;
+  repaint(() => { pd.result = ui.draft.map(l => (l.opt ? { opt: l.opt, lv: pd.kind === 'first' ? FIRST_LV : l.lv } : E())); save(); });
+  requestCompare();
 }
 
-function doLock(i, type) {
-  const other = lockCount(i);
-  const prev = S.slots[i].lock;
-  if (type === 'mod' && prev === 'none') {
-    const c = costMod(other);
-    S.totalMod += c;
-    S.history.push({ slot: i, prevLock: prev, type: 'mod', mod: c, key: 0, committed: false });
-  } else if (type === 'key' && prev === 'none') {
-    // 차감은 roll() 에서
-    S.history.push({ slot: i, prevLock: prev, type: 'key', mod: 0, key: costKey(other), committed: false });
-  } else if (type === 'none') {
-    S.history = S.history.filter(h => h.slot !== i);
-  }
-  S.slots[i].lock = type;
-  ui.lock = -1;
+function choose(choice) {
+  const pd = S.pending;
+  if (!pd || !pd.result) return;
+  commit(() => {
+    const g = S.gear[pd.piece];
+    if (choice === 'accept' || pd.kind === 'first') {
+      g.lines = pd.result.map(l => ({ ...l }));
+      g.overloaded = true;
+      g.perm = g.perm.map((x, i) => (g.lines[i].opt ? x : false));
+    }
+    const rec = S.log.find(x => x.tryId === pd.tryId);
+    if (rec) { rec.result = pd.result; rec.choice = pd.kind === 'first' ? 'accept' : choice; rec.advice = ui.cmp?.choice || null; }
+    S.pending = null;
+    if (ui.manual && S.plan) S.plan.prot = Object.fromEntries(Object.entries(S.plan.prot || {}).filter(([i]) => S.gear[S.plan.piece].lines[+i].opt));
+  });
+  ui.cmp = null; ui.draft = null;
 }
 
-function cancelLock(i) {
-  const idx = S.history.map(h => h.slot).lastIndexOf(i);
-  if (idx === -1 || S.history[idx].committed) return;
-  const h = S.history[idx];
-  S.totalMod -= h.mod;              // 락키는 아직 차감 전
-  S.slots[i].lock = h.prevLock;
-  S.history.splice(idx, 1);
-  ui.lock = -1;
+/* 기록 정정 — 서비스 안의 기록만 되돌린다. 게임 안 재화·장비는 돌아오지 않는다 (명세 24.5). */
+function undoLast() {
+  const last = S.log.at(-1);
+  if (!last) return;
+  commit(() => {
+    S.log.pop();
+    S.spent.mod = Math.max(0, S.spent.mod - last.cost.mod);
+    S.spent.key = Math.max(0, S.spent.key - last.cost.key);
+    if (S.budget.mod != null) S.budget.mod += last.cost.mod;
+    if (S.budget.key != null) S.budget.key += last.cost.key;
+    const g = S.gear[last.piece];
+    g.lines = last.before.map(l => ({ ...l }));
+    g.perm = last.prevPerm.slice();
+    if (last.kind === 'first') g.overloaded = false;
+    if (S.pending?.tryId === last.tryId) S.pending = null;
+  });
+  ui.cmp = null; ui.draft = null;
 }
 
-function applyRoll() {
-  if (!ui.pending) return;
-  S.slots = ui.pending.slots.map(s => ({ ...s }));
-  ui.pending = null;
+/* ── 렌더: 상단 바 ────────────────────────────────────────── */
+function seg(items, cur, onPick, cls = '') {
+  return h('div', { class: 'np-seg ' + cls, role: 'group' },
+    items.map(([v, label, title]) => btn('np-segb' + (v === cur ? ' on' : ''), label, () => onPick(v), { 'aria-pressed': String(v === cur), title })));
+}
+function numInput(value, set, { min = 0, max = 99999, step = 1, ph = '', cls = '' } = {}) {
+  const n = h('input', { class: 'np-num ' + cls, type: 'number', inputmode: 'decimal', min, max, step, placeholder: ph });
+  n.value = value == null ? '' : value;
+  n.onchange = () => {
+    const raw = n.value.trim();
+    set(raw === '' ? null : Math.min(max, Math.max(min, +raw)));
+  };
+  return n;
+}
+function stepper(value, set, { min = 1, max = 15, label, suffix } = {}) {
+  return h('span', 'np-step',
+    btn('np-stepb', '−', () => set(Math.max(min, value - 1)), { 'aria-label': label + ' −', disabled: value <= min }),
+    h('span', 'np-stepv', String(value), suffix ? h('small', null, suffix) : null),
+    btn('np-stepb', '+', () => set(Math.min(max, value + 1)), { 'aria-label': label + ' +', disabled: value >= max }));
 }
 
-/* ── 렌더: 목표 옵션 ───────────────────────────────────────── */
-function renderGoals() {
-  const card = el('section', 'np-card');
-  card.appendChild(el('h3', null, t('np.goals')));
-  card.appendChild(el('p', 'np-note', t('np.goalsHint')));
+function renderBar() {
+  const bar = h('section', 'np-card np-bar');
 
-  const modes = el('div', 'np-modes');
-  for (const [m, key] of [['opt', 'np.modeOpt'], ['lv', 'np.modeLv']]) {
-    const b = el('button', 'np-mode' + (S.mode === m ? ' on' : ''), t(key));
-    b.type = 'button';
-    b.onclick = () => apply(() => { S.mode = m; });
-    modes.appendChild(b);
-  }
-  card.appendChild(modes);
+  /* 니케 */
+  const nk = h('div', 'np-field np-nikke');
+  nk.appendChild(h('label', { class: 'np-flbl', for: 'np-nikke' }, t('np.nikke')));
+  const list = h('datalist', { id: 'np-nikkes' },
+    (ctx.nikkes || []).map(n => h('option', { value: n.name[ctx.lang] || n.name.en })));
+  const cur = (ctx.nikkes || []).find(n => n.rid === S.nikke.rid);
+  const inp = h('input', { id: 'np-nikke', class: 'np-text', list: 'np-nikkes', placeholder: t('np.nikkePh'), autocomplete: 'off' });
+  inp.value = cur ? cur.name[ctx.lang] || cur.name.en : '';
+  inp.onchange = () => {
+    const q = inp.value.trim();
+    const n = (ctx.nikkes || []).find(x => [x.name.ko, x.name.en, x.name.ja].includes(q));
+    commit(() => { S.nikke = { rid: n ? n.rid : null, baseAmmo: null, chargeTime: null }; });
+    loadNikkeStats();
+  };
+  nk.append(inp, list);
+  const cr = CHARGE_RULES[S.nikke.rid];
+  const facts = h('div', 'np-facts',
+    h('label', 'np-fact', t('np.baseAmmo'), numInput(S.nikke.baseAmmo, v => commit(() => { S.nikke.baseAmmo = v; }), { min: 1, max: 999, ph: '—' })),
+    h('label', 'np-fact', t('np.chargeTime'), numInput(S.nikke.chargeTime, v => commit(() => { S.nikke.chargeTime = v; }), { min: 0, max: 9, step: 0.01, ph: '—' })),
+    cur ? h('span', { class: 'np-cls np-cls-' + (cr ? cr.cls : 'unk'), title: cr ? t('np.clsSrc', cr.src) : t('np.clsUnkHint') }, t('np.cls_' + (cr ? cr.cls : 'unk'))) : null);
+  nk.appendChild(facts);
+  bar.appendChild(nk);
 
-  const list = el('div', 'np-goallist');
+  /* 결과 입력 방식 · 재화 우선순위 */
+  const modes = h('div', 'np-field');
+  modes.append(h('span', 'np-flbl', t('np.source')),
+    seg([['sim', t('np.srcSim'), t('np.srcSimHint')], ['real', t('np.srcReal'), t('np.srcRealHint')]], S.source,
+      v => { if (!S.pending) commit(() => { S.source = v; }); }),
+    h('span', 'np-flbl', t('np.pref')),
+    seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
+      S.pref, v => commit(() => { S.pref = v; })));
+  bar.appendChild(modes);
+
+  /* 예산 */
+  const bud = h('div', 'np-field np-budget');
+  bud.append(h('span', 'np-flbl', t('np.budget'), h('small', null, S.budget.mod == null ? t('np.budgetOffHint') : t('np.budgetOnHint'))));
+  const cell = (label, k, cls) => h('label', 'np-bcell ' + cls, h('span', null, label),
+    numInput(S.budget[k], v => commit(() => { S.budget[k] = v; }), { ph: k.startsWith('reserve') ? '0' : t('np.blank') }));
+  bud.append(h('div', 'np-bgrid',
+    cell(t('np.modHave'), 'mod', 'np-m'), cell(t('np.keyHave'), 'key', 'np-k'),
+    cell(t('np.modReserve'), 'reserveMod', 'np-m'), cell(t('np.keyReserve'), 'reserveKey', 'np-k')));
+  bar.appendChild(bud);
+
+  /* 누적 */
+  bar.appendChild(h('div', 'np-field np-spent',
+    h('span', 'np-flbl', t('np.spent')),
+    h('div', 'np-spentv', h('b', 'np-m', '🔵 ' + S.spent.mod), h('b', 'np-k', '🔑 ' + S.spent.key)),
+    h('span', 'np-note', t('np.tries', S.log.length))));
+  return bar;
+}
+
+/* ── 렌더: 목표 ───────────────────────────────────────────── */
+function renderGoals(prog) {
+  const card = h('section', 'np-card np-goals');
+  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.goals')),
+    seg([['opt', t('np.modeOpt')], ['lv', t('np.modeLv')]], S.goals.mode, v => commit(() => { S.goals.mode = v; }, { goal: true }), 'np-seg-s')));
+  card.appendChild(h('p', 'np-note', t('np.goalsHint')));
+
+  const chips = h('div', 'np-chips');
   for (const o of D.opts) {
-    const g = S.goals[o.id];
-    const row = el('div', 'np-goal' + (g ? ' on' : ''));
+    const on = !!S.goals.items[o.id];
+    const warn = o.id === '차속' && CHARGE_RULES[S.nikke.rid]?.cls === 'none';
+    chips.appendChild(btn('np-chip' + (on ? ' on' : '') + (warn ? ' warn' : ''),
+      [h('span', 'np-chipk', on ? '✓' : '+'), h('span', 'np-chipn', short(o.id)), h('span', 'np-chipw', p1(o.w))],
+      () => commit(() => {
+        if (on) delete S.goals.items[o.id];
+        else S.goals.items[o.id] = { count: 1, minLv: 12, eff: null };
+      }, { goal: true }),
+      { title: full(o.id) + (warn ? ' — ' + t('np.chargeNone') : ''), 'aria-pressed': String(on) }));
+  }
+  card.appendChild(chips);
 
-    const head = el('button', 'np-goalhead');
-    head.type = 'button';
-    head.appendChild(el('span', 'np-chk', g ? '✓' : ''));
-    head.appendChild(el('span', 'np-gname', optLabel(o)));
-    head.appendChild(el('span', 'np-gfull', optFull(o)));
-    head.appendChild(el('span', 'np-grate', pct(o.pct)));
-    head.onclick = () => apply(() => {
-      if (S.goals[o.id]) delete S.goals[o.id];
-      else S.goals[o.id] = makeGoal(o.id);
-    });
+  const ids = D.opts.map(o => o.id).filter(id => S.goals.items[id]);
+  if (!ids.length) { card.appendChild(h('p', 'np-empty', t('np.noGoal'))); return card; }
+
+  const list = h('div', 'np-glist');
+  for (const id of ids) {
+    const g = S.goals.items[id];
+    const pr = prog.find(p => p.opt === id);
+    const row = h('div', 'np-grow' + (pr?.ok ? ' ok' : ''));
+    const head = h('div', 'np-ghead',
+      h('span', 'np-gname', short(id)), h('span', 'np-gfull', full(id)),
+      pr ? h('span', 'np-gprog' + (pr.ok ? ' ok' : ''), pr.eff ? `${fmtEff(pr.cfg, pr.have)} / ${fmtEff(pr.cfg, pr.need)}` : `${pr.have}/${pr.need}`) : null,
+      btn('np-gx', '✕', () => commit(() => { delete S.goals.items[id]; }, { goal: true }), { 'aria-label': t('np.remove') }));
     row.appendChild(head);
 
-    if (g) {
-      const rules = el('div', 'np-rules');
-      if (S.mode === 'lv') rules.appendChild(lvField(t('np.minLv'), g.minLv, v => {
-        S.goals[o.id].minLv = v;
-      }));
-      rules.appendChild(recRule(t('np.slotN', 2), g.s2rec, g.s2recMinLv, 's2'));
-      rules.appendChild(recRule(t('np.slotN', 3), g.s3rec, g.s3recMinLv, 's3'));
-      row.appendChild(rules);
-
-      function recRule(label, on, lv, key) {
-        const box = el('label', 'np-rule');
-        const cb = el('input');
-        cb.type = 'checkbox';
-        cb.checked = !!on;
-        cb.onchange = () => apply(() => { S.goals[o.id][key + 'rec'] = cb.checked; });
-        box.appendChild(cb);
-        box.appendChild(el('span', null, label));
-        const num = lvInput(lv, v => { S.goals[o.id][key + 'recMinLv'] = v; });
-        num.disabled = !on;
-        box.appendChild(num);
-        return box;
+    const ctl = h('div', 'np-gctl');
+    if (EFF_OPTS[id]) {
+      ctl.appendChild(seg([['n', t('np.byLines')], ['eff', t('np.byEff')]], g.eff ? 'eff' : 'n',
+        v => commit(() => { g.eff = v === 'eff' ? { min: defaultEff(id), model: 'pct' } : null; }, { goal: true }), 'np-seg-s'));
+    }
+    if (!g.eff) {
+      ctl.appendChild(h('span', 'np-gfield', t('np.lines'),
+        stepper(g.count, v => commit(() => { g.count = v; }, { goal: true }), { min: 1, max: 4, label: t('np.lines') })));
+      if (S.goals.mode === 'lv') {
+        ctl.appendChild(h('span', 'np-gfield', t('np.minLv'),
+          stepper(g.minLv, v => commit(() => { g.minLv = v; }, { goal: true }), { min: 1, max: 15, label: t('np.minLv') }),
+          h('span', 'np-gval lvb-' + lvBand(g.minLv), pctOf(id, g.minLv))));
+      }
+    } else {
+      const cfg = effCfg(id, g, { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 });
+      if (EFF_OPTS[id] === 'charge') {
+        ctl.appendChild(seg([['pct', t('np.effPct')], ['time', t('np.effTime')]], g.eff.model,
+          v => commit(() => { g.eff.model = v; g.eff.min = v === 'time' ? 6 : 10; }, { goal: true }), 'np-seg-s'));
+      }
+      const unit = EFF_OPTS[id] === 'ammo' ? t('np.unitShots') : g.eff.model === 'time' ? t('np.unitCs') : '%';
+      ctl.appendChild(h('span', 'np-gfield', t('np.effMin'),
+        stepper(g.eff.min, v => commit(() => { g.eff.min = v; }, { goal: true }), { min: 1, max: 999, label: t('np.effMin') }),
+        h('small', 'np-unit', unit)));
+      const need = EFF_OPTS[id] === 'ammo' ? !S.nikke.baseAmmo : g.eff.model === 'time' && !S.nikke.chargeTime;
+      if (need) ctl.appendChild(h('p', 'np-warn', t(EFF_OPTS[id] === 'ammo' ? 'np.needAmmo' : 'np.needCharge')));
+      if (pr?.eff) {
+        ctl.appendChild(h('p', 'np-explain',
+          pr.res.groups.length ? explainEff(cfg, pr.res) + ` = ${fmtEff(cfg, pr.have)}` : t('np.effNone'),
+          h('small', null, ' · ' + t('np.effShown', (pr.res.shown / 100).toFixed(2) + '%'))));
       }
     }
+    row.appendChild(ctl);
     list.appendChild(row);
   }
   card.appendChild(list);
+
+  /* 보존 조건 */
+  if (ids.some(id => S.goals.items[id].eff)) {
+    const cb = h('input', { type: 'checkbox', checked: !S.keep.allowDrop });
+    cb.onchange = () => commit(() => { S.keep.allowDrop = !cb.checked; });
+    card.appendChild(h('label', 'np-keep', cb, h('span', null, t('np.keepFloor'))));
+  }
   return card;
 }
+const defaultEff = id => (EFF_OPTS[id] === 'ammo' ? Math.max(1, Math.round((S.nikke.baseAmmo || 6) * 1.5)) : 10);
 
-function lvInput(value, set) {
-  const n = el('input', 'np-lv');
-  n.type = 'number';
-  n.min = 1; n.max = 15; n.value = value;
-  n.onchange = () => apply(() => set(Math.min(15, Math.max(1, +n.value || 1))));
-  n.onclick = e => e.stopPropagation();
-  return n;
+/* ── 렌더: 다음 한 번 ─────────────────────────────────────── */
+function actionText(a) {
+  const piece = t('np.piece_' + a.piece);
+  if (a.kind === 'first') return t('np.doFirst', piece);
+  const prot = a.protect.map(p => t('np.protOne', p.line + 1, t(p.mat === 'key' ? 'np.matKey' : p.fresh ? 'np.matPermNew' : 'np.matPerm')));
+  return t(a.kind === 'reset' ? 'np.doReset' : 'np.doChange', piece, prot.length ? prot.join(', ') : t('np.noProtect'));
 }
-function lvField(label, value, set) {
-  const box = el('label', 'np-rule');
-  box.appendChild(el('span', null, label));
-  box.appendChild(lvInput(value, set));
-  return box;
-}
-
-/* ── 렌더: 소모량 · 확률 ───────────────────────────────────── */
-function renderCost() {
-  const card = el('section', 'np-card');
-  card.appendChild(el('h3', null, t('np.cost')));
-
-  const gList = goalList();
-  const lk = lockCount();
-  const total = gList.length ? expectedTotal() : null;
-
-  const grid = el('div', 'np-costgrid');
-  const box = (title, cls, rows) => {
-    const b = el('div', 'np-costbox');
-    b.appendChild(el('div', 'np-costttl', title));
-    for (const [label, value] of rows) {
-      const r = el('div', 'np-costrow');
-      r.appendChild(el('span', 'np-costlbl', label));
-      r.appendChild(el('span', `np-costval ${cls}`, value));
-      b.appendChild(r);
-    }
-    return b;
-  };
-  grid.appendChild(box(t('np.module'), 'np-m', [
-    [t('np.expected'), total == null ? '—'
-      : total === Infinity ? '∞' : t('np.approx', Math.round(total))],
-    [t('np.spent'), t('np.pieces', S.totalMod)],
-    [t('np.perRoll'), t('np.perRollN', lk + 1)],
-  ]));
-  const due = keyDue();
-  grid.appendChild(box(t('np.lockkey'), 'np-k', [
-    [t('np.expected'), '—'],
-    [t('np.spent'), t('np.pieces', S.totalKey)],
-    [t('np.perRoll'), due ? t('np.pieces', due) : '—'],
-  ]));
-  card.appendChild(grid);
-  return card;
+function costText(c) {
+  const parts = [t('np.costMod', c.mod)];
+  if (c.key) parts.push(t('np.costKey', c.key));
+  return parts.join(' + ');
 }
 
-function renderProbBars() {
-  const card = el('section', 'np-card');
-  card.appendChild(el('h3', null, t('np.goalProb')));
-  const gList = goalList();
-  if (!gList.length) {
-    card.appendChild(el('p', 'np-note', t('np.noGoal')));
+function renderRec(prog) {
+  const card = h('section', 'np-card np-rec');
+  const r = ui.rec && ui.rec.stateNo === S.stateNo ? ui.rec : null;
+  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.next')),
+    h('span', 'np-meta', ui.busy ? t('np.computing') : r ? `#${r.stateNo} · ${r.rules}` : '')));
+
+  /* 확인 필요 — 잠금 미확인 */
+  const unk = S.gear.map((g, p) => (g.perm.some(x => x === 'unknown') ? p : -1)).filter(p => p >= 0);
+  if (unk.length) card.appendChild(banner('check', t('np.st_check'), t('np.unknownLocks', unk.map(p => t('np.piece_' + p)).join(', '))));
+
+  if (!Object.keys(S.goals.items).length) { card.appendChild(h('p', 'np-empty', t('np.noGoal'))); return card; }
+  if (ui.err) card.appendChild(banner('check', t('np.st_err'), ui.err));
+  if (!r) {
+    card.appendChild(h('div', 'np-skel', h('span', 'np-spin'), t('np.computingLong')));
     return card;
   }
 
-  const locked = new Set(S.slots.filter(s => s.lock !== 'none' && s.opt).map(s => s.opt));
-  const perSlot = i => {
-    const probs = slotProbs(i, locked);
-    return gList.reduce((a, g) => a + (probs[g.id] || 0) * lvF(i, g, true), 0);
-  };
-  const free = [0, 1, 2].filter(i => S.slots[i].lock === 'none');
-  const rows = [[t('np.freeAll'), pFreeGoal(free, gList)]]
-    .concat([0, 1, 2].map(i => [t('np.slotP', i + 1, Math.round(SLOT_P[i] * 100)), perSlot(i)]));
-
-  for (const [label, p] of rows) {
-    const row = el('div', 'np-bar');
-    const head = el('div', 'np-barhead');
-    head.appendChild(el('span', null, label));
-    head.appendChild(el('span', 'np-barval', pct(p)));
-    row.appendChild(head);
-    const track = el('div', 'np-track');
-    const fill = el('div', 'np-fill ' + tone(p * 100));
-    fill.style.width = Math.min(100, p * 100).toFixed(0) + '%';
-    track.appendChild(fill);
-    row.appendChild(track);
-    card.appendChild(row);
+  if (r.status === 'done') {
+    card.appendChild(banner('done', t('np.st_done'), t('np.st_doneDesc')));
+    return card;
   }
+  if (r.status === 'impossible') {
+    card.appendChild(banner('check', t('np.st_impossible'), t('np.st_impossibleDesc')));
+    return card;
+  }
+  if (r.status === 'budget') card.appendChild(banner('budget', t('np.st_budget'), t('np.st_budgetDesc')));
+  if (r.status === 'stop') card.appendChild(banner('stop', t('np.st_stop'), t('np.st_stopDesc')));
+
+  const a = r.alts[r.pick];
+  const act = { piece: a.piece, kind: a.act.kind, protect: a.act.protect, unlock: a.act.unlock, cost: a.act.cost };
+  const main = h('div', 'np-do' + (ui.manual ? ' dim' : ''));
+  main.appendChild(h('div', 'np-dotitle', actionText(act)));
+  if (act.unlock.length) main.appendChild(h('div', 'np-dosub', t('np.unlockLines', act.unlock.map(i => i + 1).join(', '))));
+
+  const facts = h('dl', 'np-dl');
+  const fact = (k, v, cls) => facts.append(h('dt', null, k), h('dd', cls, v));
+  const lockPart = tryCost(act.protect.map(p => ({ ...p, fresh: false })));
+  const fresh = { mod: act.cost.mod - lockPart.mod, key: act.cost.key };
+  fact(t('np.thisCost'), [costText(act.cost),
+    fresh.mod || fresh.key ? h('small', null, ` (${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
+    act.cost.estimated ? h('small', 'np-est', ' · ' + t('np.estimated')) : null]);
+  const pc = a.pieces[a.piece];
+  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` T${x.m}+` : '')).join('·') || '—', num(pc.m),
+    a.pieces.filter(x => x.v > 0).length));
+  const kept = prog.filter(p => p.eff && p.ok);
+  if (kept.length) fact(t('np.guard'), kept.map(p => `${short(p.opt)} ${fmtEff(p.cfg, p.have)}`).join(', '));
+  if (r.budgetMode && a.budget) {
+    fact(t('np.outlookBudget'), [h('b', null, p1(a.budget.p)), h('small', null, ` ±${p1(a.budget.err)} · ${t('np.mcNote', a.budget.runs)}`)]);
+  }
+  fact(t('np.outlookMean'), t('np.meanText', num(a.m), num(a.k)));
+  main.appendChild(facts);
+
+  const probs = actionProblems(act);
+  const go = btn('np-go', S.source === 'sim' ? t('np.goSim') : t('np.goReal'), execute,
+    { disabled: !!S.pending || ui.manual || probs.some(x => x !== 'afford') });
+  main.appendChild(h('div', 'np-goRow', go,
+    probs.map(x => h('span', 'np-prob', t('np.prob_' + x)))));
+  card.appendChild(main);
+
+  /* 대안 — 모듈 절약 / 균형 / 락키 미사용 (다른 것만) */
+  const others = ['mod', 'balanced', 'key'].filter(p => p !== r.pick && r.alts[p]?.ok);
+  const sig = x => JSON.stringify([x.piece, x.act]);
+  const distinct = others.filter(p => sig(r.alts[p]) !== sig(a) || Math.abs(r.alts[p].k - a.k) > 0.5 || Math.abs(r.alts[p].m - a.m) > 0.5);
+  const alts = h('div', 'np-alts');
+  alts.appendChild(h('div', 'np-altttl', t('np.alts')));
+  for (const p of distinct) {
+    const x = r.alts[p];
+    alts.appendChild(h('div', 'np-alt',
+      h('span', 'np-altk', t('np.pref_' + p)),
+      h('span', 'np-altd', actionText({ piece: x.piece, kind: x.act.kind, protect: x.act.protect }) + ' · ' + t('np.meanText', num(x.m), num(x.k)) +
+        (x.budget ? ` · ${p1(x.budget.p)}` : '') + (x.noKey ? ` · ${t('np.noKeys')}` : '')),
+      btn('np-altb', t('np.useThis'), () => commit(() => { S.pref = p; }))));
+  }
+  alts.appendChild(h('div', 'np-alt',
+    h('span', 'np-altk', t('np.altStop')),
+    h('span', 'np-altd', t('np.altStopDesc', prog.filter(x => !x.ok).map(x => `${short(x.opt)} ${x.eff ? fmtEff(x.cfg, x.have) + '/' + fmtEff(x.cfg, x.need) : x.have + '/' + x.need}`).join(', ')))));
+  card.appendChild(alts);
+
+  /* 근거 범위 · 자세히 */
+  const det = h('details', { class: 'np-detail', open: ui.detail || null });
+  det.ontoggle = () => { ui.detail = det.open; };
+  det.appendChild(h('summary', null, t('np.scope')));
+  det.appendChild(h('p', 'np-note', t('np.scopeText', r.budgetMode ? t('np.modeBudget') : t('np.modeMean'), t('np.pref_' + r.pick),
+    Number.isFinite(a.lambda) ? a.lambda : '∞')));
+  det.appendChild(h('ul', 'np-plan', a.pieces.map((x, p) => h('li', null,
+    h('b', null, t('np.piece_' + p)), ' ',
+    x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` T${s.m}+` : '')).join('·') : t('np.nothingHere'),
+    x.v > 0 ? ` — ${t('np.meanText', num(x.m), num(x.k))}${x.first ? ' · ' + t('np.firstIncl') : ''}` : ` — ${t('np.pieceOk')}`))));
+  if (act.kind === 'change') det.appendChild(probTable(act));
+  card.appendChild(det);
   return card;
 }
-const tone = v => (v >= 30 ? 'np-hi' : v >= 10 ? 'np-md' : 'np-lo');
 
-/* ── 렌더: 장비 슬롯 ───────────────────────────────────────── */
-function renderGear() {
-  const card = el('section', 'np-card np-gearcard');
-  card.appendChild(el('h3', null, t('np.gear')));
+function banner(kind, title, desc) {
+  return h('div', 'np-banner np-b-' + kind, h('b', null, title), desc ? h('span', null, desc) : null);
+}
 
-  S.slots.forEach((s, i) => card.appendChild(slotRow(s, i)));
+/* 효과 변경 한 번에 줄별 목표 옵션 확률 (보호 줄 제외, 같은 판 순차 제외 반영) */
+function probTable(act) {
+  const g = S.gear[act.piece];
+  const lp = lineProbs(D, g, act.protect.map(p => p.line));
+  const goalIds = D.opts.map(o => o.id).filter(id => S.goals.items[id]);
+  const tbl = h('table', 'grid np-table');
+  tbl.appendChild(h('thead', null, h('tr', null, h('th', null, ''), h('th', 'num', t('np.appearCol')),
+    goalIds.map(id => h('th', { class: 'num', title: full(id) }, short(id))))));
+  tbl.appendChild(h('tbody', null, lp.map((row, i) => h('tr', row ? null : 'np-rowlock',
+    h('td', 'np-rowlbl', t('np.lineN', i + 1)),
+    row ? h('td', 'num', p1(row.appear)) : h('td', 'num np-none', t('np.locked')),
+    goalIds.map(id => (row ? h('td', 'num ' + ((row.by[id] || 0) >= 0.05 ? 'np-c-hi' : (row.by[id] || 0) >= 0.02 ? 'np-c-md' : 'np-c-lo'), row.by[id] ? p1(row.by[id]) : '—')
+      : h('td', 'num np-none', '—')))))));
+  return h('div', null, h('p', 'np-note', t('np.probTable', t('np.piece_' + act.piece))), h('div', 'np-scroll', tbl));
+}
 
-  const acts = el('div', 'np-acts');
-  const change = el('button', 'np-act np-act-ec', '↺ ' + t('np.btnChange'));
-  change.type = 'button';
-  change.onclick = () => apply(() => roll('opt'));
-  const reset = el('button', 'np-act np-act-lr', '% ' + t('np.btnReset'));
-  reset.type = 'button';
-  reset.onclick = () => apply(() => roll('lv'));
-  acts.append(change, reset);
-  card.appendChild(acts);
+/* ── 렌더: 네 부위 ───────────────────────────────────────── */
+function renderGear(prog) {
+  const card = h('section', 'np-card np-gearcard');
+  const manualBtn = btn('np-manualb' + (ui.manual ? ' on' : ''), ui.manual ? t('np.manualOn') : t('np.manualOff'),
+    () => repaint(() => {
+      ui.manual = !ui.manual;
+      if (ui.manual && !S.plan) {
+        const a = currentAction();
+        S.plan = a ? { piece: a.piece, kind: a.kind === 'reset' ? 'reset' : 'change', prot: Object.fromEntries(a.protect.map(p => [p.line, p.mat])) }
+          : { piece: 0, kind: 'change', prot: {} };
+      }
+    }), { 'aria-pressed': String(ui.manual), disabled: !!S.pending });
+  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.gear')), manualBtn));
 
-  const clear = el('button', 'btn-reset np-clear', t('np.clear'));
-  clear.type = 'button';
-  clear.onclick = () => apply(() => { S = defaults(); });
-  card.appendChild(clear);
+  const act = currentAction();
+  const grid = h('div', 'np-pieces');
+  S.gear.forEach((g, p) => grid.appendChild(pieceCard(g, p, act)));
+  card.appendChild(grid);
+
+  if (ui.manual && S.plan) card.appendChild(manualBar());
+  card.appendChild(h('p', 'np-note', t('np.gearHint')));
   return card;
 }
 
-function slotRow(s, i) {
-  const o = s.opt ? gO(s.opt) : null;
-  const row = el('div', 'np-slotrow');
-
-  let cls = 'np-slot';
-  if (!o) cls += ' empty';
-  else {
-    if (s.lv >= 15) cls += ' black';
-    else if (s.lv >= 12) cls += ' blue';
-    if (isDone(s)) cls += ' done';
-    else if (isLvShort(s)) cls += ' short';
-    else if (!S.goals[s.opt]) cls += ' off';
+function pieceCard(g, p, act) {
+  const target = act && act.piece === p;
+  const box = h('div', 'np-piece' + (target ? ' target' : '') + (g.overloaded ? '' : ' off'));
+  const head = h('div', 'np-phead', h('span', 'np-pname', t('np.piece_' + p)));
+  const olcb = h('input', { type: 'checkbox', checked: g.overloaded, disabled: !!S.pending });
+  olcb.onchange = () => commit(() => {
+    g.overloaded = olcb.checked;
+    if (!g.overloaded) { g.lines = [E(), E(), E()]; g.perm = [false, false, false]; }
+  });
+  head.appendChild(h('label', 'np-olt', olcb, h('span', null, t('np.overloaded'))));
+  if (ui.manual && S.plan) {
+    head.appendChild(btn('np-pick' + (S.plan.piece === p ? ' on' : ''), S.plan.piece === p ? t('np.picked') : t('np.pick'),
+      () => repaint(() => { S.plan = { piece: p, kind: S.plan.kind, prot: {} }; save(); })));
   }
+  box.appendChild(head);
 
-  const bar = el('button', cls);
-  bar.type = 'button';
-  if (o) {
-    bar.appendChild(el('span', 'np-sopt', optLabel(o)));
-    bar.appendChild(el('span', 'np-sval', val(o, s.lv)));
-    bar.appendChild(el('span', `np-lvb lvb-${s.lv <= 5 ? 1 : s.lv <= 10 ? 2 : s.lv <= 12 ? 3 : s.lv <= 14 ? 4 : 5}`,
-      'lv' + s.lv));
-    const rec = lockRec(i);
-    if (rec) {
-      const badge = el('span', `np-recbadge ${rec.type === 'mod' ? 'np-b-mod' : 'np-b-key'}`,
-        (rec.type === 'mod' ? '🔒 ' : '🗝 ') + t(rec.type === 'mod' ? 'np.lockModS' : 'np.lockKeyS'));
-      badge.title = rec.why;
-      badge.onclick = e => { e.stopPropagation(); apply(() => doLock(i, rec.type)); };
-      bar.appendChild(badge);
+  if (!g.overloaded) {
+    box.appendChild(h('p', 'np-poff', t('np.notOverloaded')));
+    return box;
+  }
+  g.lines.forEach((l, i) => box.appendChild(lineRow(g, p, i, act)));
+  return box;
+}
+
+function lineRow(g, p, i, act) {
+  const l = g.lines[i];
+  const goal = l.opt && S.goals.items[l.opt];
+  const meets = goal && (S.goals.mode !== 'lv' || goal.eff || l.lv >= goal.minLv);
+  const prot = act && act.piece === p ? act.protect.find(x => x.line === i) : null;
+  const willUnlock = act && act.piece === p && act.unlock?.includes(i);
+  const cls = ['np-line', l.opt ? tierCls(l.lv) : 'empty', goal ? (meets ? 'goal' : 'short') : l.opt ? 'junk' : '',
+    prot ? 'prot-' + prot.mat : '', ui.edit && ui.edit.p === p && ui.edit.i === i ? 'editing' : ''].join(' ');
+  const row = h('div', 'np-lrow');
+  const main = btn(cls, [
+    h('span', 'np-lno', String(i + 1)),
+    l.opt ? h('span', 'np-lopt', short(l.opt)) : h('span', 'np-lempty', t('np.empty')),
+    l.opt ? h('span', 'np-lval', pctOf(l.opt, l.lv)) : h('span', 'np-lsp', Math.round(SLOT_P[i] * 100) + '%'),
+    l.opt ? h('span', 'np-lvb lvb-' + lvBand(l.lv), 'T' + l.lv) : null,
+    prot ? null : g.perm[i] === true ? h('span', { class: 'np-lock', title: t('np.permOn') }, '🔒') : g.perm[i] === 'unknown' ? h('span', { class: 'np-lock unk', title: t('np.permUnk') }, '🔒?') : null,
+    prot ? h('span', 'np-ptag np-ptag-' + prot.mat, prot.mat === 'key' ? '🗝 ' + t('np.matKeyS') : '🔒 ' + (prot.fresh ? t('np.matPermNewS') : t('np.matPermS'))) : null,
+    willUnlock ? h('span', 'np-ptag np-ptag-off', t('np.unlockS')) : null,
+  ], () => {
+    if (ui.manual && S.plan && S.plan.piece === p && l.opt && !S.pending) {
+      /* 직접 설정 — 줄을 누를 때마다 보호 없음 → 영구 → 락키 */
+      repaint(() => {
+        const curM = S.plan.prot[i];
+        const nextM = !curM ? 'perm' : curM === 'perm' ? 'key' : null;
+        if (nextM && !curM && Object.keys(S.plan.prot).length >= 2) return;
+        if (nextM) S.plan.prot[i] = nextM; else delete S.plan.prot[i];
+        save();
+      });
+      return;
     }
-    bar.appendChild(el('span', 'np-sp', Math.round(SLOT_P[i] * 100) + '%'));
-  } else {
-    bar.appendChild(el('span', 'np-sempty', t('np.emptySlot', i + 1)));
-  }
-  bar.onclick = () => { ui.slot = ui.slot === i ? -1 : i; ui.lock = -1; paint(mounted); };
-  row.appendChild(bar);
-
-  if (ui.slot === i) row.appendChild(slotPanel(s, i));
-
-  const lockBtn = el('button', 'np-lockbtn' + (s.lock === 'mod' ? ' lmod' : s.lock === 'key' ? ' lkey' : ''),
-    s.lock === 'mod' ? '🔒' : s.lock === 'key' ? '🗝' : '🔓');
-  lockBtn.type = 'button';
-  lockBtn.disabled = !s.opt;
-  lockBtn.title = t('np.lockTitle');
-  lockBtn.onclick = () => { ui.lock = ui.lock === i ? -1 : i; ui.slot = -1; paint(mounted); };
-  row.appendChild(lockBtn);
-
-  if (ui.lock === i) row.appendChild(lockMenu(s, i));
+    repaint(() => { ui.edit = ui.edit && ui.edit.p === p && ui.edit.i === i ? null : { p, i }; });
+  }, { 'aria-expanded': String(!!(ui.edit && ui.edit.p === p && ui.edit.i === i)), disabled: !!S.pending });
+  row.appendChild(main);
+  if (ui.edit && ui.edit.p === p && ui.edit.i === i) row.appendChild(lineEditor(g, p, i));
   return row;
 }
 
-function slotPanel(s, i) {
-  const panel = el('div', 'np-panel');
-  // 슬롯1·모듈잠금 슬롯의 옵션은 다른 슬롯에서 못 고른다
-  const used = new Set(S.slots
-    .filter((x, j) => j !== i && x.opt && (j === 0 || x.lock === 'mod'))
-    .map(x => x.opt));
-
-  const sel = el('select', 'np-sel');
-  const none = el('option', null, t('np.emptyOpt'));
-  none.value = '';
-  sel.appendChild(none);
-  for (const o of D.opts) {
-    const op = el('option', null,
-      `${optLabel(o)} · ${(o.vals[10] * 100).toFixed(2)}~${(o.vals[14] * 100).toFixed(2)}% · ${pct(o.pct)}`);
-    op.value = o.id;
-    op.disabled = used.has(o.id);
-    op.selected = s.opt === o.id;
-    sel.appendChild(op);
-  }
-
-  const num = el('input', 'np-lv');
-  num.type = 'number';
-  num.min = 1; num.max = 15; num.value = s.lv;
-  num.disabled = !s.opt;
-
-  const preview = el('span', 'np-preview', s.opt ? val(gO(s.opt), s.lv) : '');
-  const sync = () => {
-    const o = sel.value ? gO(sel.value) : null;
-    num.disabled = !o;
-    preview.textContent = o ? val(o, Math.min(15, Math.max(1, +num.value || 1))) : '';
+function lineEditor(g, p, i) {
+  const l = g.lines[i];
+  const box = h('div', 'np-editor');
+  const others = new Set(g.lines.filter((x, j) => j !== i && x.opt).map(x => x.opt));
+  const sel = h('select', { class: 'np-sel', 'aria-label': t('np.option') },
+    h('option', { value: '' }, i === 0 ? t('np.pickOpt') : t('np.emptyOpt')),
+    D.opts.map(o => h('option', { value: o.id, disabled: others.has(o.id), selected: l.opt === o.id }, `${short(o.id)} — ${full(o.id)}`)));
+  let lv = l.opt ? l.lv : FIRST_LV;
+  const val = h('span', 'np-gval', l.opt ? pctOf(l.opt, lv) : '');
+  const lvBox = h('span');
+  const paintLv = () => {
+    lvBox.textContent = '';
+    lvBox.appendChild(stepper(lv, v => { lv = v; val.textContent = sel.value ? pctOf(sel.value, lv) : ''; paintLv(); }, { label: t('np.level') }));
   };
-  sel.onchange = sync;
-  num.oninput = sync;
-
-  const r1 = el('div', 'np-prow');
-  r1.appendChild(el('span', 'np-plbl', t('np.option')));
-  r1.appendChild(sel);
-  const r2 = el('div', 'np-prow');
-  r2.appendChild(el('span', 'np-plbl', t('np.level')));
-  r2.appendChild(num);
-  r2.appendChild(preview);
-
-  const ok = el('button', 'np-apply', '✓ ' + t('np.set'));
-  ok.type = 'button';
-  ok.onclick = () => apply(() => {
-    const opt = sel.value;
-    if (opt !== S.slots[i].opt && S.slots[i].lock !== 'none') {
-      S.slots[i].lock = 'none';
-      S.history = S.history.filter(h => h.slot !== i || h.committed);
-    }
-    S.slots[i].opt = opt;
-    S.slots[i].lv = Math.min(15, Math.max(1, +num.value || 11));
-    ui.slot = -1;
-  });
-
-  panel.append(r1, r2, ok);
-  return panel;
+  paintLv();
+  sel.onchange = () => { val.textContent = sel.value ? pctOf(sel.value, lv) : ''; };
+  const perm = h('select', { class: 'np-sel np-sel-s', 'aria-label': t('np.permLbl') },
+    h('option', { value: 'no', selected: g.perm[i] === false }, t('np.permNo')),
+    h('option', { value: 'yes', selected: g.perm[i] === true }, t('np.permYes')),
+    h('option', { value: 'unk', selected: g.perm[i] === 'unknown' }, t('np.permUnkOpt')));
+  box.append(
+    h('div', 'np-erow', h('span', 'np-elbl', t('np.option')), sel),
+    h('div', 'np-erow', h('span', 'np-elbl', t('np.level')), lvBox, val),
+    h('div', 'np-erow', h('span', 'np-elbl', t('np.permLbl')), perm),
+    h('div', 'np-ebtns',
+      btn('np-ok', t('np.set'), () => commit(() => {
+        const id = sel.value;
+        g.lines[i] = id ? { opt: id, lv } : E();
+        g.perm[i] = id ? (perm.value === 'yes' ? true : perm.value === 'unk' ? 'unknown' : false) : false;
+        ui.edit = null;
+      })),
+      btn('np-cancel', t('np.cancel'), () => repaint(() => { ui.edit = null; }))));
+  return box;
 }
 
-function lockMenu(s, i) {
-  const menu = el('div', 'np-lockmenu');
-  const item = (cls, text, fn) => {
-    const b = el('button', 'np-lockitem ' + cls, text);
-    b.type = 'button';
-    b.onclick = () => apply(fn);
-    menu.appendChild(b);
-  };
-  const other = lockCount(i);
-  // 잠금 종류를 바꾸려면 먼저 푼다 (게임과 같음)
-  if (s.lock === 'none') {
-    item('np-i-mod', '🔒 ' + t('np.lockMod', costMod(other)), () => doLock(i, 'mod'));
-    item('np-i-key', '🗝 ' + t('np.lockKey', costKey(other)), () => doLock(i, 'key'));
-  } else item('np-i-off', '🔓 ' + t('np.unlock'), () => doLock(i, 'none'));
-
-  // 돌려받을 비용은 모듈잠금에만 있다
-  const h = [...S.history].reverse().find(x => x.slot === i);
-  if (h && !h.committed && h.type === 'mod') {
-    item('np-i-cancel', '✕ ' + t('np.cancelLock', t('np.pieces', h.mod)), () => cancelLock(i));
+function manualBar() {
+  const a = currentAction();
+  const bar = h('div', 'np-manual');
+  const g = S.gear[S.plan.piece];
+  if (g.overloaded) {
+    bar.appendChild(seg([['change', t('np.kindChange')], ['reset', t('np.kindReset')]], S.plan.kind,
+      v => repaint(() => { S.plan.kind = v; save(); })));
   }
-  return menu;
+  bar.appendChild(h('span', 'np-mdesc', a ? `${actionText(a)} — ${costText(a.cost)}${a.cost.estimated ? ' · ' + t('np.estimated') : ''}` : ''));
+  const probs = actionProblems(a);
+  bar.appendChild(h('div', 'np-goRow',
+    btn('np-go', S.source === 'sim' ? t('np.goSim') : t('np.goReal'), execute, { disabled: !!S.pending || !a || probs.some(x => x !== 'afford') }),
+    probs.map(x => h('span', 'np-prob', t('np.prob_' + x)))));
+  bar.appendChild(h('p', 'np-note', t('np.manualHint')));
+  return bar;
 }
 
-/* ── 렌더: 슬롯별 확률 표 ──────────────────────────────────── */
-function renderProbTable() {
-  const card = el('section', 'np-card');
-  card.appendChild(el('h3', null, t('np.probTable')));
+/* ── 렌더: 결과 창 ────────────────────────────────────────── */
+function renderModal(prog) {
+  const pd = S.pending;
+  const g = S.gear[pd.piece];
+  const bg = h('div', 'np-modalbg');
+  const box = h('div', { class: 'np-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.resultTitle') });
+  box.appendChild(h('div', 'np-modalhead',
+    h('span', null, t('np.resultTitle'), ' · ', actionText({ ...pd })),
+    h('span', 'np-meta', t('np.paid', costText(pd.cost)))));
 
-  const table = el('table', 'grid np-table');
-  const thead = el('thead');
-  const hr = el('tr');
-  hr.appendChild(el('th', null, ''));
-  for (const o of D.opts) {
-    const th = el('th', 'num' + (S.goals[o.id] ? ' np-goalh' : ''), optLabel(o));
-    th.title = optFull(o);
-    hr.appendChild(th);
-  }
-  thead.appendChild(hr);
-  table.appendChild(thead);
+  const body = h('div', 'np-modalbody');
+  const side = (title, lines, cls, mark) => h('div', 'np-side ' + cls, h('div', 'np-sidettl', title),
+    lines.map((l, i) => {
+      const goal = l.opt && S.goals.items[l.opt];
+      const prot = pd.protect.some(x => x.line === i);
+      return h('div', 'np-ovslot ' + (l.opt ? tierCls(l.lv) : 'empty') + (mark && goal ? ' good' : ''),
+        h('span', 'np-lno', String(i + 1)),
+        h('span', null, l.opt ? short(l.opt) : t('np.none')),
+        l.opt ? h('span', 'np-ovval', `${pctOf(l.opt, l.lv)} T${l.lv}`) : null,
+        prot ? h('span', 'np-lock', '🔒') : null);
+    }));
 
-  const tbody = el('tbody');
-  [0, 1, 2].forEach(i => {
-    const s = S.slots[i];
-    const locked = new Set(S.slots
-      .filter((x, j) => x.lock !== 'none' && x.opt && j !== i).map(x => x.opt));
-    const probs = slotProbs(i, locked);
-    const tr = el('tr', s.lock === 'mod' ? 'np-rowmod' : s.lock === 'key' ? 'np-rowkey' : null);
-
-    const lbl = el('td', 'np-rowlbl');
-    lbl.appendChild(el('span', null,
-      (s.lock === 'mod' ? '🔒 ' : s.lock === 'key' ? '🗝 ' : '') + t('np.slotN', i + 1)));
-    lbl.appendChild(el('span', 'np-rowsp', t('np.appear', Math.round(SLOT_P[i] * 100))));
-    tr.appendChild(lbl);
-
-    for (const o of D.opts) {
-      const mine = s.lock === 'mod' && s.opt === o.id;
-      const p = (probs[o.id] || 0) * 100;
-      if ((s.lock === 'mod' && !mine) || locked.has(o.id) || p <= 0) {
-        tr.appendChild(el('td', 'num np-none', '—'));
-        continue;
-      }
-      const goal = !!S.goals[o.id];
-      const cls = goal ? (p >= 5 ? 'np-c-hi' : p >= 2 ? 'np-c-md' : 'np-c-lo') : 'np-c-off';
-      tr.appendChild(el('td', 'num ' + cls, p.toFixed(1) + '%'));
-    }
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-
-  const wrap = el('div', 'np-scroll');
-  wrap.appendChild(table);
-  card.appendChild(wrap);
-  return card;
-}
-
-/* ── 렌더: 추천 행동 ───────────────────────────────────────── */
-function renderRec() {
-  const gList = goalList();
-  if (!gList.length) return null;
-
-  const card = el('section', 'np-card');
-  card.appendChild(el('h3', null, t('np.rec')));
-
-  const lk = lockCount();
-  const free = [0, 1, 2].filter(i => S.slots[i].lock === 'none');
-  const needRoll = free.filter(i => !S.slots[i].opt
-    || (!isDone(S.slots[i]) && !isLvShort(S.slots[i])));
-  const recs = [];
-
-  S.slots.forEach((s, i) => {
-    const rec = lockRec(i);
-    if (!rec) return;
-    recs.push({
-      ico: '🔒', pri: 'rec',
-      title: t('np.recLock', i + 1, optLabel(gO(s.opt)), s.lv,
-        t(rec.type === 'mod' ? 'np.lockModS' : 'np.lockKeyS')),
-      desc: `${val(gO(s.opt), s.lv)} · ${rec.why}`,
-    });
-  });
-
-  if (S.mode === 'lv') {
-    S.slots.forEach((s, i) => {
-      if (!isLvShort(s) || s.lock !== 'none') return;
-      const min = S.goals[s.opt].minLv || 1;
-      const p = lvP(min, s.lv);
-      recs.push({
-        ico: '📈', pri: 'hot',
-        title: t('np.recLv', i + 1, optLabel(gO(s.opt)), min),
-        desc: t('np.recLvDesc', s.lv, val(gO(s.opt), s.lv), min, val(gO(s.opt), min),
-          pct(p), Math.round(expLR(min, s.lv, lk))),
-        p: p * 100,
-      });
-    });
-  }
-
-  if (needRoll.length) {
-    const p = pFreeGoal(free, gList);
-    const exp = expEC(free, gList, lk);
-    recs.push({
-      ico: '🎲', pri: recs.length ? 'rec' : 'hot',
-      title: t('np.recRoll', needRoll.map(x => t('np.slotN', x + 1)).join(', ')),
-      desc: t('np.recRollDesc', pct(p), lk + 1, exp === Infinity ? '∞' : Math.round(exp)),
-      p: p * 100,
-    });
-  }
-
-  if (!recs.some(r => r.ico === '🎲' || r.ico === '📈') && S.slots.some(s => isDone(s))) {
-    recs.unshift({ ico: '🎉', pri: 'ok', title: t('np.recDone'), desc: t('np.recDoneDesc') });
-  }
-
-  const order = { hot: 0, rec: 1, ok: 2 };
-  recs.sort((a, b) => (order[a.pri] ?? 1) - (order[b.pri] ?? 1));
-
-  for (const r of recs) {
-    const row = el('div', 'np-recrow');
-    row.appendChild(el('div', 'np-recico', r.ico));
-    const body = el('div', 'np-recbody');
-    const title = el('div', 'np-rectitle');
-    title.appendChild(el('span', null, r.title));
-    title.appendChild(el('span', `np-tag np-tag-${r.pri}`, t('np.tag_' + r.pri)));
-    body.appendChild(title);
-    body.appendChild(el('div', 'np-recdesc', r.desc));
-    if (r.p != null) {
-      const track = el('div', 'np-track');
-      const fill = el('div', 'np-fill ' + (r.p >= 50 ? 'np-hi' : r.p >= 20 ? 'np-md' : 'np-lo'));
-      fill.style.width = Math.min(100, r.p).toFixed(0) + '%';
-      track.appendChild(fill);
-      body.appendChild(track);
-    }
-    row.appendChild(body);
-    card.appendChild(row);
-  }
-  return card;
-}
-
-/* ── 렌더: 리롤 미리보기 ───────────────────────────────────── */
-/* 비용은 roll() 에서 이미 나갔다. */
-function renderModal() {
-  const lv = ui.pending.kind === 'lv';
-  const keep = () => apply(() => { ui.pending = null; });
-  const bg = el('div', 'np-modalbg');
-  const box = el('div', 'np-modal');
-
-  const head = el('div', 'np-modalhead');
-  head.appendChild(el('span', null, t(lv ? 'np.modalTitleLv' : 'np.modalTitle')));
-  const x = el('button', 'np-modalx', '✕');
-  x.type = 'button';
-  x.onclick = keep;
-  head.appendChild(x);
-  box.appendChild(head);
-
-  const body = el('div', 'np-modalbody');
-  const side = (title, arr, isNew) => {
-    const s = el('div', 'np-side');
-    s.appendChild(el('div', 'np-sidettl', title));
-    arr.forEach(slot => {
-      const o = slot.opt ? gO(slot.opt) : null;
-      let cls = 'np-ovslot';
-      if (!o) cls += ' empty';
-      else if (isNew && isDone(slot)) cls += ' good';
-      else if (isNew) cls += ' new';
-      const line = el('div', cls);
-      line.appendChild(el('span', null, o ? optLabel(o) : t('np.none')));
-      if (o) line.appendChild(el('span', 'np-ovval', `${val(o, slot.lv)} lv${slot.lv}`));
-      s.appendChild(line);
-    });
-    return s;
-  };
-  body.appendChild(side(t('np.cur'), S.slots, false));
-  body.appendChild(side(t('np.next'), ui.pending.slots, true));
+  if (pd.kind !== 'first') body.appendChild(side(t('np.cur'), pd.before, 'cur', false));
+  if (pd.result) body.appendChild(side(t('np.new'), pd.result, 'new', true));
+  else body.appendChild(resultForm(pd));
   box.appendChild(body);
 
-  const btns = el('div', 'np-modalbtns');
-  const stay = el('button', 'np-mb np-mb-keep', '↺ ' + t(lv ? 'np.keepLv' : 'np.keep'));
-  stay.type = 'button';
-  stay.onclick = keep;
-  const go = el('button', 'np-mb np-mb-apply', '✓ ' + t(lv ? 'np.applyLv' : 'np.apply'));
-  go.type = 'button';
-  go.onclick = () => apply(applyRoll);
-  btns.append(stay, go);
-  box.appendChild(btns);
+  /* 비교 */
+  if (pd.result) {
+    const c = ui.cmp && ui.cmp.tryId === pd.tryId ? ui.cmp : null;
+    const cmp = h('div', 'np-cmp');
+    if (pd.kind === 'first') cmp.appendChild(h('p', 'np-note', t('np.firstNoKeep')));
+    else if (!c || c.busy) cmp.appendChild(h('p', 'np-note', h('span', 'np-spin'), t('np.comparing')));
+    else if (c.err) cmp.appendChild(h('p', 'np-warn', c.err));
+    else {
+      cmp.appendChild(h('div', 'np-cmprow',
+        h('div', 'np-cmpcell' + (c.choice === 'keep' ? ' best' : ''), h('small', null, t('np.ifKeep')), h('b', null, t('np.meanText', num(c.keep.m), num(c.keep.k)))),
+        h('div', 'np-cmpcell' + (c.choice === 'accept' ? ' best' : ''), h('small', null, t('np.ifAccept')), h('b', null, t('np.meanText', num(c.acc.m), num(c.acc.k))))));
+      if (c.breaks.length) cmp.appendChild(h('p', 'np-warn', t('np.breaks', c.breaks.map(short).join(', '))));
+      const d = c.prog1.filter((x, i) => JSON.stringify(x.have) !== JSON.stringify(c.prog0[i].have));
+      if (d.length) cmp.appendChild(h('p', 'np-note', t('np.delta') + ' ' + d.map(x => {
+        const y = c.prog0.find(z => z.opt === x.opt);
+        return `${short(x.opt)} ${x.eff ? fmtEff(x.cfg, y.have) : y.have} → ${x.eff ? fmtEff(x.cfg, x.have) : x.have}`;
+      }).join(', ')));
+    }
+    box.appendChild(cmp);
+  }
 
+  const btns = h('div', 'np-modalbtns');
+  const best = ui.cmp && ui.cmp.tryId === pd.tryId ? ui.cmp.choice : null;
+  if (pd.result && pd.kind === 'first') {
+    btns.appendChild(btn('np-mb np-mb-apply', '✓ ' + t('np.firstOk'), () => choose('accept')));
+  } else if (pd.result) {
+    btns.append(
+      btn('np-mb np-mb-keep' + (best === 'keep' ? ' rec' : ''), [t('np.keep'), best === 'keep' ? h('small', null, t('np.recommended')) : null], () => choose('keep')),
+      btn('np-mb np-mb-apply' + (best === 'accept' ? ' rec' : ''), [t('np.apply'), best === 'accept' ? h('small', null, t('np.recommended')) : null], () => choose('accept')));
+  }
+  box.appendChild(btns);
+  box.appendChild(h('p', 'np-note np-modalfoot', t('np.paidNote')));
   bg.appendChild(box);
-  bg.onclick = e => { if (e.target === bg) keep(); };
   return bg;
 }
 
-/* ── 페인트 ───────────────────────────────────────────────── */
-function paint(root) {
-  root.textContent = '';
-
-  // 왼쪽은 목표, 오른쪽은 소모량·확률 / 슬롯별 표 / 장비·추천
-  const top = el('div', 'np-top');
-  top.appendChild(renderGoals());
-  const right = el('div', 'np-col');
-  const pair = el('div', 'np-pair');
-  pair.appendChild(renderCost());
-  pair.appendChild(renderProbBars());
-  right.appendChild(pair);
-  right.appendChild(renderProbTable());
-  const bottom = el('div', 'np-bottom');
-  bottom.appendChild(renderGear());
-  const rec = renderRec();
-  if (rec) bottom.appendChild(rec);
-  right.appendChild(bottom);
-  top.appendChild(right);
-  root.appendChild(top);
-
-  if (ui.pending) root.appendChild(renderModal());
+/* 실전 기록 — 게임에서 나온 세 줄을 입력한다 */
+function resultForm(pd) {
+  const wrap = h('div', 'np-side new np-form');
+  wrap.appendChild(h('div', 'np-sidettl', t('np.enterResult')));
+  const prot = pd.protect.map(x => x.line);
+  if (!ui.draft) ui.draft = draftFrom(pd);
+  ui.draft.forEach((l, i) => {
+    const locked = prot.includes(i);
+    const typeFixed = pd.kind === 'reset';
+    const row = h('div', 'np-frow');
+    row.appendChild(h('span', 'np-lno', String(i + 1)));
+    const sel = h('select', { class: 'np-sel', disabled: locked || typeFixed, 'aria-label': t('np.lineN', i + 1) },
+      h('option', { value: '' }, t('np.none')),
+      D.opts.map(o => h('option', { value: o.id, selected: l.opt === o.id }, short(o.id))));
+    sel.onchange = () => repaint(() => { ui.draft[i] = sel.value ? { opt: sel.value, lv: ui.draft[i].lv || (pd.kind === 'first' ? FIRST_LV : 1) } : E(); });
+    row.appendChild(sel);
+    if (l.opt && pd.kind !== 'first') {
+      row.appendChild(locked ? h('span', 'np-gval', `T${l.lv}`) :
+        stepper(l.lv || 1, v => repaint(() => { ui.draft[i] = { ...ui.draft[i], lv: v }; }), { label: t('np.level') }));
+    } else if (l.opt) row.appendChild(h('span', 'np-gval', 'T' + FIRST_LV));
+    if (locked) row.appendChild(h('span', 'np-lock', '🔒'));
+    wrap.appendChild(row);
+  });
+  const errs = validateResult({ lines: pd.before }, pd.kind, prot, ui.draft);
+  if (errs.length) wrap.appendChild(h('p', 'np-warn', errs.map(e => t('np.err_' + e)).join(' · ')));
+  wrap.appendChild(btn('np-ok', t('np.confirmResult'), submitDraft, { disabled: errs.length > 0 }));
+  return wrap;
 }
 
-/* 바깥을 누르면 슬롯 패널·잠금 메뉴를 닫는다. */
+/* ── 렌더: 기록 ───────────────────────────────────────────── */
+function renderLog() {
+  const det = h('details', { class: 'np-card np-log', open: ui.logOpen || null });
+  det.ontoggle = () => { ui.logOpen = det.open; };
+  det.appendChild(h('summary', null, h('h3', null, t('np.log')), h('span', 'np-meta', t('np.tries', S.log.length))));
+  if (!S.log.length) { det.appendChild(h('p', 'np-note', t('np.logEmpty'))); }
+  else {
+    const ol = h('ol', { class: 'np-loglist', reversed: true });
+    for (const x of S.log.slice(-40).reverse()) {
+      ol.appendChild(h('li', null,
+        h('span', 'np-logk', actionText(x)),
+        h('span', 'np-logc', costText(x.cost)),
+        h('span', 'np-logr', x.choice ? t('np.choice_' + x.choice) + (x.advice && x.advice !== x.choice && x.kind !== 'first' ? ' · ' + t('np.againstAdvice') : '') : t('np.pendingS')),
+        x.followed === false ? h('span', 'np-logm', t('np.manualS')) : null,
+        x.src === 'sim' ? h('span', 'np-logm', t('np.srcSim')) : null));
+    }
+    det.appendChild(ol);
+    det.appendChild(h('div', 'np-logbtns',
+      btn('btn-reset', t('np.undo'), () => { if (confirm(t('np.undoConfirm'))) undoLast(); }),
+      h('span', 'np-note', t('np.undoNote'))));
+  }
+  det.appendChild(h('div', 'np-logbtns',
+    btn('btn-reset', t('np.clear'), () => { if (confirm(t('np.clearConfirm'))) { S = defaults(); ui.cmp = null; ui.draft = null; ui.edit = null; save(); paint(); requestRec(); } })));
+  return det;
+}
+
+/* ── 페인트 ───────────────────────────────────────────────── */
+function paint() {
+  const root = mounted;
+  if (!root) return;
+  const focusId = document.activeElement?.id;
+  root.textContent = '';
+  const prog = progress(D, engineGear(S.gear), S.goals, { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 });
+
+  root.appendChild(renderBar());
+  if (prog.length) {
+    root.appendChild(h('div', { class: 'np-progress', role: 'status' },
+      prog.map(x => h('span', 'np-pill' + (x.ok ? ' ok' : ''),
+        h('b', null, short(x.opt)), ' ',
+        x.eff ? `${fmtEff(x.cfg, x.have)} / ${fmtEff(x.cfg, x.need)}` : `${x.have}/${x.need}${x.m > 1 ? ` · T${x.m}+` : ''}`)),
+      isDone(prog) ? h('span', 'np-pill ok all', t('np.st_done')) : null));
+  }
+  const main = h('div', 'np-main');
+  main.appendChild(renderGoals(prog));
+  const right = h('div', 'np-col');
+  right.appendChild(renderRec(prog));
+  right.appendChild(renderGear(prog));
+  right.appendChild(renderLog());
+  main.appendChild(right);
+  root.appendChild(main);
+  if (S.pending) root.appendChild(renderModal(prog));
+  if (focusId) document.getElementById(focusId)?.focus();
+}
+
+/* 바깥을 누르면 줄 편집을 닫는다. */
 let wired = false;
 function wireOutside() {
   if (wired) return;
   wired = true;
   document.addEventListener('click', e => {
-    if (!mounted || !mounted.isConnected) return;
-    if (ui.slot === -1 && ui.lock === -1) return;
-    if (e.target.closest('.np-slotrow')) return;
-    ui.slot = -1; ui.lock = -1;
-    paint(mounted);
+    if (!mounted || !mounted.isConnected || !ui.edit) return;
+    if (e.target.closest('.np-lrow')) return;
+    ui.edit = null;
+    paint();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && mounted?.isConnected && ui.edit) { ui.edit = null; paint(); }
   });
 }
 
@@ -946,16 +960,19 @@ export async function renderNipago(root, context) {
   mounted = root;
   if (!D) {
     root.textContent = '';
-    root.appendChild(el('p', 'notice', t('np.loading')));
-    try {
-      await loadAll();
-    } catch (err) {
+    root.appendChild(h('p', 'notice', t('np.loading')));
+    try { await loadAll(); }
+    catch (err) {
       root.textContent = '';
-      root.appendChild(el('p', 'notice notice-error', String(err.message || err)));
+      root.appendChild(h('p', 'notice notice-error', String(err.message || err)));
       return;
     }
     S = load();
+    save();
   }
   wireOutside();
-  paint(root);
+  paint();
+  loadNikkeStats();
+  if (S.pending && S.pending.result && !ui.cmp) requestCompare();
+  if (ui.recFor !== S.stateNo || !ui.rec) requestRec();
 }

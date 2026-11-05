@@ -276,7 +276,8 @@ function renderOverload(n) {
 }
 
 /* ── 옵션작 탭으로 넘기기 ─────────────────────────────────────
-   니파고(옵션작) 탭은 장비 한 부위를 굴리는 시뮬레이터라 슬롯이 셋뿐이다. */
+   니파고(옵션작) 탭은 니케 한 명의 네 부위를 함께 계산한다 — 오버로드 부위를 한 번에 넘긴다.
+   계산기 자료에는 영구 잠금 정보가 없어 니파고 쪽에서 '미확인'으로 받는다. */
 function simButton(n) {
   const ol = SLOTS.map(slot => (n.gear || []).find(g => g.slot === slot))
     .filter(g => g && g.tier === '오버로드' && g.options?.length);
@@ -287,33 +288,32 @@ function simButton(n) {
   btn.disabled = !ol.length || !ctx.goTab;
   if (btn.disabled) return btn;
 
-  const go = g => {
+  /* 옵션작 탭의 입력을 덮어쓰므로 먼저 묻는다 — 예일 때만 이 니케의 장비를 넘긴다.
+     아니오면 아무것도 넘기지 않고 탭만 옮긴다 (옵션작에 있던 입력은 그대로). */
+  const go = seed => {
     closeTip();
-    /* 니파고는 계산기와 따로 불러오는 모듈이라 여기서 직접 집어넣는다. */
-    import('./nipago.js')
-      .then(m => m.seedSlots(g.options))
-      .finally(() => ctx.goTab('nipago'));
+    const next = seed
+      /* 니파고는 계산기와 따로 불러오는 모듈이라 여기서 직접 집어넣는다. */
+      ? import('./nipago.js').then(m => m.seedGear({ rid: n.rid, gear: n.gear }))
+      : Promise.resolve();
+    next.finally(() => ctx.goTab('nipago'));
   };
 
   btn.setAttribute('aria-expanded', 'false');
   btn.onclick = () => {
-    if (ol.length === 1) return go(ol[0]);
-    const menu = el('div', 'cp-simMenu');
-    menu.appendChild(el('p', 'cp-simHint', t('cp.olSimPick')));
-    for (const g of ol) {
-      const item = el('button', 'cp-simItem');
-      item.type = 'button';
-      item.appendChild(el('span', 'cp-simSlot', t('cp.slot_' + g.slot)));
-      const opts = el('span', 'cp-simOpts');
-      for (const o of g.options) {
-        opts.appendChild(el('span', 'cp-olCell' + olLevelCls(o.level),
-          `[${optionLabel(o.name, ctx.lang)}] ${o.level}`));
-      }
-      item.appendChild(opts);
-      item.onclick = () => go(g);
-      menu.appendChild(item);
-    }
-    openTip(btn, t('cp.olSim'), menu);
+    const body = el('div', 'cp-tipBody cp-simAsk');
+    body.appendChild(el('p', 'cp-simHint', t('cp.olSimAsk', ol.length)));
+    const row = el('div', 'cp-simBtns');
+    const yes = el('button', 'cp-simYes', t('cp.yes'));
+    yes.type = 'button';
+    yes.onclick = () => go(true);
+    const no = el('button', 'cp-simNo', t('cp.no'));
+    no.type = 'button';
+    no.onclick = () => go(false);
+    row.append(yes, no);
+    body.appendChild(row);
+    openTip(btn, t('cp.olSim'), body);
+    yes.focus();
   };
   return btn;
 }
