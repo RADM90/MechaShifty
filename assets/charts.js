@@ -118,26 +118,35 @@ function axisHead(tag, axis, code, text, cls) {
 }
 
 /* ── 교차 히트맵 ──────────────────────────────────────────── */
+/* 합계는 칸으로 만들지 않는다 — 줄 끝·열 아래에 색 없는 숫자만 붙이고, 램프 최댓값에도 넣지 않는다. */
 function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis) {
-  const values = [];
-  for (const r of rowKeys) for (const c of colKeys) values.push(cellOf(r, c));
-  const max = Math.max(1, ...values);
+  const grid = rowKeys.map(r => colKeys.map(c => cellOf(r, c)));
+  const max = Math.max(1, ...grid.flat());
   const ramp = readRamp();
+  const rowSum = grid.map(row => row.reduce((a, v) => a + v, 0));
+  const colSum = colKeys.map((_, j) => grid.reduce((a, row) => a + row[j], 0));
+  const total = rowSum.reduce((a, v) => a + v, 0);
+  const sumCell = (v, tipHtml) => {
+    const td = el('td', 'sum', String(v));
+    bindTip(td, tipHtml);
+    return td;
+  };
 
   const table = el('table', 'hm');
   const thead = el('thead');
   const htr = el('tr');
   htr.appendChild(el('th'));
   for (const c of colKeys) htr.appendChild(axisHead('th', colAxis, c, labelCol(c)));
+  htr.appendChild(el('th'));
   thead.appendChild(htr);
   table.appendChild(thead);
 
   const tb = el('tbody');
-  for (const r of rowKeys) {
+  rowKeys.forEach((r, i) => {
     const tr = el('tr');
     tr.appendChild(axisHead('th', rowAxis, r, labelRow(r), 'rowh'));
-    for (const c of colKeys) {
-      const v = cellOf(r, c);
+    colKeys.forEach((c, j) => {
+      const v = grid[i][j];
       const td = el('td', v ? null : 'zero', String(v));
       if (v) {
         const step = ramp[Math.round((v / max) * (RAMP_STEPS - 1))];
@@ -146,10 +155,19 @@ function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis)
       }
       bindTip(td, t('st.tipCell', labelRow(r), labelCol(c), v));
       tr.appendChild(td);
-    }
+    });
+    tr.appendChild(sumCell(rowSum[i], t('st.tipSum', labelRow(r), rowSum[i])));
     tb.appendChild(tr);
-  }
+  });
   table.appendChild(tb);
+
+  const tf = el('tfoot');
+  const ftr = el('tr');
+  ftr.appendChild(el('th'));
+  colKeys.forEach((c, j) => ftr.appendChild(sumCell(colSum[j], t('st.tipSum', labelCol(c), colSum[j]))));
+  ftr.appendChild(sumCell(total, t('st.tipTotal', total)));
+  tf.appendChild(ftr);
+  table.appendChild(tf);
 
   const wrap = el('div');
   wrap.style.overflowX = 'auto';
@@ -169,58 +187,116 @@ function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis)
   return wrap;
 }
 
-/* ── 세로 컬럼 차트 (분기별 추이) ──────────────────────────── */
-function columnChart(points, fmtTip) {
-  const W = 720, H = 190, padL = 26, padR = 6, padT = 10, padB = 26;
+/* ── 세로 컬럼 차트 (출시 추이) ──────────────────────────────
+ * 픽셀 좌표로 그린다. 폭은 상자 안쪽 폭을 따라가다가, 한 칸이 MIN_SLOT 보다 좁아질 만큼
+ * 점이 많으면(월 단위 등) 그 폭에서 멈추고 상자가 가로로 굴러간다.
+ * viewBox 를 늘려 맞추지 않는 건 그러면 칸 수에 따라 글자 크기까지 같이 변하기 때문. */
+const MIN_SLOT = 24;
+function columnChart(points, fmtTip, avail) {
+  const H = 230, padL = 34, padR = 8, padT = 12, padB = 42;
   const n = Math.max(1, points.length);
-  const max = Math.max(1, ...points.map(p => p.value));
+  const W = Math.max(Math.floor(avail), padL + padR + n * MIN_SLOT);
   const iw = W - padL - padR, ih = H - padT - padB;
-  const bw = Math.max(3, iw / n - 3);
+  const slot = iw / n;
+  const bw = Math.max(4, Math.min(48, slot - 4));
+
+  // 눈금은 정수 간격 4칸 — 최댓값이 작을 때 0,1,1,2,2 처럼 겹치지 않게 간격부터 정한다.
+  const rawMax = Math.max(1, ...points.map(p => p.value));
+  const stepV = Math.ceil(rawMax / 4);
+  const top = stepV * 4;
 
   const svg = svgEl('svg', {
-    class: 'chart', viewBox: `0 0 ${W} ${H}`,
-    preserveAspectRatio: 'xMidYMid meet', role: 'img',
+    class: 'chart chart-px', width: W, height: H, viewBox: `0 0 ${W} ${H}`, role: 'img',
+    style: `width:${W}px;height:${H}px`,  // svg.chart 의 width:100%/height:auto 를 이긴다
   });
 
-  // 눈금선 + y축 라벨
-  const ticks = 4;
-  for (let i = 0; i <= ticks; i++) {
-    const v = Math.round(max * i / ticks);
-    const y = padT + ih - (v / max) * ih;
+  for (let v = 0; v <= top; v += stepV) {
+    const y = padT + ih - (v / top) * ih;
     svg.appendChild(svgEl('line', { class: 'gridline', x1: padL, x2: W - padR, y1: y, y2: y }));
-    const tx = svgEl('text', { x: padL - 5, y: y + 3, 'text-anchor': 'end' });
+    const tx = svgEl('text', { x: padL - 6, y: y + 4, 'text-anchor': 'end' });
     tx.textContent = v;
     svg.appendChild(tx);
   }
   svg.appendChild(svgEl('line', { class: 'axis', x1: padL, x2: W - padR, y1: padT + ih, y2: padT + ih }));
 
   points.forEach((p, i) => {
-    const x = padL + i * (iw / n) + (iw / n - bw) / 2;
-    const h = (p.value / max) * ih;
+    const x0 = padL + i * slot;
+    const x = x0 + (slot - bw) / 2;
+    const h = (p.value / top) * ih;
     const g = svgEl('g');
     g.appendChild(svgEl('rect', {
       class: 'mark', x, y: padT + ih - h, width: bw, height: Math.max(p.value ? 2 : 0, h),
     }));
     // 히트 영역은 마크보다 크게
-    g.appendChild(svgEl('rect', { class: 'hit', x: padL + i * (iw / n), y: padT, width: iw / n, height: ih }));
+    g.appendChild(svgEl('rect', { class: 'hit', x: x0, y: padT, width: slot, height: ih }));
     bindTip(g, fmtTip(p));
     svg.appendChild(g);
 
     if (p.tick) {
-      const tx = svgEl('text', { x: x + bw / 2, y: H - 8, 'text-anchor': 'middle' });
+      const tx = svgEl('text', { x: x0 + slot / 2, y: H - 24, 'text-anchor': 'middle' });
       tx.textContent = p.tick;
       svg.appendChild(tx);
+    }
+    // 연도 줄은 그해 첫 칸의 왼쪽 끝에서 시작한다 (월 단위에서 가운데 맞추면 옆 칸과 겹친다).
+    if (p.tick2) {
+      const tx = svgEl('text', { class: 'tick2', x: x0 + 2, y: H - 6, 'text-anchor': 'start' });
+      tx.textContent = p.tick2;
+      svg.appendChild(tx);
+      if (i) svg.appendChild(svgEl('line', { class: 'axis', x1: x0, x2: x0, y1: padT + ih, y2: H - 18 }));
     }
   });
 
   return svg;
 }
 
+/* 출시 추이 기간 단위 — 보는 사람별 편의 설정이라 브라우저에만 둔다. */
+const TREND_STORE = 'stats.trendPeriod';
+const PERIODS = { month: 1, quarter: 3, half: 6, year: 12 };
+let trendPeriod = (() => {
+  try { const v = localStorage.getItem(TREND_STORE); if (v in PERIODS) return v; } catch { /* 무시 */ }
+  return 'quarter';
+})();
+
+/* 서비스 시작일에 같이 풀린 니케 — 출시 추이에 넣으면 첫 칸 하나가 나머지를 눌러 버린다. */
+const LAUNCH_DATE = '2022-11-04';
+
+function trendPoints(dated, period) {
+  const span = PERIODS[period];
+  const per = 12 / span;
+  const bucketOf = d => Math.floor(((+d.slice(0, 4)) * 12 + (+d.slice(5, 7) - 1)) / span);
+  const counts = new Map();
+  for (const n of dated) {
+    const b = bucketOf(n.release_date);
+    counts.set(b, (counts.get(b) || 0) + 1);
+  }
+  const keys = [...counts.keys()];
+  const b0 = Math.min(...keys), b1 = Math.max(...keys);
+  const pts = [];
+  for (let b = b0; b <= b1; b++) {
+    const y = Math.floor(b / per), sub = b % per;
+    const isFirst = b === b0;
+    let tick, tick2 = null;
+    if (period === 'year') tick = String(y);
+    else {
+      tick = t('st.tick.' + period, sub + 1);
+      // 첫 칸은 그해 끝자락이면 다음 해 라벨과 겹치므로 두 칸 이상 남을 때만 연도를 찍는다.
+      if (sub === 0 || (isFirst && per - sub >= 2)) tick2 = String(y);
+    }
+    pts.push({ label: t('st.plabel.' + period, y, sub + 1), value: counts.get(b) || 0, tick, tick2 });
+  }
+  return pts;
+}
+
+/* renderStats 가 다시 불릴 때 앞선 차트의 관찰자를 끊는다 */
+let observers = [];
+
 /* ── 통계 렌더 ────────────────────────────────────────────── */
 export function renderStats(root, nikkes, pickups, ctx) {
   const { L, AXES, ELEMENT_COLOR, axisLabel } = ctx;
   makeIcon = ctx.iconEl || null;
   t = ctx.t;
+  for (const o of observers) o.disconnect();
+  observers = [];
   root.textContent = '';
 
   root.appendChild(el('p', 'stats-head', t('st.head', nikkes.length, pickups.length)));
@@ -267,58 +343,63 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
 
-  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. */
+  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. 다섯 축의 모든 짝(10개). */
   {
-    const c = card(t('st.cross', axisLabel('element'), axisLabel('class')), t('st.crossHint'));
-    c.classList.add('card-cross');
-    c.appendChild(heatmap(
-      AXES.element.order, AXES.class.order,
-      (r, col) => nikkes.filter(n => n.element === r && n.class === col).length,
-      r => L('element', r), col => L('class', col), 'element', 'class',
-    ));
-    cards.appendChild(c);
-  }
-  {
-    const c = card(t('st.cross', axisLabel('corporation'), axisLabel('weapon_type')), t('st.crossHint'));
-    c.classList.add('card-cross');
-    c.appendChild(heatmap(
-      AXES.corporation.order, AXES.weapon_type.order,
-      (r, col) => nikkes.filter(n => n.corporation === r && n.weapon_type === col).length,
-      r => L('corporation', r), col => L('weapon_type', col), 'corporation', 'weapon_type',
-    ));
-    cards.appendChild(c);
+    const crossAxes = ['corporation', 'element', 'class', 'weapon_type', 'burst'];
+    for (let i = 0; i < crossAxes.length; i++) {
+      for (let j = i + 1; j < crossAxes.length; j++) {
+        const ra = crossAxes[i], ca = crossAxes[j];
+        const c = card(t('st.cross', axisLabel(ra), axisLabel(ca)), t('st.crossHint'));
+        c.classList.add('card-cross');
+        c.appendChild(heatmap(
+          AXES[ra].order, AXES[ca].order,
+          (r, col) => nikkes.filter(n => n[ra] === r && n[ca] === col).length,
+          r => L(ra, r), col => L(ca, col), ra, ca,
+        ));
+        cards.appendChild(c);
+      }
+    }
   }
 
   /* 3. 출시 추이 */
   {
-    const dated = nikkes.filter(n => n.release_date);
-    const pts = [];
+    const launch = nikkes.filter(n => n.release_date === LAUNCH_DATE).length;
+    const dated = nikkes.filter(n => n.release_date && n.release_date !== LAUNCH_DATE);
+    const c = card(t('st.trend'), t('st.trendHint', dated.length, LAUNCH_DATE, launch), true);
     if (dated.length) {
-      const years = dated.map(n => +n.release_date.slice(0, 4));
-      const y0 = Math.min(...years), y1 = Math.max(...years);
-      for (let y = y0; y <= y1; y++) {
-        for (let q = 0; q < 4; q++) {
-          const value = dated.filter(n => {
-            const yy = +n.release_date.slice(0, 4);
-            const mm = +n.release_date.slice(5, 7);
-            return yy === y && Math.floor((mm - 1) / 3) === q;
-          }).length;
-          pts.push({ label: `${y} Q${q + 1}`, value, tick: q === 0 ? String(y) : null });
+      const seg = el('div', 'ic-seg st-seg');
+      const box = el('div', 'chart-scroll');
+      let lastW = 0;
+      const draw = (force) => {
+        const w = box.clientWidth;
+        if (!w || (!force && w === lastW)) return;
+        lastW = w;
+        const pts = trendPoints(dated, trendPeriod);
+        box.replaceChildren(columnChart(pts, p => t('st.tipPeriod', p.label, p.value), w));
+      };
+      const paintSeg = () => {
+        seg.replaceChildren();
+        for (const k of Object.keys(PERIODS)) {
+          const b = el('button', 'ic-segbtn' + (k === trendPeriod ? ' on' : ''), t('st.per.' + k));
+          b.type = 'button';
+          b.setAttribute('aria-pressed', String(k === trendPeriod));
+          b.onclick = () => {
+            if (k === trendPeriod) return;
+            trendPeriod = k;
+            try { localStorage.setItem(TREND_STORE, k); } catch { /* 무시 */ }
+            paintSeg();
+            draw(true);
+            box.scrollLeft = 0;
+          };
+          seg.appendChild(b);
         }
-      }
-    }
-    const c = card(t('st.quarter'), t('st.quarterHint'), true);
-    if (pts.length) {
-      c.appendChild(columnChart(pts, p => t('st.tipQuarter', p.label, p.value)));
-      const byYear = new Map();
-      for (const n of dated) {
-        const y = n.release_date.slice(0, 4);
-        byYear.set(y, (byYear.get(y) || 0) + 1);
-      }
-      c.appendChild(barList(
-        [...byYear.entries()].sort().map(([k, v]) => ({ key: k, label: t('st.yearLabel', k), value: v })),
-        dated.length,
-      ));
+      };
+      paintSeg();
+      c.append(seg, box);
+      // 탭이 숨어 있으면 폭이 0 이라 그리지 못한다 — 보이는 순간 관찰자가 다시 부른다.
+      const ro = new ResizeObserver(() => draw(false));
+      ro.observe(box);
+      observers.push(ro);
     } else c.appendChild(el('p', 'hint', t('st.empty')));
     cards.appendChild(c);
   }
@@ -343,21 +424,29 @@ export function renderStats(root, nikkes, pickups, ctx) {
   }
   /* 진행 상태 카드는 두지 않는다 — 배너 대부분이 종료라 '종료 ≈ 100%' 만 보여 준다. */
 
-  /* 5. 복각 주기 */
+  /* 5. 복각 주기 — 같은 니케의 바로 앞 픽업(최초든 복각이든) 시작일부터 잰다.
+   앞 픽업은 필터와 무관하게 전체 배너에서 찾는다 (예: '복각만' 필터에서도 간격이 나와야 한다). */
   {
-    const byNo = new Map(pickups.map(p => [p.no, p]));
+    const MONTH = 86400000 * 30.44;
     const gaps = [];
+    let first = Infinity;
+    for (const hist of ctx.pickupsByRid.values()) for (const q of hist) first = Math.min(first, +q._start);
     for (const p of pickups) {
       if (p.rerun_of == null) continue;
-      const src = byNo.get(p.rerun_of);
-      if (!src) continue;
-      gaps.push(Math.round((p._start - src._start) / (86400000 * 30.44)));
+      let prev = null;
+      for (const q of ctx.pickupsByRid.get(p.rid) || []) {
+        if (q._start < p._start && (!prev || q._start > prev._start)) prev = q;
+      }
+      if (prev) gaps.push(Math.round((p._start - prev._start) / MONTH));
     }
-    const bins = [[0, 6], [6, 12], [12, 18], [18, 24], [24, 36], [36, 999]];
-    const items = bins.map(([a, b]) => ({
-      key: `${a}`,
-      label: t('st.months', a, b === 999 ? null : b),
-      value: gaps.filter(g => g >= a && g < b).length,
+    // 3개월 단위로 서비스 기간 전체를 덮는다 — 서비스가 길어지면 칸이 저절로 늘어난다.
+    const cap = Math.max(3, Math.ceil((Date.now() - first) / MONTH / 3) * 3);
+    const nb = cap / 3;
+    const binOf = g => Math.min(nb - 1, Math.floor(g / 3));
+    const items = Array.from({ length: nb }, (_, i) => ({
+      key: String(i * 3),
+      label: t('st.months', i * 3, i * 3 + 3),
+      value: gaps.filter(g => binOf(g) === i).length,
     }));
     const c = card(t('st.gap'), gaps.length
       ? t('st.gapHint', gaps.length, median(gaps))

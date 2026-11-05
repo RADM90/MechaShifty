@@ -427,6 +427,8 @@ table.grid td.ic-only .ic { vertical-align: middle; }
   border-radius: var(--r); padding: 17.5px; box-shadow: var(--shadow);
 }
 .card.wide { grid-column: 1 / -1; }
+/* 안쪽 차트가 고정 폭으로 그려져도 카드가 그만큼 밀려나지 않게 (차트 상자만 가로로 굴러간다) */
+.card { min-width: 0; }
 .card h3 { margin: 0 0 2.5px; font-size: 16.5px; font-weight: 700; }
 .card .hint { margin: 0 0 15px; font-size: 14px; color: var(--ink-muted); }
 .stats-head { margin: 0 0 15px; font-size: 15px; color: var(--ink-muted); }
@@ -457,6 +459,11 @@ table.grid td.ic-only .ic { vertical-align: middle; }
 .card-cross .hm td { min-width: 37.5px; padding: 6.5px 4px; }
 .card-cross .hm .ic { height: 16.5px; }
 .card-cross .legend { margin-top: 10px; font-size: 12.5px; }
+/* 열 머리는 아이콘 위·글자 아래로 세운다 — 옆으로 두면 무기 여섯 열 + 합계가 한 칸 폭을 넘는다 */
+.card-cross .hm thead .iconlbl { flex-direction: column; gap: 1px; }
+/* 합계는 칸이 아니라 숫자만 — 배경 없이 흐린 글자로 줄 끝·열 아래에 붙인다 */
+.hm td.sum { background: none; color: var(--ink-muted); font-weight: 600; min-width: 0; padding-left: 6px; padding-right: 6px; }
+.hm tfoot td.sum { padding-top: 4px; padding-bottom: 0; }
 
 svg.chart { display: block; width: 100%; height: auto; overflow: visible; }
 svg.chart .gridline { stroke: var(--grid); stroke-width: 1; }
@@ -466,6 +473,12 @@ svg.chart .axis { stroke: var(--line-strong); stroke-width: 1; }
 svg.chart text { fill: var(--ink-muted); font-size: 10px; }
 svg.chart rect.mark { fill: var(--series-1); rx: 3; }
 svg.chart rect.hit { fill: transparent; }
+/* 출시 추이 — 픽셀 좌표로 그리는 차트라 글자도 픽셀 그대로. 칸이 모자라면 상자가 가로로 굴러간다 */
+.chart-scroll { overflow-x: auto; overflow-y: hidden; }
+svg.chart-px { max-width: none; }
+svg.chart-px text { font-size: 12.5px; }
+svg.chart-px text.tick2 { fill: var(--ink-2); font-weight: 600; }
+.st-seg { margin: -5px 0 12.5px; }
 
 .legend { display: flex; gap: 15px; flex-wrap: wrap; margin-top: 12.5px; font-size: 14px; color: var(--ink-2); }
 .legend span { display: inline-flex; align-items: center; gap: 6.5px; }
@@ -1393,11 +1406,9 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
   .field select, .field input[type="date"] { min-width: 0; max-width: 100%; }
   /* 옵션 이름이 EN 에서 길어져 목표 줄이 카드를 넘긴다 — 줄 안에서 접히게 */
   .np-goalhead { flex-wrap: wrap; }
-  /* 교차표 — 칸을 깎고 열 머리의 아이콘과 글자를 위아래로 세운다 (옆으로 두면 일곱 열이 카드를 넘긴다).
-     줄 머리(기업 이름)는 세워도 폭이 안 줄어 그대로 둔다. */
+  /* 교차표 — 칸을 더 깎는다 (열 머리 세우기는 모든 폭에서 이미 하고 있다) */
   .card-cross .hm td { min-width: 28px; padding: 5px 1.5px; }
   .card-cross .hm th { padding: 1.5px 1.5px; }
-  .card-cross .hm thead .iconlbl { flex-direction: column; gap: 1px; }
   /* 기업 타워의 두 표도 세 열이라 한 단계 눌러야 안쪽 스크롤이 안 생긴다 */
   table.op-towerTbl { font-size: 13.5px; }
   table.op-towerTbl th, table.op-towerTbl td { padding: 4px 3px; }

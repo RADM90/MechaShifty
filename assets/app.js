@@ -806,28 +806,43 @@ const STR = {
   'st.squadTotal': [n => `총 ${n}개 스쿼드`, n => `${n} squads total`, n => `全 ${n} 部隊`],
   'st.cross': [(a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`, (a, b) => `${a} × ${b}`],
   'st.crossHint': [
-    '칸의 숫자는 해당 조합의 니케 수',
-    'Each cell is the number of Nikkes in that combination',
-    'マスの数字はその組み合わせのニケ数',
+    '칸의 숫자는 해당 조합의 니케 수 · 줄 끝과 열 아래는 합계',
+    'Each cell is the number of Nikkes in that combination · row and column ends are totals',
+    'マスの数字はその組み合わせのニケ数 · 行末と列の下は合計',
   ],
   'st.elementNote': [
     '막대 색은 검증된 팔레트이고, 아이콘은 게임 내 아이콘입니다. 둘 다 항상 속성 이름과 함께 표시됩니다.',
     'Bar colors come from the validated palette; icons are the in-game ones. Both always sit beside the element name.',
     'バーの色は検証済みパレット、アイコンはゲーム内のものです。どちらも常に属性名と一緒に表示されます。',
   ],
-  'st.quarter': ['분기별 출시 추이', 'Releases by quarter', '四半期ごとの実装推移'],
-  'st.quarterHint': [
-    '가로축은 분기, 세로축은 출시된 니케 수',
-    'X axis is the quarter, Y axis is Nikkes released',
-    '横軸は四半期、縦軸は実装されたニケ数',
+  'st.trend': ['출시 추이', 'Releases over time', '実装推移'],
+  'st.trendHint': [
+    (n, d, k) => `니케 ${n}명 · 서비스 시작일(${d}) 출시 ${k}명 제외 · 세로축은 출시된 니케 수`,
+    (n, d, k) => `${n} Nikkes · excludes the ${k} launch-day units (${d}) · Y axis is Nikkes released`,
+    (n, d, k) => `ニケ ${n}体 · サービス開始日（${d}）実装の ${k}体を除く · 縦軸は実装されたニケ数`,
   ],
+  'st.per.month': ['월', 'Month', '月'],
+  'st.per.quarter': ['분기', 'Quarter', '四半期'],
+  'st.per.half': ['반기', 'Half', '半期'],
+  'st.per.year': ['연간', 'Year', '年'],
+  'st.tick.month': [m => `${m}`, m => `${m}`, m => `${m}`],
+  'st.tick.quarter': [q => `Q${q}`, q => `Q${q}`, q => `Q${q}`],
+  'st.tick.half': [h => h === 1 ? '상' : '하', h => `H${h}`, h => h === 1 ? '上' : '下'],
+  'st.plabel.month': [(y, m) => `${y}년 ${m}월`, (y, m) => `${y}-${String(m).padStart(2, '0')}`, (y, m) => `${y}年${m}月`],
+  'st.plabel.quarter': [(y, q) => `${y} Q${q}`, (y, q) => `${y} Q${q}`, (y, q) => `${y} Q${q}`],
+  'st.plabel.half': [
+    (y, h) => `${y} ${h === 1 ? '상반기' : '하반기'}`,
+    (y, h) => `${y} H${h}`,
+    (y, h) => `${y} ${h === 1 ? '上半期' : '下半期'}`,
+  ],
+  'st.plabel.year': [y => `${y}년`, y => `${y}`, y => `${y}年`],
   'st.avail': ['한정 / 상시 비율', 'Limited vs standard', '限定 / 常設の比率'],
   'st.tagDist': ['픽업 구분별 분포', 'Banners by type', 'ピックアップ区分別の分布'],
   'st.gap': ['복각 주기', 'Time until rerun', '復刻までの期間'],
   'st.gapHint': [
-    (n, med) => `복각 ${n}건 · 첫 픽업 이후 경과 개월 (중앙값 ${med}개월)`,
-    (n, med) => `${n} reruns · months since first banner (median ${med})`,
-    (n, med) => `復刻 ${n}件 · 初回からの経過月数（中央値 ${med}ヶ月）`,
+    (n, med) => `복각 ${n}건 · 직전 픽업 이후 경과 개월 (중앙값 ${med}개월)`,
+    (n, med) => `${n} reruns · months since the previous banner (median ${med})`,
+    (n, med) => `復刻 ${n}件 · 前回のピックアップからの経過月数（中央値 ${med}ヶ月）`,
   ],
   'st.gapNone': [
     '현재 조건에 복각 배너가 없습니다',
@@ -860,12 +875,21 @@ const STR = {
     (r, c, v) => `${r} × ${c} — <b>${v}</b>`,
     (r, c, v) => `${r} × ${c} — <b>${v}</b>体`,
   ],
-  'st.tipQuarter': [
+  'st.tipSum': [
+    (k, v) => `${k} 합계 — <b>${v}</b>명`,
+    (k, v) => `${k} total — <b>${v}</b>`,
+    (k, v) => `${k} 合計 — <b>${v}</b>体`,
+  ],
+  'st.tipTotal': [
+    v => `전체 — <b>${v}</b>명`,
+    v => `All — <b>${v}</b>`,
+    v => `全体 — <b>${v}</b>体`,
+  ],
+  'st.tipPeriod': [
     (label, v) => `${label} — <b>${v}</b>명`,
     (label, v) => `${label} — <b>${v}</b>`,
     (label, v) => `${label} — <b>${v}</b>体`,
   ],
-  'st.yearLabel': [y => `${y}년`, y => `${y}`, y => `${y}年`],
 };
 
 export function t(key, ...args) {
@@ -1776,7 +1800,7 @@ function render() {
     const ns = filteredNikkes(), ps = filteredPickups();
     $('#count').innerHTML = t('cnt.both', ns.length, ps.length);
     renderStats($('#stats'), ns, ps,
-      { L, t, axisLabel, statusLabel, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid, iconEl });
+      { L, t, axisLabel, statusLabel, lang: lang(), statusOf, AXES, ELEMENT_COLOR, byRid, pickupsByRid, iconEl });
   }
   writeHash();
 }
