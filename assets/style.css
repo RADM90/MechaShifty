@@ -1090,16 +1090,19 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
   background: var(--bg-raise); color: var(--ink); border: 0;
 }
 .np-stepb:disabled { opacity: .35; cursor: default; }
-.np-stepv {
-  min-width: 34px; padding: 0 4px; text-align: center; font-weight: 700;
-  font-variant-numeric: tabular-nums;
+.np-stepi {
+  width: 3.4em; height: 30px; padding: 0 2px; text-align: center; font: inherit; font-weight: 700;
+  font-variant-numeric: tabular-nums; color: var(--ink); background: var(--bg-panel);
+  border: 0; border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-radius: 0;
+  -moz-appearance: textfield; appearance: textfield;
 }
-.np-stepv small { font-weight: 400; color: var(--ink-muted); }
+.np-stepi::-webkit-outer-spin-button, .np-stepi::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.np-stepi:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
 
 /* 상단 바 */
 .np-bar {
   display: grid; gap: 12.5px 20px; align-items: start;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
 }
 .np-field { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .np-flbl { font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .03em; }
@@ -1113,9 +1116,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-cls-core, .np-cls-threshold { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .np-cls-none { background: var(--st-bad-bg); color: var(--st-bad-ink); border-color: var(--st-bad-line); }
-.np-bgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
-.np-bcell { display: flex; align-items: center; justify-content: space-between; gap: 6px; font-size: 13.5px; }
-.np-bcell .np-num { width: 76px; padding: 4px 7px; font-size: 14px; }
 .np-spentv { display: flex; gap: 12px; font-size: 17px; font-variant-numeric: tabular-nums; }
 .np-spent .np-note { margin: 0; }
 
@@ -1131,8 +1131,8 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 /* 목표 */
 .np-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-bottom: 12px; }
 .np-chip {
-  display: grid; grid-template-columns: 14px minmax(0, 1fr); grid-template-areas: "k n" "k w";
-  align-items: center; gap: 0 7px; padding: 7px 9px; cursor: pointer; min-width: 0;
+  display: grid; grid-template-columns: 14px minmax(0, 1fr);
+  align-items: center; gap: 0 7px; padding: 8px 9px; cursor: pointer; min-width: 0;
   font: inherit; font-size: 15px; text-align: left; color: var(--ink-2);
   background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r-s);
 }
@@ -1140,9 +1140,8 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-chip.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .np-chip.warn:not(.on) { border-style: dashed; }
 .np-chip.warn.on { background: var(--st-bad-bg); color: var(--st-bad-ink); border-color: var(--st-bad-line); }
-.np-chipk { grid-area: k; text-align: center; font-weight: 700; }
-.np-chipn { grid-area: n; font-weight: 600; min-width: 0; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.np-chipw { grid-area: w; font-size: 12px; opacity: .8; font-variant-numeric: tabular-nums; }
+.np-chipk { text-align: center; font-weight: 700; }
+.np-chipn { font-weight: 600; min-width: 0; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .np-glist { display: grid; gap: 7px; }
 .np-grow {
   border: 1px solid var(--line); border-left: 3px solid var(--st-warn);
@@ -1171,6 +1170,20 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-explain small { color: var(--ink-muted); }
 .np-gctl .np-warn { flex-basis: 100%; margin: 0; }
+.np-tiers { flex-basis: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px 12px; }
+.np-tier { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
+.np-tiern { min-width: 3.2em; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.np-calcrow {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
+}
+.np-calcrow .np-note { margin: 0; flex: 1 1 200px; }
+.np-calc {
+  padding: 10px 26px; cursor: pointer; font: inherit; font-size: 16px; font-weight: 700;
+  background: var(--accent); color: var(--accent-ink); border: 0; border-radius: var(--r-s);
+}
+.np-calc:disabled { cursor: default; opacity: .45; }
+.np-calc.done:disabled { opacity: 1; background: var(--bg-raise); color: var(--st-good); box-shadow: inset 0 0 0 1px var(--st-good); }
 .np-keep { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; font-size: 14px; color: var(--ink-2); }
 .np-keep input { margin-top: 3px; }
 
@@ -1183,9 +1196,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-banner span { color: var(--ink-2); }
 .np-b-done { border-color: var(--st-good); background: rgba(10, 125, 10, .08); }
 .np-b-done b { color: var(--st-good); }
-.np-b-check, .np-b-budget { border-color: var(--st-warn); background: rgba(250, 178, 25, .1); }
-.np-b-stop { border-color: var(--st-bad-line); background: var(--st-bad-bg); }
-.np-b-stop b { color: var(--st-bad-ink); }
+.np-b-check { border-color: var(--st-warn); background: rgba(250, 178, 25, .1); }
 .np-skel { display: flex; align-items: center; gap: 9px; font-size: 14.5px; color: var(--ink-muted); padding: 8px 0; }
 .np-spin {
   width: 14px; height: 14px; border-radius: 50%; display: inline-block; flex-shrink: 0;
@@ -1232,7 +1243,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-manualb.on { background: var(--amber); border-color: var(--amber); color: #fff; }
 .np-manualb:disabled { opacity: .4; }
-.np-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(205px, 1fr)); gap: 10px; margin-bottom: 10px; }
+.np-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(222px, 1fr)); gap: 10px; margin-bottom: 10px; }
 .np-piece {
   border: 1px solid var(--line-strong); border-radius: var(--r-s); padding: 8px;
   background: var(--bg-panel); display: grid; gap: 5px; align-content: start; min-width: 0;
@@ -1248,7 +1259,19 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-pick.on { background: var(--amber); border-color: var(--amber); color: #fff; }
 .np-poff { margin: 2px; font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
-.np-lrow { position: relative; }
+.np-lrow { position: relative; display: flex; gap: 5px; align-items: stretch; }
+.np-lrow > .np-line { flex: 1; min-width: 0; }
+.np-lockb {
+  flex: 0 0 34px; cursor: pointer; font-size: 15px; line-height: 1; padding: 0;
+  background: var(--bg-raise); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--ink-muted);
+}
+.np-lockb:hover:not(:disabled) { background: var(--hover); }
+.np-lockb:disabled { cursor: default; opacity: .5; }
+.np-lockb-none { opacity: .55; }
+.np-lockb-held { background: var(--bg-panel); border-color: var(--accent); }
+.np-lockb-new { background: var(--accent); border-color: var(--accent); }
+.np-lockb-key { background: var(--amber); border-color: var(--amber); }
+.np-lockb.sug { box-shadow: 0 0 0 2px var(--st-good); }
 .np-line {
   width: 100%; min-height: 40px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
   padding: 5px 8px; cursor: pointer; text-align: left; font: inherit; font-size: 14.5px;
@@ -1280,7 +1303,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .lvb-4 { background: var(--st-warn); color: var(--series-1); }
 .lvb-5 { background: var(--ink); color: var(--tip-accent); }
 .np-lock { font-size: 12.5px; flex-shrink: 0; }
-.np-lock.unk { color: var(--amber); font-weight: 700; }
 .np-ptag { font-size: 11.5px; font-weight: 700; padding: 1.5px 7px; border-radius: 999px; flex-shrink: 0; margin-left: auto; }
 .np-ptag-perm { background: var(--accent); color: var(--accent-ink); }
 .np-ptag-key { background: var(--amber); color: #fff; }
@@ -1305,17 +1327,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-mdesc { font-size: 14.5px; font-weight: 600; }
 .np-manual .np-note { margin: 0; }
-
-/* 확률 표 */
-.np-scroll { overflow-x: auto; }
-.np-table { font-variant-numeric: tabular-nums; }
-.np-table th, .np-table td { font-size: 13.5px; padding: 6px 6px; }
-.np-rowlbl { white-space: nowrap; }
-.np-rowlock td:not(.np-rowlbl) { opacity: .5; }
-.np-c-hi { color: var(--st-good); font-weight: 700; }
-.np-c-md { color: var(--amber); font-weight: 600; }
-.np-c-lo { color: var(--ink-2); }
-.np-none { color: var(--ink-muted); }
 
 /* 기록 */
 .np-log > summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; }
@@ -1371,13 +1382,15 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-cmpcell small { color: var(--ink-muted); font-size: 12.5px; }
 .np-cmpcell.best { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
-.np-modalbtns { display: grid; grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.np-modalbtns { display: grid; grid-template-columns: minmax(84px, .55fr); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); border-top: 1px solid var(--line); }
 .np-mb {
   min-height: 52px; cursor: pointer; border: 0; font: inherit; font-size: 16px; font-weight: 600;
   display: grid; place-content: center; gap: 1px;
 }
 .np-mb small { font-size: 11.5px; font-weight: 700; letter-spacing: .05em; }
 .np-mb-keep { background: var(--bg-raise); color: var(--ink-2); }
+.np-mb-cancel { background: var(--bg-panel); color: var(--ink-muted); border-right: 1px solid var(--line); flex: 0 0 auto; }
+.np-mb-cancel small { font-weight: 400; letter-spacing: 0; }
 .np-mb-apply { background: var(--accent); color: var(--accent-ink); }
 .np-mb.rec { outline: 3px solid var(--st-good); outline-offset: -3px; }
 .np-modalfoot { padding: 8px 16px 12px; margin: 0; font-size: 12.5px; }
@@ -1395,7 +1408,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
   .np-dl dd { margin-bottom: 6px; }
   .np-side + .np-side { border-left: 0; border-top: 1px solid var(--line); }
   .np-cmprow { grid-template-columns: minmax(0, 1fr); }
-  .np-bgrid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ── 특특요 탭 (확률 분포 · 3.5주년 전후 비교) ────────────────

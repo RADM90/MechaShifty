@@ -1,0 +1,10 @@
+{
+ "note": "니파고 부위 정책 — tools/nipago_tables.mjs 가 만든다. 손으로 고치지 말 것.",
+ "hash": 3014494729,
+ "engine": 1,
+ "rules": "2026-09-17",
+ "cost": "2026-09-17",
+ "tables": 16365,
+ "states": 63012108,
+ "bytes": 1994991
+}

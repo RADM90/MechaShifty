@@ -8,7 +8,10 @@
       이렇게 묶어도 이후 행동·비용·분포·판정이 같다 (23.8).
    2) 네 부위 배분 — 목표 개수를 부위별 T 로 나누는 경우 중 기대 비용 합이 최소인 것.
    3) 유지·적용 — 두 전체 상태의 남은 기대 비용을 비교한다 (23.5).
-   4) 예산 모드 — 고정 시드 몬테카를로로 예산 안 완료 확률을 잰다 (23.10).
+   (예산 안 완료 확률 — 몬테카를로 — 은 보유 재화 입력과 함께 뺐다.)
+   부위 표는 목표 묶음(가중치·최소 단계)과 λ 만으로 정해진다. tools/nipago_tables.mjs 가 모든 묶음의
+   최선 행동(정책)을 미리 풀어 data/nipago/ 에 싣고, 여기서는 그 정책을 한 번 평가만 한다.
+   파일이 없거나 규칙이 바뀌었으면 가치 반복으로 직접 푼다.
 
    비용 기준은 M + λK. λ 는 숨은 환율이 아니라 사용자가 고른 재화 우선순위다 (22.6~22.7).
    어떤 λ 로 풀었든 기대 모듈과 기대 락키는 따로 다시 계산해서 낸다. */
@@ -19,6 +22,9 @@ import { effValue, effProfiles } from './effective.js';
 /* 재화 우선순위 → λ (락키 1개를 모듈 몇 개로 볼지) */
 export const LAMBDAS = { mod: 0.01, balanced: 0.1, key: Infinity };
 export const PREFS = ['mod', 'balanced', 'key'];
+
+/* 행동 목록 순서·상태 열거를 바꾸면 올린다 — 미리 푼 정책 파일과 맞지 않게 된다 */
+export const ENGINE_VERSION = 1;
 
 const NC = 4;                        // 목표 하나당 최대 단계 묶음 수
 const BIG = 1e12;
@@ -47,7 +53,8 @@ function classesFor(m, lp) {
 /* ── 1) 부위 하나의 MDP ─────────────────────────────────── */
 /* targets: [{ w, m }] — 정규화된 순서. lam: λ. */
 class PieceTable {
-  constructor(D, targets, lam) {
+  /* policy: 미리 푼 최선 행동 번호 (this.states 순서, 255 = 행동 없음). 주면 평가만 한다. */
+  constructor(D, targets, lam, policy = null) {
     this.D = D;
     this.K = targets.length;
     this.targets = targets;
@@ -63,7 +70,18 @@ class PieceTable {
       return i;
     });
     this.tupleCache = new Map();
+    this.policy = policy;
     this.build();
+  }
+
+  /* 미리 풀어 둘 정책 — this.states 순서 */
+  exportPolicy() {
+    const out = new Uint8Array(this.states.length);
+    this.states.forEach((l, n) => {
+      const b = this.best[this.idx(l)];
+      out[n] = b >= 0 ? b : 255;
+    });
+    return out;
   }
 
   /* 줄 코드: 0 빈칸, 1 무효, 2 + ((k·NC + c)·2 + perm) */
@@ -235,24 +253,44 @@ class PieceTable {
       states.push(l);
     }
 
+    this.states = states;
+    const pol = this.policy;
+    if (pol && pol.length !== states.length) throw new Error('policy size');
+
     const size = N * N * N;
     const V = new Float64Array(size).fill(BIG);
     const goal = new Uint8Array(size);
     const acts = new Array(size);
-    for (const l of states) {
+    const best = new Int32Array(size).fill(-1);
+    states.forEach((l, n) => {
       const i = this.idx(l);
-      if (this.isGoal(l)) { goal[i] = 1; V[i] = 0; continue; }
+      if (this.isGoal(l)) { goal[i] = 1; V[i] = 0; return; }
       acts[i] = this.actionsOf(l);
-    }
+      if (pol) {
+        if (pol[n] !== 255 && pol[n] >= acts[i].length) throw new Error('policy index');
+        best[i] = pol[n] === 255 ? -1 : pol[n];
+      }
+    });
     /* 충족 줄이 많은 상태부터 — 가우스-자이델이 빨리 닫힌다 */
     const score = l => l.reduce((a, x) => a + (x >= 2 ? (this.cls[this.dec(x).k].sat[this.dec(x).c] ? 2 : 1) : 0), 0);
     const order = states.filter(l => !goal[this.idx(l)]).sort((x, y) => score(y) - score(x));
-    const best = new Int32Array(size).fill(-1);
 
-    const ps = [], vs = [];
-    const q = (l, i, a) => {
-      ps.length = 0; vs.length = 0;
-      this.outcomes(l, a, (p, j) => { ps.push(p); vs.push(j); });
+    /* 행동 하나의 결과 분포를 한 번 펼쳐 같은 상태끼리 합친다 — 정책을 평가할 때는 상태당 한 번이면 된다 */
+    const compiled = new Array(size);
+    const compile = (l, i, a) => {
+      if (compiled[i]) return compiled[i];
+      const acc = new Map();
+      this.outcomes(l, a, (p, j) => acc.set(j, (acc.get(j) || 0) + p));
+      return (compiled[i] = { ps: Float64Array.from(acc.values()), vs: Int32Array.from(acc.keys()) });
+    };
+    let ps = [], vs = [];
+    const raw = { ps: [], vs: [] };
+    const q = (l, i, a, c = null) => {
+      if (c) ({ ps, vs } = c);
+      else {
+        ps = raw.ps; vs = raw.vs; ps.length = 0; vs.length = 0;
+        this.outcomes(l, a, (p, j) => { ps.push(p); vs.push(j); });
+      }
       if (a.keep !== i) {
         const vk = V[a.keep];
         let s = a.c;
@@ -279,10 +317,16 @@ class PieceTable {
       for (const l of order) {
         const i = this.idx(l);
         let bv = Infinity, ba = -1;
-        acts[i].forEach((a, n) => {
-          const v = q(l, i, a);
-          if (v < bv - 1e-12) { bv = v; ba = n; }
-        });
+        if (pol) {
+          /* 정해진 정책 — 그 행동 하나만 평가한다 */
+          ba = best[i];
+          if (ba >= 0) bv = q(l, i, acts[i][ba], compile(l, i, acts[i][ba]));
+        } else {
+          acts[i].forEach((a, n) => {
+            const v = q(l, i, a);
+            if (v < bv - 1e-12) { bv = v; ba = n; }
+          });
+        }
         if (bv < V[i]) {
           diff = Math.max(diff, (V[i] - bv) / Math.max(1, bv));
           V[i] = bv;
@@ -302,11 +346,13 @@ class PieceTable {
         const a = acts[i][best[i]];
         let m = a.cost.mod, k = a.cost.key, self = 0;
         const vk = a.keep === i ? V[i] : V[a.keep];
-        this.outcomes(l, a, (p, j) => {
+        const c = compile(l, i, a);
+        for (let n = 0; n < c.ps.length; n++) {
+          const j = c.vs[n], p = c.ps[n];
           const to = V[j] < vk - 1e-12 ? j : a.keep;
-          if (to === i) { self += p; return; }
+          if (to === i) { self += p; continue; }
           m += p * EM[to]; k += p * EK[to];
-        });
+        }
         const nm = m / (1 - self), nk = k / (1 - self);
         diff = Math.max(diff, Math.abs(nm - EM[i]) / Math.max(1, nm), Math.abs(nk - EK[i]) / Math.max(1, nk));
         EM[i] = nm; EK[i] = nk;
@@ -396,7 +442,10 @@ export function roll(D, piece, kind, protectLines, r) {
 }
 
 /* ── 목표 ──────────────────────────────────────────────── */
-/* goals: { mode, items: { [opt]: { count, minLv, eff?: { min, model } } } }
+/* goals: { mode: 'opt' | 'lv' | 'tier', items: { [opt]: { count, minLv, lvs?, eff?: { min, model } } } }
+   opt  종류만 — 단계 무관
+   lv   최소 단계 — count 줄 모두 minLv 이상
+   tier 목표 단계 — 줄마다 단계를 따로 (lvs, 길이 count)
    nikke: { baseAmmo, chargeTime } */
 export function effCfg(opt, g, nikke) {
   const kind = EFF_OPTS[opt];
@@ -404,6 +453,24 @@ export function effCfg(opt, g, nikke) {
   return kind === 'ammo'
     ? { kind, A: nikke.baseAmmo || 0 }
     : { kind, model: g.eff.model === 'time' ? 'time' : 'pct', C: nikke.chargeTime || 1 };
+}
+
+/* 목표 한 줄 한 줄의 최소 단계 (내림차순) */
+export function goalLevels(goals, g) {
+  const n = Math.max(1, g.count || 1);
+  if (goals.mode === 'tier') {
+    const lvs = Array.from({ length: n }, (_, i) => Math.min(MAX_LV, Math.max(1, +(g.lvs?.[i] ?? g.lvs?.at?.(-1) ?? g.minLv ?? 1) || 1)));
+    return lvs.sort((a, b) => b - a);
+  }
+  return new Array(n).fill(goals.mode === 'lv' ? g.minLv || 1 : 1);
+}
+
+/* 있는 단계들로 채울 수 있는 목표 줄 수 — 낮은 것부터 맞춰 가는 탐욕법이 최대다 */
+function matched(have, need) {
+  const hv = have.slice().sort((a, b) => a - b), nd = need.slice().sort((a, b) => a - b);
+  let j = 0;
+  for (const x of hv) if (j < nd.length && x >= nd[j]) j++;
+  return j;
 }
 
 const allLines = (gear, opt) => gear.flatMap(p => (p.overloaded ? p.lines : []))
@@ -419,9 +486,9 @@ export function progress(D, gear, goals, nikke) {
       const res = effValue(cfg, ls.map(l => l.lv), D.byId[opt].bp);
       out.push({ opt, eff: true, cfg, have: res.value, need: g.eff.min, res, ok: res.value >= g.eff.min });
     } else {
-      const m = goals.mode === 'lv' ? g.minLv || 1 : 1;
-      const have = ls.filter(l => l.lv >= m).length;
-      out.push({ opt, eff: false, have, need: g.count, m, ok: have >= g.count });
+      const lvs = goalLevels(goals, g);
+      const have = matched(ls.map(l => l.lv), lvs);
+      out.push({ opt, eff: false, have, need: lvs.length, m: lvs.at(-1), lvs, tier: goals.mode === 'tier', ok: have >= lvs.length });
     }
   }
   return out;
@@ -441,7 +508,10 @@ function reqVariants(D, gear, goals, nikke) {
   for (const [opt, g] of Object.entries(goals.items)) {
     const cfg = effCfg(opt, g, nikke);
     if (!cfg) {
-      base.push({ opt, count: g.count || 1, m: goals.mode === 'lv' ? g.minLv || 1 : 1 });
+      /* 같은 단계끼리 한 묶음 — 목표 단계 모드면 단계마다 따로 */
+      const byLv = new Map();
+      for (const m of goalLevels(goals, g)) byLv.set(m, (byLv.get(m) || 0) + 1);
+      for (const [m, count] of byLv) base.push({ opt, count, m });
       continue;
     }
     const ls = allLines(gear, opt);
@@ -459,36 +529,58 @@ function reqVariants(D, gear, goals, nikke) {
 }
 
 /* ── 2) 네 부위 배분 ─────────────────────────────────────── */
-export function createPlanner(D) {
+/* 한 부위가 맡을 수 있는 묶음 조합 — 3개 이하, 같은 옵션은 하나 */
+function pieceMasks(reqs) {
+  const out = [];
+  for (let mask = 0; mask < 1 << reqs.length; mask++) {
+    const opts = [];
+    for (let g = 0; g < reqs.length; g++) if (mask & (1 << g)) opts.push(reqs[g].opt);
+    if (opts.length <= 3 && new Set(opts).size === opts.length) out.push(mask);
+  }
+  return out;
+}
+
+/* 부위 표의 이름 — 목표의 (가중치, 최소 단계) 를 정렬한 것 + λ */
+const sortTargets = (D, S) => S.map(r => ({ opt: r.opt, m: r.m, w: D.byId[r.opt].w }))
+  .sort((a, b) => a.w - b.w || a.m - b.m || (a.opt < b.opt ? -1 : 1));
+export const tableKey = (tgt, lam) => tgt.map(t => `${t.w}:${t.m}`).join('|') + '@' + lam;
+
+/* policyOf(key) → 미리 푼 정책 | null */
+export function createPlanner(D, { policyOf = () => null } = {}) {
   const tables = new Map();
-  let built = 0;
+  let built = 0, loaded = 0;
 
   function table(tgt, lam) {
-    const key = tgt.map(t => `${t.w}:${t.m}`).join('|') + '@' + lam;
+    const key = tableKey(tgt, lam);
     let tb = tables.get(key);
-    if (!tb) { tb = new PieceTable(D, tgt.map(t => ({ w: t.w, m: t.m })), lam); tables.set(key, tb); built++; }
+    if (!tb) {
+      const targets = tgt.map(t => ({ w: t.w, m: t.m }));
+      const pol = policyOf(key);
+      if (pol) {
+        try { tb = new PieceTable(D, targets, lam, pol); loaded++; } catch { tb = null; }
+      }
+      if (!tb) { tb = new PieceTable(D, targets, lam); built++; }
+      tables.set(key, tb);
+    }
     return tb;
   }
 
   /* 부위 p 가 목표 묶음 S 를 갖추는 비용 */
   function pieceCost(piece, S, lam) {
     if (!S.length) return { v: 0, m: 0, k: 0 };
-    const tgt = S.map(r => ({ opt: r.opt, m: r.m, w: D.byId[r.opt].w }))
-      .sort((a, b) => a.w - b.w || a.m - b.m || (a.opt < b.opt ? -1 : 1));
+    const tgt = sortTargets(D, S);
     const tb = table(tgt, lam);
     return { ...tb.at(piece, tgt), tgt, tb };
   }
 
   /* reqs 를 네 부위에 나눈다 — 남은 개수 벡터 위의 DP */
   function assign(gear, reqs, lam) {
-    if (reqs.some(r => r.count > 4)) return { v: Infinity, pieces: gear.map(() => ({ S: [], v: Infinity })) };
+    const fail = { v: Infinity, pieces: gear.map(() => ({ S: [], v: Infinity })) };
+    const perOpt = new Map();
+    for (const r of reqs) perOpt.set(r.opt, (perOpt.get(r.opt) || 0) + r.count);
+    if ([...perOpt.values()].some(n => n > 4)) return fail;     // 한 부위에 같은 옵션은 하나 — 네 부위면 4줄까지
     const G = reqs.length;
-    const subsets = [];
-    for (let mask = 0; mask < 1 << G; mask++) {
-      let n = 0;
-      for (let g = 0; g < G; g++) if (mask & (1 << g)) n++;
-      if (n <= 3) subsets.push(mask);
-    }
+    const subsets = pieceMasks(reqs);
     const cache = gear.map(() => new Map());
     const cost = (p, mask) => {
       let c = cache[p].get(mask);
@@ -522,7 +614,7 @@ export function createPlanner(D) {
       return best;
     };
     const r = f(0, reqs.map(x => x.count));
-    if (!Number.isFinite(r.v)) return { v: Infinity, pieces: gear.map(() => ({ S: [], v: Infinity })) };
+    if (!Number.isFinite(r.v)) return fail;
     const pieces = r.pick.map((mask, p) => {
       const c = cost(p, mask);
       return { S: reqs.filter((_, g) => mask & (1 << g)), ...c };
@@ -575,38 +667,7 @@ export function createPlanner(D) {
     return { keep, acc, choice, breaks, prog0, prog1 };
   }
 
-  /* ── 4) 예산 안 완료 확률 — 고정 시드 몬테카를로 ─────────── */
-  function budgetRun(st, pref, budget, runs = 400, seed = 1) {
-    const r = rng(seed);
-    let ok = 0, sumM = 0, sumK = 0;
-    for (let n = 0; n < runs; n++) {
-      let gear = st.gear.map(p => ({ ...p, lines: p.lines.map(l => ({ ...l })), perm: p.perm.slice() }));
-      let mod = budget.mod, key = budget.key, steps = 0, done = false;
-      while (steps++ < 4000) {
-        const cur = { ...st, gear };
-        if (isDone(progress(D, gear, st.goals, st.nikke))) { done = true; break; }
-        const nx = next(cur, pref);
-        if (nx.piece < 0 || !nx.act) break;
-        const act = nx.act;
-        if (act.cost.mod > mod || act.cost.key > key) break;     // 예산 한도
-        mod -= act.cost.mod; key -= act.cost.key;
-        const p = gear[nx.piece];
-        const prot = act.protect.map(x => x.line);
-        const lines = roll(D, p, act.kind, prot, r);
-        const perm = [0, 1, 2].map(i => act.protect.some(x => x.line === i && x.mat === 'perm'));
-        const accepted = gear.map((g, i) => (i === nx.piece ? { ...g, overloaded: true, lines, perm } : g));
-        if (act.kind === 'first') { gear = accepted; continue; }
-        const kept = gear.map((g, i) => (i === nx.piece ? { ...g, perm } : g));
-        gear = compare(st, kept, accepted, pref).choice === 'accept' ? accepted : kept;
-      }
-      if (done) ok++;
-      sumM += budget.mod - mod; sumK += budget.key - key;
-    }
-    const p = ok / runs;
-    return { p, err: 1.96 * Math.sqrt(Math.max(p * (1 - p), 1 / runs) / runs), runs, m: sumM / runs, k: sumK / runs, seed };
-  }
-
-  return { plan, next, compare, budgetRun, concrete, stats: () => ({ tables: tables.size, built }) };
+  return { plan, next, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
 }
 
 /* 입력 검증 (26.2) — 결과로 들어온 세 줄이 이번 행동으로 나올 수 있는가 */
@@ -630,25 +691,4 @@ export function validateResult(before, kind, protectLines, after) {
   return [...new Set(errs)];
 }
 
-/* 효과 변경 한 번에 줄마다 어떤 옵션이 뜰지 — 같은 판 앞 줄이 가져간 옵션은 뒤 줄에서 빠진다.
-   [{ appear, by: { [opt]: p } }] (보호한 줄은 null) */
-export function lineProbs(D, piece, protectLines) {
-  const out = [0, 1, 2].map(i => (protectLines.includes(i) ? null : { appear: 0, by: {} }));
-  const excl0 = new Set(piece.lines.filter((l, i) => protectLines.includes(i) && l.opt).map(l => l.opt));
-  const U = [0, 1, 2].filter(i => !protectLines.includes(i));
-  const rec = (j, excl, p) => {
-    if (j === U.length) return;
-    const i = U[j], sp = SLOT_P[i];
-    if (sp < 1) rec(j + 1, excl, p * (1 - sp));
-    const avail = D.opts.filter(o => !excl.has(o.id));
-    const sum = avail.reduce((a, o) => a + o.w, 0);
-    for (const o of avail) {
-      const q = p * sp * o.w / sum;
-      out[i].appear += q;
-      out[i].by[o.id] = (out[i].by[o.id] || 0) + q;
-      excl.add(o.id); rec(j + 1, excl, q); excl.delete(o.id);
-    }
-  };
-  rec(0, excl0, 1);
-  return out;
-}
+export { PieceTable };
