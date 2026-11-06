@@ -358,7 +358,7 @@ function renderOverloadBySlot(n) {
         const raw = T.optionValue.get(`${o.name}|${o.level}`) || 0;
         cell.append(el('span', 'cp-olName', `[${optionLabel(o.name, ctx.lang)}]`),
           el('span', 'cp-olVal', pctExact(raw)));
-        cell.title = `${optionFullLabel(o.name, ctx.lang)} Lv.${o.level}`;
+        cell.title = `Lv.${o.level}`;
       } else {
         cell.textContent = t('cp.olNoEffect');
       }
@@ -511,8 +511,8 @@ function renderDetail(root, n, r) {
   /* 목록에서는 속성·버스트만 아이콘으로 찍으므로, 나머지 축은 여기서 다 보여준다. */
   const tags = el('div', 'cp-tags');
   const src = n._nikke;
-  const axes = [['rarity', n.rarity], ['corporation', n.corporation], ['element', src.element],
-    ['class', n.class], ['weapon_type', n.weapon], ['burst', src.burst]];
+  const axes = [['rarity', n.rarity], ['corporation', n.corporation], ['burst', src.burst],
+    ['element', src.element], ['class', n.class], ['weapon_type', n.weapon]];
   for (const [axis, code] of axes) {
     if (!code) continue;
     const ic = ctx.iconEl(axis, code);

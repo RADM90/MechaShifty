@@ -37,12 +37,12 @@
     </div>
   </div>
   <nav class="tabs" role="tablist">
-    <button type="button" role="tab" data-tab="nikkes" aria-selected="true" data-i18n="tab.nikkes">니케 리스트</button>
+    <button type="button" role="tab" data-tab="calc" aria-selected="true" data-i18n="tab.calc">전투력 계산기</button>
+    <button type="button" role="tab" data-tab="nipago" aria-selected="false" data-i18n="tab.nipago">오버로드 옵션작</button>
+    <button type="button" role="tab" data-tab="outpost" aria-selected="false" data-i18n="tab.outpost">전초기지</button>
+    <button type="button" role="tab" data-tab="nikkes" aria-selected="false" data-i18n="tab.nikkes">니케 리스트</button>
     <button type="button" role="tab" data-tab="pickups" aria-selected="false" data-i18n="tab.pickups">픽업일정</button>
     <button type="button" role="tab" data-tab="stats" aria-selected="false" data-i18n="tab.stats">통계</button>
-    <button type="button" role="tab" data-tab="calc" aria-selected="false" data-i18n="tab.calc">전투력 계산기</button>
-    <button type="button" role="tab" data-tab="outpost" aria-selected="false" data-i18n="tab.outpost">전초기지</button>
-    <button type="button" role="tab" data-tab="nipago" aria-selected="false" data-i18n="tab.nipago">오버로드 옵션작</button>
     <button type="button" role="tab" data-tab="intercept" aria-selected="false" data-i18n="tab.intercept">특특요 확률</button>
   </nav>
 </header>
@@ -70,8 +70,12 @@
         <button type="button" id="reset" class="btn-reset" data-i18n="ui.reset">필터 초기화</button>
       </div>
 
-      <div id="filterBody">
+      <!-- 칩 필터는 접는 칸 밖에 둔다 — 픽업일정 탭은 접힌 채로도 아이콘 칩을 보여준다 (paintFold) -->
       <div id="chipfilters" class="chipgrid"></div>
+
+      <div id="filterBody">
+      <!-- 픽업일정 탭에만 있는 칩(진행·픽업·구분) -->
+      <div id="pickupchips" class="chipgrid" hidden></div>
 
       <div class="filter-row" id="extrafilters">
         <label class="field">
@@ -116,7 +120,7 @@
     </section>
 
     <!-- ── 탭 1: 니케 리스트 ───────────────────────────────── -->
-    <section id="panel-nikkes" class="panel">
+    <section id="panel-nikkes" class="panel" hidden>
       <div class="tablewrap">
         <table class="grid" id="nikkeTable">
           <thead><tr id="nikkeHead"></tr></thead>
@@ -144,7 +148,7 @@
     </section>
 
     <!-- ── 탭 4: 전투력 계산기 ────────────────────────────── -->
-    <section id="panel-calc" class="panel" hidden>
+    <section id="panel-calc" class="panel">
       <div id="calc"></div>
     </section>
 

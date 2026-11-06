@@ -39,17 +39,17 @@ export function effValue(cfg, levels, bpByLv) {
 
 export const effUnit = cfg => cfg.kind === 'ammo' ? 'shots' : cfg.model === 'time' ? 'cs' : 'pct';
 
-/* 화면용 — 값 하나 */
-export function fmtEff(cfg, v) {
+/* 화면용 — 값 하나. shot 은 장탄 단위 (언어별 '발' — 이 모듈은 문자열표를 모른다) */
+export function fmtEff(cfg, v, shot = '') {
   if (v == null) return '—';
-  if (cfg.kind === 'ammo') return `+${v}`;
+  if (cfg.kind === 'ammo') return `+${v}${shot}`;
   if (cfg.model === 'time') return (v / 100).toFixed(2) + 's';
   return v + '%';
 }
 
-/* 계산 과정 — "T12×2 → 9" 처럼 묶음별로 */
-export function explainEff(cfg, res) {
-  return res.groups.map(g => `T${g.lv}${g.n > 1 ? '×' + g.n : ''}→${fmtEff(cfg, g.r).replace('+', '')}`).join(' + ');
+/* 계산 과정 — "12×2 → 9발" 처럼 묶음별로 */
+export function explainEff(cfg, res, shot = '') {
+  return res.groups.map(g => `${g.lv}${g.n > 1 ? '×' + g.n : ''}→${fmtEff(cfg, g.r, shot).replace('+', '')}`).join(' + ');
 }
 
 /* 줄 수 k 와 최소 단계 m 으로 목표를 바꾼다 (경로 계산용).

@@ -243,6 +243,8 @@ main { max-width: 1480px; margin: 0 auto; padding: var(--pad); }
 .btn-reset:hover { color: var(--ink); border-color: var(--accent); }
 
 .chipgrid { display: grid; gap: 10px; }
+/* 픽업 전용 칩 줄은 위 아이콘 칩과 선으로 가른다 (.filter-row 와 같은 간격) */
+#pickupchips { margin-top: 12.5px; padding-top: 12.5px; border-top: 1px solid var(--line); }
 .chiprow { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .chiprow > .lbl {
   flex: 0 0 72.5px; color: var(--ink-muted); font-size: 15px; font-weight: 600;
@@ -1149,11 +1151,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-grow.ok { border-left-color: var(--st-good); }
 .np-ghead { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
-.np-gname { font-weight: 700; font-size: 15.5px; }
-.np-gfull {
-  flex: 1; min-width: 0; font-size: 13px; color: var(--ink-muted);
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-}
+.np-gname { flex: 1; min-width: 0; font-weight: 700; font-size: 15.5px; }
 .np-gprog { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-2); }
 .np-gprog.ok { color: var(--st-good); }
 .np-gx {

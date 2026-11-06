@@ -16,7 +16,7 @@
 
 import { optionLabel, olRows, SLOTS } from './cp.js';
 import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, MAX_LV, buildData } from './nipago/rules.js';
-import { effValue, fmtEff, explainEff } from './nipago/effective.js';
+import { effValue, fmtEff as fmtEffRaw, explainEff as explainEffRaw } from './nipago/effective.js';
 import { roll, progress, isDone, validateResult, effCfg } from './nipago/engine.js';
 
 const STORE = 'nipago.input';
@@ -46,9 +46,11 @@ function h(tag, attrs, ...kids) {
 }
 const btn = (cls, text, onclick, extra = {}) => h('button', { type: 'button', class: cls, onclick, ...extra }, text);
 const t = (k, ...a) => ctx.t(k, ...a);
+/* 실효값 표시 — 장탄에는 언어별 '발' 단위를 붙인다 */
+const fmtEff = (cfg, v) => fmtEffRaw(cfg, v, t('np.shot'));
+const explainEff = (cfg, res) => explainEffRaw(cfg, res, t('np.shot'));
 const opt = id => D.byId[id];
 const short = id => optionLabel(id, ctx.lang);
-const full = id => opt(id)?.[ctx.lang] || opt(id)?.en || id;
 const pctOf = (id, lv) => (opt(id).vals[lv - 1] * 100).toFixed(2) + '%';
 const num = v => (v == null || !Number.isFinite(v) ? '—' : v >= 100 || Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v).toLocaleString() : v.toFixed(1));
 const tierCls = lv => (lv >= 15 ? 'black' : lv >= 12 ? 'blue' : '');
@@ -504,7 +506,7 @@ function renderGoals(prog) {
         if (on) delete S.goals.items[o.id];
         else S.goals.items[o.id] = { count: 1, minLv: 12, lvs: [12], eff: null };
       }, { goal: true }),
-      { title: full(o.id) + (warn ? ' — ' + t('np.chargeNone') : ''), 'aria-pressed': String(on) }));
+      { title: warn ? t('np.chargeNone') : null, 'aria-pressed': String(on) }));
   }
   card.appendChild(chips);
 
@@ -517,7 +519,7 @@ function renderGoals(prog) {
     const pr = prog.find(p => p.opt === id);
     const row = h('div', 'np-grow' + (pr?.ok ? ' ok' : ''));
     const head = h('div', 'np-ghead',
-      h('span', 'np-gname', short(id)), h('span', 'np-gfull', full(id)),
+      h('span', 'np-gname', short(id)),
       pr ? h('span', 'np-gprog' + (pr.ok ? ' ok' : ''), pr.eff ? `${fmtEff(pr.cfg, pr.have)} / ${fmtEff(pr.cfg, pr.need)}` : `${pr.have}/${pr.need}`) : null,
       btn('np-gx', '✕', () => commit(() => { delete S.goals.items[id]; }, { goal: true }), { 'aria-label': t('np.remove') }));
     row.appendChild(head);
@@ -533,7 +535,7 @@ function renderGoals(prog) {
       if (S.goals.mode === 'lv') {
         ctl.appendChild(h('span', 'np-gfield', t('np.minLv'),
           stepper(g.minLv, v => commit(() => { g.minLv = v; }, { goal: true }), { min: 1, max: MAX_LV, label: t('np.minLv') }),
-          h('span', 'np-gval lvb-' + lvBand(g.minLv), pctOf(id, g.minLv))));
+          h('span', 'np-gval lvb-' + lvBand(g.minLv), `(${pctOf(id, g.minLv)})`)));
       } else if (S.goals.mode === 'tier') {
         /* 줄마다 목표 단계 — 순서는 상관없다 (어느 줄이 어느 단계를 채워도 된다) */
         const lvs = fitLvs(g.lvs, g.count, g.minLv);
@@ -541,7 +543,7 @@ function renderGoals(prog) {
           h('span', 'np-tiern', t('np.tierN', k + 1)),
           stepper(lv, v => commit(() => { const next = fitLvs(g.lvs, g.count, g.minLv); next[k] = v; g.lvs = next; }, { goal: true }),
             { min: 1, max: MAX_LV, label: t('np.tierN', k + 1) }),
-          h('span', 'np-gval lvb-' + lvBand(lv), pctOf(id, lv))))));
+          h('span', 'np-gval lvb-' + lvBand(lv), `(${pctOf(id, lv)})`)))));
       }
     } else {
       const cfg = effCfg(id, g, { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 });
@@ -640,7 +642,7 @@ function renderRec(prog) {
     fresh.mod || fresh.key ? h('small', null, ` (${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
     act.cost.estimated ? h('small', 'np-est', ' · ' + t('np.estimated')) : null]);
   const pc = a.pieces[a.piece];
-  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` T${x.m}+` : '')).join('·') || '—', num(pc.m),
+  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` ${x.m}+` : '')).join('·') || '—', num(pc.m),
     a.pieces.filter(x => x.v > 0).length));
   const kept = prog.filter(p => p.eff && p.ok);
   if (kept.length) fact(t('np.guard'), kept.map(p => `${short(p.opt)} ${fmtEff(p.cfg, p.have)}`).join(', '));
@@ -679,7 +681,7 @@ function renderRec(prog) {
   det.appendChild(h('p', 'np-note', t('np.scopeText', t('np.pref_' + r.pick), Number.isFinite(a.lambda) ? a.lambda : '∞')));
   det.appendChild(h('ul', 'np-plan', a.pieces.map((x, p) => h('li', null,
     h('b', null, t('np.piece_' + p)), ' ',
-    x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` T${s.m}+` : '')).join('·') : t('np.nothingHere'),
+    x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` ${s.m}+` : '')).join('·') : t('np.nothingHere'),
     x.v > 0 ? ` — ${t('np.meanText', num(x.m), num(x.k))}${x.first ? ' · ' + t('np.firstIncl') : ''}` : ` — ${t('np.pieceOk')}`))));
   if (r.stats) det.appendChild(h('p', 'np-note', t('np.tableStats', r.stats.loaded, r.stats.built)));
   card.appendChild(det);
@@ -792,8 +794,8 @@ function lineRow(g, p, i, act) {
   const main = btn(cls, [
     h('span', 'np-lno', String(i + 1)),
     l.opt ? h('span', 'np-lopt', short(l.opt)) : h('span', 'np-lempty', t('np.empty')),
-    l.opt ? h('span', 'np-lval', pctOf(l.opt, l.lv)) : h('span', 'np-lsp', Math.round(SLOT_P[i] * 100) + '%'),
-    l.opt ? h('span', 'np-lvb lvb-' + lvBand(l.lv), 'T' + l.lv) : null,
+    l.opt ? h('span', 'np-lvb lvb-' + lvBand(l.lv), String(l.lv)) : null,
+    l.opt ? h('span', 'np-lval', `(${pctOf(l.opt, l.lv)})`) : h('span', 'np-lsp', Math.round(SLOT_P[i] * 100) + '%'),
     prot && !started() ? h('span', 'np-ptag np-ptag-' + prot.mat, prot.mat === 'key' ? '🗝 ' + t('np.matKeyS') : '🔒 ' + (prot.fresh ? t('np.matPermNewS') : t('np.matPermS'))) : null,
     willUnlock ? h('span', 'np-ptag np-ptag-off', t('np.unlockS')) : null,
   ], () => repaint(() => { ui.edit = editing ? null : { p, i }; }),
@@ -818,16 +820,17 @@ function lineEditor(g, p, i) {
   const others = new Set(g.lines.filter((x, j) => j !== i && x.opt).map(x => x.opt));
   const sel = h('select', { class: 'np-sel', 'aria-label': t('np.option') },
     h('option', { value: '' }, i === 0 ? t('np.pickOpt') : t('np.emptyOpt')),
-    D.opts.map(o => h('option', { value: o.id, disabled: others.has(o.id), selected: l.opt === o.id }, `${short(o.id)} — ${full(o.id)}`)));
+    D.opts.map(o => h('option', { value: o.id, disabled: others.has(o.id), selected: l.opt === o.id }, short(o.id))));
   let lv = l.opt ? l.lv : FIRST_LV;
-  const val = h('span', 'np-gval', l.opt ? pctOf(l.opt, lv) : '');
+  const pctText = (id, v) => (id ? `(${pctOf(id, v)})` : '');
+  const val = h('span', 'np-gval', pctText(l.opt, lv));
   const lvBox = h('span');
   const paintLv = () => {
     lvBox.textContent = '';
-    lvBox.appendChild(stepper(lv, v => { lv = v; val.textContent = sel.value ? pctOf(sel.value, lv) : ''; paintLv(); }, { label: t('np.level') }));
+    lvBox.appendChild(stepper(lv, v => { lv = v; val.textContent = pctText(sel.value, lv); paintLv(); }, { label: t('np.level') }));
   };
   paintLv();
-  sel.onchange = () => { val.textContent = sel.value ? pctOf(sel.value, lv) : ''; };
+  sel.onchange = () => { val.textContent = pctText(sel.value, lv); };
   const save1 = () => commit(() => {
     const id = sel.value;
     const same = id && id === l.opt;
@@ -880,7 +883,7 @@ function renderModal(prog) {
       return h('div', 'np-ovslot ' + (l.opt ? tierCls(l.lv) : 'empty') + (mark && goal ? ' good' : ''),
         h('span', 'np-lno', String(i + 1)),
         h('span', null, l.opt ? short(l.opt) : t('np.none')),
-        l.opt ? h('span', 'np-ovval', `${pctOf(l.opt, l.lv)} T${l.lv}`) : null,
+        l.opt ? h('span', 'np-ovval', `${l.lv} (${pctOf(l.opt, l.lv)})`) : null,
         prot ? h('span', 'np-lock', '🔒') : null);
     }));
 
@@ -943,9 +946,9 @@ function resultForm(pd) {
     sel.onchange = () => repaint(() => { ui.draft[i] = sel.value ? { opt: sel.value, lv: ui.draft[i].lv || (pd.kind === 'first' ? FIRST_LV : 1) } : E(); });
     row.appendChild(sel);
     if (l.opt && pd.kind !== 'first') {
-      row.appendChild(locked ? h('span', 'np-gval', `T${l.lv}`) :
+      row.appendChild(locked ? h('span', 'np-gval', String(l.lv)) :
         stepper(l.lv || 1, v => repaint(() => { ui.draft[i] = { ...ui.draft[i], lv: v }; }), { label: t('np.level') }));
-    } else if (l.opt) row.appendChild(h('span', 'np-gval', 'T' + FIRST_LV));
+    } else if (l.opt) row.appendChild(h('span', 'np-gval', String(FIRST_LV)));
     if (locked) row.appendChild(h('span', 'np-lock', '🔒'));
     wrap.appendChild(row);
   });
@@ -1009,7 +1012,7 @@ function paint() {
   if (focusId) document.getElementById(focusId)?.focus();
 }
 
-const lvsText = x => (x.tier ? ' · ' + x.lvs.map(v => 'T' + v).join('·') : x.m > 1 ? ` · T${x.m}+` : '');
+const lvsText = x => (x.tier ? ' · ' + x.lvs.join('·') : x.m > 1 ? ` · ${x.m}+` : '');
 
 /* 바깥을 누르면 줄 편집을 닫는다. */
 let wired = false;

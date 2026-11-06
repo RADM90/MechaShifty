@@ -7,14 +7,14 @@ const LOCAL = './data/';
 const FILES = ['nikkes', 'pickups', 'taxonomy', 'meta'];
 
 /* ── 축 정의 ───────────────────────────────────────────────────
-   order 는 표시 순서. */
+   order 는 표시 순서. 축 자체도 [등급, 기업, 버스트, 속성, 클래스, 무기] 순으로 둔다 (칩 줄 순서가 된다). */
 export const AXES = {
+  rarity: { order: ['SSR', 'SR', 'R'] },
   corporation: { order: ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'] },
+  burst: { order: ['Step1', 'Step2', 'Step3', 'AllStep'] },
   element: { order: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'] },
   class: { order: ['Attacker', 'Defender', 'Supporter'] },
   weapon_type: { order: ['AR', 'SMG', 'SG', 'MG', 'SR', 'RL'] },
-  burst: { order: ['Step1', 'Step2', 'Step3', 'AllStep'] },
-  rarity: { order: ['SSR', 'SR', 'R'] },
 };
 const PICKUP_AXES = {
   status: { order: ['ongoing', 'upcoming', 'ended'] },
@@ -82,7 +82,7 @@ const STR = {
   'cp.b5': ['(5) 큐브 + 소장품 계수', '(5) Cube + collection coef.', '(5) キューブ＋コレクション係数'],
   'cp.b6': ['((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100', '((1)+(2)+(3)) × ((4)+(5)) / 100'],
   'cp.breakHint': [
-    (s, u, n) => `스킬계수 ${s} · 우코(우월코드 대미지) 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
+    (s, u, n) => `스킬계수 ${s} · 우월코드 대미지 옵션 레벨합 ${u} · 나머지 옵션 합 ${n}`,
     (s, u, n) => `Skill coef. ${s} · Increase Elemental Damage levels ${u} · other options ${n}`,
     (s, u, n) => `スキル係数 ${s} · 有利コードダメージ ${u} · その他のOP ${n}`,
   ],
@@ -231,7 +231,7 @@ const STR = {
   // 오버로드 옵션 중 우코 + 공증 종합값의 합 — 실전 성능을 한 숫자로 가늠한다
   'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
   'im.colOlAtkNote': [
-    '오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력) 합계',
+    '오버로드 옵션 종합 중 우월코드 대미지 + 공격력 합계',
     'Sum of the Elemental Damage and ATK overload option totals',
     'オーバーロードOP合計のうち 有利コードダメージ + 攻撃力 の合計',
   ],
@@ -485,6 +485,8 @@ const STR = {
   'np.effTime': ['차지 시간', 'Charge time', 'チャージ時間'],
   'np.effMin': ['목표', 'At least', '目標'],
   'np.unitShots': ['발 증가', 'extra shots', '発増加'],
+  // 실효값 뒤에 붙는 장탄 단위 (+9발)
+  'np.shot': ['발', ' shots', '発'],
   'np.unitCs': ['× 0.01초 단축', '× 0.01 s cut', '× 0.01秒短縮'],
   'np.needAmmo': ['기본 장탄을 입력해야 계산할 수 있습니다.', 'Enter the base ammo first.', '基本装弾数を入力してください。'],
   'np.needCharge': ['차지 시간을 입력해야 계산할 수 있습니다.', 'Enter the charge time first.', 'チャージ時間を入力してください。'],
@@ -607,7 +609,7 @@ const STR = {
   'np.kindChange': ['효과 변경', 'Change options', '効果変更'],
   'np.kindReset': ['수치 재설정', 'Reroll values', '数値再設定'],
   'np.overloaded': ['개조됨', 'Overloaded', 'OL済み'],
-  'np.notOverloaded': ['아직 오버로드 개조 전입니다. 최초 개조는 모듈 1개, 붙는 옵션은 T11 고정입니다.', 'Not overloaded yet. The first overload costs 1 module and its options land at T11.', 'まだオーバーロード前です。初回はカスモ1個、付くOPはT11固定です。'],
+  'np.notOverloaded': ['아직 오버로드 개조 전입니다. 최초 개조는 모듈 1개, 붙는 옵션은 11단계 고정입니다.', 'Not overloaded yet. The first overload costs 1 module and its options land at tier 11.', 'まだオーバーロード前です。初回はカスモ1個、付くOPは11段階固定です。'],
   'np.empty': ['빈칸', 'empty', '空き'],
   'np.matKeyS': ['락키', 'key', 'キー'],
   'np.matPermS': ['유지', 'keep', '維持'],
@@ -636,7 +638,7 @@ const STR = {
   'np.err_line1': ['1번 줄은 늘 붙습니다', 'Line 1 always rolls something', '上段は必ず付きます'],
   'np.err_locked': ['잠근 줄이 바뀌었습니다', 'A locked line changed', 'ロックした段が変わっています'],
   'np.err_resetType': ['수치 재설정은 옵션 종류·빈칸을 바꾸지 않습니다', 'A value reroll can’t change option types or fill gaps', '数値再設定はOP種類・空きを変えません'],
-  'np.err_firstLv': ['최초 개조는 T11 고정입니다', 'First overload is always T11', '初回OLはT11固定です'],
+  'np.err_firstLv': ['최초 개조는 11단계 고정입니다', 'First overload is always tier 11', '初回OLは11段階固定です'],
   'np.comparing': ['남은 경로를 비교하는 중…', 'Comparing what’s left…', '残りの経路を比較中…'],
   'np.ifKeep': ['유지하면 남은 평균', 'Keep: still to spend', '維持した場合の残り'],
   'np.ifAccept': ['적용하면 남은 평균', 'Apply: still to spend', '適用した場合の残り'],
@@ -1118,14 +1120,14 @@ function labelWith(axis, code, text, opts) {
 }
 
 /* nikkes 에만 있는 축 — 픽업 행에 걸 때는 rid 로 니케를 찾아 판정한다 */
-const NIKKE_ONLY = ['weapon_type', 'burst', 'rarity'];
+const NIKKE_ONLY = ['weapon_type', 'rarity'];
 
 const D = { nikkes: [], pickups: [], taxonomy: {}, meta: {} };
 const byRid = new Map();
 const pickupsByRid = new Map();
 
 const state = {
-  tab: 'nikkes',
+  tab: 'calc',
   lang: localStorage.getItem('lang') || 'ko',
   q: '',
   squad: '', overspec: false, relFrom: '', relTo: '',
@@ -1190,9 +1192,12 @@ async function load() {
     if (!pickupsByRid.has(p.rid)) pickupsByRid.set(p.rid, []);
     pickupsByRid.get(p.rid).push(p);
   });
+  /* 픽업 원본에는 버스트가 없다 — 원본에 값이 없으면 니케 목록에서 rid 로, rid 가 없으면 한국어 이름으로 찾아 채운다 */
+  const byNameKo = new Map(D.nikkes.map(n => [n.name?.ko, n]));
   D.pickups.forEach(p => {
     p._start = new Date(p.start);
     p._end = new Date(p.end);
+    if (!p.burst) p.burst = (byRid.get(p.rid) || byNameKo.get(p.name_ko))?.burst ?? null;
   });
 }
 
@@ -1336,7 +1341,7 @@ function matchNikke(n, except) {
 function matchPickup(p, except) {
   const n = p.rid ? byRid.get(p.rid) : null;
 
-  for (const axis of ['corporation', 'element', 'class']) {
+  for (const axis of ['corporation', 'burst', 'element', 'class']) {
     if (axis === except) continue;
     const sel = state.sel[axis];
     if (sel.size && !sel.has(p[axis])) return false;
@@ -1344,6 +1349,8 @@ function matchPickup(p, except) {
   // 니케 리스트에만 있는 축: rid 가 없는 예정 배너는 필연적으로 제외된다
   for (const axis of NIKKE_ONLY) {
     if (axis === except) continue;
+    // 픽업은 전부 SSR 이라 픽업 탭에는 등급 칩이 없다 — 니케 탭에서 고른 등급이 보이지 않게 걸리면 안 된다
+    if (axis === 'rarity' && state.tab === 'pickups') continue;
     const sel = state.sel[axis];
     if (sel.size && (!n || !sel.has(n[axis]))) return false;
   }
@@ -1370,7 +1377,7 @@ const filteredPickups = (except) => D.pickups.filter(p => matchPickup(p, except)
 /* ── URL 해시 동기화 ───────────────────────────────────────── */
 function writeHash() {
   const p = new URLSearchParams();
-  if (state.tab !== 'nikkes') p.set('tab', state.tab);
+  if (state.tab !== 'calc') p.set('tab', state.tab);
   for (const [k, v] of Object.entries(state.sel)) if (v.size) p.set(k, [...v].join(','));
   if (state.q) p.set('q', state.q);
   if (state.squad) p.set('squad', state.squad);
@@ -1385,11 +1392,14 @@ function writeHash() {
 }
 
 /* 없어진 탭(#tab=raw 같은 옛 북마크)으로 들어오면 패널이 없어 렌더가 깨진다 */
-const TABS = ['nikkes', 'pickups', 'stats', 'calc', 'outpost', 'nipago', 'intercept'];
+const TABS = ['calc', 'nipago', 'outpost', 'nikkes', 'pickups', 'stats', 'intercept'];
 
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
-  if (TABS.includes(p.get('tab'))) state.tab = p.get('tab');
+  const tab = p.get('tab');
+  if (TABS.includes(tab)) state.tab = tab;
+  /* 기본 탭이 니케 리스트였던 시절의 링크는 tab 없이 필터만 붙어 있다 (#element=Fire) */
+  else if (!tab && [...p.keys()].length) state.tab = 'nikkes';
   for (const k of Object.keys(state.sel)) {
     const v = p.get(k);
     if (v) state.sel[k] = new Set(v.split(','));
@@ -1407,22 +1417,26 @@ function readHash() {
 }
 
 /* ── 칩 필터 ───────────────────────────────────────────────── */
-/* 니케 리스트 탭의 아이콘 칩 두 줄 */
-const CHIP_LINES = [['corporation', 'element', 'burst'], ['class', 'weapon_type', 'rarity']];
+/* 니케 리스트 탭의 아이콘 칩 두 줄 — 표 열 순서와 달리 이 순서로 고정한다 */
+const CHIP_LINES = [['corporation', 'burst', 'element'], ['rarity', 'weapon_type', 'class']];
+/* 픽업일정 탭도 같은 아이콘 칩을 쓰되, 픽업은 전부 SSR 이라 등급 칩은 빼고 한 줄로 잇는다 (좁으면 .chipline 이 알아서 접힌다) */
+const PICKUP_CHIP_LINES = [CHIP_LINES.flat().filter(axis => axis !== 'rarity')];
 
 function buildChips() {
   const wrap = $('#chipfilters');
+  const extra = $('#pickupchips');
   wrap.textContent = '';
-  const axes = state.tab === 'pickups'
-    ? { ...PICKUP_AXES, ...AXES }
-    : AXES;
-  /* 니케 리스트 탭은 축마다 아이콘이 다 있어서 라벨·개수를 빼고 아이콘만 남긴다.
-     축 이름 칸도 빼고 한 줄에 이어 붙여 두세 줄로 접는다. 라벨과 개수는 title 로 옮긴다 (updateChipCounts). */
-  const iconOnly = state.tab === 'nikkes';
+  extra.textContent = '';
+  /* 니케 리스트·픽업일정 탭은 축마다 아이콘이 다 있어서 라벨·개수를 빼고 아이콘만 남긴다.
+     축 이름 칸도 빼고 한 줄에 이어 붙여 두 줄로 접는다. 라벨과 개수는 title 로 옮긴다 (updateChipCounts).
+     통계 탭은 라벨 붙은 줄을 그대로 쓴다. */
+  const chipLines = state.tab === 'nikkes' ? CHIP_LINES
+    : state.tab === 'pickups' ? PICKUP_CHIP_LINES : null;
+  const iconOnly = !!chipLines;
   wrap.classList.toggle('compact', iconOnly);
   /* 아이콘 칩은 두 줄에 다 들어가므로 줄을 정해 둔다 — 넓어도 한 줄로 몰리지 않고 좁아도 축이 섞이지 않는다 */
   const lines = iconOnly
-    ? CHIP_LINES.map(axesInLine => {
+    ? chipLines.map(axesInLine => {
       const line = el('div', 'chipline');
       wrap.appendChild(line);
       return [axesInLine, line];
@@ -1430,8 +1444,8 @@ function buildChips() {
     : [];
   const home = axis => lines.find(([axesInLine]) => axesInLine.includes(axis))?.[1] || wrap;
 
-  const chip = (cls, axis, code, icAxis, label, pressed) => {
-    const b = el('button', cls + (iconOnly ? ' chip-ic' : ''));
+  const chip = (cls, axis, code, icAxis, label, pressed, icOnly) => {
+    const b = el('button', cls + (icOnly ? ' chip-ic' : ''));
     b.type = 'button';
     b.dataset.axis = axis;
     b.dataset.code = code;
@@ -1439,7 +1453,7 @@ function buildChips() {
     b.setAttribute('aria-pressed', pressed);
     const ic = iconEl(icAxis, code);
     if (ic) b.appendChild(ic);
-    if (iconOnly) {
+    if (icOnly) {
       b.setAttribute('aria-label', label);
       if (!ic) b.appendChild(el('span', null, label));
     } else {
@@ -1449,23 +1463,31 @@ function buildChips() {
     return b;
   };
 
-  for (const [axis, def] of Object.entries(axes)) {
+  const addRow = (axis, def, icOnly, parent) => {
     const row = el('div', 'chiprow');
-    if (iconOnly) {
+    if (icOnly) {
       row.setAttribute('role', 'group');
       row.setAttribute('aria-label', axisLabel(axis));
     } else {
       row.appendChild(el('span', 'lbl', axisLabel(axis)));
     }
     for (const code of def.order)
-      row.appendChild(chip('chip', axis, code, axis, chipLabel(axis, code), state.sel[axis].has(code)));
+      row.appendChild(chip('chip', axis, code, axis, chipLabel(axis, code), state.sel[axis].has(code), icOnly));
     // 오버스펙은 기업을 대체하지 않는 부가 속성이라 기업 행에 붙인다
     if (axis === 'corporation')
       row.appendChild(chip('chip chip-ovr', '_overspec', 'OVERSPEC', 'corporation_sub_type',
-        L('corporation_sub_type', 'OVERSPEC'), state.overspec));
-    home(axis).appendChild(row);
-  }
-  wrap.onclick = e => {
+        L('corporation_sub_type', 'OVERSPEC'), state.overspec, icOnly));
+    parent.appendChild(row);
+  };
+
+  /* 아이콘 칩은 줄 안의 순서도 줄 목록을 따른다 (AXES 순서와 다르다) */
+  for (const axis of iconOnly ? chipLines.flat() : Object.keys(AXES))
+    addRow(axis, AXES[axis], iconOnly, home(axis));
+  /* 픽업에만 있는 축(진행·픽업·구분)은 아이콘이 없어 라벨 붙은 줄로, 펼친 칸 안에만 둔다 */
+  if (state.tab === 'pickups')
+    for (const [axis, def] of Object.entries(PICKUP_AXES)) addRow(axis, def, false, extra);
+
+  wrap.onclick = extra.onclick = e => {
     const b = e.target.closest('.chip');
     if (!b) return;
     const { axis, code } = b.dataset;
@@ -1490,7 +1512,7 @@ function setChipCount(b, n) {
 }
 
 function updateChipCounts() {
-  for (const b of $$('#chipfilters .chip')) {
+  for (const b of $$('#chipfilters .chip, #pickupchips .chip')) {
     const { axis, code } = b.dataset;
     let n;
     if (axis === '_overspec') {
@@ -1600,15 +1622,16 @@ function updateKwCounts() {
 }
 
 /* ── 니케 표 ───────────────────────────────────────────────── */
+/* 니케를 나열하는 표는 모두 [등급, 이름, 기업, 버스트, 속성, 클래스, 무기] 순으로 열을 둔다 (없는 열은 건너뛴다) */
 /* 등급·버스트는 아이콘이 곧 글자(SSR, Ⅰ~Ⅲ)라 라벨을 빼고 좁게 둔다 (cls: 'ic-only') */
 const NIKKE_COLS = [
   { key: 'rarity', axis: 'rarity', cls: 'ic-only' },
   { key: 'name', str: 'col.name', cls: 'name' },
   { key: 'corporation', axis: 'corporation' },
+  { key: 'burst', axis: 'burst', cls: 'ic-only' },
   { key: 'element', axis: 'element' },
   { key: 'class', axis: 'class' },
   { key: 'weapon_type', axis: 'weapon_type' },
-  { key: 'burst', axis: 'burst', cls: 'ic-only' },
   { key: 'squad', str: 'col.squad' },
   { key: 'release_date', str: 'col.release', cls: 'num' },
   { key: 'pickups', str: 'col.pickups', cls: 'num' },
@@ -1660,10 +1683,10 @@ function renderNikkes() {
     tr.appendChild(tdName);
 
     tr.appendChild(iconCell('corporation', n.corporation));
+    tr.appendChild(iconOnlyCell('burst', n.burst));
     tr.appendChild(iconCell('element', n.element));
     tr.appendChild(iconCell('class', n.class));
     tr.appendChild(iconCell('weapon_type', n.weapon_type));
-    tr.appendChild(iconOnlyCell('burst', n.burst));
     tr.appendChild(el('td', null, L('squad', n.squad)));
     tr.appendChild(el('td', 'num', n.release_date || '—'));
     tr.appendChild(el('td', 'num', String(pickupsByRid.get(n.rid)?.length || 0)));
@@ -1715,7 +1738,8 @@ function statusTag(p) {
 
 const PICKUP_COLS = [
   { str: 'col.no', cls: 'num' }, { str: 'col.period' }, { axis: 'status' },
-  { str: 'col.name' }, { axis: 'corporation' }, { axis: 'element' }, { axis: 'class' },
+  { str: 'col.name' }, { axis: 'corporation' }, { axis: 'burst', cls: 'ic-only' },
+  { axis: 'element' }, { axis: 'class' },
   { axis: 'availability' }, { axis: 'tag' }, { str: 'f.rerun' },
 ];
 
@@ -1747,6 +1771,7 @@ function renderPickups() {
     tr.appendChild(tdName);
 
     tr.appendChild(iconCell('corporation', p.corporation));
+    tr.appendChild(iconOnlyCell('burst', p.burst));
     tr.appendChild(iconCell('element', p.element));
     tr.appendChild(iconCell('class', p.class));
 
@@ -1784,7 +1809,7 @@ function renderTimeline(rows) {
 
     row.appendChild(el('div', 'when', `${p.start.slice(5, 10)} ~ ${p.end.slice(5, 10)}`));
     const who = el('div', 'who');
-    for (const [axis, code] of [['corporation', p.corporation], ['element', p.element], ['class', p.class]]) {
+    for (const [axis, code] of [['corporation', p.corporation], ['burst', p.burst], ['element', p.element], ['class', p.class]]) {
       const ic = iconEl(axis, code);
       if (ic) who.appendChild(ic);
     }
@@ -1827,11 +1852,11 @@ function openSheet(n) {
   putIcon(axisLabel('rarity'), 'rarity', n.rarity);
   /* 기업 줄에 '(오버스펙)' 을 덧붙이지 않는다 — 이름 옆 도장이 그 자리다 */
   putIcon(axisLabel('corporation'), 'corporation', n.corporation);
-  put(t('col.squad'), L('squad', n.squad));
+  putIcon(axisLabel('burst'), 'burst', n.burst);
   putIcon(axisLabel('element'), 'element', n.element);
   putIcon(axisLabel('class'), 'class', n.class);
   putIcon(axisLabel('weapon_type'), 'weapon_type', n.weapon_type);
-  putIcon(axisLabel('burst'), 'burst', n.burst);
+  put(t('col.squad'), L('squad', n.squad));
   put(t('col.release'), n.release_date || '—');
   c.appendChild(dl);
 
@@ -1883,6 +1908,7 @@ function activeFilters() {
   if (state.relFrom) n++;
   if (state.relTo) n++;
   if (state.rerun !== 'all') n++;
+  if (state.tab === 'pickups') n -= state.sel.rarity.size;   // 픽업 탭에는 등급 필터가 없다
   if (state.tab === 'nikkes') n += state.kw.size + (state.kwq ? 1 : 0);
   return n;
 }
@@ -1891,7 +1917,11 @@ function paintFold() {
   const open = state.filtersOpen[state.tab] !== false;
   const n = activeFilters();
   $('#filterBody').hidden = !open;
-  $('.filters-main').classList.toggle('is-folded', !open);
+  /* 픽업일정 탭은 아이콘 칩을 접힌 채로도 보여준다 — 펼치면 그 아래에 픽업 전용 줄만 더 나온다 */
+  const chipsUp = state.tab === 'pickups';
+  $('#chipfilters').hidden = !open && !chipsUp;
+  $('#pickupchips').hidden = !chipsUp;
+  $('.filters-main').classList.toggle('is-folded', !open && !chipsUp);
   const btn = $('#filterToggle');
   btn.setAttribute('aria-expanded', String(open));
   btn.textContent = open ? t('ui.filterClose')

@@ -23,8 +23,8 @@ const TIERS = ['', '9티어_일반', '9티어_기업', '오버로드'];
 const OPTIONS = ['우코', '공증', '장탄', '크댐', '크확', '차속', '명중', '방어', '차댐'];
 /* 옛 약어 → 지금 약어. */
 export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
-/* 목록에 아이콘으로 찍는 축. */
-const AXES = ['element', 'burst'];
+/* 목록에 아이콘으로 찍는 축 — 니케 표 열 순서(기업, 버스트, 속성, …)를 따른다. */
+const AXES = ['burst', 'element'];
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -272,10 +272,10 @@ function listen(onData) {
 /* ── 화면 ─────────────────────────────────────────────────── */
 /* 아이콘 칩으로 거를 축. */
 export const CHIP_AXES = {
-  class: ['Attacker', 'Defender', 'Supporter'],
-  element: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'],
-  burst: ['Step1', 'Step2', 'Step3', 'AllStep'],
   corporation: ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'],
+  burst: ['Step1', 'Step2', 'Step3', 'AllStep'],
+  element: ['Fire', 'Water', 'Wind', 'Electronic', 'Iron'],
+  class: ['Attacker', 'Defender', 'Supporter'],
 };
 
 export function renderImport(root, ctx) {
@@ -512,7 +512,7 @@ export function renderImport(root, ctx) {
     return s;
   }
 
-  /* 등급·기업·속성·클래스·무기·버스트를 아이콘만으로. */
+  /* 버스트·속성을 아이콘만으로. */
   function icons(n) {
     const box = el('div', 'cp-rIcons');
     for (const axis of AXES) {
@@ -549,7 +549,7 @@ export function renderImport(root, ctx) {
   const collCell = c => badgeCell(collBadge(c, t));
   const bondCell = bond => badgeCell(bondBadge(bond, t));
 
-  /* 우공합 — 오버로드 옵션 종합 중 우코(우월코드 대미지) + 공증(공격력). */
+  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. */
   const OL_ATK = ['우코', '공증'];
   const pc = o => Math.round(o.total * 100);
   const olSum = ol => (ol && ol.length ? ol.reduce((a, o) => a + pc(o), 0) : null);
@@ -597,7 +597,7 @@ export function renderImport(root, ctx) {
     const cols = [
       { key: 'name', label: t('im.colNikke'), dir0: 1, val: r => r.name },
       { key: 'basic', label: t('im.colBasic'), dir0: 1,
-        val: r => rank('element', r.nikke.element) * 10 + rank('burst', r.nikke.burst) },
+        val: r => rank('burst', r.nikke.burst) * 10 + rank('element', r.nikke.element) },
       { key: 'grade', label: t('im.colGrade'), title: t('im.colGradeNote'),
         val: r => r.entry && gradeRank(r.entry.grade) },
       { key: 'coll', label: t('im.colColl'), title: t('cp.collection'),
