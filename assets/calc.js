@@ -5,7 +5,7 @@
    원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 — syncro_stat 하나가 500KB 다. */
 
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
-  K, SLOTS, olRows } from './cp.js';
+  K, SLOTS, olRows, olTotals, olPct, olLevelCls } from './cp.js';
 import { renderImport, OPTION_ALIAS, CHIP_AXES, badge, gradeBadge, collBadge, bondBadge,
   cubeBadge } from './roster.js';
 
@@ -212,44 +212,14 @@ function renderMargin(n) {
 }
 
 /* ── 오버로드 옵션 집계 ───────────────────────────────────────
-   표시 수치는 **퍼센트포인트 정수**로 맞춘다. */
-/* 옵션 단계를 인게임과 같은 색으로. */
-const olLevelCls = lv => (lv >= 15 ? ' is-lv15' : lv >= 12 ? ' is-lv12' : '');
-
-const round2 = v => Math.round(v * 100) / 100;   // 분수 2자리 = 퍼센트 정수
-const pct = v => Math.round(v * 100) + '%';
+   합치는 규칙은 cp.js 의 olTotals 하나가 정한다 — 차속·장탄만 단계 묶음 반올림, 나머지는 소수점까지. */
 /* hover 로는 원표 값을 그대로 보여준다 — 반올림 때문에 잃는 정보가 없게. */
 const pctExact = v => (v * 100).toFixed(2) + '%';
 
 function overloadTotals(gear) {
-  const byName = new Map();                       // 이름 -> Map(단계 -> 개수)
-  for (const g of gear || []) {
-    if (g.tier !== '오버로드') continue;
-    for (const o of g.options || []) {
-      if (!o.name || !o.level) continue;
-      if (!byName.has(o.name)) byName.set(o.name, new Map());
-      const lv = byName.get(o.name);
-      lv.set(o.level, (lv.get(o.level) || 0) + 1);
-    }
-  }
-
-  const out = [];
-  for (const [name, levels] of byName) {
-    let total = 0, steps = 0, exact = 0, top = 0, count_ = 0;
-    const parts = [];
-    for (const [level, count] of [...levels].sort((a, b) => b[0] - a[0])) {
-      const unit = T.optionValue.get(`${name}|${level}`) || 0;
-      total += round2(unit * count);              // 같은 단계는 합산 후 반올림
-      exact += unit * count;                      // 반올림 전 값 (hover 용)
-      steps += level * count;
-      top = Math.max(top, level);                 // 칩 색을 정하는 단계
-      count_ += count;
-      parts.push(count > 1 ? `Lv.${level}×${count}` : `Lv.${level}`);
-    }
-    out.push({ name, total: round2(total), exact, steps, top, count: count_,
-      parts: parts.join(' + ') });
-  }
-  return out.sort((a, b) => b.steps - a.steps);
+  const lines = (gear || []).filter(g => g.tier === '오버로드')
+    .flatMap(g => (g.options || []).map(o => ({ name: o.name, level: o.level })));
+  return olTotals(lines, (name, level) => T.optionValue.get(`${name}|${level}`));
 }
 
 function renderOverload(n) {
@@ -268,7 +238,7 @@ function renderOverload(n) {
     const name = el('span', 'cp-olName', `[${optionFullLabel(o.name, ctx.lang)}]`);
     // 몇 부위에 붙어 나온 합인지 — 같은 %라도 한 부위에 몰린 것과 다르다
     if (o.count > 1) name.appendChild(el('span', 'cp-olCount', ' ×' + o.count));
-    row.append(name, el('span', 'cp-olVal', pct(o.total)));
+    row.append(name, el('span', 'cp-olVal', olPct(o)));
     list.appendChild(row);
   }
   box.appendChild(list);

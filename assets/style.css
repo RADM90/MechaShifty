@@ -1036,8 +1036,11 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 
 /* ── 니파고 탭 (오버로드 옵션작 경로 추천) ──────────────────────
    색은 기존 토큰만 쓴다 — 영구 잠금 = 액센트, 락키 = amber, 목표 충족 = st-good, 미달 = st-warn.
-   배치: 상단 바(니케·입력 방식·재화) → 진행 칩 → [목표 | 다음 한 번 · 네 부위 · 기록]. */
-.npwrap { display: grid; gap: 15px; min-width: 0; }
+   옵션 단계 색은 계산기 탭과 같다 (.is-lv12 파랑 · .is-lv15 검정).
+   배치: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합] → 진행 칩
+        → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 오른쪽 아래 플로팅 리모컨. */
+/* 아래 여백은 플로팅 리모컨이 마지막 카드를 가리지 않게 */
+.npwrap { display: grid; gap: 15px; min-width: 0; padding-bottom: 120px; }
 .np-main {
   display: grid; grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
   gap: 15px; align-items: start;
@@ -1075,11 +1078,10 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-segb:hover { background: var(--hover); }
 .np-segb.on { background: var(--accent); color: var(--accent-ink); }
 .np-seg-s .np-segb { padding: 4.5px 10px; font-size: 13.5px; }
-.np-num, .np-text, .np-sel {
+.np-text, .np-sel {
   font: inherit; font-size: 15px; color: var(--ink); background: var(--bg-panel);
   border: 1px solid var(--line-strong); border-radius: var(--r-s); padding: 6.5px 9px; min-width: 0;
 }
-.np-num { width: 82px; font-variant-numeric: tabular-nums; }
 .np-text { width: 100%; }
 .np-sel { flex: 1; }
 .np-sel-s { flex: 0 1 auto; }
@@ -1101,25 +1103,81 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-stepi::-webkit-outer-spin-button, .np-stepi::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .np-stepi:focus { outline: 2px solid var(--accent); outline-offset: -2px; }
 
-/* 상단 바 */
-.np-bar {
-  display: grid; gap: 12.5px 20px; align-items: start;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) auto;
-}
-.np-field { display: grid; gap: 6px; min-width: 0; align-content: start; }
 .np-flbl { font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .03em; }
-.np-flbl small { font-weight: 400; letter-spacing: 0; }
-.np-facts { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
-.np-fact { display: inline-flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--ink-2); }
-.np-fact .np-num { width: 66px; padding: 4px 7px; font-size: 14px; }
+
+/* 니케 검색 — 계산기 목록의 검색 줄과 같은 모양 (검색창 + 아이콘 칩), 걸린 니케는 아래로 펼친다 */
+.np-search { padding-top: 12px; padding-bottom: 12px; }
+.np-sline { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+.np-sbox { position: relative; flex: 1 1 260px; min-width: 0; max-width: 420px; }
+.np-sq { padding: 7.5px 11px; }
+.np-slist {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 30;
+  max-height: 340px; overflow: auto; padding: 4px;
+  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r); box-shadow: var(--shadow);
+}
+.np-sitem {
+  width: 100%; display: flex; align-items: center; gap: 10px; padding: 6px 8px; cursor: pointer;
+  font: inherit; font-size: 14.5px; text-align: left; color: var(--ink);
+  background: none; border: 0; border-radius: var(--r-s);
+}
+.np-sitem.on, .np-sitem:hover { background: var(--hover); }
+.np-sitem.cur .np-sname { color: var(--accent); }
+.np-sname { flex: 1; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.np-sicons { display: inline-flex; gap: 4px; flex-shrink: 0; }
+.np-sicons .ic { height: 18px; margin: 0; }
+.np-snone { padding: 7px 9px; font-size: 13.5px; color: var(--ink-muted); }
+
+/* 데이터 | 현재 OL 종합 | 변경된 OL 종합 */
+.np-datarow { display: grid; gap: 15px; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.np-dblock { display: grid; gap: 5px; }
+.np-dblock + .np-dblock { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+.np-dttl { font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .03em; }
+.np-dgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); gap: 6px 10px; }
+.np-dcell { display: grid; gap: 1px; min-width: 0; }
+.np-dk { font-size: 12.5px; color: var(--ink-muted); white-space: nowrap; }
+.np-dv { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.np-dv small { display: block; font-size: 12px; font-weight: 400; color: var(--ink-muted); }
+.np-olsum .cp-olList { margin: 0; }
+.np-delta { font-size: 12px; font-weight: 700; margin-right: 6px; }
+.np-delta.up { color: var(--st-good); }
+.np-delta.down { color: var(--st-bad-ink); }
+/* 진한 바탕(15단계) 위에서도 읽히게 */
+.cp-olRow.is-lv15 .np-delta { color: inherit; opacity: .8; }
+.cp-olRow.np-gone { opacity: .55; }
+
 .np-cls {
   font-size: 12.5px; font-weight: 700; padding: 2.5px 9px; border-radius: 999px;
   background: var(--bg-raise); color: var(--ink-2); border: 1px solid var(--line-strong);
 }
 .np-cls-core, .np-cls-threshold { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .np-cls-none { background: var(--st-bad-bg); color: var(--st-bad-ink); border-color: var(--st-bad-line); }
-.np-spentv { display: flex; gap: 12px; font-size: 17px; font-variant-numeric: tabular-nums; }
-.np-spent .np-note { margin: 0; }
+
+/* 플로팅 리모컨 — 탐색 모드 · 재화 우선순위 · 재화 소모량. 결과 창(100)·상세 시트(60)보다 아래. */
+.np-remote {
+  position: fixed; right: 16px; bottom: 16px; z-index: 50; width: 300px; max-width: calc(100vw - 32px);
+  display: grid; gap: 10px; padding: 12px 14px;
+  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r); box-shadow: var(--shadow);
+}
+.np-remote.min { width: auto; padding: 8px 10px 8px 14px; }
+.np-rhead { display: flex; align-items: center; gap: 10px; }
+.np-rttl { flex: 1; font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .04em; }
+.np-rmini { display: inline-flex; gap: 10px; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.np-rtoggle {
+  width: 28px; height: 28px; cursor: pointer; font: inherit; font-size: 13px; line-height: 1;
+  background: var(--bg-raise); color: var(--ink-2); border: 1px solid var(--line-strong); border-radius: var(--r-s);
+}
+.np-rfield { display: grid; gap: 5px; }
+.np-rrow { display: flex; align-items: center; gap: 8px; font-size: 14.5px; flex-wrap: wrap; }
+.np-rpair { display: inline-flex; align-items: center; gap: 6px; flex: 1 1 auto; white-space: nowrap; }
+.np-rk { color: var(--ink-2); }
+.np-rrow b { font-size: 16px; font-variant-numeric: tabular-nums; min-width: 2.5ch; text-align: right; }
+.np-rreset {
+  white-space: nowrap; padding: 3px 10px; cursor: pointer; font: inherit; font-size: 12.5px; color: var(--ink-muted);
+  background: none; border: 1px solid var(--line-strong); border-radius: 999px;
+}
+.np-rreset:hover:not(:disabled) { color: var(--st-bad-ink); border-color: var(--st-bad-line); }
+.np-rreset:disabled { opacity: .4; cursor: default; }
+.np-rfield .np-note { margin: 0; font-size: 13px; }
 
 /* 진행 칩 */
 .np-progress { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -1131,7 +1189,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-pill.all { background: var(--st-good); color: var(--st-good-ink); font-weight: 700; }
 
 /* 목표 */
-.np-chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 6px; margin-bottom: 12px; }
+.np-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }
 .np-chip {
   display: grid; grid-template-columns: 14px minmax(0, 1fr);
   align-items: center; gap: 0 7px; padding: 8px 9px; cursor: pointer; min-width: 0;
@@ -1150,10 +1208,27 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
   border-radius: var(--r-s); padding: 8px 10px; background: var(--bg-raise);
 }
 .np-grow.ok { border-left-color: var(--st-good); }
-.np-ghead { display: flex; align-items: baseline; gap: 8px; min-width: 0; }
-.np-gname { flex: 1; min-width: 0; font-weight: 700; font-size: 15.5px; }
-.np-gprog { font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--ink-2); }
-.np-gprog.ok { color: var(--st-good); }
+.np-ghead { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.np-gname { min-width: 3em; font-weight: 700; font-size: 15.5px; }
+.np-gsp { flex: 1; }
+.np-ghead .np-stepb { width: 26px; height: 26px; }
+.np-ghead .np-stepi { width: 2.4em; height: 26px; }
+/* 목표 단계 배지 — 누르면 아래에 1~15 */
+.np-lvbadges { position: relative; display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.np-lvbadge, .np-lvopt {
+  min-width: 30px; height: 26px; padding: 0 6px; cursor: pointer; font: inherit; font-size: 13.5px; font-weight: 700;
+  font-variant-numeric: tabular-nums; color: var(--ink-2);
+  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r-s);
+}
+.np-lvbadge.open { outline: 2px solid var(--accent); outline-offset: 1px; }
+.np-lvpick {
+  position: absolute; left: 0; top: calc(100% + 5px); z-index: 25;
+  display: grid; grid-template-columns: repeat(5, 34px); gap: 4px; padding: 8px;
+  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r); box-shadow: var(--shadow);
+}
+.np-lvopt { min-width: 0; width: 34px; height: 30px; padding: 0; }
+.np-lvopt.on { outline: 2px solid var(--accent); outline-offset: 1px; }
+.np-lvopt:hover { filter: brightness(.94); }
 .np-gx {
   background: none; border: 0; cursor: pointer; color: var(--ink-muted); font-size: 14px; padding: 2px 4px;
 }
@@ -1168,9 +1243,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-explain small { color: var(--ink-muted); }
 .np-gctl .np-warn { flex-basis: 100%; margin: 0; }
-.np-tiers { flex-basis: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 6px 12px; }
-.np-tier { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; color: var(--ink-2); }
-.np-tiern { min-width: 3.2em; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
 .np-calcrow {
   display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px;
   margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line);
@@ -1294,12 +1366,20 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-lempty { flex: 1; }
 .np-lval { font-variant-numeric: tabular-nums; flex: 1 0 auto; white-space: nowrap; }
 .np-lsp { margin-left: auto; font-size: 12.5px; }
-.np-lvb { font-size: 11.5px; font-weight: 700; padding: 1.5px 5.5px; border-radius: 4px; flex-shrink: 0; }
-.lvb-1 { background: var(--track); color: var(--ink-muted); }
-.lvb-2 { background: var(--bg-raise); border: 1px solid var(--line-strong); color: var(--ink-2); }
-.lvb-3 { background: var(--st-warn); color: var(--st-warn-ink); }
-.lvb-4 { background: var(--st-warn); color: var(--series-1); }
-.lvb-5 { background: var(--ink); color: var(--tip-accent); }
+.np-lvb {
+  font-size: 11.5px; font-weight: 700; padding: 1px 5.5px; border-radius: 4px; flex-shrink: 0;
+  background: var(--track); color: var(--ink-muted); border: 1px solid transparent;
+}
+/* 옵션 단계 색 — 계산기 탭(.cp-olRow/.cp-olCell)과 같은 토큰. 줄 칸은 왼쪽 띠가 목표 충족을 뜻하므로 배경·글자만 바꾼다. */
+.np-line.is-lv12, .np-ovslot.is-lv12 { background: var(--ol-hi-bg); color: var(--ol-hi); }
+.np-line.is-lv15, .np-ovslot.is-lv15 { background: var(--ol-max-bg); color: var(--ol-max-ink); }
+.np-line.is-lv12 .np-lopt, .np-line.is-lv15 .np-lopt { color: inherit; }
+.np-lvb.is-lv12, .np-lvbadge.is-lv12, .np-lvopt.is-lv12, .np-gval.is-lv12 {
+  background: var(--ol-hi-bg); border-color: var(--ol-hi); color: var(--ol-hi);
+}
+.np-lvb.is-lv15, .np-lvbadge.is-lv15, .np-lvopt.is-lv15, .np-gval.is-lv15 {
+  background: var(--ol-max-bg); border-color: var(--ol-max-bg); color: var(--ol-max-ink);
+}
 .np-lock { font-size: 12.5px; flex-shrink: 0; }
 .np-ptag { font-size: 11.5px; font-weight: 700; padding: 1.5px 7px; border-radius: 999px; flex-shrink: 0; margin-left: auto; }
 .np-ptag-perm { background: var(--accent); color: var(--accent-ink); }
@@ -1365,8 +1445,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
   padding: 7px 9px; border-radius: var(--r-s); background: var(--bg-raise); font-size: 14.5px;
 }
 .np-ovslot.empty { color: var(--ink-muted); }
-.np-ovslot.blue { box-shadow: inset 3px 0 0 var(--series-1); }
-.np-ovslot.black { box-shadow: inset 3px 0 0 var(--ink); }
 .np-ovslot.good { background: rgba(10, 125, 10, .1); }
 .np-ovval { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
 .np-form { display: grid; gap: 6px; align-content: start; }
@@ -1394,14 +1472,18 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-modalfoot { padding: 8px 16px 12px; margin: 0; font-size: 12.5px; }
 
 @media (max-width: 1240px) {
-  .np-bar { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .np-datarow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .np-datarow > .np-data { grid-column: 1 / -1; }
 }
 @media (max-width: 1050px) {
   .np-main { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
-  .np-bar { grid-template-columns: minmax(0, 1fr); }
+  .np-datarow { grid-template-columns: minmax(0, 1fr); }
   .np-card { padding: 12px 13px; }
+  /* 좁은 화면 — 리모컨은 아래쪽 전폭 */
+  .np-remote { left: 8px; right: 8px; bottom: 8px; width: auto; max-width: none; }
+  .np-remote.min { left: auto; }
   .np-dl { grid-template-columns: minmax(0, 1fr); gap: 0 0; }
   .np-dl dd { margin-bottom: 6px; }
   .np-side + .np-side { border-left: 0; border-top: 1px solid var(--line); }

@@ -245,6 +245,23 @@ function restore() {
   } catch { return null; }
 }
 
+/* 옵션작 탭이 '현재 장비'로 쓴다 — 불러온 계정에서 그 니케의 네 부위를 찾는다. 없으면 null.
+   계정 자료는 크지 않지만 탭을 그릴 때마다 읽지 않게, 저장된 문자열이 같으면 지난번 결과를 쓴다. */
+let rosterCache = { raw: null, data: null };
+export function rosterGearFor(nikke) {
+  if (!nikke || !nikke.name_code) return null;
+  let raw = null;
+  try { raw = localStorage.getItem(STORE); } catch { return null; }
+  if (!raw) return null;
+  if (rosterCache.raw !== raw) {
+    let data = null;
+    try { data = parseRoster(raw); } catch { data = null; }
+    rosterCache = { raw, data };
+  }
+  const e = rosterCache.data && rosterCache.data.nikkes.find(x => x.name_code === nikke.name_code);
+  return e ? e.gear.map(g => ({ ...g, options: g.options.map(o => ({ ...o })) })) : null;
+}
+
 /* ── 탭 간 수신 ───────────────────────────────────────────────
    수집 스크립트가 이 페이지를 열면, 우리가 준비됐다고 알린 뒤 답신을 받는다. */
 let listening = false;
@@ -549,16 +566,16 @@ export function renderImport(root, ctx) {
   const collCell = c => badgeCell(collBadge(c, t));
   const bondCell = bond => badgeCell(bondBadge(bond, t));
 
-  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. */
+  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. 둘 다 반올림 없이 소수점까지 더한다 (cp.js olTotals). */
   const OL_ATK = ['우코', '공증'];
-  const pc = o => Math.round(o.total * 100);
+  const pc = o => o.total * 100;
   const olSum = ol => (ol && ol.length ? ol.reduce((a, o) => a + pc(o), 0) : null);
   function olAtkCell(ol) {
     const td = el('td', 'num cp-rOlAtk');
     const v = olSum(ol);
     if (v == null) { td.textContent = '–'; return td; }
-    td.textContent = v + '%';
-    td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o)}%`).join(' + ');
+    td.textContent = v.toFixed(2) + '%';
+    td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o).toFixed(2)}%`).join(' + ');
     return td;
   }
 

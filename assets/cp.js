@@ -98,6 +98,48 @@ const OPTION_FULL = {
 export const optionFullLabel = (name, lang) =>
   (OPTION_FULL[lang] || OPTION_FULL.ko)[name] || optionLabel(name, lang);
 
+/* ── 오버로드 옵션 종합 ─────────────────────────────────────────
+   계산기 탭과 옵션작 탭이 같은 규칙으로 합친다.
+   차속·장탄만 같은 단계끼리 먼저 더해 정수 % 로 반올림한 뒤 더한다 (nipago/effective.js 의 % 모델과 같다).
+   나머지 옵션은 원표 값을 소수점까지 그대로 더한다. */
+export const OL_ROUNDED = ['차속', '장탄'];
+
+/* 옵션 단계를 인게임과 같은 색으로 — 12~14 파랑, 15 검정. */
+export const olLevelCls = lv => (lv >= 15 ? ' is-lv15' : lv >= 12 ? ' is-lv12' : '');
+
+/* lines: [{name, level}], valueOf(name, level) -> 분수(0.0485 = 4.85%).
+   반올림 경계가 이진 소수 오차로 흔들리지 않게 basis point(1/100 %) 정수로 더한다. */
+export function olTotals(lines, valueOf) {
+  const byName = new Map();                       // 이름 -> Map(단계 -> 개수)
+  for (const o of lines || []) {
+    if (!o || !o.name || !o.level) continue;
+    if (!byName.has(o.name)) byName.set(o.name, new Map());
+    const lv = byName.get(o.name);
+    lv.set(o.level, (lv.get(o.level) || 0) + 1);
+  }
+  const out = [];
+  for (const [name, levels] of byName) {
+    const rounded = OL_ROUNDED.includes(name);
+    let bp = 0, exactBp = 0, steps = 0, top = 0, count = 0;
+    const parts = [];
+    for (const [level, n] of [...levels].sort((a, b) => b[0] - a[0])) {
+      const raw = Math.round((valueOf(name, level) || 0) * 10000) * n;
+      exactBp += raw;
+      bp += rounded ? Math.floor((2 * raw + 100) / 200) * 100 : raw;   // 묶음마다 정수 % 로
+      steps += level * n;
+      top = Math.max(top, level);
+      count += n;
+      parts.push(n > 1 ? `Lv.${level}×${n}` : `Lv.${level}`);
+    }
+    out.push({ name, total: bp / 10000, exact: exactBp / 10000, steps, top, count, rounded,
+      parts: parts.join(' + ') });
+  }
+  return out.sort((a, b) => b.steps - a.steps);
+}
+
+/* 차속·장탄은 정수 %, 나머지는 소수 2자리. */
+export const olPct = o => (o.rounded ? Math.round(o.total * 100) + '%' : (o.total * 100).toFixed(2) + '%');
+
 /* 돌파·코강 등급과 장비 등급도 데이터 키가 한국어 문자열이다('3돌'·'오버로드'). */
 export function gradeLabel(key, t) {
   const core = /^([1-7])코강$/.exec(key);

@@ -430,15 +430,27 @@ const STR = {
   'np.loading': ['옵션 표를 불러오는 중…', 'Loading option tables…', 'OP表を読み込み中…'],
 
   'np.nikke': ['니케', 'Nikke', 'ニケ'],
-  'np.nikkePh': ['이름으로 찾기 (선택)', 'Search by name (optional)', '名前で検索 (任意)'],
-  'np.baseAmmo': ['기본 장탄', 'Base ammo', '基本装弾数'],
-  'np.chargeTime': ['차지 시간(초)', 'Charge time (s)', 'チャージ時間(秒)'],
-  'np.cls_core': ['차속 핵심', 'Charge speed: core', 'チャージ速度: 主力'],
-  'np.cls_threshold': ['차속 임계치', 'Charge speed: threshold', 'チャージ速度: 閾値'],
-  'np.cls_conditional': ['차속 조건부', 'Charge speed: conditional', 'チャージ速度: 条件付き'],
-  'np.cls_support': ['차속 보조', 'Charge speed: secondary', 'チャージ速度: 補助'],
-  'np.cls_none': ['차속 비적용', 'Charge speed: no effect', 'チャージ速度: 無効'],
-  'np.cls_unk': ['차속 미확인', 'Charge speed: unverified', 'チャージ速度: 未確認'],
+  'np.searchNone': ['찾는 니케가 없습니다', 'No matching Nikke', '該当するニケがいません'],
+  'np.searchMore': [n => `외 ${n}명 — 검색어를 더 입력하세요`, n => `${n} more — keep typing`, n => `他${n}人 — さらに入力してください`],
+  /* 데이터 카드 — 기본은 니케 자료(data/weapons.json), 옵션은 지금 장비의 실효값 */
+  'np.data': ['데이터', 'Data', 'データ'],
+  'np.dataBase': ['기본', 'Base', '基本'],
+  'np.dataOpt': ['옵션', 'With OL', 'OP込み'],
+  'np.dAmmo': ['장탄 수', 'Ammo', '装弾数'],
+  'np.dCharge': ['차지 시간', 'Charge time', 'チャージ時間'],
+  'np.dChargeCls': ['차속 핵심', 'Charge speed', 'チャージ速度'],
+  'np.dElem': ['우월코드', 'Elem.DMG', '有利コード'],
+  'np.dAtk': ['공격력', 'ATK', '攻撃力'],
+  'np.clsS_core': ['핵심', 'Core', '主力'],
+  'np.clsS_threshold': ['임계치', 'Threshold', '閾値'],
+  'np.clsS_conditional': ['조건부', 'Conditional', '条件付き'],
+  'np.clsS_support': ['보조', 'Secondary', '補助'],
+  'np.clsS_unk': ['미확인', 'Unverified', '未確認'],
+  'np.olNow': ['현재 오버로드 옵션 종합', 'Overload options — now', '現在のオーバーロードOP 合計'],
+  'np.olChanged': ['변경된 오버로드 옵션 종합', 'Overload options — changed', '変更後のオーバーロードOP 合計'],
+  'np.olFromAcct': ['계정 자료', 'account data', 'アカウントデータ'],
+  'np.olFromStart': ['첫 실행 전', 'before the first roll', '初回実行前'],
+  'np.olSame': ['현재와 같음', 'Same as now', '現在と同じ'],
   'np.clsSrc': [s => `2026-11-06 확인 · 출처 ${s}`, s => `Checked 2026-11-06 · source ${s}`, s => `2026-11-06確認・出典 ${s}`],
   'np.clsUnkHint': [
     '차속 예외표에 없는 니케입니다. 차속이 실제로 적용되는지 직접 확인하세요.',
@@ -447,7 +459,7 @@ const STR = {
   ],
   'np.chargeNone': ['이 니케는 OL 차속이 적용되지 않습니다', 'OL charge speed does not apply to this Nikke', 'このニケにはOLチャージ速度が効きません'],
 
-  'np.source': ['결과 입력', 'Results', '結果入力'],
+  'np.source': ['탐색 모드', 'Mode', '探索モード'],
   'np.srcSim': ['시뮬레이션', 'Simulate', 'シミュレーション'],
   'np.srcSimHint': ['무작위로 굴려 봅니다', 'Roll at random here', 'ここでランダムに抽選します'],
   'np.srcReal': ['실전 기록', 'Log real rolls', '実戦記録'],
@@ -459,7 +471,14 @@ const STR = {
   'np.prefHint_mod': ['락키 100개 = 모듈 1개로 계산 (λ 0.01)', 'Counts 100 keys as 1 module (λ 0.01)', 'ロックキー100個 = カスモ1個で計算 (λ 0.01)'],
   'np.prefHint_balanced': ['락키 10개 = 모듈 1개로 계산 (λ 0.1)', 'Counts 10 keys as 1 module (λ 0.1)', 'ロックキー10個 = カスモ1個で計算 (λ 0.1)'],
   'np.prefHint_key': ['락키를 쓰지 않는 경로만', 'Only paths that use no lock keys', 'ロックキーを使わない経路のみ'],
-  'np.spent': ['누적 소모', 'Spent', '累計消費'],
+  'np.spent': ['재화 소모량', 'Spent', '消費量'],
+  'np.mod': ['모듈', 'Modules', 'カスモ'],
+  'np.key': ['락키', 'Lock keys', 'ロックキー'],
+  'np.reset': ['초기화', 'Reset', 'リセット'],
+  'np.resetOf': [x => `${x} 소모량을 0으로`, x => `Reset ${x} spent to 0`, x => `${x}の消費を0に`],
+  'np.remote': ['옵션작 설정', 'Roll settings', 'OP厳選設定'],
+  'np.remoteMin': ['접기', 'Collapse', 'たたむ'],
+  'np.remoteMax': ['펼치기', 'Expand', '開く'],
   'np.tries': [n => `${n}회 시도`, n => `${n} tries`, n => `${n}回`],
 
   'np.goals': ['목표', 'Target', '目標'],
@@ -488,8 +507,17 @@ const STR = {
   // 실효값 뒤에 붙는 장탄 단위 (+9발)
   'np.shot': ['발', ' shots', '発'],
   'np.unitCs': ['× 0.01초 단축', '× 0.01 s cut', '× 0.01秒短縮'],
-  'np.needAmmo': ['기본 장탄을 입력해야 계산할 수 있습니다.', 'Enter the base ammo first.', '基本装弾数を入力してください。'],
-  'np.needCharge': ['차지 시간을 입력해야 계산할 수 있습니다.', 'Enter the charge time first.', 'チャージ時間を入力してください。'],
+  'np.needAmmo': [
+    '기본 장탄 자료가 없어 실효값을 계산할 수 없습니다. 위에서 니케를 고르세요.',
+    'No base ammo data, so the effective value can’t be worked out. Pick a Nikke above.',
+    '基本装弾数のデータがないため実効値を計算できません。上でニケを選んでください。',
+  ],
+  'np.needCharge': [
+    '차지 시간 자료가 없어 실효값을 계산할 수 없습니다. 위에서 니케를 고르세요.',
+    'No charge time data, so the effective value can’t be worked out. Pick a Nikke above.',
+    'チャージ時間のデータがないため実効値を計算できません。上でニケを選んでください。',
+  ],
+  'np.pickLv': [n => `${n}번째 줄 목표 단계`, n => `Target tier for line #${n}`, n => `${n}本目の目標段階`],
   'np.effNone': ['아직 해당 옵션이 없습니다', 'None of this option yet', 'まだこのOPがありません'],
   'np.effShown': [x => `표시 합계 ${x}`, x => `displayed sum ${x}`, x => `表示合計 ${x}`],
   'np.keepFloor': [
@@ -519,7 +547,7 @@ const STR = {
     (a, b) => `${a} piece tables came precomputed; ${b} were solved here.`,
     (a, b) => `部位表${a}個は事前計算を使用、${b}個はここで計算しました。`,
   ],
-  'np.next': ['다음 한 번', 'Next roll', '次の1回'],
+  'np.next': ['계산하기', 'Calculate', '計算する'],
   'np.computing': ['계산 중…', 'Computing…', '計算中…'],
   'np.computingLong': ['경로를 계산하는 중입니다. 목표가 많으면 몇 초 걸립니다.', 'Working out the path. A few seconds with many targets.', '経路を計算中です。目標が多いと数秒かかります。'],
   'np.st_err': ['계산 오류', 'Calculation error', '計算エラー'],
@@ -580,7 +608,7 @@ const STR = {
   'np.firstIncl': ['최초 개조 포함', 'incl. first overload', '初回OL含む'],
   'np.lineN': [n => `${n}번 줄`, n => `Line ${n}`, n => JA_SLOT(n)],
 
-  'np.gear': ['장비 네 부위', 'Four gear pieces', '装備4部位'],
+  'np.gear': ['오버로드 옵션', 'Overload options', 'オーバーロードOP'],
   'np.gearHint': [
     '줄을 누르면 옵션·단계를 고칩니다. 잠금은 모두 풀린 상태로 시작하니, 원래 영구 잠금이 걸려 있던 줄만 🔓 를 눌러 🔒 로 바꾸세요.',
     'Tap a line to edit its option and tier. Every line starts unlocked — tap 🔓 on any line that is already perma-locked in game.',
@@ -1949,7 +1977,8 @@ function render() {
 
   if (state.tab === 'nipago') {
     writeHash();
-    import('./nipago.js').then(m => m.renderNipago($('#nipago'), { t, L, lang: lang(), nikkes: D.nikkes }));
+    import('./nipago.js').then(m => m.renderNipago($('#nipago'),
+      { t, L, lang: lang(), nikkes: D.nikkes, nikkeMatcher, iconEl, AXES }));
     return;
   }
   if (state.tab === 'intercept') {
