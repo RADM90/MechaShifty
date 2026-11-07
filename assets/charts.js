@@ -1,4 +1,4 @@
-/* 통계 탭 — 라이브러리 없이 HTML/SVG 로 직접 그린다.
+/* 통계 탭 - 라이브러리 없이 HTML/SVG 로 직접 그린다.
  *
  * 색 규칙 (dataviz):
  *  - 분포 막대는 단일 시리즈라 한 가지 색(--series-1)만 쓴다.
@@ -118,7 +118,7 @@ function axisHead(tag, axis, code, text, cls) {
 }
 
 /* ── 교차 히트맵 ──────────────────────────────────────────── */
-/* 합계는 칸으로 만들지 않는다 — 줄 끝·열 아래에 색 없는 숫자만 붙이고, 램프 최댓값에도 넣지 않는다. */
+/* 합계는 칸으로 만들지 않는다 - 줄 끝·열 아래에 색 없는 숫자만 붙이고, 램프 최댓값에도 넣지 않는다. */
 function heatmap(rowKeys, colKeys, cellOf, labelRow, labelCol, rowAxis, colAxis) {
   const grid = rowKeys.map(r => colKeys.map(c => cellOf(r, c)));
   const max = Math.max(1, ...grid.flat());
@@ -200,7 +200,7 @@ function columnChart(points, fmtTip, avail) {
   const slot = iw / n;
   const bw = Math.max(4, Math.min(48, slot - 4));
 
-  // 눈금은 정수 간격 4칸 — 최댓값이 작을 때 0,1,1,2,2 처럼 겹치지 않게 간격부터 정한다.
+  // 눈금은 정수 간격 4칸 - 최댓값이 작을 때 0,1,1,2,2 처럼 겹치지 않게 간격부터 정한다.
   const rawMax = Math.max(1, ...points.map(p => p.value));
   const stepV = Math.ceil(rawMax / 4);
   const top = stepV * 4;
@@ -249,7 +249,7 @@ function columnChart(points, fmtTip, avail) {
   return svg;
 }
 
-/* 출시 추이 기간 단위 — 보는 사람별 편의 설정이라 브라우저에만 둔다. */
+/* 출시 추이 기간 단위 - 보는 사람별 편의 설정이라 브라우저에만 둔다. */
 const TREND_STORE = 'stats.trendPeriod';
 const PERIODS = { month: 1, quarter: 3, half: 6, year: 12 };
 let trendPeriod = (() => {
@@ -257,7 +257,7 @@ let trendPeriod = (() => {
   return 'quarter';
 })();
 
-/* 서비스 시작일에 같이 풀린 니케 — 출시 추이에 넣으면 첫 칸 하나가 나머지를 눌러 버린다. */
+/* 서비스 시작일에 같이 풀린 니케 - 출시 추이에 넣으면 첫 칸 하나가 나머지를 눌러 버린다. */
 const LAUNCH_DATE = '2022-11-04';
 
 function trendPoints(dated, period) {
@@ -343,7 +343,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
     cards.appendChild(c);
   }
 
-  /* 2. 교차표 — 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. 다섯 축의 모든 짝(10개). */
+  /* 2. 교차표 - 스쿼드 TOP 바로 뒤에 같은 폭으로 세운다. 다섯 축의 모든 짝(10개). */
   {
     const crossAxes = ['corporation', 'element', 'class', 'weapon_type', 'burst'];
     for (let i = 0; i < crossAxes.length; i++) {
@@ -396,7 +396,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
       };
       paintSeg();
       c.append(seg, box);
-      // 탭이 숨어 있으면 폭이 0 이라 그리지 못한다 — 보이는 순간 관찰자가 다시 부른다.
+      // 탭이 숨어 있으면 폭이 0 이라 그리지 못한다 - 보이는 순간 관찰자가 다시 부른다.
       const ro = new ResizeObserver(() => draw(false));
       ro.observe(box);
       observers.push(ro);
@@ -422,9 +422,9 @@ export function renderStats(root, nikkes, pickups, ctx) {
     c.appendChild(barList(items, pickups.length));
     cards.appendChild(c);
   }
-  /* 진행 상태 카드는 두지 않는다 — 배너 대부분이 종료라 '종료 ≈ 100%' 만 보여 준다. */
+  /* 진행 상태 카드는 두지 않는다 - 배너 대부분이 종료라 '종료 ≈ 100%' 만 보여 준다. */
 
-  /* 5. 복각 주기 — 같은 니케의 바로 앞 픽업(최초든 복각이든) 시작일부터 잰다.
+  /* 5. 복각 주기 - 같은 니케의 바로 앞 픽업(최초든 복각이든) 시작일부터 잰다.
    앞 픽업은 필터와 무관하게 전체 배너에서 찾는다 (예: '복각만' 필터에서도 간격이 나와야 한다). */
   {
     const MONTH = 86400000 * 30.44;
@@ -439,7 +439,7 @@ export function renderStats(root, nikkes, pickups, ctx) {
       }
       if (prev) gaps.push(Math.round((p._start - prev._start) / MONTH));
     }
-    // 3개월 단위로 서비스 기간 전체를 덮는다 — 서비스가 길어지면 칸이 저절로 늘어난다.
+    // 3개월 단위로 서비스 기간 전체를 덮는다 - 서비스가 길어지면 칸이 저절로 늘어난다.
     const cap = Math.max(3, Math.ceil((Date.now() - first) / MONTH / 3) * 3);
     const nb = cap / 3;
     const binOf = g => Math.min(nb - 1, Math.floor(g / 3));

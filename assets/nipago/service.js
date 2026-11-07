@@ -1,4 +1,4 @@
-/* 니파고 — 추천 한 건을 만든다 (명세 24.3).
+/* 니파고 - 추천 한 건을 만든다 (명세 24.3).
    worker.js 와 워커를 못 쓰는 환경의 화면 쪽 대체 경로가 같이 쓴다. DOM 없음.
 
    부위 표는 data/nipago/policies.bin 의 미리 푼 정책을 받아 평가만 한다 (tables.js).
@@ -21,7 +21,7 @@ export function createService(option, glossary, { base = null, fetchBytes = null
     return r.ok ? new Uint8Array(await r.arrayBuffer()) : null;
   });
 
-  /* 미리 푼 정책 파일 — 해시가 맞을 때만 큰 파일을 받는다. 실패하면 직접 계산한다. */
+  /* 미리 푼 정책 파일 - 해시가 맞을 때만 큰 파일을 받는다. 실패하면 직접 계산한다. */
   function ensure() {
     if (!loading) {
       loading = (async () => {
@@ -51,7 +51,7 @@ export function createService(option, glossary, { base = null, fetchBytes = null
     if (isDone(prog)) return { ...base, status: 'done' };
     await ensure();
 
-    /* 재화 우선순위별 정책 — 모듈 절약 / 균형 / 락키 미사용 */
+    /* 재화 우선순위별 정책 - 모듈 절약 / 균형 / 락키 미사용 */
     const alts = {};
     for (const pref of PREFS) {
       const n = P.next(st, pref);

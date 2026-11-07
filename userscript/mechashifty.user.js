@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name         MechaShifty — 내 니케 데이터 내보내기
-// @name:en      MechaShifty — Export my Nikke roster
-// @name:ja      MechaShifty — 所持ニケデータの書き出し
+// @name         MechaShifty - 내 니케 데이터 내보내기
+// @name:en      MechaShifty - Export my Nikke roster
+// @name:ja      MechaShifty - 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.5.0
+// @version      1.5.1
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -20,7 +20,7 @@
 // ==/UserScript==
 
 /* ─────────────────────────────────────────────────────────────────────────────
- * 한국어 — 이 스크립트가 하는 일과 하지 않는 일.
+ * 한국어 - 이 스크립트가 하는 일과 하지 않는 일.
  */
 
 (function () {
@@ -31,7 +31,7 @@
   const LANGS = ['ko', 'en', 'ja'];
   const LANG_KEY = 'mechashifty.lang';
 
-  /* 브라우저가 내놓는 언어 목록의 '순서'는 UI 언어와 별개다 — 크롬 설정에서 영어가 한국어보다 위에 있으면 화면이
+  /* 브라우저가 내놓는 언어 목록의 '순서'는 UI 언어와 별개다 - 크롬 설정에서 영어가 한국어보다 위에 있으면 화면이
      한글이어도 en-US 가 먼저 온다. */
   function detectLang() {
     const want = navigator.languages && navigator.languages.length
@@ -95,7 +95,7 @@
     ],
     errArea: [
       '게임 서버를 찾지 못했습니다. 계정 공개 설정을 확인해 주세요.',
-      'Could not find your game server — check that your account is set to public.',
+      'Could not find your game server - check that your account is set to public.',
       'ゲームサーバーが見つかりません。アカウントの公開設定を確認してください。',
     ],
     errScrub: [
@@ -103,7 +103,7 @@
       'Stopped: an account identifier was still present in the data to export.',
       '書き出すデータにアカウント識別子が残っていたため中止しました。',
     ],
-    /* 인자로 STR 키가 들어온다 — 언어를 바꿨을 때 안쪽 사유까지 같이 바뀌게. */
+    /* 인자로 STR 키가 들어온다 - 언어를 바꿨을 때 안쪽 사유까지 같이 바뀌게. */
     failed: [e => `실패: ${S(e)}`, e => `Failed: ${S(e)}`, e => `失敗: ${S(e)}`],
 
     done: [
@@ -126,7 +126,7 @@
     ],
     errCopy: [
       '복사에 실패했습니다. 파일 저장을 써 주세요.',
-      'Copy failed — use the file option instead.',
+      'Copy failed - use the file option instead.',
       'コピーに失敗しました。ファイル保存をご利用ください。',
     ],
 
@@ -142,7 +142,7 @@
     ],
     sent: [
       'MechaShifty 로 보냈습니다. 열린 탭에서 확인하세요.',
-      'Sent to MechaShifty — check the tab that just opened.',
+      'Sent to MechaShifty - check the tab that just opened.',
       'MechaShifty へ送りました。開いたタブで確認してください。',
     ],
     noReply: [
@@ -156,7 +156,7 @@
         + '싱크로 레벨, 계정 생성 시각, 캠페인 진행도, 타워 층수. 계산기가 쓰지 않는 값(닉네임·서버·계정 식별자)은 담기지 않습니다.',
       'Included: per-Nikke level, limit break, skills, gear, cube, collection and bond; '
         + 'outpost research levels; synchro level; account creation time; campaign progress; tower floors. '
-        + 'Anything the calculator does not use — nickname, server, account identifiers — is not included.',
+        + 'Anything the calculator does not use - nickname, server, account identifiers - is not included.',
       '含まれる値: ニケごとのレベル・凸・スキル・装備・キューブ・コレクション・好感度、'
         + '前哨基地の研究レベル、シンクロレベル、アカウント作成時刻、キャンペーン進行度、タワーの階数。計算機が使わない値'
         + '（ニックネーム・サーバー・アカウント識別子）は含まれません。',
@@ -170,7 +170,7 @@
     return typeof v === 'function' ? v(...args) : v;
   };
 
-  /* 전투력 계산기 탭으로 바로 열어야 한다 — 받는 쪽 코드가 그 탭에서 뜬다. */
+  /* 전투력 계산기 탭으로 바로 열어야 한다 - 받는 쪽 코드가 그 탭에서 뜬다. */
   const SITE = 'https://radm90.github.io/MechaShifty/#tab=calc';
   const SITE_ORIGIN = 'https://radm90.github.io';
   const SCHEMA = 'mechashifty.roster/2';
@@ -224,7 +224,7 @@
     return m ? m[1] : null;
   }
 
-  /* 서버 탐색. 캐릭터 목록 호출을 그대로 재활용한다 — 어차피 다음 단계에서 쓸 응답이고, 특정 니케 번호를 상수로 박아
+  /* 서버 탐색. 캐릭터 목록 호출을 그대로 재활용한다 - 어차피 다음 단계에서 쓸 응답이고, 특정 니케 번호를 상수로 박아
      두지 않아도 된다. */
   async function findArea(openId) {
     for (const area of Object.keys(AREAS)) {
@@ -270,7 +270,7 @@
     return null;
   }
 
-  /* 계정 생성 시각·캠페인 진행도·타워 층수는 같은 응답에서 온다 — 한 번만 부른다. */
+  /* 계정 생성 시각·캠페인 진행도·타워 층수는 같은 응답에서 온다 - 한 번만 부른다. */
   const TOWER_KEYS = ['elysion', 'missilis', 'tetra', 'pilgrim', 'tribe'];
   async function basicInfo(openId, area) {
     try {
@@ -313,7 +313,7 @@
     return SLOTS.map(([api, slot]) => {
       const tid = num(d[`${api}_equip_tid`]);
       const options = [];
-      /* 빈 칸은 건너뛰되 몇 번째 칸이었는지는 pos 로 남긴다 — 계산기가 인게임과 같은 자리에 그린다. */
+      /* 빈 칸은 건너뛰되 몇 번째 칸이었는지는 pos 로 남긴다 - 계산기가 인게임과 같은 자리에 그린다. */
       for (let i = 1; i <= 3; i++) {
         const id = String(num(d[`${api}_equip_option${i}_id`]) || '');
         if (id.length !== 7) continue;
@@ -375,7 +375,7 @@
   /* 결과물에 계정 식별자가 섞이지 않게 하는 마지막 관문. */
   function scrub(payload) {
     const json = JSON.stringify(payload);
-    /* 던지는 값은 문구가 아니라 STR 키다 — 창의 언어를 바꿔도 다시 그려지도록. */
+    /* 던지는 값은 문구가 아니라 STR 키다 - 창의 언어를 바꿔도 다시 그려지도록. */
     if (/intl_open_?id|open_?id|cookie|session|token/i.test(json)) {
       throw new Error('errScrub');
     }

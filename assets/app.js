@@ -92,14 +92,14 @@ const STR = {
     'クリックで計算式と HP・攻撃力・防御力を表示',
   ],
   'cp.close': ['닫기', 'Close', '閉じる'],
-  'cp.olTotal': ['오버로드 옵션 종합', 'Overload options — total', 'オーバーロードOP 合計'],
+  'cp.olTotal': ['오버로드 옵션 종합', 'Overload options - total', 'オーバーロードOP 合計'],
   'cp.olBySlot': ['장비별 오버로드 옵션', 'Overload options by slot', '装備別オーバーロードOP'],
   'cp.olExact': [
     v => `반올림 전 ${v}`,
     v => `${v} before rounding`,
     v => `四捨五入前 ${v}`,
   ],
-  // 부위별 표의 빈 칸 — 오버로드인데 그 자리에 옵션이 안 붙은 경우 (인게임 표기)
+  // 부위별 표의 빈 칸 - 오버로드인데 그 자리에 옵션이 안 붙은 경우 (인게임 표기)
   'cp.olNoEffect': ['효과 없음', 'No effect', '効果なし'],
   'cp.olNone': [
     '오버로드 장비가 없습니다.',
@@ -123,8 +123,8 @@ const STR = {
   'cp.margin': ['1단계당 전투력 증가', 'CP gain per step', '1段階あたりの戦闘力増加'],
   'cp.marginHint': [
     '돌파·코어강화는 다음 단계, 콘솔은 1레벨, 오버로드 옵션은 1단계 올렸을 때 늘어나는 전투력입니다.',
-    'How much CP the next limit break / core enhance step — or one more console level, '
-      + 'or one more overload option step — adds.',
+    'How much CP the next limit break / core enhance step - or one more console level, '
+      + 'or one more overload option step - adds.',
     '凸・コア強化は次の段階、コンソールは1レベル、オーバーロードOPは1段階上げたときに増える戦闘力です。',
   ],
   'cp.marginWhat': ['항목', 'Item', '項目'],
@@ -133,7 +133,7 @@ const STR = {
   // 마지막 단계(3돌 · 7코강)에서는 더 올릴 수 없으니 빈칸이 아니라 0 이다
   'cp.marginMaxed': [
     '이미 마지막 단계라 더 올릴 수 없습니다.',
-    'Already at the last step — nothing more to raise.',
+    'Already at the last step - nothing more to raise.',
     'すでに最終段階のため、これ以上は上げられません。',
   ],
   'cp.marginLocked': [
@@ -141,7 +141,7 @@ const STR = {
     'Core enhance opens once limit break is maxed.',
     'コア強化は最大凸から解放されます。',
   ],
-  // 돌파 한계는 등급이 가른다 — SR 은 2돌까지, R 은 돌파가 없고, 코강은 SSR 전용
+  // 돌파 한계는 등급이 가른다 - SR 은 2돌까지, R 은 돌파가 없고, 코강은 SSR 전용
   'cp.marginNoBreak': [
     'R 등급 니케는 돌파가 없습니다.',
     'R Nikkes have no limit break.',
@@ -159,7 +159,7 @@ const STR = {
   'cp.cp': ['전투력', 'CP', '戦闘力'],
   'cp.noBase': [
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',
-    'No base stats available for this combination — check rarity, class and level.',
+    'No base stats available for this combination - check rarity, class and level.',
     'この組み合わせの基本ステータス資料がありません（等級・クラス・レベルを確認してください）。',
   ],
 
@@ -172,7 +172,7 @@ const STR = {
     'Blablalink から書き出した自分のニケデータを読み込むと、所持ニケの戦闘力をまとめて確認できます。'
       + '収集は Tampermonkey ユーザースクリプト（またはブックマークレット）が行い、読み込んだ内容はこのブラウザの外に出ません。',
   ],
-  /* 화살표는 문장을 펼쳐 놓을 때만 붙는다 (roster.js) — 접힌 '?' 의 툴팁에는 걸리적거린다 */
+  /* 화살표는 문장을 펼쳐 놓을 때만 붙는다 (roster.js) - 접힌 '?' 의 툴팁에는 걸리적거린다 */
   'im.guide': ['수집 스크립트 설치 방법', 'How to install the collector', '収集スクリプトの導入手順'],
   'im.file': ['JSON 열기', 'Open JSON', 'JSONを開く'],
   'im.paste': ['붙여넣기', 'Paste', '貼り付け'],
@@ -198,7 +198,7 @@ const STR = {
   ],
   'im.local': [
     '불러온 자료는 이 브라우저에만 저장됩니다. 서버로 보내지 않습니다.',
-    'Imported data is stored in this browser only — nothing is sent to a server.',
+    'Imported data is stored in this browser only - nothing is sent to a server.',
     '読み込んだデータはこのブラウザにのみ保存され、サーバーには送信されません。',
   ],
   /* 지휘관 줄은 한 줄에 싱크로 + 콘솔 넉 칸이 들어가야 한다. */
@@ -229,7 +229,7 @@ const STR = {
     'Sort order: Break 0 → Break 3 → Core 1 → Core 7',
     '並び順: 0凸 → 3凸 → コア1 → コア7',
   ],
-  // 오버로드 옵션 중 우코 + 공증 종합값의 합 — 실전 성능을 한 숫자로 가늠한다
+  // 오버로드 옵션 중 우코 + 공증 종합값의 합 - 실전 성능을 한 숫자로 가늠한다
   'im.colOlAtk': ['우공합', 'OL ATK', '有利+攻撃'],
   'im.colOlAtkNote': [
     '오버로드 옵션 종합 중 우월코드 대미지 + 공격력 합계',
@@ -270,7 +270,7 @@ const STR = {
       + `${step}으로 나눈 몫 + 1. 노멀 지역0~2는 레벨에 반영되지 않고, 지역3이 열릴 때 `
       + `1스테이지분이 먼저 붙습니다.`,
     (skip, step) => `Outpost level = ⌊((normal clears − first ${skip} areas) + hard clears + 1) / ${step}⌋ + 1. `
-      + `Normal areas 0–2 do not count, and one stage is credited up front when area 3 opens.`,
+      + `Normal areas 0-2 do not count, and one stage is credited up front when area 3 opens.`,
     (skip, step) => `基地防御レベル =（ノーマルクリア − 最初の${skip}地域）+ ハードクリア + 1 を`
       + `${step}で割った商 + 1。ノーマルの地域0〜2は加算されず、地域3の開放時に1ステージ分が先に加算されます。`,
   ],
@@ -284,7 +284,7 @@ const STR = {
     'Import your account in the CP calculator tab and this progress fills in automatically. Stages you pick by hand stay until the next import.',
     '戦闘力計算機タブでアカウント資料を読み込むと、この進行度が自動で入ります。手動で選んだ値は次の収集まで保たれます。',
   ],
-  /* 기업 타워 카드 — 계정 생성일 기준 '막힘 없이 올랐다면' 도달 가능한 최대 층 */
+  /* 기업 타워 카드 - 계정 생성일 기준 '막힘 없이 올랐다면' 도달 가능한 최대 층 */
   'op.tower': ['기업 타워', 'Manufacturer Towers', '企業別タワー'],
   'op.created': ['계정 생성', 'Account created', 'アカウント作成'],
   'op.sinceDays': [n => `· ${n.toLocaleString()}일째`, n => `· day ${n.toLocaleString()}`, n => `· ${n.toLocaleString()}日目`],
@@ -345,9 +345,9 @@ const STR = {
     (u, f) => `${u}個まで${f}階`,
   ],
   'op.towerMoldNote': [
-    (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 아래 표의 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다 — 값을 가르는 건 타워 이름이 아니라 주 개방 횟수와 퍼펙트 간격뿐이라 3사는 한 줄로 묶었습니다.`,
-    (s, b, p, u) => `Manufacturer molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} — the second table gives the runs and weeks to get there. Only the weekly openings and the perfect interval change the numbers, so the big three share one row.`,
-    (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 — 下の表は そこまでの登攀回数と週数です。値を分けるのは週の開放回数とパーフェクト間隔だけなので、3社は1行にまとめています。`,
+    (s, b, p, u) => `기업 몰드는 한 층에 1개, ${s}의 배수 층에서는 ${b}개. 퍼펙트 몰드는 20층(필그림/오버스펙은 30층)마다 ${p}개입니다(2025-09-24 추가). 모집 한 번에 ${u}개가 들어가고, 아래 표의 두 칸은 그만큼 모으는 데 필요한 등반 횟수와 주 수입니다 - 값을 가르는 건 타워 이름이 아니라 주 개방 횟수와 퍼펙트 간격뿐이라 3사는 한 줄로 묶었습니다.`,
+    (s, b, p, u) => `Manufacturer molds: 1 per floor, ${b} on every ${s}th. Perfect molds: ${p} every 20 floors (30 for Pilgrim/Overspec), added 2025-09-24. One recruit costs ${u} - the second table gives the runs and weeks to get there. Only the weekly openings and the perfect interval change the numbers, so the big three share one row.`,
+    (s, b, p, u) => `企業モールドは1階につき1個、${s}の倍数階では${b}個。パーフェクトは20階（ピルグリム/オーバースペックは30階）ごとに${p}個（2025-09-24 追加）。1回の募集に${u}個 - 下の表は そこまでの登攀回数と週数です。値を分けるのは週の開放回数とパーフェクト間隔だけなので、3社は1行にまとめています。`,
   ],
   'op.fromAccount': [
     '불러온 계정 자료에서 채웠습니다.',
@@ -426,14 +426,14 @@ const STR = {
     'タクティクアカデミー最大前提。強調行が現在狙っている区間です。',
   ],
 
-  /* 니파고 탭 — 오버로드 옵션작 경로 추천 (nipago.js 에서 ctx.t 로 받아 쓴다)
+  /* 니파고 탭 - 오버로드 옵션작 경로 추천 (nipago.js 에서 ctx.t 로 받아 쓴다)
      칩·카운터는 커뮤니티 약어(カスモ), 설명문은 정식 명칭(カスタムモジュール). 줄 번호는 上段/中段/下段. */
   'np.loading': ['옵션 표를 불러오는 중…', 'Loading option tables…', 'OP表を読み込み中…'],
 
   'np.nikke': ['니케', 'Nikke', 'ニケ'],
   'np.searchNone': ['찾는 니케가 없습니다', 'No matching Nikke', '該当するニケがいません'],
-  'np.searchMore': [n => `외 ${n}명 — 검색어를 더 입력하세요`, n => `${n} more — keep typing`, n => `他${n}人 — さらに入力してください`],
-  /* 데이터 카드 — 기본은 니케 자료(data/weapons.json), 옵션은 지금 장비의 실효값 */
+  'np.searchMore': [n => `외 ${n}명 - 검색어를 더 입력하세요`, n => `${n} more - keep typing`, n => `他${n}人 - さらに入力してください`],
+  /* 데이터 카드 - 기본은 니케 자료(data/weapons.json), 옵션은 지금 장비의 실효값 */
   'np.data': ['데이터', 'Data', 'データ'],
   'np.dataBase': ['기본', 'Base', '基本'],
   'np.dataOpt': ['옵션', 'With OL', 'OP込み'],
@@ -447,8 +447,8 @@ const STR = {
   'np.clsS_conditional': ['조건부', 'Conditional', '条件付き'],
   'np.clsS_support': ['보조', 'Secondary', '補助'],
   'np.clsS_unk': ['미확인', 'Unverified', '未確認'],
-  'np.olNow': ['현재 오버로드 옵션 종합', 'Overload options — now', '現在のオーバーロードOP 合計'],
-  'np.olChanged': ['변경된 오버로드 옵션 종합', 'Overload options — changed', '変更後のオーバーロードOP 合計'],
+  'np.olNow': ['현재 오버로드 옵션 종합', 'Overload options - now', '現在のオーバーロードOP 合計'],
+  'np.olChanged': ['변경된 오버로드 옵션 종합', 'Overload options - changed', '変更後のオーバーロードOP 合計'],
   'np.olFromAcct': ['계정 자료', 'account data', 'アカウントデータ'],
   'np.olFromStart': ['첫 실행 전', 'before the first roll', '初回実行前'],
   'np.olSame': ['현재와 같음', 'Same as now', '現在と同じ'],
@@ -491,12 +491,69 @@ const STR = {
   'np.modeOpt': ['종류만', 'Type only', '種類のみ'],
   'np.modeLv': ['최소 단계', 'Min tier', '最低段階'],
   'np.modeTier': ['목표 단계', 'Exact tiers', '目標段階'],
-  'np.modeOptHint': ['단계와 상관없이 옵션 종류만', 'Any tier — the option type is enough', '段階を問わず種類のみ'],
+  'np.modeOptHint': ['단계와 상관없이 옵션 종류만', 'Any tier - the option type is enough', '段階を問わず種類のみ'],
   'np.modeLvHint': ['모든 줄이 같은 최소 단계 이상', 'Every line at or above one tier', '全ての段が同じ最低段階以上'],
   'np.modeTierHint': ['줄마다 단계를 따로 지정', 'Set a tier for each line', '段ごとに段階を指定'],
   'np.tierN': [n => `${n}번째`, n => `#${n}`, n => `${n}本目`],
   'np.noGoal': ['위에서 노릴 옵션을 고르세요.', 'Pick the options you are after above.', '上で狙うOPを選んでください。'],
   'np.remove': ['목표에서 빼기', 'Remove', '目標から外す'],
+  'np.prof': ['추천 옵션', 'Recommended lines', 'おすすめOP'],
+  'np.profSrc': [d => `${d} 기준`, d => `as of ${d}`, d => `${d}時点`],
+  'np.prof_rec': ['권장', 'Budget', '妥協'],
+  'np.prof_end': ['종결', 'Endgame', '理想'],
+  'np.profNone': ['이 니케의 추천 옵션 자료가 없습니다.', 'No suggestion for this Nikke yet.', 'このニケのおすすめOPはまだありません。'],
+  'np.profTbd': ['개별 검토 전 - 자동 목표 없음', 'Not reviewed yet - no auto target', '個別検討前 - 自動目標なし'],
+  'np.profEmpty': ['-', '-', '-'],
+  'np.profApply': ['목표로', 'Use', '目標に'],
+  'np.profApplyHint': [
+    '지금 목표를 이 안의 줄 수로 바꿉니다. 고르는 칸(점선)은 직접 정하세요.',
+    'Replaces the current target with these line counts. Pick the dashed ones yourself.',
+    '今の目標をこの案の本数に置き換えます。点線の枠は自分で選んでください。',
+  ],
+  'np.profHold': ['효과작 보류', 'No rerolls', '厳選不要'],
+  'np.profHoldHint': [
+    '유료 옵션 재설정을 시작하지 않는 중단선입니다. 개조·강화만 합니다.',
+    'Stop line - convert and enhance only, no paid rerolls.',
+    '有料のOP再設定はしない区切りです。オバロ化・強化のみ。',
+  ],
+  'np.profShots': [(o, n) => `${o} ${n}발`, (o, n) => `${o} ${n} shots`, (o, n) => `${o} ${n}発`],
+  'np.profShotsHint': [
+    '최종 장탄 수(실효값)입니다. 목표로 두면 기본 장탄수와의 차이를 실효값 목표로 넣습니다.',
+    'Final magazine size (effective). Applied as an effective-ammo target over the base magazine.',
+    '最終装弾数（実効値）です。目標にすると基本装弾数との差を実効値目標にします。',
+  ],
+  'np.profPickHint': [
+    '여러 옵션 중에서 고르는 칸이라 목표에 자동으로 넣지 않습니다.',
+    'A choice between options - not added to the target automatically.',
+    '複数のOPから選ぶ枠なので目標には自動で入れません。',
+  ],
+  'np.profCapHint': [
+    '이 옵션은 0줄이 목표입니다 (막탄 운용). 붙으면 지우는 쪽으로 판단하세요.',
+    'Keep this at zero lines (last-bullet play).',
+    'このOPは0本が目標です（ラスト弾運用）。',
+  ],
+  'np.profRest': [o => `잔여 ${o}`, o => `Flex: ${o}`, o => `余り枠 ${o}`],
+  'np.profFree': ['자유', 'free', '自由'],
+  'np.profAux': ['보조', 'Aux', '補助'],
+  'np.profLink': ['근거 가이드', 'Source', '参考'],
+  'np.role_dps': ['딜러 운용', 'As DPS', 'アタッカー運用'],
+  'np.role_support': ['지원 운용', 'As support', 'サポート運用'],
+  'np.role_gauge': ['수급이 밀릴 때', 'If burst gen is short', 'バースト回転が足りない時'],
+  'np.role_cond': ['조건부', 'Conditional', '条件付き'],
+  'np.profAsk': ['추천 옵션 적용', 'Use recommended lines', 'おすすめOPを適用'],
+  'np.profAskTitle': [n => `${n} - 추천 옵션을 목표로 둘까요?`, n => `${n} - use the recommended lines as the target?`, n => `${n} - おすすめOPを目標にしますか？`],
+  'np.profAskDesc': [
+    '고른 안의 줄 수를 목표로 넣습니다. 점선 칸(크리·합 N·잔여)은 고르는 칸이라 직접 정하세요.',
+    'The chosen set’s line counts become the target. Dashed items (Crit, pick-N, Flex) are choices - set them yourself.',
+    '選んだ案の本数を目標にします。点線の枠（クリ・合計N・余り枠）は自分で選んでください。',
+  ],
+  'np.profAskReplace': [
+    '고른 안으로 지금 목표를 바꿉니다. 점선 칸(크리·합 N·잔여)은 고르는 칸이라 직접 정하세요.',
+    'The chosen set replaces your current target. Dashed items (Crit, pick-N, Flex) are choices - set them yourself.',
+    '選んだ案で今の目標を置き換えます。点線の枠（クリ・合計N・余り枠）は自分で選んでください。',
+  ],
+  'np.profKeep': ['그대로 두기', 'Keep as is', 'そのまま'],
+
   'np.lines': ['줄 수', 'Lines', '本数'],
   'np.minLv': ['최소', 'Min', '最低'],
   'np.byLines': ['줄 수', 'Lines', '本数'],
@@ -553,7 +610,7 @@ const STR = {
   'np.computingLong': ['경로를 계산하는 중입니다. 목표가 많으면 몇 초 걸립니다.', 'Working out the path. A few seconds with many targets.', '経路を計算中です。目標が多いと数秒かかります。'],
   'np.st_err': ['계산 오류', 'Calculation error', '計算エラー'],
   'np.st_done': ['목표 완료', 'Target met', '目標達成'],
-  'np.st_doneDesc': ['더 돌리지 않아도 됩니다. 보관용 잠금도 필요 없습니다.', 'No more rolls needed — and no need to lock anything for safekeeping.', 'これ以上回す必要はありません。保管用のロックも不要です。'],
+  'np.st_doneDesc': ['더 돌리지 않아도 됩니다. 보관용 잠금도 필요 없습니다.', 'No more rolls needed - and no need to lock anything for safekeeping.', 'これ以上回す必要はありません。保管用のロックも不要です。'],
   'np.st_impossible': ['도달할 수 없는 목표', 'Target can’t be reached', '到達できない目標'],
   'np.st_impossibleDesc': ['한 부위에 같은 옵션은 하나뿐이라 줄 수는 4까지입니다. 목표나 입력을 확인하세요.', 'A piece holds each option at most once, so 4 lines is the cap. Check the target or the inputs.', '1部位に同じOPは1つまでなので本数は最大4です。目標や入力を確認してください。'],
 
@@ -561,9 +618,9 @@ const STR = {
   'np.piece_1': ['몸', 'Torso', '胴'],
   'np.piece_2': ['팔', 'Arm', '腕'],
   'np.piece_3': ['다리', 'Leg', '足'],
-  'np.doFirst': [p => `${p} — 최초 개조`, p => `${p} — first overload`, p => `${p} — 初回オーバーロード`],
-  'np.doChange': [(p, s) => `${p} — ${s} · 효과 변경`, (p, s) => `${p} — ${s} · change options`, (p, s) => `${p} — ${s}・効果変更`],
-  'np.doReset': [(p, s) => `${p} — ${s} · 수치 재설정`, (p, s) => `${p} — ${s} · reroll values`, (p, s) => `${p} — ${s}・数値再設定`],
+  'np.doFirst': [p => `${p} - 최초 개조`, p => `${p} - first overload`, p => `${p} - 初回オーバーロード`],
+  'np.doChange': [(p, s) => `${p} - ${s} · 효과 변경`, (p, s) => `${p} - ${s} · change options`, (p, s) => `${p} - ${s}・効果変更`],
+  'np.doReset': [(p, s) => `${p} - ${s} · 수치 재설정`, (p, s) => `${p} - ${s} · reroll values`, (p, s) => `${p} - ${s}・数値再設定`],
   'np.noProtect': ['잠금 없이', 'no locks', 'ロックなし'],
   'np.protOne': [(n, m) => `${n}번 줄 ${m}`, (n, m) => `line ${n} ${m}`, (n, m) => `${JA_SLOT(n)}を${m}`],
   'np.matKey': ['락키 보호', 'key-locked', 'キーロック'],
@@ -578,18 +635,18 @@ const STR = {
     (r, m, k) => `${r} per roll` + (m ? ` + ${m} for the new lock` : '') + (k ? ` + ${k} keys` : ''),
     (r, m, k) => `毎回${r}` + (m ? ` + 新規ロック${m}` : '') + (k ? ` + キー${k}` : ''),
   ],
-  'np.estimated': ['추정 — 실행 화면 비용 확인', 'estimate — check the in-game cost', '推定 — 実行画面の費用を確認'],
+  'np.estimated': ['추정 - 실행 화면 비용 확인', 'estimate - check the in-game cost', '推定 - 実行画面の費用を確認'],
   'np.why': ['이유', 'Why', '理由'],
   'np.whyText': [
     (p, s, m, n) => `${p}: ${s} 확보까지 평균 모듈 ~${m}. ` + (n > 1 ? `남은 ${n}개 부위 중 가장 적게 듭니다.` : '목표가 남은 부위는 여기뿐입니다.'),
-    (p, s, m, n) => `${p} needs ~${m} modules on average for ${s}` + (n > 1 ? ` — the cheapest of the ${n} pieces left.` : ' — the only piece still short.'),
+    (p, s, m, n) => `${p} needs ~${m} modules on average for ${s}` + (n > 1 ? ` - the cheapest of the ${n} pieces left.` : ' - the only piece still short.'),
     (p, s, m, n) => `${p}で${s}を揃えるのに平均カスモ ~${m}。` + (n > 1 ? `残り${n}部位で最も安く終わります。` : '目標が残っているのはこの部位だけです。'),
   ],
   'np.guard': ['지키는 조건', 'Keeps', '維持する条件'],
   'np.outlookMean': ['완료까지 평균', 'Average to finish', '完了までの平均'],
   'np.meanText': [(m, k) => `모듈 ${m} · 락키 ${k}`, (m, k) => `${m} modules · ${k} keys`, (m, k) => `カスモ${m}・キー${k}`],
   'np.goSim': ['이대로 굴리기', 'Roll this', 'これで回す'],
-  'np.goReal': ['실행했어요 — 결과 입력', 'Done in game — enter result', '実行した — 結果入力'],
+  'np.goReal': ['실행했어요 - 결과 입력', 'Done in game - enter result', '実行した - 結果入力'],
   'np.prob_line1': ['1번 줄이 비어 있습니다', 'Line 1 is empty', '上段が空です'],
   'np.prob_tooMany': ['보호는 2줄까지', 'Lock at most 2 lines', 'ロックは2段まで'],
   'np.prob_nothing': ['수치를 바꿀 줄이 없습니다', 'No line left to reroll', '再設定できる段がありません'],
@@ -601,7 +658,7 @@ const STR = {
   'np.scope': ['근거 범위 · 자세히', 'Scope & details', '根拠範囲・詳細'],
   'np.scopeText': [
     (pref, l) => `근사 추천 · 평균 소모 최소 · 재화 기준 ${pref} (λ ${l}). 부위 하나 안의 잠금·재설정은 정확히 풀고, 네 부위 배분·실효값 목표는 근사합니다. 니케 한 명만 계산하며, 피해량이 아니라 선택한 옵션 목표까지의 경로입니다.`,
-    (pref, l) => `Approximate · lowest average cost · ${pref} (λ ${l}). Locks and rerolls within one piece are solved exactly; splitting across pieces and effective-value targets are approximated. One Nikke only, and it plans toward the options you chose — not damage.`,
+    (pref, l) => `Approximate · lowest average cost · ${pref} (λ ${l}). Locks and rerolls within one piece are solved exactly; splitting across pieces and effective-value targets are approximated. One Nikke only, and it plans toward the options you chose - not damage.`,
     (pref, l) => `近似推奨・平均消費最小・${pref} (λ ${l})。1部位内のロック・再設定は厳密に解き、4部位の配分・実効値目標は近似です。ニケ1人のみで、ダメージではなく選んだOP目標までの経路です。`,
   ],
   'np.nothingHere': ['맡은 목표 없음', 'nothing assigned', '担当なし'],
@@ -612,7 +669,7 @@ const STR = {
   'np.gear': ['오버로드 옵션', 'Overload options', 'オーバーロードOP'],
   'np.gearHint': [
     '줄을 누르면 옵션·단계를 고칩니다. 잠금은 모두 풀린 상태로 시작하니, 원래 영구 잠금이 걸려 있던 줄만 🔓 를 눌러 🔒 로 바꾸세요.',
-    'Tap a line to edit its option and tier. Every line starts unlocked — tap 🔓 on any line that is already perma-locked in game.',
+    'Tap a line to edit its option and tier. Every line starts unlocked - tap 🔓 on any line that is already perma-locked in game.',
     '段をタップするとOP・段階を編集します。ロックは全て解除状態で始まるので、元からカスモロック済みの段だけ 🔓 を押して 🔒 にしてください。',
   ],
   'np.gearHintRun': [
@@ -620,17 +677,17 @@ const STR = {
     'The lock buttons now set this roll’s locks: none → perma → key. New locks are added to this roll’s cost.',
     '錠前は今回の実行のロックです。押すたびに なし → カスモロック → キーロック と切り替わり、新しいロックの費用は今回の費用に加算されます。',
   ],
-  'np.lockOwnedOn': ['원래 영구 잠금 — 누르면 해제', 'Already perma-locked — tap to clear', '元からロック済み — 押すと解除'],
-  'np.lockOwnedOff': ['잠금 없음 — 원래 잠겨 있었다면 누르세요', 'Not locked — tap if it is already locked in game', 'ロックなし — 元からロック済みなら押す'],
-  'np.lockRun_none': ['이번에 잠그지 않음 — 누르면 영구 잠금', 'Not locked this roll — tap for a perma-lock', '今回はロックなし — 押すとカスモロック'],
-  'np.lockRun_held': ['영구 잠금 유지 (추가 비용 없음) — 누르면 락키로', 'Kept perma-lock (no extra cost) — tap for a key lock', 'カスモロック維持 (追加費用なし) — 押すとキーロック'],
-  'np.lockRun_new': ['새 영구 잠금 (이번 비용에 포함) — 누르면 락키로', 'New perma-lock (added to this roll) — tap for a key lock', '新規カスモロック (今回の費用に含む) — 押すとキーロック'],
-  'np.lockRun_key': ['락키 보호 (이번 비용에 포함) — 누르면 잠금 없음', 'Key lock (added to this roll) — tap to clear', 'キーロック (今回の費用に含む) — 押すと解除'],
+  'np.lockOwnedOn': ['원래 영구 잠금 - 누르면 해제', 'Already perma-locked - tap to clear', '元からロック済み - 押すと解除'],
+  'np.lockOwnedOff': ['잠금 없음 - 원래 잠겨 있었다면 누르세요', 'Not locked - tap if it is already locked in game', 'ロックなし - 元からロック済みなら押す'],
+  'np.lockRun_none': ['이번에 잠그지 않음 - 누르면 영구 잠금', 'Not locked this roll - tap for a perma-lock', '今回はロックなし - 押すとカスモロック'],
+  'np.lockRun_held': ['영구 잠금 유지 (추가 비용 없음) - 누르면 락키로', 'Kept perma-lock (no extra cost) - tap for a key lock', 'カスモロック維持 (追加費用なし) - 押すとキーロック'],
+  'np.lockRun_new': ['새 영구 잠금 (이번 비용에 포함) - 누르면 락키로', 'New perma-lock (added to this roll) - tap for a key lock', '新規カスモロック (今回の費用に含む) - 押すとキーロック'],
+  'np.lockRun_key': ['락키 보호 (이번 비용에 포함) - 누르면 잠금 없음', 'Key lock (added to this roll) - tap to clear', 'キーロック (今回の費用に含む) - 押すと解除'],
   'np.manualOff': ['직접 설정', 'Set it myself', '手動設定'],
   'np.manualOn': ['추천으로 돌아가기', 'Back to suggestion', '推奨に戻る'],
   'np.manualHint': [
     '자물쇠를 누를 때마다 없음 → 영구 잠금 → 락키 순서로 바뀝니다. 추천과 다르게 해도 그대로 기록하고 그 상태에서 다시 계산합니다. Esc 로 추천으로 돌아갑니다.',
-    'Each lock button cycles none → perma-lock → key lock. Going off-script is fine — it is logged and the plan is recomputed from there. Esc returns to the suggestion.',
+    'Each lock button cycles none → perma-lock → key lock. Going off-script is fine - it is logged and the plan is recomputed from there. Esc returns to the suggestion.',
     '錠前を押すたびに なし → カスモロック → キーロック と切り替わります。推奨と違っても記録し、その状態から再計算します。Escで推奨に戻ります。',
   ],
   'np.pick': ['이 부위', 'This piece', 'この部位'],
@@ -646,8 +703,8 @@ const STR = {
   'np.unlockS': ['해제', 'unlock', '解除'],
   'np.option': ['옵션', 'Option', 'OP'],
   'np.level': ['단계', 'Tier', '段階'],
-  'np.pickOpt': ['— 옵션 선택 —', '— pick option —', '— OPを選択 —'],
-  'np.emptyOpt': ['— 빈칸 —', '— empty —', '— 空き —'],
+  'np.pickOpt': ['- 옵션 선택 -', '- pick option -', '- OPを選択 -'],
+  'np.emptyOpt': ['- 빈칸 -', '- empty -', '- 空き -'],
   'np.set': ['저장', 'Save', '保存'],
   'np.cancel': ['취소', 'Cancel', 'キャンセル'],
 
@@ -680,9 +737,9 @@ const STR = {
   'np.firstOk': ['확인', 'OK', '確認'],
   'np.cancelTry': ['취소', 'Cancel', 'キャンセル'],
   'np.cancelTryHint': [
-    '잘못 눌렀거나 잘못 입력했다면 취소하세요 — 이번 시도와 비용을 기록에서 지웁니다.',
+    '잘못 눌렀거나 잘못 입력했다면 취소하세요 - 이번 시도와 비용을 기록에서 지웁니다.',
     'Misclick or wrong input? Cancel removes this try and its cost from the log.',
-    '誤操作・誤入力ならキャンセルしてください — 今回の試行と費用を記録から消します。',
+    '誤操作・誤入力ならキャンセルしてください - 今回の試行と費用を記録から消します。',
   ],
 
   'np.log': ['시도 기록', 'Roll log', '試行記録'],
@@ -695,7 +752,7 @@ const STR = {
   'np.undo': ['마지막 기록 정정', 'Correct last entry', '最後の記録を訂正'],
   'np.undoNote': [
     '여기 기록만 되돌립니다. 게임 안에서 쓴 재화·바뀐 장비는 돌아오지 않습니다.',
-    'Only this log is rolled back — nothing comes back in the game.',
+    'Only this log is rolled back - nothing comes back in the game.',
     'この記録だけを戻します。ゲーム内で使った資材や装備は戻りません。',
   ],
   'np.undoConfirm': [
@@ -730,14 +787,14 @@ const STR = {
   'ic.syncBelow': [lv => `${lv} 미만`, lv => `Below ${lv}`, lv => `${lv}未満`],
   'ic.syncAt': [lv => `${lv} 이상`, lv => `${lv}+`, lv => `${lv}以上`],
   'ic.syncAtFull': [
-    (lv, n) => `싱크로 디바이스 ${lv}레벨 — 요격전 부스트 ${n}단계, 요격 횟수 +${n}`,
-    (lv, n) => `Synchro Device Lv. ${lv} — Interception Boost ${n}, +${n} interception entries`,
-    (lv, n) => `シンクロデバイス Lv.${lv} — 迎撃戦ブースト${n}段階、迎撃回数 +${n}`,
+    (lv, n) => `싱크로 디바이스 ${lv}레벨 - 요격전 부스트 ${n}단계, 요격 횟수 +${n}`,
+    (lv, n) => `Synchro Device Lv. ${lv} - Interception Boost ${n}, +${n} interception entries`,
+    (lv, n) => `シンクロデバイス Lv.${lv} - 迎撃戦ブースト${n}段階、迎撃回数 +${n}`,
   ],
   'ic.step': ['단계', 'Step', '段階'],
   'ic.gamesNote': [
     (e, g) => `하루 진입 ${e}회 · 게임 ${g}회. 진입 횟수는 기본 3회에 싱크로 부스트(싱크로 디바이스 400·600레벨)마다 1회씩 늘어난다. 풀버스트는 골라 쓰는 게 아니라 이벤트로 적용되는 날이 따로 있고, 그날은 진입당 2게임이 된다.`,
-    (e, g) => `${e} entries a day → ${g} games. The base 3 entries go up by one at each Synchro Boost (Synchro Device Lv. 400 and 600). Full Burst is not something you switch on — it applies on event days, and those days give 2 games per entry.`,
+    (e, g) => `${e} entries a day → ${g} games. The base 3 entries go up by one at each Synchro Boost (Synchro Device Lv. 400 and 600). Full Burst is not something you switch on - it applies on event days, and those days give 2 games per entry.`,
     (e, g) => `1日${e}回進入・${g}ゲーム。進入回数は基本3回に、シンクロブースト（シンクロデバイス Lv.400・600）ごとに1回ずつ増える。フルバーストデイは自分で選ぶものではなく適用される日が決まっていて、その日は進入あたり2ゲームになる。`,
   ],
 
@@ -747,7 +804,7 @@ const STR = {
   'ic.axisCum': ['k개 이상', 'k or more', 'k個以上'],
   'ic.withPieces': ['모듈피스 확정분 포함', 'Include guaranteed pieces', 'ピース確定分を含む'],
   'ic.withPiecesHint': [
-    '모듈피스는 확률이 아니라 매 게임 확정으로 들어온다. 켜면 피스 100개마다 완성되는 모듈 수만큼 분포가 통째로 오른쪽으로 밀린다 — 하루에 실제로 늘어나는 모듈 총 개수가 된다. (남는 피스가 다음날로 이월되는 것은 반영하지 않는다)',
+    '모듈피스는 확률이 아니라 매 게임 확정으로 들어온다. 켜면 피스 100개마다 완성되는 모듈 수만큼 분포가 통째로 오른쪽으로 밀린다 - 하루에 실제로 늘어나는 모듈 총 개수가 된다. (남는 피스가 다음날로 이월되는 것은 반영하지 않는다)',
     'Module pieces are guaranteed, not rolled. Turning this on shifts the whole distribution right by the modules those pieces complete, giving the total modules gained in a day. Leftover pieces carrying into the next day are not modelled.',
     'カスタムモジュールピースは確率ではなく毎ゲーム確定で入る。オンにするとピース100個ごとに完成する分だけ分布が右にずれ、1日に実際に増える総数になる。余ったピースの翌日繰り越しは考慮しない。',
   ],
@@ -755,7 +812,7 @@ const STR = {
   'ic.about': ['이 표에 대해', 'About', 'この表について'],
   'ic.aboutModel': [
     '모듈 모드는 게임 1회 분포를 게임 수만큼 합성곱한 정확한 값이고, 장비 모드는 이항분포 B(게임 수, 장비박스 출현율)다. 근사가 아니다.',
-    'Module mode is the exact distribution — one game convolved with itself once per game. Gear mode is the binomial B(games, gear-box rate). Neither is an approximation.',
+    'Module mode is the exact distribution - one game convolved with itself once per game. Gear mode is the binomial B(games, gear-box rate). Neither is an approximation.',
     'カスモモードは1ゲーム分布をゲーム数だけ畳み込んだ厳密値、装備モードは二項分布 B(ゲーム数, 装備箱出現率)。近似ではない。',
   ],
   'ic.aboutSource': [
@@ -776,12 +833,12 @@ const STR = {
   'ic.summary': ['3.5주년 전후 비교', 'Before vs after the 3.5th', '3.5周年の前後比較'],
   'ic.summaryModule': [
     (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄에서 나오는 하루치 모듈.`,
-    (s, g) => `Step ${s}, ${g} games a day — modules from Kraken in one day.`,
+    (s, g) => `Step ${s}, ${g} games a day - modules from Kraken in one day.`,
     (s, g) => `${s}段階・1日${g}ゲーム。クラーケンから1日に出るカスタムモジュール。`,
   ],
   'ic.summaryEquip': [
     (s, g) => `${s}단계 · 하루 ${g}게임 기준, 크라켄을 뺀 보스에서 나오는 하루치 기업장비 박스.`,
-    (s, g) => `Step ${s}, ${g} games a day — gear boxes from the non-Kraken bosses in one day.`,
+    (s, g) => `Step ${s}, ${g} games a day - gear boxes from the non-Kraken bosses in one day.`,
     (s, g) => `${s}段階・1日${g}ゲーム。クラーケン以外のボスから1日に出る企業装備箱。`,
   ],
   'ic.mean': ['하루 기대값 E[X]', 'Daily mean E[X]', '1日期待値 E[X]'],
@@ -791,9 +848,9 @@ const STR = {
   'ic.eachKind': ['노리는 1종 기대값', 'One specific piece', '狙った1種の期待値'],
   'ic.perMonth': ['30일 누적 기대값', 'Over 30 days', '30日累計'],
   'ic.piecesNote': [
-    (ad, al, bd, bl, per) => `모듈피스는 ${per}개마다 모듈 1개가 된다 — 이전 ${ad}개(+${al}피스 남음), 이후 ${bd}개(+${bl}피스 남음). 이 몫은 확률이 아니라 확정이라 아래 분포에는 들어가지 않는다.`,
-    (ad, al, bd, bl, per) => `Every ${per} pieces complete one module — pre ${ad} (+${al} left over), post ${bd} (+${bl} left over). That part is guaranteed, so it is not part of the distribution below.`,
-    (ad, al, bd, bl, per) => `ピースは${per}個ごとにモジュール1個になる — 以前 ${ad}個(+${al}余り)、以降 ${bd}個(+${bl}余り)。確定分なので下の分布には含まれない。`,
+    (ad, al, bd, bl, per) => `모듈피스는 ${per}개마다 모듈 1개가 된다 - 이전 ${ad}개(+${al}피스 남음), 이후 ${bd}개(+${bl}피스 남음). 이 몫은 확률이 아니라 확정이라 아래 분포에는 들어가지 않는다.`,
+    (ad, al, bd, bl, per) => `Every ${per} pieces complete one module - pre ${ad} (+${al} left over), post ${bd} (+${bl} left over). That part is guaranteed, so it is not part of the distribution below.`,
+    (ad, al, bd, bl, per) => `ピースは${per}個ごとにモジュール1個になる - 以前 ${ad}個(+${al}余り)、以降 ${bd}個(+${bl}余り)。確定分なので下の分布には含まれない。`,
   ],
   'ic.eachNote': [
     n => `장비 랜덤박스에서 나오는 종류는 ${n}가지(4부위 × 5기업)이고 전부 같은 확률이다.`,
@@ -828,7 +885,7 @@ const STR = {
   ],
   'ic.distCumHint': [
     u => `하루에 ${u} k개 이상 얻을 확률(%). '적어도 몇 개는 나온다'를 보려면 이쪽.`,
-    u => `Chance (%) of getting at least k ${u} in a day — use this to read "at least N".`,
+    u => `Chance (%) of getting at least k ${u} in a day - use this to read "at least N".`,
     u => `1日にk個以上の${u}を得る確率(%)。「最低でも何個」を見るならこちら。`,
   ],
   /* 한국어는 목적격 조사까지 붙여 둔다 (모듈'을' / 장비 박스'를') */
@@ -875,8 +932,8 @@ const STR = {
   'ui.loading': ['데이터를 불러오는 중…', 'Loading data…', 'データを読み込み中…'],
   'ui.reset': ['필터 초기화', 'Reset filters', '絞り込みクリア'],
   /* 메카미(딜 시뮬레이터)로 가는 링크. */
-  'ui.mekami': ['메카미 — 스쿼드 DPS 시뮬레이터', 'Mekami — squad DPS simulator',
-                'メカミ — スクワッドDPSシミュレータ'],
+  'ui.mekami': ['메카미 - 스쿼드 DPS 시뮬레이터', 'Mekami - squad DPS simulator',
+                'メカミ - スクワッドDPSシミュレータ'],
   'ui.theme': ['테마 전환', 'Toggle theme', 'テーマ切替'],
   'ui.close': ['닫기', 'Close', '閉じる'],
   'ui.toLight': ['라이트 모드로 전환', 'Switch to light mode', 'ライトモードに切替'],
@@ -968,15 +1025,15 @@ const STR = {
   'err.title': ['데이터를 불러오지 못했습니다.', 'Could not load the data.', 'データを読み込めませんでした。'],
   'err.hint': [
     'data/*.json 이 레포에 올라가 있는지 확인하세요. 로컬에서 열었다면 <code>file://</code> 이 아니라 <code>python3 -m http.server</code> 로 띄워야 합니다.',
-    'Check that data/*.json exists in the repo. If opened locally, serve it with <code>python3 -m http.server</code> — <code>file://</code> will not work.',
+    'Check that data/*.json exists in the repo. If opened locally, serve it with <code>python3 -m http.server</code> - <code>file://</code> will not work.',
     'data/*.json がリポジトリにあるか確認してください。ローカルで開いた場合は <code>file://</code> ではなく <code>python3 -m http.server</code> で配信してください。',
   ],
 
   /* 통계 탭 (charts.js 에서 ctx.t 로 받아 쓴다) */
   'st.head': [
-    (a, b) => `현재 필터 기준 · 니케 ${a}명 · 픽업 배너 ${b}개 — 필터를 바꾸면 아래 모든 차트가 함께 좁혀집니다.`,
-    (a, b) => `Current filters · ${a} Nikkes · ${b} banners — every chart below narrows with the filters.`,
-    (a, b) => `現在の絞り込み · ニケ ${a}体 · ピックアップ ${b}件 — 絞り込みを変えると下のチャートも一緒に絞られます。`,
+    (a, b) => `현재 필터 기준 · 니케 ${a}명 · 픽업 배너 ${b}개 - 필터를 바꾸면 아래 모든 차트가 함께 좁혀집니다.`,
+    (a, b) => `Current filters · ${a} Nikkes · ${b} banners - every chart below narrows with the filters.`,
+    (a, b) => `現在の絞り込み · ニケ ${a}体 · ピックアップ ${b}件 - 絞り込みを変えると下のチャートも一緒に絞られます。`,
   ],
   'st.byAxis': [
     a => `${a}별 분포`, a => `By ${a}`, a => `${a}別の分布`,
@@ -1032,7 +1089,7 @@ const STR = {
   ],
   'st.months': [
     (a, b) => b == null ? `${a}개월+` : `${a}~${b}개월`,
-    (a, b) => b == null ? `${a}+ months` : `${a}–${b} months`,
+    (a, b) => b == null ? `${a}+ months` : `${a}-${b} months`,
     (a, b) => b == null ? `${a}ヶ月以上` : `${a}〜${b}ヶ月`,
   ],
   'st.noBanner': ['픽업 이력 없음', 'Never featured', 'ピックアップ履歴なし'],
@@ -1047,29 +1104,29 @@ const STR = {
   'st.few': ['적음', 'Low', '少'],
   'st.many': ['많음', 'High', '多'],
   'st.tipCount': [
-    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
-    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
-    (label, v, pct) => `${label} — <b>${v}</b> (${pct}%)`,
+    (label, v, pct) => `${label} - <b>${v}</b> (${pct}%)`,
+    (label, v, pct) => `${label} - <b>${v}</b> (${pct}%)`,
+    (label, v, pct) => `${label} - <b>${v}</b> (${pct}%)`,
   ],
   'st.tipCell': [
-    (r, c, v) => `${r} × ${c} — <b>${v}</b>명`,
-    (r, c, v) => `${r} × ${c} — <b>${v}</b>`,
-    (r, c, v) => `${r} × ${c} — <b>${v}</b>体`,
+    (r, c, v) => `${r} × ${c} - <b>${v}</b>명`,
+    (r, c, v) => `${r} × ${c} - <b>${v}</b>`,
+    (r, c, v) => `${r} × ${c} - <b>${v}</b>体`,
   ],
   'st.tipSum': [
-    (k, v) => `${k} 합계 — <b>${v}</b>명`,
-    (k, v) => `${k} total — <b>${v}</b>`,
-    (k, v) => `${k} 合計 — <b>${v}</b>体`,
+    (k, v) => `${k} 합계 - <b>${v}</b>명`,
+    (k, v) => `${k} total - <b>${v}</b>`,
+    (k, v) => `${k} 合計 - <b>${v}</b>体`,
   ],
   'st.tipTotal': [
-    v => `전체 — <b>${v}</b>명`,
-    v => `All — <b>${v}</b>`,
-    v => `全体 — <b>${v}</b>体`,
+    v => `전체 - <b>${v}</b>명`,
+    v => `All - <b>${v}</b>`,
+    v => `全体 - <b>${v}</b>体`,
   ],
   'st.tipPeriod': [
-    (label, v) => `${label} — <b>${v}</b>명`,
-    (label, v) => `${label} — <b>${v}</b>`,
-    (label, v) => `${label} — <b>${v}</b>体`,
+    (label, v) => `${label} - <b>${v}</b>명`,
+    (label, v) => `${label} - <b>${v}</b>`,
+    (label, v) => `${label} - <b>${v}</b>体`,
   ],
 };
 
@@ -1131,7 +1188,7 @@ export function iconEl(axis, code, opts = {}) {
   return img;
 }
 
-/* 오버스펙 도장 — 소속을 대체하지 않고 그 위에 얹는 표시라 이름 옆에 붙인다. */
+/* 오버스펙 도장 - 소속을 대체하지 않고 그 위에 얹는 표시라 이름 옆에 붙인다. */
 export function overspecMark(sub) {
   if (!sub) return null;
   const ic = iconEl('corporation_sub_type', sub, { cls: 'ic-ovr' });
@@ -1148,7 +1205,7 @@ function labelWith(axis, code, text, opts) {
   return s;
 }
 
-/* nikkes 에만 있는 축 — 픽업 행에 걸 때는 rid 로 니케를 찾아 판정한다 */
+/* nikkes 에만 있는 축 - 픽업 행에 걸 때는 rid 로 니케를 찾아 판정한다 */
 const NIKKE_ONLY = ['weapon_type', 'rarity'];
 
 const D = { nikkes: [], pickups: [], taxonomy: {}, meta: {} };
@@ -1161,11 +1218,11 @@ const state = {
   q: '',
   squad: '', overspec: false, relFrom: '', relTo: '',
   rerun: 'all', timeline: false,
-  /* 스킬 키워드 — 고른 키워드(한국어 이름), 키워드 글자 검색, 펼친 분류(## 제목) */
+  /* 스킬 키워드 - 고른 키워드(한국어 이름), 키워드 글자 검색, 펼친 분류(## 제목) */
   kw: new Set(), kwq: '', kwOpen: null,
   sort: { key: 'release_date', dir: -1 },
   sel: Object.fromEntries([...Object.keys(AXES), ...Object.keys(PICKUP_AXES)].map(k => [k, new Set()])),
-  /* 칩 필터를 펼쳐 둘지 — 탭마다 따로 기억한다. */
+  /* 칩 필터를 펼쳐 둘지 - 탭마다 따로 기억한다. */
   filtersOpen: { nikkes: true, pickups: false, stats: false },
 };
 
@@ -1181,7 +1238,7 @@ const el = (tag, cls, text) => {
 /* ── 라벨 ─────────────────────────────────────────────────────
    taxonomy -> 현재 언어 -> en -> 원본 코드 순으로 폴백한다. */
 export function L(axis, code) {
-  if (code == null || code === '') return '—';
+  if (code == null || code === '') return '-';
   const e = D.taxonomy[axis]?.[code];
   if (!e) return code;
   return e[state.lang] || e.en || code;
@@ -1193,7 +1250,7 @@ const lang = () => state.lang;
 async function loadFrom(base) {
   const res = await Promise.all(FILES.map(f => fetch(base + f + '.json', { cache: 'no-cache' })));
   const bad = res.find(r => !r.ok);
-  if (bad) throw new Error(`${bad.status} ${bad.statusText} — ${bad.url}`);
+  if (bad) throw new Error(`${bad.status} ${bad.statusText} - ${bad.url}`);
   const [nikkes, pickups, taxonomy, meta] = await Promise.all(res.map(r => r.json()));
   return { nikkes, pickups, taxonomy, meta };
 }
@@ -1210,7 +1267,7 @@ async function load() {
     data = await loadFrom(REMOTE);
   }
   Object.assign(D, data);
-  // 키워드 색인은 없어도 나머지는 돈다 — 키워드 줄만 감춘다
+  // 키워드 색인은 없어도 나머지는 돈다 - 키워드 줄만 감춘다
   D.keywords = await fetch(base + 'keywords.json', { cache: 'no-cache' })
     .then(r => (r.ok ? r.json() : null)).catch(() => null);
   indexKeywords();
@@ -1221,7 +1278,7 @@ async function load() {
     if (!pickupsByRid.has(p.rid)) pickupsByRid.set(p.rid, []);
     pickupsByRid.get(p.rid).push(p);
   });
-  /* 픽업 원본에는 버스트가 없다 — 원본에 값이 없으면 니케 목록에서 rid 로, rid 가 없으면 한국어 이름으로 찾아 채운다 */
+  /* 픽업 원본에는 버스트가 없다 - 원본에 값이 없으면 니케 목록에서 rid 로, rid 가 없으면 한국어 이름으로 찾아 채운다 */
   const byNameKo = new Map(D.nikkes.map(n => [n.name?.ko, n]));
   D.pickups.forEach(p => {
     p._start = new Date(p.start);
@@ -1243,7 +1300,7 @@ const CHO = ['ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ', 'ㅅ
   'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'];
 const HANGUL_BASE = 0xAC00, PER_CHO = 588;
 
-/* 자음만 이어 치면 IME 가 ㄹ+ㅌ 을 ㄾ 으로 묶는다 — 'ㅂㄾ' 도 'ㅂㄹㅌ'(벨로타) 처럼 찾게 풀어 둔다. */
+/* 자음만 이어 치면 IME 가 ㄹ+ㅌ 을 ㄾ 으로 묶는다 - 'ㅂㄾ' 도 'ㅂㄹㅌ'(벨로타) 처럼 찾게 풀어 둔다. */
 const SPLIT_JAMO = {
   'ㄳ': 'ㄱㅅ', 'ㄵ': 'ㄴㅈ', 'ㄶ': 'ㄴㅎ', 'ㄺ': 'ㄹㄱ', 'ㄻ': 'ㄹㅁ', 'ㄼ': 'ㄹㅂ',
   'ㄽ': 'ㄹㅅ', 'ㄾ': 'ㄹㅌ', 'ㄿ': 'ㄹㅍ', 'ㅀ': 'ㄹㅎ', 'ㅄ': 'ㅂㅅ',
@@ -1294,21 +1351,21 @@ const squadText = code => {
   return e ? [e.ko, e.en, e.ja].filter(Boolean) : [code];
 };
 
-/* 니케 하나가 현재 검색어에 걸리는지 — 이름만 초성까지, 스쿼드/별명은 부분 일치 */
+/* 니케 하나가 현재 검색어에 걸리는지 - 이름만 초성까지, 스쿼드/별명은 부분 일치 */
 function hitsNikke(m, n) {
   return [n.name.ko, n.name.en, n.name.ja].some(v => v && m.name(v))
     || squadText(n.squad).some(m.plain)
     || (n.aliases || []).some(m.plain);
 }
 
-/* 계산기 목록(roster.js)도 같은 규칙으로 찾는다 — 탭마다 다르면 'ㄹㅍ' 이 한쪽에서만 걸린다. */
+/* 계산기 목록(roster.js)도 같은 규칙으로 찾는다 - 탭마다 다르면 'ㄹㅍ' 이 한쪽에서만 걸린다. */
 export function nikkeMatcher(q) {
   const m = buildMatcher(q);
   return m ? n => hitsNikke(m, n) : null;
 }
 
 /* ── 스킬 키워드 ───────────────────────────────────────────────
-   data/keywords.json — NIKKE_KEYWORDS.md 의 분류 트리와 니케별 키워드 ID (tools/update_data.py 가 만든다).
+   data/keywords.json - NIKKE_KEYWORDS.md 의 분류 트리와 니케별 키워드 ID (tools/update_data.py 가 만든다).
    키워드는 한국어 이름으로 부른다. 한 ID 가 두 키워드에 걸리기도 하고(균등/차등 분배) 그 반대도 있다. */
 const KW = { all: [], groups: new Map(), byRid: new Map() };
 
@@ -1327,7 +1384,7 @@ function indexKeywords() {
 
 const kwName = k => k.name[state.lang] || k.name.ko;
 
-/* 키워드 칸 글자에 걸린 키워드 — 이름 검색과 같은 매처라 초성도 된다. state.kwq 가 바뀔 때만 다시 고른다 */
+/* 키워드 칸 글자에 걸린 키워드 - 이름 검색과 같은 매처라 초성도 된다. state.kwq 가 바뀔 때만 다시 고른다 */
 function kwHits() {
   if (state._kwq !== state.kwq) {
     state._kwq = state.kwq;
@@ -1349,7 +1406,7 @@ function kwMatch(n) {
 }
 
 /* ── 필터 ─────────────────────────────────────────────────────
-   except 로 지정한 축은 건너뛴다 — 칩에 붙는 패싯 카운트 계산용. */
+   except 로 지정한 축은 건너뛴다 - 칩에 붙는 패싯 카운트 계산용. */
 function matchNikke(n, except) {
   for (const axis of Object.keys(AXES)) {
     if (axis === except) continue;
@@ -1362,7 +1419,7 @@ function matchNikke(n, except) {
   if (state.relTo && (!n.release_date || n.release_date > state.relTo)) return false;
   const m = matcher();
   if (m && !hitsNikke(m, n)) return false;
-  // 키워드 줄은 니케 리스트 탭에만 있다 — 통계 탭에 보이지 않는 조건이 걸리면 안 된다
+  // 키워드 줄은 니케 리스트 탭에만 있다 - 통계 탭에 보이지 않는 조건이 걸리면 안 된다
   if (state.tab === 'nikkes' && !kwMatch(n)) return false;
   return true;
 }
@@ -1378,7 +1435,7 @@ function matchPickup(p, except) {
   // 니케 리스트에만 있는 축: rid 가 없는 예정 배너는 필연적으로 제외된다
   for (const axis of NIKKE_ONLY) {
     if (axis === except) continue;
-    // 픽업은 전부 SSR 이라 픽업 탭에는 등급 칩이 없다 — 니케 탭에서 고른 등급이 보이지 않게 걸리면 안 된다
+    // 픽업은 전부 SSR 이라 픽업 탭에는 등급 칩이 없다 - 니케 탭에서 고른 등급이 보이지 않게 걸리면 안 된다
     if (axis === 'rarity' && state.tab === 'pickups') continue;
     const sel = state.sel[axis];
     if (sel.size && (!n || !sel.has(n[axis]))) return false;
@@ -1446,7 +1503,7 @@ function readHash() {
 }
 
 /* ── 칩 필터 ───────────────────────────────────────────────── */
-/* 니케 리스트 탭의 아이콘 칩 두 줄 — 표 열 순서와 달리 이 순서로 고정한다 */
+/* 니케 리스트 탭의 아이콘 칩 두 줄 - 표 열 순서와 달리 이 순서로 고정한다 */
 const CHIP_LINES = [['corporation', 'burst', 'element'], ['rarity', 'weapon_type', 'class']];
 /* 픽업일정 탭도 같은 아이콘 칩을 쓰되, 픽업은 전부 SSR 이라 등급 칩은 빼고 한 줄로 잇는다 (좁으면 .chipline 이 알아서 접힌다) */
 const PICKUP_CHIP_LINES = [CHIP_LINES.flat().filter(axis => axis !== 'rarity')];
@@ -1463,7 +1520,7 @@ function buildChips() {
     : state.tab === 'pickups' ? PICKUP_CHIP_LINES : null;
   const iconOnly = !!chipLines;
   wrap.classList.toggle('compact', iconOnly);
-  /* 아이콘 칩은 두 줄에 다 들어가므로 줄을 정해 둔다 — 넓어도 한 줄로 몰리지 않고 좁아도 축이 섞이지 않는다 */
+  /* 아이콘 칩은 두 줄에 다 들어가므로 줄을 정해 둔다 - 넓어도 한 줄로 몰리지 않고 좁아도 축이 섞이지 않는다 */
   const lines = iconOnly
     ? chipLines.map(axesInLine => {
       const line = el('div', 'chipline');
@@ -1717,7 +1774,7 @@ function renderNikkes() {
     tr.appendChild(iconCell('class', n.class));
     tr.appendChild(iconCell('weapon_type', n.weapon_type));
     tr.appendChild(el('td', null, L('squad', n.squad)));
-    tr.appendChild(el('td', 'num', n.release_date || '—'));
+    tr.appendChild(el('td', 'num', n.release_date || '-'));
     tr.appendChild(el('td', 'num', String(pickupsByRid.get(n.rid)?.length || 0)));
     frag.appendChild(tr);
   }
@@ -1729,15 +1786,15 @@ function renderNikkes() {
 
 function iconCell(axis, code, opts) {
   const td = el('td');
-  if (!code) { td.textContent = '—'; return td; }
+  if (!code) { td.textContent = '-'; return td; }
   td.appendChild(labelWith(axis, code, L(axis, code), opts));
   return td;
 }
 
-/* 라벨 없이 아이콘만 — 라벨은 툴팁과 alt 로 옮기고, 아이콘을 못 읽으면 글자로 되돌린다 */
+/* 라벨 없이 아이콘만 - 라벨은 툴팁과 alt 로 옮기고, 아이콘을 못 읽으면 글자로 되돌린다 */
 function iconOnlyCell(axis, code) {
   const td = el('td', 'ic-only');
-  const label = code ? L(axis, code) : '—';
+  const label = code ? L(axis, code) : '-';
   const ic = code && iconEl(axis, code);
   if (!ic) { td.textContent = label; return td; }
   ic.alt = ic.title = label;
@@ -1751,7 +1808,7 @@ function iconOnlyCell(axis, code) {
 const fmtDate = iso => iso.slice(0, 10);
 const fmtRange = p => `${fmtDate(p.start)} ~ ${fmtDate(p.end)}`;
 const dday = p => Math.ceil((p._start.getTime() - Date.now()) / 86400000);
-/* 남은 날은 내림이다 — 23시간 남았으면 D-0. */
+/* 남은 날은 내림이다 - 23시간 남았으면 D-0. */
 const ddayEnd = p => Math.max(0, Math.floor((p._end.getTime() - Date.now()) / 86400000));
 
 function statusTag(p) {
@@ -1808,11 +1865,11 @@ function renderPickups() {
     if (p.availability) {
       tdA.appendChild(el('span', 'tag' + (p.availability === 'limited' ? ' lim' : ''),
         L('availability', p.availability)));
-    } else tdA.textContent = '—';
+    } else tdA.textContent = '-';
     tr.appendChild(tdA);
 
-    tr.appendChild(el('td', null, p.tag ? L('tag', p.tag) : '—'));
-    tr.appendChild(el('td', null, p.rerun_of != null ? t('msg.rerunOf', p.rerun_of) : '—'));
+    tr.appendChild(el('td', null, p.tag ? L('tag', p.tag) : '-'));
+    tr.appendChild(el('td', null, p.rerun_of != null ? t('msg.rerunOf', p.rerun_of) : '-'));
     frag.appendChild(tr);
   }
   body.appendChild(frag);
@@ -1874,19 +1931,19 @@ function openSheet(n) {
   const putIcon = (k, axis, code) => {
     dl.appendChild(el('dt', null, k));
     const dd = el('dd');
-    if (!code) dd.textContent = '—';
+    if (!code) dd.textContent = '-';
     else dd.appendChild(labelWith(axis, code, L(axis, code), { cls: 'ic-lg' }));
     dl.appendChild(dd);
   };
   putIcon(axisLabel('rarity'), 'rarity', n.rarity);
-  /* 기업 줄에 '(오버스펙)' 을 덧붙이지 않는다 — 이름 옆 도장이 그 자리다 */
+  /* 기업 줄에 '(오버스펙)' 을 덧붙이지 않는다 - 이름 옆 도장이 그 자리다 */
   putIcon(axisLabel('corporation'), 'corporation', n.corporation);
   putIcon(axisLabel('burst'), 'burst', n.burst);
   putIcon(axisLabel('element'), 'element', n.element);
   putIcon(axisLabel('class'), 'class', n.class);
   putIcon(axisLabel('weapon_type'), 'weapon_type', n.weapon_type);
   put(t('col.squad'), L('squad', n.squad));
-  put(t('col.release'), n.release_date || '—');
+  put(t('col.release'), n.release_date || '-');
   c.appendChild(dl);
 
   if (n.aliases?.length) {
@@ -1946,7 +2003,7 @@ function paintFold() {
   const open = state.filtersOpen[state.tab] !== false;
   const n = activeFilters();
   $('#filterBody').hidden = !open;
-  /* 픽업일정 탭은 아이콘 칩을 접힌 채로도 보여준다 — 펼치면 그 아래에 픽업 전용 줄만 더 나온다 */
+  /* 픽업일정 탭은 아이콘 칩을 접힌 채로도 보여준다 - 펼치면 그 아래에 픽업 전용 줄만 더 나온다 */
   const chipsUp = state.tab === 'pickups';
   $('#chipfilters').hidden = !open && !chipsUp;
   $('#pickupchips').hidden = !chipsUp;
@@ -2015,7 +2072,7 @@ function render() {
   writeHash();
 }
 
-/* 탭 갈아 끼우기 — 탭 단추와, 탭끼리 자료를 넘기는 쪽(계산기 -> 니파고)이 같이 쓴다. */
+/* 탭 갈아 끼우기 - 탭 단추와, 탭끼리 자료를 넘기는 쪽(계산기 -> 니파고)이 같이 쓴다. */
 function goTab(tab) {
   if (!TABS.includes(tab)) return;
   state.tab = tab;
@@ -2056,7 +2113,7 @@ function wire() {
   });
   paintLang();
 
-  /* 테마 — 기본 라이트. */
+  /* 테마 - 기본 라이트. */
   function paintTheme() {
     const dark = document.documentElement.dataset.theme === 'dark';
     $('#themeIcon').textContent = dark ? '☀' : '☾';

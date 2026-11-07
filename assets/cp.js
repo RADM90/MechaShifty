@@ -1,4 +1,4 @@
-/* 전투력(CP) 계산 — DOM 을 모르는 순수 모듈.
+/* 전투력(CP) 계산 - DOM 을 모르는 순수 모듈.
 
    공식의 출처와 검증은 COMBAT_POWER.md 참고.
      스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수 + 장비4부위 + 큐브 + 소장품)
@@ -30,7 +30,7 @@ export const ELEM_DAMAGE = '우코';
 export const SLOTS = ['머리', '몸', '팔', '다리'];
 
 /* 오버로드 옵션은 부위당 세 칸이고 가운데가 빌 수 있다.
-   목록은 빈 칸을 건너뛰고 오므로 칸 번호(pos)로 제자리에 되돌린다 — 안 그러면 상단·하단이 상단·중단으로 보인다.
+   목록은 빈 칸을 건너뛰고 오므로 칸 번호(pos)로 제자리에 되돌린다 - 안 그러면 상단·하단이 상단·중단으로 보인다.
    번호가 없는 옛 자료는 앞에서부터 채운다. */
 export function olRows(options) {
   const rows = [null, null, null];
@@ -48,7 +48,7 @@ export function olRows(options) {
   return rows;
 }
 
-/* 장비 등급 — 원본 표에는 티어(T1~T10)뿐이고, '기업' 은 T9 에 붙는 보너스다. */
+/* 장비 등급 - 원본 표에는 티어(T1~T10)뿐이고, '기업' 은 T9 에 붙는 보너스다. */
 export const TIERS = ['9티어_일반', '9티어_기업', '오버로드'];
 const TIER_SEED = {
   '9티어_일반': ['T9', false],
@@ -56,7 +56,7 @@ const TIER_SEED = {
   오버로드: ['T10', false],
 };
 
-/* 계수는 곱이 아니라 괄호 하나 안의 합이다 — 5강 기업 장비는 기본의 1.8 배. */
+/* 계수는 곱이 아니라 괄호 하나 안의 합이다 - 5강 기업 장비는 기본의 1.8 배. */
 export const ENHANCE_MAX = 5;
 const GEAR_CORP_BONUS = 0.3;      // 장비 기업 == 니케 기업일 때
 const GEAR_ENHANCE_BONUS = 0.1;   // 강화 1 단계당
@@ -75,7 +75,7 @@ const OPTION_SHORT = {
 };
 export const optionLabel = (name, lang) => (OPTION_SHORT[lang] || {})[name] || name;
 
-/* 게임 정식 명칭 — 종합처럼 자리가 넉넉한 곳은 인게임 표기 그대로 써야 대조하기 좋다. */
+/* 게임 정식 명칭 - 종합처럼 자리가 넉넉한 곳은 인게임 표기 그대로 써야 대조하기 좋다. */
 const OPTION_FULL = {
   ko: {
     우코: '우월코드 대미지 증가', 공증: '공격력 증가', 장탄: '최대 장탄 수 증가',
@@ -103,11 +103,11 @@ export const optionFullLabel = (name, lang) =>
    차속·장탄만 같은 단계끼리 먼저 더해 정수 % 로 반올림한 뒤 더한다 (nipago/effective.js 의 % 모델과 같다).
    나머지 옵션은 원표 값을 소수점까지 그대로 더한다. */
 export const OL_ROUNDED = ['차속', '장탄'];
-/* 종합을 늘어놓는 순서 — 계산기·옵션작 탭 공통. 장비 한 부위 안의 상/중/하단 순서와는 별개다. */
+/* 종합을 늘어놓는 순서 - 계산기·옵션작 탭 공통. 장비 한 부위 안의 상/중/하단 순서와는 별개다. */
 export const OL_ORDER = ['우코', '공증', '장탄', '크확', '크댐', '차속', '명중', '방어', '차댐'];
 export const olRank = name => { const i = OL_ORDER.indexOf(name); return i < 0 ? OL_ORDER.length : i; };
 
-/* 옵션 단계를 인게임과 같은 색으로 — 12~14 파랑, 15 검정. */
+/* 옵션 단계를 인게임과 같은 색으로 - 12~14 파랑, 15 검정. */
 export const olLevelCls = lv => (lv >= 15 ? ' is-lv15' : lv >= 12 ? ' is-lv12' : '');
 
 /* lines: [{name, level}], valueOf(name, level) -> 분수(0.0485 = 4.85%).
@@ -207,7 +207,7 @@ export function buildTables(raw) {
 
   if (raw.cp_penalty) {
     const p = raw.cp_penalty, pi = ix(p);
-    // 부족률 오름차순 — 조회는 '주어진 값 이하 중 가장 큰 항목'
+    // 부족률 오름차순 - 조회는 '주어진 값 이하 중 가장 큰 항목'
     T.penalty = p.rows.map(r => [r[pi.deficit], r[pi.penalty]]).sort((x, y) => x[0] - y[0]);
   }
   return T;
@@ -232,7 +232,7 @@ function cubeOf(T, level) {
   return { stat: row, coef };
 }
 
-/* 소장품 — kind 는 'none' | 'R' | 'SR' | '애장품'. */
+/* 소장품 - kind 는 'none' | 'R' | 'SR' | '애장품'. */
 function collectionOf(T, kind, level) {
   if (kind === 'none') return { stat: ZERO, coef: 0 };
   if (kind === '애장품') {
@@ -255,7 +255,7 @@ function consoleOf(T, levels) {
   return out;
 }
 
-/* 장비 한 칸의 스탯 — 티어 기본값 × (1 + 기업일치 + 강화). */
+/* 장비 한 칸의 스탯 - 티어 기본값 × (1 + 기업일치 + 강화). */
 export function gearStat(T, cls, slot, tier, enhance = 0) {
   const seed = TIER_SEED[tier];
   const base = seed && T.gearSeed.get(`${cls}|${slot}|${seed[0]}`);
@@ -276,7 +276,7 @@ function gearOf(T, cls, gear) {
       if (!o || !o.name || !o.level) continue;
       const uco = o.name === ELEM_DAMAGE;
       if (uco) elemDmg += o.level; else other += o.level;
-      // 옵션은 하나씩 소수 4자리로 끊는다 — 묶어서 끊으면 최대 12 CP 어긋난다
+      // 옵션은 하나씩 소수 4자리로 끊는다 - 묶어서 끊으면 최대 12 CP 어긋난다
       optCoef += round(o.level * (uco ? K.ELEM_DMG : K.OTHER_OPT), 4);
     }
   }

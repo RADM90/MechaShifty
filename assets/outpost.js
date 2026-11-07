@@ -1,4 +1,4 @@
-/* 전초기지 탭 — 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
+/* 전초기지 탭 - 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
 
    레벨 산식은 워크북 `재화_계산기` 시트에, 시트에 없는 선지급 1스테이지(BONUS_STAGES)를 실측으로 더한 것이다.
    실계정 덤프(`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)로 맞춰 봤다 (LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 참고).
@@ -24,7 +24,7 @@ const NEXT_TARGETS = 5;
 
 let ctx = null, D = null, base = './data/';
 let input = null;
-let mounted = null;               // 마운트된 root — setProgress 가 다시 그릴 때 쓴다
+let mounted = null;               // 마운트된 root - setProgress 가 다시 그릴 때 쓴다
 
 const el = (tag, cls, text) => {
   const n = document.createElement(tag);
@@ -34,8 +34,8 @@ const el = (tag, cls, text) => {
 };
 const t = (k, ...a) => ctx.t(k, ...a);
 
-const int = v => v == null ? '—' : Math.round(v).toLocaleString();
-const dec = (v, d = 2) => v == null ? '—' : v.toLocaleString(undefined,
+const int = v => v == null ? '-' : Math.round(v).toLocaleString();
+const dec = (v, d = 2) => v == null ? '-' : v.toLocaleString(undefined,
   { minimumFractionDigits: d, maximumFractionDigits: d });
 
 function scrollBox(table) {
@@ -49,7 +49,7 @@ const NEED = ['outpost_income', 'stage_list', 'tactics_academy'];
 
 async function fetchJSON(url) {
   const r = await fetch(url, { cache: 'no-cache' });
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText} - ${url}`);
   return r.json();
 }
 
@@ -278,7 +278,7 @@ function field(labelText, control) {
 
 function modeRow(mode, root) {
   const sel = input[mode];
-  /* 손으로 고르면 계정에서 온 값이 아니게 된다 — 대조용 레벨과 출처를 함께 지운다 */
+  /* 손으로 고르면 계정에서 온 값이 아니게 된다 - 대조용 레벨과 출처를 함께 지운다 */
   const set = fn => { fn(); input.reported = null; input.from = null; save(); paint(root); };
 
   const row = el('div', 'op-row');
@@ -303,7 +303,7 @@ function renderForm(root) {
   const g = el('div', 'op-group');
   g.appendChild(el('h3', null, t('op.progress')));
   g.appendChild(el('p', 'op-note', t('op.progressHint')));
-  // 값이 어디서 왔는지 보이게 — 손으로 고른 것과 계정에서 온 것을 구분한다
+  // 값이 어디서 왔는지 보이게 - 손으로 고른 것과 계정에서 온 것을 구분한다
   if (input.from) g.appendChild(el('p', 'op-note op-fromAcct', t('op.fromAccount')));
   for (const mode of ['normal', 'hard']) {
     const box = el('div', 'op-mode');
@@ -336,7 +336,7 @@ const MOLD_BONUS_STEP = 5;     // 이 배수 층에서는 1개가 아니라
 const MOLD_BONUS = 5;          //   이만큼 준다
 const PERFECT_PER = 5;         // 퍼펙트 몰드를 한 번에 주는 개수
 
-/* 0=일 … 6=토 — 필그림/오버스펙은 타워 하나이고 퍼펙트 몰드 간격이 30층이다 (3사는 20층). */
+/* 0=일 … 6=토 - 필그림/오버스펙은 타워 하나이고 퍼펙트 몰드 간격이 30층이다 (3사는 20층). */
 const TOWERS = [
   { key: 'ELYSION', days: [0, 2, 5], perfectStep: 20 },
   { key: 'MISSILIS', days: [0, 3, 6], perfectStep: 20 },
@@ -344,7 +344,7 @@ const TOWERS = [
   { key: 'PILGRIM', days: [0, 3], perfectStep: 30, label: 'op.towerPilgrim' },
 ];
 
-/* 두 날짜(자정 기준) 사이에 요일 d 가 몇 번 오는지 — 양 끝을 포함한다 */
+/* 두 날짜(자정 기준) 사이에 요일 d 가 몇 번 오는지 - 양 끝을 포함한다 */
 function weekdayCount(from, to, d) {
   const span = Math.floor((to - from) / 86400000);
   if (span < 0) return 0;
@@ -385,7 +385,7 @@ function renderTower() {
 
   let from = null, today = null;
   if (created) {
-    /* 계정 생성 — 날짜만으로는 '오늘 만든 계정'과 구분이 안 돼 시각까지 적는다 */
+    /* 계정 생성 - 날짜만으로는 '오늘 만든 계정'과 구분이 안 돼 시각까지 적는다 */
     const pad = n => String(n).padStart(2, '0');
     const stamp = `${created.getFullYear()}-${pad(created.getMonth() + 1)}-${pad(created.getDate())}`
       + ` ${pad(created.getHours())}:${pad(created.getMinutes())}`;
@@ -407,11 +407,11 @@ function renderTower() {
     g.appendChild(tribe);
   }
   g.appendChild(el('p', 'op-note', hasReal ? t('op.towerHintReal') : t('op.towerHint', TOWER_FLOORS)));
-  // 계정 자료는 있는데 층수가 없으면 옛 유저스크립트로 만든 것 — 다시 불러오라고 알려 준다
+  // 계정 자료는 있는데 층수가 없으면 옛 유저스크립트로 만든 것 - 다시 불러오라고 알려 준다
   if (!hasReal) g.appendChild(el('p', 'op-note op-warn', t('op.towerNeedReimport')));
 
   const towerName = tw => (tw.label ? t(tw.label) : ctx.L('corporation', tw.key));
-  const towerTitle = tw => `${towerName(tw)} — `
+  const towerTitle = tw => `${towerName(tw)} - `
     + t('op.towerDays', tw.days.map(d => t('op.wd' + d)).join('·'));
 
   /* 층수와 몰드를 한 표에 넣으면 카드를 넘쳐서 둘로 나눈다. */
@@ -440,7 +440,7 @@ function renderTower() {
 
     const fl = el('td', 'num');
     if (hasReal) {
-      fl.appendChild(el('span', 'op-runs', real ? t('op.floorN', real) : '—'));
+      fl.appendChild(el('span', 'op-runs', real ? t('op.floorN', real) : '-'));
       if (ceiling != null) fl.appendChild(el('span', 'op-weeks', '/ ' + int(ceiling)));
       const tip = [];
       if (opens != null) tip.push(t('op.towerOpens', opens));
@@ -452,7 +452,7 @@ function renderTower() {
     }
     tr.appendChild(fl);
 
-    // 지금까지 쌓였을 몰드 (기업 / 퍼펙트) — 가운뎃점이 없으면 두 수가 붙어 읽힌다
+    // 지금까지 쌓였을 몰드 (기업 / 퍼펙트) - 가운뎃점이 없으면 두 수가 붙어 읽힌다
     const have = el('td', 'num');
     have.appendChild(el('span', 'op-runs', int(moldsAt(floors))));
     have.appendChild(el('span', 'op-weeks', '· ' + int(perfectAt(floors, tw.perfectStep))));
@@ -555,7 +555,7 @@ const RES = [
 ];
 const num = (v, d) => (d ? dec(v, d) : int(v));
 
-/* 부스트 적용값 — 코어더스트는 원본의 아카데미 적용 열을 쓴다. */
+/* 부스트 적용값 - 코어더스트는 원본의 아카데미 적용 열을 쓴다. */
 function applied(row, key) {
   if (!row) return null;
   if (key === 'core') return { hr: row.dustAcademy, min: row.dustAcademy / 60 };
@@ -591,7 +591,7 @@ function renderIncome(d) {
     const raw = d.row ? d.row[key] : null;
     const tr = el('tr');
     tr.appendChild(el('td', null, t(lab)));
-    tr.appendChild(el('td', 'num', D.boost[key] ? '+' + Math.round(D.boost[key] * 100) + '%' : '—'));
+    tr.appendChild(el('td', 'num', D.boost[key] ? '+' + Math.round(D.boost[key] * 100) + '%' : '-'));
     tr.appendChild(el('td', 'num', num(raw?.hr, dg.hr)));
     tr.appendChild(el('td', 'num op-em', num(a?.hr, dg.hr)));
     tr.appendChild(el('td', 'num', num(a?.min, dg.min)));
@@ -603,7 +603,7 @@ function renderIncome(d) {
   return card;
 }
 
-/* 다음 정수 코어더스트/시까지 — 이 탭의 핵심 */
+/* 다음 정수 코어더스트/시까지 - 이 탭의 핵심 */
 function renderNext(d) {
   const card = el('div', 'card op-card-next');
   card.appendChild(el('h3', null, t('op.next')));
@@ -654,7 +654,7 @@ function renderNext(d) {
   return card;
 }
 
-/* 코어더스트 구간표 — 값 하나하나에 필요한 최소 레벨 */
+/* 코어더스트 구간표 - 값 하나하나에 필요한 최소 레벨 */
 function renderTable(d, root) {
   const card = el('div', 'card');
   const head = el('div', 'op-cardhead');
@@ -698,7 +698,7 @@ function renderTable(d, root) {
     tr.appendChild(el('td', 'num', input.half ? dec(v, 1) : dec(v, 0)));
     tr.appendChild(el('td', 'num', int(lv)));
     tr.appendChild(el('td', 'num', int(totalFor(lv))));
-    tr.appendChild(el('td', 'num', need > 0 ? '+' + int(need) : '—'));
+    tr.appendChild(el('td', 'num', need > 0 ? '+' + int(need) : '-'));
     body.appendChild(tr);
   }
   tbl.appendChild(body);

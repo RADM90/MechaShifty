@@ -1,5 +1,5 @@
 {
- "note": "니케별 기본 무기 제원 — ammo 기본 장탄수, charge 기준 차지 시간(초, 0 = 비차지). tools/update_data.py 가 data/raw/combat/ 에서 뽑는다.",
+ "note": "니케별 기본 무기 제원 - ammo 기본 장탄수, charge 기준 차지 시간(초, 0 = 비차지). tools/update_data.py 가 data/raw/combat/ 에서 뽑는다.",
  "nikkes": {
   "c010": {"ammo":60,"charge":0},
   "c011": {"ammo":9,"charge":0},

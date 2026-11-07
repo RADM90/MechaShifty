@@ -39,7 +39,7 @@ Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이
 [tampermonkey.net](https://www.tampermonkey.net/) 에서 쓰는 브라우저용을 설치합니다.
 Chrome · Edge · Firefox · Safari · Opera 를 지원합니다.
 
-### 1-2. ⚠️ '사용자 스크립트 허용' 켜기 — Chrome / Edge 계열은 필수
+### 1-2. ⚠️ '사용자 스크립트 허용' 켜기 - Chrome / Edge 계열은 필수
 
 Chrome 이 확장 프로그램을 MV3 로 옮기면서, **유저스크립트를 돌리려면 권한을 한 번 더
 켜 줘야 합니다.** 이걸 안 켜면 Tampermonkey 는 설치돼 있고 아이콘도 보이는데
@@ -48,7 +48,7 @@ Chrome 이 확장 프로그램을 MV3 로 옮기면서, **유저스크립트를 
 **Chrome 138 이상 · Edge 최신판**
 
 1. 주소창에 `chrome://extensions` (Edge 는 `edge://extensions`) 를 입력합니다.
-   — Tampermonkey 아이콘을 우클릭 → *확장 프로그램 관리* 로 가도 같습니다.
+   Tampermonkey 아이콘을 우클릭 → *확장 프로그램 관리* 로 가도 같습니다.
 2. 목록에서 **Tampermonkey** 를 찾아 **세부정보(Details)** 를 누릅니다.
 3. **사용자 스크립트 허용 (Allow user scripts)** 토글을 **켭니다.**
 4. Tampermonkey 대시보드를 한 번 새로 고칩니다.
@@ -82,7 +82,7 @@ Chrome 이 확장 프로그램을 MV3 로 옮기면서, **유저스크립트를 
 3. 메뉴의 **내 니케 데이터 내보내기** 를 누릅니다.
 
 > 메뉴에 그 항목이 없다면: (a) 1-2 의 토글, (b) 지금 보고 있는 주소가 `www.blablalink.com`
-> 인지, (c) Tampermonkey 대시보드에서 스크립트가 **사용(Enabled)** 상태인지 —
+> 인지, (c) Tampermonkey 대시보드에서 스크립트가 **사용(Enabled)** 상태인지 -
 > 이 세 가지를 순서대로 확인하세요.
 
 ### 자동 업데이트에 대해
@@ -103,7 +103,7 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='64df14a4b4f0963e2527d6fbd5ea1f857ad6d9c8529eefd2c69c35150ce83168',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='4bd095d03977e982224e20191ae61c182c89883f0520173ea40cb471a9a483ff',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
@@ -111,7 +111,7 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 이 한 줄이 하는 일은 스크립트를 받아서 **SHA-256 해시가 위에 박혀 있는 값과 같을 때만**
 실행하는 것입니다. 배포본이 한 글자라도 달라지면 실행을 거부합니다.
 그래서 스크립트가 갱신되면 이 북마크는 동작을 멈추고, 여기서 새 줄을 다시 복사해야 합니다.
-**불편한 게 아니라 그러라고 만든 것입니다** — 내가 확인한 코드가 아니면 안 돌아갑니다.
+**불편한 게 아니라 그러라고 만든 것입니다** - 내가 확인한 코드가 아니면 안 돌아갑니다.
 
 읽기 좋은 원본은 [`bookmarklet.js`](bookmarklet.js) 에 있습니다.
 
@@ -121,12 +121,12 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
 수집이 끝나면 창에 세 가지 방법이 나옵니다.
 
-- **MechaShifty 계산기로 보내기** — 새 탭이 열리고 바로 들어갑니다.
+- **MechaShifty 계산기로 보내기** - 새 탭이 열리고 바로 들어갑니다.
   탭 사이 전달은 받는 쪽 주소를 `https://radm90.github.io` 로 못 박아서 보내므로,
   다른 사이트가 가로챌 수 없습니다.
-- **JSON 파일로 저장** — 계산기의 *내 계정 → JSON 열기* 에서 고르면 됩니다.
+- **JSON 파일로 저장** - 계산기의 *내 계정 → JSON 열기* 에서 고르면 됩니다.
   네트워크를 아예 타지 않는 방법입니다.
-- **클립보드로 복사** — *붙여넣기* 칸에 붙여 넣습니다. 모바일에서 편합니다.
+- **클립보드로 복사** - *붙여넣기* 칸에 붙여 넣습니다. 모바일에서 편합니다.
 
 불러온 자료는 **이 브라우저의 localStorage 에만** 남습니다. 서버로 보내지 않습니다.
 지우려면 계산기의 *지우기* 를 누르세요.
@@ -142,7 +142,7 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 - 계정: 싱크로 레벨 · 전초기지 리사이클 룸 연구 레벨 · 계정 생성 시각 ·
   캠페인 진행도(노멀/하드 최종 클리어 스테이지) · 전초기지 레벨 · 타워별 클리어 층(기업 4종·트라이브)
 
-계정 값은 계산기 말고 **전초기지 탭**도 씁니다 — 캠페인 진행도로 전초기지 레벨과 재화
+계정 값은 계산기 말고 **전초기지 탭**도 씁니다 - 캠페인 진행도로 전초기지 레벨과 재화
 수급량을 채우고, 기업 타워 카드에 타워별 클리어 층과 함께 계정 생성 시각으로 낸 도달 가능 최대 층을
 보여 줍니다.
 
@@ -151,12 +151,12 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
 **가져가지 않는 것**
 
-- 로그인 쿠키 · 세션 · 인증 토큰 — 읽지 않습니다.
-- **openid(계정 식별자)** — API 를 호출할 때 인자로만 쓰고, 결과물에는 넣지 않습니다.
+- 로그인 쿠키 · 세션 · 인증 토큰 - 읽지 않습니다.
+- **openid(계정 식별자)** - API 를 호출할 때 인자로만 쓰고, 결과물에는 넣지 않습니다.
   스크립트 안에 `scrub()` 함수가 있어서, 결과에 식별자 비슷한 문자열이 남아 있으면
   내보내기 자체를 중단합니다.
-- **닉네임과 서버** — 계산기가 쓰지 않으므로 담지 않습니다.
-- 다른 사람의 계정 — 내 계정만 읽습니다. 주소창의 다른 유저 ID 를 따라가지 않습니다.
+- **닉네임과 서버** - 계산기가 쓰지 않으므로 담지 않습니다.
+- 다른 사람의 계정 - 내 계정만 읽습니다. 주소창의 다른 유저 ID 를 따라가지 않습니다.
 
 ---
 
@@ -168,7 +168,7 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 |---|
 | 외부 코드를 받아 실행하지 않음. 북마클릿 판은 해시로 고정 |
 | 외부 라이브러리 없음. 엑셀 대신 JSON |
-| 받는 쪽 origin 을 명시. 받는 쪽도 보낸 origin 을 확인 — 지정 사이트만 수신 가능 |
+| 받는 쪽 origin 을 명시. 받는 쪽도 보낸 origin 을 확인 - 지정 사이트만 수신 가능 |
 | 내보내기 직전에 식별자 검사를 통해 결과에 계정 정보가 섞여 나가지 않음 |
 
 `eval`, `new Function`, `<script src>`, `import()` 가 `mechashifty.user.js` 안에 없습니다.

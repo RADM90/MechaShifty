@@ -1,4 +1,4 @@
-/* 내 계정 — Blablalink 에서 뽑아 온 내 니케 데이터를 계산기에 붙인다.
+/* 내 계정 - Blablalink 에서 뽑아 온 내 니케 데이터를 계산기에 붙인다.
 
    수집은 `userscript/mechashifty.user.js`(Tampermonkey) 또는 같은 코드를 해시로 고정한 북마클릿이 한다.
    여기서는 payload 를 검증해 계산기 입력으로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
@@ -23,7 +23,7 @@ const TIERS = ['', '9티어_일반', '9티어_기업', '오버로드'];
 const OPTIONS = ['우코', '공증', '장탄', '크댐', '크확', '차속', '명중', '방어', '차댐'];
 /* 옛 약어 → 지금 약어. */
 export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
-/* 목록에 아이콘으로 찍는 축 — 니케 표 열 순서(기업, 버스트, 속성, …)를 따른다. */
+/* 목록에 아이콘으로 찍는 축 - 니케 표 열 순서(기업, 버스트, 속성, …)를 따른다. */
 const AXES = ['burst', 'element'];
 
 const el = (tag, cls, text) => {
@@ -36,7 +36,7 @@ const el = (tag, cls, text) => {
 /* ── 정렬 등수 ────────────────────────────────────────────────
    배지로 찍는 칸들은 화면 값이 글자('3돌'·'SR15')라 그대로는 못 센다. */
 
-/* 돌파와 코어강화는 한 줄로 이어진 단계다 — 코강은 3돌 다음이라 0돌(0) … 3돌(3) … 1코강(4) … 7코강(10) 순으로 커진다. */
+/* 돌파와 코어강화는 한 줄로 이어진 단계다 - 코강은 3돌 다음이라 0돌(0) … 3돌(3) … 1코강(4) … 7코강(10) 순으로 커진다. */
 function gradeRank(g) {
   const core = /^([1-7])코강$/.exec(g);
   if (core) return 3 + Number(core[1]);
@@ -56,10 +56,10 @@ const int = (v, lo, hi, dflt) => {
   const n = Math.round(Number(v));
   return Number.isFinite(n) && n >= lo && n <= hi ? n : dflt;
 };
-const fmt = v => (v == null ? '—' : Math.round(v).toLocaleString());
+const fmt = v => (v == null ? '-' : Math.round(v).toLocaleString());
 /* 전투력 세 열은 자릿수가 여섯이라 표를 밀어낸다. */
 function kfmt(v) {
-  if (v == null) return '–';
+  if (v == null) return '-';
   const n = Math.round(v);
   if (n < 1000) return String(n);
   const k = n / 1000;
@@ -83,10 +83,10 @@ export function gradeBadge(grade, t) {
   const label = gradeLabel(grade, t);        // 데이터 키('3돌')를 화면 언어로
   if (core) return badge('is-star is-core', core[1], label);
   if (brk) return badge('is-star ' + (brk[1] === '0' ? 'is-none' : 'is-break'), brk[1], label);
-  return null;                               // 모르는 표기 — 부르는 쪽이 글자로 쓴다
+  return null;                               // 모르는 표기 - 부르는 쪽이 글자로 쓴다
 }
 
-/* 소장품 — R 파랑 · SR 보라 · 애장품 주황. */
+/* 소장품 - R 파랑 · SR 보라 · 애장품 주황. */
 const COLL_CLS = { R: 'is-r', SR: 'is-sr', 애장품: 'is-fav' };
 export function collBadge(c, t) {
   if (!c || c.kind === 'none') return null;
@@ -100,7 +100,7 @@ export function collBadge(c, t) {
 export const bondBadge = (bond, t) =>
   badge('is-heart is-bond', String(bond), t('cp.bond') + ' ' + bond);
 
-/* 하모니 큐브 — 아이콘 + 레벨. */
+/* 하모니 큐브 - 아이콘 + 레벨. */
 export function cubeBadge(cube, info, iconEl) {
   if (!cube || !cube.level) return null;
   const box = el('span', 'cp-cubeBadge');
@@ -108,14 +108,14 @@ export function cubeBadge(cube, info, iconEl) {
   if (ic) box.appendChild(ic);
   else if (info) box.appendChild(el('span', 'cp-cubeName', info.short));
   box.appendChild(el('span', 'cp-cubeLv', String(cube.level)));
-  box.title = info ? `${info.short} · ${info.name} — ${info.effect}`
+  box.title = info ? `${info.short} · ${info.name} - ${info.effect}`
     : (cube.tid ? '#' + cube.tid : '');
   return box;
 }
 
-/* 수집 시각 — ISO(UTC)를 보는 사람의 지역 시간으로 바꿔 분까지 보여준다. */
+/* 수집 시각 - ISO(UTC)를 보는 사람의 지역 시간으로 바꿔 분까지 보여준다. */
 export function stampText(s) {
-  if (!s) return '—';
+  if (!s) return '-';
   const d = new Date(s);
   if (isNaN(d)) return String(s).slice(0, 16).replace('T', ' ');
   const p = n => String(n).padStart(2, '0');
@@ -138,13 +138,13 @@ export function parseRoster(raw) {
     generated_at: String(data.generated_at || '').slice(0, 40),
     account: {
       synchro_level: int(acc.synchro_level, 1, 1400, null),
-      // Unix 초 — 니케 서비스 개시 이전이거나 미래면 버린다
+      // Unix 초 - 니케 서비스 개시 이전이거나 미래면 버린다
       created_at: int(acc.created_at, 1667000000, Math.floor(Date.now() / 1000) + 86400, null),
-      /* 캠페인 진행도 — [모드1][지역3][순번3] 7자리 정수. */
+      /* 캠페인 진행도 - [모드1][지역3][순번3] 7자리 정수. */
       progress_normal_campaign: int(acc.progress_normal_campaign, 1, 9999999, null),
       progress_hard_campaign: int(acc.progress_hard_campaign, 1, 9999999, null),
       outpost_battle_level: int(acc.outpost_battle_level, 1, 9999, null),
-      /* 타워별 클리어 층 — 1.5.0 이전 유저스크립트가 만든 파일에는 없다. */
+      /* 타워별 클리어 층 - 1.5.0 이전 유저스크립트가 만든 파일에는 없다. */
       ...Object.fromEntries(['elysion', 'missilis', 'tetra', 'pilgrim', 'tribe'].map(k =>
         [`progress_${k}_tower`, int(acc[`progress_${k}_tower`], 1, 99999, null)])),
     },
@@ -245,7 +245,7 @@ function restore() {
   } catch { return null; }
 }
 
-/* 옵션작 탭이 '현재 장비'로 쓴다 — 불러온 계정에서 그 니케의 네 부위를 찾는다. 없으면 null.
+/* 옵션작 탭이 '현재 장비'로 쓴다 - 불러온 계정에서 그 니케의 네 부위를 찾는다. 없으면 null.
    계정 자료는 크지 않지만 탭을 그릴 때마다 읽지 않게, 저장된 문자열이 같으면 지난번 결과를 쓴다. */
 let rosterCache = { raw: null, data: null };
 export function rosterGearFor(nikke) {
@@ -445,7 +445,7 @@ export function renderImport(root, ctx) {
     return { out, owned: owned.size, unknown };
   }
 
-  /* 검색은 니케 리스트 탭과 같은 함수를 쓴다 — 이름은 초성('ㄹㅍ')·띄어쓰기 무시, 별명·스쿼드는 부분 일치. */
+  /* 검색은 니케 리스트 탭과 같은 함수를 쓴다 - 이름은 초성('ㄹㅍ')·띄어쓰기 무시, 별명·스쿼드는 부분 일치. */
   let hits = null, hitsFor = null;
   function matcher() {
     if (hitsFor !== filter) {
@@ -548,7 +548,7 @@ export function renderImport(root, ctx) {
       const cell = el('span', 'cp-gearCell' + (TIER_CLS[g.tier] || ''),
         g.tier ? String(g.enhance) : '·');
       // 부위·옵션 이름은 데이터 키가 한국어라, 보여줄 때는 화면 언어로 옮긴다
-      cell.title = `${t('cp.slot_' + slot)} — ${g.tier ? tierLabel(g.tier, t) : t('cp.none')}`
+      cell.title = `${t('cp.slot_' + slot)} - ${g.tier ? tierLabel(g.tier, t) : t('cp.none')}`
         + (g.options && g.options.length
           ? ' · ' + g.options.map(o => `${optionLabel(o.name, ctx.lang)} Lv.${o.level}`).join(', ') : '');
       box.appendChild(cell);
@@ -559,14 +559,14 @@ export function renderImport(root, ctx) {
   /* 배지 자체는 모듈 위쪽에 있다 (계산기 상세 카드와 같은 도형을 쓴다). */
   const badgeCell = node => {
     const td = el('td', 'cp-rBadge');
-    if (node) td.appendChild(node); else td.textContent = '–';
+    if (node) td.appendChild(node); else td.textContent = '-';
     return td;
   };
   const gradeCell = grade => badgeCell(gradeBadge(grade, t) || el('span', null, grade));
   const collCell = c => badgeCell(collBadge(c, t));
   const bondCell = bond => badgeCell(bondBadge(bond, t));
 
-  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. 소수점까지 그대로 더하고(cp.js olTotals)
+  /* 우공합 - 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. 소수점까지 그대로 더하고(cp.js olTotals)
      칸에는 정수 % 로 반올림해 보인다. 정렬과 hover 는 소수점 값 그대로라 반올림해 같아진 줄도 순서가 갈린다. */
   const OL_ATK = ['우코', '공증'];
   const pc = o => o.total * 100;
@@ -574,7 +574,7 @@ export function renderImport(root, ctx) {
   function olAtkCell(ol) {
     const td = el('td', 'num cp-rOlAtk');
     const v = olSum(ol);
-    if (v == null) { td.textContent = '–'; return td; }
+    if (v == null) { td.textContent = '-'; return td; }
     td.textContent = Math.round(v) + '%';
     td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o).toFixed(2)}%`).join(' + ') + ` = ${v.toFixed(2)}%`;
     return td;
@@ -586,11 +586,11 @@ export function renderImport(root, ctx) {
     return td;
   };
 
-  /* 하모니 큐브 — 도형은 위쪽 cubeBadge 가 만든다 (계산기 상세 카드와 같은 모양). */
+  /* 하모니 큐브 - 도형은 위쪽 cubeBadge 가 만든다 (계산기 상세 카드와 같은 모양). */
   function cubeCell(cube) {
     const box = cubeBadge(cube, cubeInfo(cube.tid), ctx.iconEl);
     const td = el('td', 'cp-rCube');
-    if (!box) { td.textContent = '–'; return td; }
+    if (!box) { td.textContent = '-'; return td; }
     td.appendChild(box);
     td.title = box.title;
     return td;
@@ -628,7 +628,7 @@ export function renderImport(root, ctx) {
         val: r => r.entry && gearRank(r.entry.gear) },
       { key: 'cube', label: t('im.colCube'), cls: 'num',
         val: r => r.entry && r.entry.cube.level },
-      /* 우코·공증이 하나도 없으면 칸은 '–' 지만 정렬로는 0 이다 — 가장 약한 쪽이라 오름차순 맨 앞이 맞다. */
+      /* 우코·공증이 하나도 없으면 칸은 '-' 지만 정렬로는 0 이다 - 가장 약한 쪽이라 오름차순 맨 앞이 맞다. */
       { key: 'olatk', label: t('im.colOlAtk'), cls: 'num', title: t('im.colOlAtkNote'),
         val: r => r.entry && (olSum(r.ol) || 0) },
       { key: 'level', label: t('im.colLevel'), cls: 'num', val: r => r.entry && r.entry.level },
@@ -668,7 +668,7 @@ export function renderImport(root, ctx) {
     redrawRows = () => {
       tb.textContent = '';
       const col = cols.find(c => c.key === sort.key) || cols[0];
-      /* 미보유는 어느 열로 정렬하든 맨 아래에 둔다 — 값이 하나도 없는 줄이 위로 올라오면 목록을 읽을 수 없다. */
+      /* 미보유는 어느 열로 정렬하든 맨 아래에 둔다 - 값이 하나도 없는 줄이 위로 올라오면 목록을 읽을 수 없다. */
       const shown = out.filter(keep).sort((a, b) => {
         if (!a.entry !== !b.entry) return a.entry ? -1 : 1;
         const x = col.val(a), y = col.val(b);
@@ -702,8 +702,8 @@ export function renderImport(root, ctx) {
         tr.appendChild(el('td')).appendChild(icons(r.nikke));
 
         if (!has) {
-          // 미보유 — 계정에서 온 값이 하나도 없으므로 자리만 비워 둔다
-          for (let i = 2; i < cols.length; i++) tr.appendChild(el('td', 'num', '–'));
+          // 미보유 - 계정에서 온 값이 하나도 없으므로 자리만 비워 둔다
+          for (let i = 2; i < cols.length; i++) tr.appendChild(el('td', 'num', '-'));
           tb.appendChild(tr);
           continue;
         }

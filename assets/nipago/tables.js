@@ -1,10 +1,10 @@
-/* 니파고 — 미리 푼 부위 정책 파일.
+/* 니파고 - 미리 푼 부위 정책 파일.
    tools/nipago_tables.mjs 가 쓰고, service.js 가 읽는다. DOM 없음.
 
    부위 표 하나는 (목표 가중치·최소 단계 묶음, λ) 로 정해지고, 저장하는 것은 상태마다 최선 행동 번호 1바이트뿐이다.
    가치·기대 모듈·락키는 받은 정책을 한 번 평가해서 다시 얻는다 (가치 반복보다 수십 배 빠르다).
 
-   전부 한 파일 — data/nipago/policies.bin (gzip). 처음 계산할 때 한 번 받는다.
+   전부 한 파일 - data/nipago/policies.bin (gzip). 처음 계산할 때 한 번 받는다.
    data/nipago/manifest.json 에 해시가 있어, 규칙이 바뀌었으면 큰 파일을 받지 않는다.
 
    형식 (gzip 압축 전)
@@ -29,7 +29,7 @@ export function policyHash(D) {
     String(Object.values(LAMBDAS)), D.lp, D.opts.map(o => o.w)]));
 }
 
-/* '0.1:15|0.12:12@0.1' → '12-15' — 생성할 때 일을 나누는 단위 */
+/* '0.1:15|0.12:12@0.1' → '12-15' - 생성할 때 일을 나누는 단위 */
 export function shardOf(key) {
   return key.split('@')[0].split('|').map(x => +x.split(':')[1]).sort((a, b) => a - b).join('-');
 }
@@ -70,7 +70,7 @@ export function decodeShard(buf, hash) {
   } catch { return null; }
 }
 
-/* 받은 바이트 — gzip 이면 푼다 (서버가 이미 풀어서 줬을 수도 있다) */
+/* 받은 바이트 - gzip 이면 푼다 (서버가 이미 풀어서 줬을 수도 있다) */
 export async function unpack(bytes) {
   if (bytes[0] === 0x1f && bytes[1] === 0x8b) {
     if (typeof DecompressionStream === 'undefined') return null;

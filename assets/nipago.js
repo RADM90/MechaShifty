@@ -1,12 +1,15 @@
-/* 니파고 탭 — 오버로드 옵션작 경로 추천.
+/* 니파고 탭 - 오버로드 옵션작 경로 추천.
    니케 한 명의 네 부위를 함께 보고, 결과가 나올 때마다 다음 한 번을 다시 계산한다.
 
-   로직은 assets/nipago/ 에 있다 (DOM 없음 — tools/nipago_check.mjs 가 그대로 검증한다).
+   로직은 assets/nipago/ 에 있다 (DOM 없음 - tools/nipago_check.mjs 가 그대로 검증한다).
      rules.js      게임 규칙·비용·버전, 니케별 차속 분류
      effective.js  차속·장탄 동일 단계 묶음 반올림
      engine.js     부위 MDP · 네 부위 배분 · 유지/적용 · 추첨
      tables.js     미리 푼 부위 정책 파일 (data/nipago/, tools/nipago_tables.mjs 가 만든다)
-     service.js    추천 한 건 조립 — worker.js 가 돌린다
+     service.js    추천 한 건 조립 - worker.js 가 돌린다
+
+   니케별 권장·종결 옵션은 data/nipago/profiles.json (RefDoc 문서 → tools/nipago_profiles.mjs).
+   니케를 고르거나 계산기에서 넘어오면 그 옵션을 목표로 둘지 묻는다.
 
    계산은 [계산하기] 카드의 [계산] 을 눌러야 시작한다. 목표·장비를 고치면 다시 누를 때까지 멈추고,
    시뮬레이션 진행(실행·유지/적용·취소)은 그 계산을 이어 간다.
@@ -30,7 +33,7 @@ const E = () => ({ opt: '', lv: 0 });
 let ctx = null, D = null, RAW = null, base = './data/', mounted = null;
 let S = null;                        // 저장되는 상태
 let ui = { edit: null, rec: null, busy: false, cmp: null, draft: null, manual: false, err: null, detail: false, logOpen: false,
-  lvPick: null, remoteMin: loadRemoteMin() };
+  lvPick: null, remoteMin: loadRemoteMin(), askProf: null };
 
 /* ── 작은 도우미 ─────────────────────────────────────────── */
 function h(tag, attrs, ...kids) {
@@ -51,16 +54,16 @@ function h(tag, attrs, ...kids) {
 }
 const btn = (cls, text, onclick, extra = {}) => h('button', { type: 'button', class: cls, onclick, ...extra }, text);
 const t = (k, ...a) => ctx.t(k, ...a);
-/* 실효값 표시 — 장탄에는 언어별 '발' 단위를 붙인다 */
+/* 실효값 표시 - 장탄에는 언어별 '발' 단위를 붙인다 */
 const fmtEff = (cfg, v) => fmtEffRaw(cfg, v, t('np.shot'));
 const explainEff = (cfg, res) => explainEffRaw(cfg, res, t('np.shot'));
 const opt = id => D.byId[id];
 const short = id => optionLabel(id, ctx.lang);
 const pctOf = (id, lv) => (opt(id).vals[lv - 1] * 100).toFixed(2) + '%';
-const num = v => (v == null || !Number.isFinite(v) ? '—' : v >= 100 || Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v).toLocaleString() : v.toFixed(1));
-/* 레벨 색은 계산기 탭과 같다 (cp.js olLevelCls — 12~14 파랑, 15 검정) */
+const num = v => (v == null || !Number.isFinite(v) ? '-' : v >= 100 || Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v).toLocaleString() : v.toFixed(1));
+/* 레벨 색은 계산기 탭과 같다 (cp.js olLevelCls - 12~14 파랑, 15 검정) */
 const lvCls = lv => olLevelCls(lv).trim();
-/* 목표 칩·목록 순서 — 오버로드 종합과 같은 순서(cp.js OL_ORDER), 3열 그리드로 3×3 */
+/* 목표 칩·목록 순서 - 오버로드 종합과 같은 순서(cp.js OL_ORDER), 3열 그리드로 3×3 */
 const GOAL_ORDER = OL_ORDER;
 const goalOrder = () => [...GOAL_ORDER.filter(id => D.byId[id]), ...D.opts.map(o => o.id).filter(id => !GOAL_ORDER.includes(id))];
 const nikkeOf = rid => (rid && (ctx.nikkes || []).find(n => n.rid === rid)) || null;
@@ -68,7 +71,7 @@ const nikkeName = n => (n ? n.name[ctx.lang] || n.name.en || n.name.ko : '');
 
 /* 리모컨 접힘은 보는 사람 편의라 브라우저에만 둔다 */
 /* ui 초기값이 모듈 맨 위에서 이 함수를 부르므로 아래 const 가 아니라 문자열을 그대로 쓴다 */
-/* 고른 적이 없으면 좁은 화면(폰)에서는 접은 채로 시작한다 — 펼치면 화면 아래를 크게 가린다 */
+/* 고른 적이 없으면 좁은 화면(폰)에서는 접은 채로 시작한다 - 펼치면 화면 아래를 크게 가린다 */
 function loadRemoteMin() {
   let v = null;
   try { v = localStorage.getItem('nipago.remoteMin'); } catch {}
@@ -79,7 +82,7 @@ const REMOTE_STORE = 'nipago.remoteMin';
 /* ── 로드 ─────────────────────────────────────────────────── */
 async function fetchJSON(url) {
   const r = await fetch(url, { cache: 'no-cache' });
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText} - ${url}`);
   return r.json();
 }
 async function loadAll() {
@@ -91,7 +94,7 @@ async function loadAll() {
   D = buildData(option, glossary);
 }
 
-/* ── 계산 — 워커, 안 되면 같은 코드를 화면 쪽에서 ───────────── */
+/* ── 계산 - 워커, 안 되면 같은 코드를 화면 쪽에서 ───────────── */
 let worker = null, wid = 0, inline = null;
 const waiting = new Map();
 async function compute(type, payload) {
@@ -114,7 +117,7 @@ async function compute(type, payload) {
   if (!inline) inline = (await import('./nipago/service.js')).createService(RAW.option, RAW.glossary, { base: absBase() });
   return type === 'compare' ? inline.compare(payload.st, payload.keep, payload.acc) : inline.recommend(payload.st);
 }
-/* 워커 안에서는 상대 주소가 워커 파일 기준이 된다 — 절대 주소로 넘긴다 */
+/* 워커 안에서는 상대 주소가 워커 파일 기준이 된다 - 절대 주소로 넘긴다 */
 const absBase = () => new URL(base, location.href).href;
 function post(type, payload) {
   return new Promise((res, rej) => {
@@ -134,8 +137,8 @@ const defaults = () => ({
   keep: { allowDrop: false },
   pref: 'balanced',
   armed: false,                     // [계산] 을 누른 뒤 입력을 고치지 않았다
-  source: 'real',                   // 탐색 모드 — 기본은 실전 기록
-  base: null,                       // 첫 실행 직전 장비 — 계정 자료가 없을 때 '현재 OL 종합' 기준
+  source: 'real',                   // 탐색 모드 - 기본은 실전 기록
+  base: null,                       // 첫 실행 직전 장비 - 계정 자료가 없을 때 '현재 OL 종합' 기준
   spent: { mod: 0, key: 0 },
   log: [],
   pending: null,
@@ -184,10 +187,10 @@ function normalize(v) {
     log: Array.isArray(v.log) ? v.log : [], nikke: { ...d.nikke, ...(v.nikke || {}) } };
 }
 const clampLv = v => Math.min(MAX_LV, Math.max(1, Math.round(+v) || 1));
-/* 목표 단계 — 줄 수만큼. 모자라면 마지막 값(없으면 최소 단계)으로 채운다 */
+/* 목표 단계 - 줄 수만큼. 모자라면 마지막 값(없으면 최소 단계)으로 채운다 */
 const fitLvs = (lvs, n, fill) => Array.from({ length: n }, (_, i) =>
   clampLv(Array.isArray(lvs) && lvs.length ? lvs[Math.min(i, lvs.length - 1)] : fill));
-/* v2 — 장비 한 부위였다. 첫 부위에 넣고 나머지는 미개조로 둔다. */
+/* v2 - 장비 한 부위였다. 첫 부위에 넣고 나머지는 미개조로 둔다. */
 function fromV2(v) {
   const d = defaults();
   const lines = [0, 1, 2].map(i => cleanLine(v.slots[i]));
@@ -203,7 +206,7 @@ function fromV2(v) {
 }
 
 /* 상태를 바꾸면 번호가 오른다.
-   run: 시뮬레이션 진행 — [계산] 을 누른 상태면 이어서 다시 계산한다.
+   run: 시뮬레이션 진행 - [계산] 을 누른 상태면 이어서 다시 계산한다.
    그 밖의 입력 변경은 계산을 멈추고 [계산] 을 다시 누르길 기다린다. */
 function commit(fn, { goal = false, run = false } = {}) {
   fn();
@@ -227,7 +230,7 @@ const repaint = fn => { if (fn) fn(); paint(); };
 
 /* ── 계산기 탭에서 네 부위 채우기 ─────────────────────────── */
 /* 계산기 자료(부위마다 {slot, tier, options}) → 니파고 네 부위.
-   계산기 자료에는 영구 잠금 정보가 없다 — 모두 풀린 것으로 두고, 사용자가 자물쇠로 표시한다. */
+   계산기 자료에는 영구 잠금 정보가 없다 - 모두 풀린 것으로 두고, 사용자가 자물쇠로 표시한다. */
 function piecesFrom(gear) {
   return PIECES.map((slot, p) => {
     const g = (gear || []).find(x => x.slot === SLOTS[p]);
@@ -246,6 +249,8 @@ export function seedGear({ rid, gear }) {
     if (rid) st.nikke = { rid, baseAmmo: null, chargeTime: null };
     st.stateNo++;
   };
+  ui.askProf = rid || null;          // 이 니케의 추천 옵션을 목표로 둘지 묻는다
+  ui.askFocus = !!rid;
   if (S) {
     apply(S); save();
     if (mounted) { ui.cmp = null; ui.draft = null; ui.manual = false; ui.rec = null; loadNikkeStats(); paint(); }
@@ -258,7 +263,7 @@ export function seedGear({ rid, gear }) {
   localStorage.setItem(STORE, JSON.stringify(st));
 }
 
-/* 검색에서 니케를 고른다 — 계산기에 불러온 계정에 그 니케가 있으면 네 부위도 그 장비로 채운다 */
+/* 검색에서 니케를 고른다 - 계산기에 불러온 계정에 그 니케가 있으면 네 부위도 그 장비로 채운다 */
 function pickNikke(n) {
   if ((n ? n.rid : null) === S.nikke.rid || S.pending) return;
   const gear = n ? rosterGearFor(n) : null;
@@ -267,10 +272,11 @@ function pickNikke(n) {
     if (gear) { applyGear(S, gear); ui.cmp = null; ui.draft = null; ui.manual = false; ui.rec = null; ui.edit = null; }
     S.base = null;
   });
+  if (n) { ui.askProf = n.rid; ui.askFocus = true; loadProfiles(); }
   loadNikkeStats();
 }
 
-/* '현재 OL 종합' 의 기준 — 계정 자료가 있으면 그 장비, 없으면 첫 실행 직전 장비, 실행 전이면 지금 장비 */
+/* '현재 OL 종합' 의 기준 - 계정 자료가 있으면 그 장비, 없으면 첫 실행 직전 장비, 실행 전이면 지금 장비 */
 function baseline() {
   const acct = rosterGearFor(nikkeOf(S.nikke.rid));
   if (acct) return { src: 'acct', gear: piecesFrom(acct) };
@@ -282,11 +288,11 @@ const gearCopy = gear => gear.map(g => ({ slot: g.slot, overloaded: g.overloaded
 const olLines = gear => gear.filter(g => g.overloaded)
   .flatMap(g => g.lines.filter(l => l.opt && opt(l.opt)).map(l => ({ name: l.opt, level: l.lv })));
 const olOf = gear => olTotals(olLines(gear), (id, lv) => opt(id)?.vals[lv - 1]);
-/* 데이터를 아직 못 읽었을 때도 쓸 수 있게 — 옵션 확인은 normalize 가 한다 */
+/* 데이터를 아직 못 읽었을 때도 쓸 수 있게 - 옵션 확인은 normalize 가 한다 */
 const cleanLineRaw = (name, level) => ({ opt: fixOpt(name), lv: Math.min(15, Math.max(1, +level || FIRST_LV)) });
 
-/* 기본 장탄수·기준 차지 시간 — data/weapons.json (update_data.py 가 전투 원본에서 뽑는다).
-   손으로 고치는 칸은 없앴다 — 니케가 바뀌면 언제나 자료 값으로 맞춘다. 차지 무기가 아니면 차지 시간은 null. */
+/* 기본 장탄수·기준 차지 시간 - data/weapons.json (update_data.py 가 전투 원본에서 뽑는다).
+   손으로 고치는 칸은 없앴다 - 니케가 바뀌면 언제나 자료 값으로 맞춘다. 차지 무기가 아니면 차지 시간은 null. */
 let weapons = null;
 async function loadNikkeStats() {
   const rid = S.nikke.rid;
@@ -299,6 +305,117 @@ async function loadNikkeStats() {
     if (S.nikke.baseAmmo === ammo && S.nikke.chargeTime === charge) return;
     commit(() => { S.nikke.baseAmmo = ammo; S.nikke.chargeTime = charge; });
   } catch {}
+}
+
+/* ── 니케별 권장·종결 옵션 ────────────────────────────────────
+   data/nipago/profiles.json - RefDoc/니케별_오버로드_종결옵션_권장옵션_*.md 를 tools/nipago_profiles.mjs 가 읽어 만든다.
+   안(案)마다 줄 수가 정해진 옵션(goals, 범위면 아래쪽 값), 실효 장탄(eff), 고르는 칸 메모(notes)가 있다.
+   적용하면 목표를 그 안으로 바꾼다 - 줄 수만 넣고, 크리·합 N·잔여처럼 고르는 칸은 사람이 정한다. */
+let PROF = null, profLoading = null;
+function loadProfiles() {
+  if (!profLoading) {
+    profLoading = fetchJSON(`${base}nipago/profiles.json`)
+      .then(j => { PROF = j && j.nikkes ? j : { nikkes: {} }; })
+      .catch(() => { PROF = { nikkes: {} }; })
+      .then(() => { if (mounted?.isConnected) paint(); });
+  }
+  return profLoading;
+}
+const profOf = rid => (rid && PROF?.nikkes?.[rid]) || null;
+const applicable = p => (p ? p.sets.filter(x => x.apply) : []);
+
+async function applySet(set) {
+  ui.askProf = null;
+  if (S.pending) { paint(); return; }
+  await loadNikkeStats();            // 실효 장탄은 기본 장탄수가 있어야 목표로 바꿀 수 있다
+  commit(() => {
+    const items = {};
+    for (const [id, n] of Object.entries(set.goals)) {
+      if (D.byId[id]) items[id] = { count: Math.min(4, n), minLv: 12, lvs: fitLvs([], Math.min(4, n), 12), eff: null };
+    }
+    const e = set.eff;
+    if (e && D.byId[e.opt]) {
+      const a = S.nikke.baseAmmo;
+      const it = items[e.opt] || { count: 1, minLv: 12, lvs: [12], eff: null };
+      if (a && e.shots > a && EFF_OPTS[e.opt] === 'ammo') it.eff = { min: e.shots - a, model: 'pct' };
+      items[e.opt] = it;
+    }
+    S.goals = { ...S.goals, mode: 'opt', items };
+  }, { goal: true });
+}
+
+/* 안 이름 - 한국어는 문서 말 그대로, 그 밖에는 역할만 */
+const setLabel = x => !x.label ? null : ctx.lang === 'ko' ? x.label
+  : /수급|부족|밀리|막히|장전/.test(x.label) ? t('np.role_gauge')
+  : /지원|탱킹|방어|회복|생존/.test(x.label) ? t('np.role_support')
+  : /딜|버스트/.test(x.label) ? t('np.role_dps') : t('np.role_cond');
+
+function setChips(x) {
+  const range = Object.fromEntries(x.notes.filter(n => n.k === 'range').map(n => [n.opt, n.n]));
+  const span = (a, b) => (a === b ? String(a) : `${a}~${b}`);
+  const names = opts => opts.map(short).join('·');
+  const out = [];
+  if (x.hold) out.push(h('span', { class: 'np-pchip hold', title: t('np.profHoldHint') }, t('np.profHold')));
+  for (const [id, lo] of Object.entries(x.goals)) out.push(h('span', 'np-pchip', `${short(id)} ${span(lo, range[id] ? range[id][1] : lo)}`));
+  if (x.eff) out.push(h('span', { class: 'np-pchip', title: t('np.profShotsHint') }, t('np.profShots', short(x.eff.opt), x.eff.shots)));
+  for (const n of x.notes) {
+    if (n.k === 'range' && !(n.opt in x.goals)) out.push(h('span', { class: 'np-pchip opt', title: t('np.profPickHint') }, `${short(n.opt)} ${span(n.n[0], n.n[1])}`));
+    else if (n.k === 'pick') out.push(h('span', { class: 'np-pchip opt', title: t('np.profPickHint') }, `${n.opts.length ? names(n.opts) : t('np.profAux')} ${span(n.n[0], n.n[1])}`));
+    else if (n.k === 'rest') out.push(h('span', { class: 'np-pchip opt', title: t('np.profPickHint') }, t('np.profRest', n.opts.length ? names(n.opts) : t('np.profFree'))));
+    else if (n.k === 'cap') out.push(h('span', { class: 'np-pchip cap', title: t('np.profCapHint') }, `${short(n.opt)} 0`));
+  }
+  return out;
+}
+
+/* 목표 카드 맨 위 - 이 니케의 권장·종결을 한 번에 */
+function profCard() {
+  if (!S.nikke.rid || !PROF) return null;
+  const p = profOf(S.nikke.rid);
+  const box = h('div', 'np-prof');
+  box.appendChild(h('div', 'np-profhead', h('span', 'np-profttl', t('np.prof')),
+    PROF.date ? h('span', 'np-meta', t('np.profSrc', PROF.date)) : null));
+  if (!p) { box.appendChild(h('p', 'np-note', t('np.profNone'))); return box; }
+  for (const tier of ['rec', 'end']) {
+    const sets = p.sets.filter(x => x.tier === tier);
+    const list = h('div', 'np-profsets');
+    if (!sets.length) list.appendChild(h('span', 'np-note', t(p.status === 'tbd' ? 'np.profTbd' : 'np.profEmpty')));
+    for (const x of sets) {
+      const lab = setLabel(x);
+      list.appendChild(h('div', 'np-profset' + (x.hold ? ' hold' : ''),
+        lab ? h('span', 'np-proflab', lab) : null,
+        h('span', 'np-profchips', setChips(x)),
+        x.apply ? btn('np-profapply', t('np.profApply'), () => applySet(x), { disabled: !!S.pending, title: t('np.profApplyHint') }) : null));
+    }
+    box.appendChild(h('div', 'np-proftier', h('span', 'np-proftag np-proftag-' + tier, t('np.prof_' + tier)), list));
+  }
+  if (ctx.lang === 'ko' && p.cond) box.appendChild(h('p', 'np-note np-profcond', p.cond));
+  if (p.src) box.appendChild(h('a', { class: 'np-proflink', href: p.src, target: '_blank', rel: 'noopener' }, t('np.profLink')));
+  return box;
+}
+
+/* 니케를 고르거나 계산기에서 넘어왔을 때 - 추천 옵션을 목표로 둘지 묻는다 */
+function renderAskProf(p) {
+  const close = () => { ui.askProf = null; paint(); };
+  const bg = h('div', 'np-modalbg');
+  bg.onclick = e => { if (e.target === bg) close(); };
+  const box = h('div', { class: 'np-modal np-ask', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.profAsk') });
+  box.appendChild(h('div', 'np-modalhead',
+    h('span', null, t('np.profAskTitle', nikkeName(nikkeOf(S.nikke.rid)))),
+    PROF.date ? h('span', 'np-meta', t('np.profSrc', PROF.date)) : null));
+  const body = h('div', 'np-askbody');
+  body.appendChild(h('p', 'np-note', t(Object.keys(S.goals.items).length ? 'np.profAskReplace' : 'np.profAskDesc')));
+  for (const tier of ['rec', 'end']) {
+    for (const x of applicable(p).filter(y => y.tier === tier)) {
+      const lab = setLabel(x);
+      body.appendChild(btn('np-askopt',
+        [h('span', 'np-proftag np-proftag-' + tier, t('np.prof_' + tier)), lab ? h('span', 'np-proflab', lab) : null,
+          h('span', 'np-profchips', setChips(x))], () => applySet(x)));
+    }
+  }
+  box.appendChild(body);
+  box.appendChild(h('div', 'np-modalbtns', btn('np-mb np-mb-cancel', [t('np.profKeep'), h('small', null, 'Esc')], close)));
+  bg.appendChild(box);
+  return bg;
 }
 
 /* ── 엔진에 넘길 상태 ─────────────────────────────────────── */
@@ -319,7 +436,7 @@ function requestRec() {
     const want = S.stateNo;
     try {
       const out = await compute('rec', { st: engineState() });
-      if (out.stateNo !== S.stateNo) return;      // 그 사이 상태가 바뀌었다 — 버린다
+      if (out.stateNo !== S.stateNo) return;      // 그 사이 상태가 바뀌었다 - 버린다
       ui.rec = out; ui.err = null;
     } catch (err) {
       if (want === S.stateNo) ui.err = String(err.message || err);
@@ -345,7 +462,7 @@ async function requestCompare() {
 }
 
 /* ── 실행 · 선택 (명세 23.3~23.4, 24.5) ───────────────────── */
-/* 지금 실행할 행동 — 직접 설정이 우선, 아니면 추천 */
+/* 지금 실행할 행동 - 직접 설정이 우선, 아니면 추천 */
 function currentAction() {
   if (ui.manual && S.plan) {
     const g = S.gear[S.plan.piece];
@@ -373,7 +490,7 @@ function actionProblems(a) {
 }
 
 function execute() {
-  if (S.pending) return;                           // 버튼 두 번 — 한 번만
+  if (S.pending) return;                           // 버튼 두 번 - 한 번만
   const a = currentAction();
   if (!a || !S.armed || actionProblems(a).length) return;
   commit(() => {
@@ -383,7 +500,7 @@ function execute() {
     S.spent.mod += a.cost.mod; S.spent.key += a.cost.key;
     const before = g.lines.map(l => ({ ...l }));
     const prevPerm = g.perm.slice();
-    /* 새 영구 잠금은 지금 확정된다 — 결과를 유지해도 남는다. 락키·해제한 줄은 잠금이 없다. */
+    /* 새 영구 잠금은 지금 확정된다 - 결과를 유지해도 남는다. 락키·해제한 줄은 잠금이 없다. */
     g.perm = [0, 1, 2].map(i => a.protect.some(p => p.line === i && p.mat === 'perm'));
     const protectLines = a.protect.map(p => p.line);
     let result = null;
@@ -406,7 +523,7 @@ function draftFrom(pd) {
   return pd.before.map(l => ({ ...l }));
 }
 
-/* 실전 기록 — 입력한 결과를 확정해 비교로 넘긴다 */
+/* 실전 기록 - 입력한 결과를 확정해 비교로 넘긴다 */
 function submitDraft() {
   const pd = S.pending;
   const errs = validateResult({ lines: pd.before }, pd.kind, pd.protect.map(p => p.line), ui.draft);
@@ -428,13 +545,13 @@ function choose(choice) {
     const rec = S.log.find(x => x.tryId === pd.tryId);
     if (rec) { rec.result = pd.result; rec.choice = pd.kind === 'first' ? 'accept' : choice; rec.advice = ui.cmp?.choice || null; }
     S.pending = null;
-    /* 직접 설정은 이어진다 — 빈칸이 된 줄의 잠금만 뺀다 */
+    /* 직접 설정은 이어진다 - 빈칸이 된 줄의 잠금만 뺀다 */
     if (ui.manual && S.plan) S.plan.prot = Object.fromEntries(Object.entries(S.plan.prot || {}).filter(([i]) => S.gear[S.plan.piece].lines[+i].opt));
   }, { run: true });
   ui.cmp = null; ui.draft = null;
 }
 
-/* 실행 취소 — 오입력 등으로 이번 시도를 없던 일로 한다. 비용·이번에 건 잠금도 되돌린다. (Esc) */
+/* 실행 취소 - 오입력 등으로 이번 시도를 없던 일로 한다. 비용·이번에 건 잠금도 되돌린다. (Esc) */
 function cancelPending() {
   const pd = S.pending;
   if (!pd) return;
@@ -450,7 +567,7 @@ function cancelPending() {
   ui.cmp = null; ui.draft = null;
 }
 
-/* 기록 정정 — 서비스 안의 기록만 되돌린다. 게임 안 재화·장비는 돌아오지 않는다 (명세 24.5). */
+/* 기록 정정 - 서비스 안의 기록만 되돌린다. 게임 안 재화·장비는 돌아오지 않는다 (명세 24.5). */
 function undoLast() {
   const last = S.log.at(-1);
   if (!last) return;
@@ -473,7 +590,7 @@ function seg(items, cur, onPick, cls = '') {
   return h('div', { class: 'np-seg ' + cls, role: 'group' },
     items.map(([v, label, title]) => btn('np-segb' + (v === cur ? ' on' : ''), label, () => onPick(v), { 'aria-pressed': String(v === cur), title })));
 }
-/* − [숫자] + — 가운데 칸에 바로 입력할 수도 있다 (Enter·포커스 이동 때 반영) */
+/* − [숫자] + - 가운데 칸에 바로 입력할 수도 있다 (Enter·포커스 이동 때 반영) */
 function stepper(value, set, { min = 1, max = 15, label } = {}) {
   const inp = h('input', { class: 'np-stepi', type: 'number', inputmode: 'numeric', min, max, step: 1, 'aria-label': label });
   inp.value = value;
@@ -559,7 +676,7 @@ function searchRow() {
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (!list.hidden && st.hits[st.hi]) choose(st.hits[st.hi]);
-      else if (!inp.value.trim()) choose(null);            // 비우고 Enter — 니케 선택 해제
+      else if (!inp.value.trim()) choose(null);            // 비우고 Enter - 니케 선택 해제
     } else if (e.key === 'Escape') {
       e.stopPropagation();
       close();
@@ -567,7 +684,7 @@ function searchRow() {
     }
   };
 
-  /* 아이콘 칩 — 니케 리스트 탭과 같은 축 순서. 누르는 동안 검색창 포커스를 지킨다. */
+  /* 아이콘 칩 - 니케 리스트 탭과 같은 축 순서. 누르는 동안 검색창 포커스를 지킨다. */
   const bar = h('div', 'cp-chipBar np-schips');
   for (const axis of SEARCH_AXES) {
     const group = h('div', { class: 'cp-chipGroup', role: 'group', 'aria-label': t('ax.' + axis) });
@@ -591,9 +708,9 @@ function searchRow() {
 }
 
 /* ── 렌더: 데이터 ─────────────────────────────────────────────
-   기본 — 니케 자료(장탄·차지 시간)와 차속 분류. 옵션 — 지금 네 부위를 붙였을 때의 실효값. 손으로 고치는 칸은 없다. */
+   기본 - 니케 자료(장탄·차지 시간)와 차속 분류. 옵션 - 지금 네 부위를 붙였을 때의 실효값. 손으로 고치는 칸은 없다. */
 function chargeRole() {
-  if (!S.nikke.rid) return { text: '—' };
+  if (!S.nikke.rid) return { text: '-' };
   if (!S.nikke.chargeTime) return { text: '-' };                // 차지 무기가 아니다
   const cr = CHARGE_RULES[S.nikke.rid];
   if (!cr) return { text: t('np.clsS_unk'), title: t('np.clsUnkHint'), cls: 'unk' };
@@ -616,17 +733,17 @@ function renderData() {
   const role = chargeRole();
   const roleEl = role.cls ? h('span', 'np-cls np-cls-' + role.cls, role.text) : role.text;
   put(1, 1, h('span', 'np-dttl', t('np.dataBase')));
-  put(1, 2, cell(t('np.dAmmo'), A ? A + t('np.shot') : '—'));
-  put(1, 3, cell(t('np.dCharge'), C ? C.toFixed(2) + 's' : '—'));
+  put(1, 2, cell(t('np.dAmmo'), A ? A + t('np.shot') : '-'));
+  put(1, 3, cell(t('np.dCharge'), C ? C.toFixed(2) + 's' : '-'));
   put(1, 4, cell(t('np.dChargeCls'), roleEl, null, role.title));
 
-  let ammo = '—', ammoSub = null;
+  let ammo = '-', ammoSub = null;
   if (A) {
     const v = effValue({ kind: 'ammo', A }, lvsOf('장탄'), opt('장탄').bp).value;
     ammo = (A + v) + t('np.shot');
     if (v) ammoSub = `(+${v})`;
   }
-  let chg = '—', chgSub = null;
+  let chg = '-', chgSub = null;
   if (C) {
     const r = effValue({ kind: 'charge', model: 'time', C }, lvsOf('차속'), opt('차속').bp).value;
     chg = Math.max(0, C - r / 100).toFixed(2) + 's';
@@ -652,7 +769,7 @@ function olCard(title, gear, { src = null, ref = null } = {}) {
   const card = h('section', 'np-card np-olsum');
   const totals = olOf(gear);
   const rows = totals.map(o => ({ o, d: ref ? o.total - (ref.get(o.name)?.total || 0) : 0 }));
-  /* 기준에는 있었는데 지금은 없는 옵션 — 0 으로 남겨 빠진 것을 보인다 */
+  /* 기준에는 있었는데 지금은 없는 옵션 - 0 으로 남겨 빠진 것을 보인다 */
   if (ref) {
     for (const [name, r] of ref) {
       if (!totals.some(o => o.name === name)) rows.push({ o: { ...r, total: 0, exact: 0, count: 0, top: 0 }, d: -r.total, gone: true });
@@ -700,7 +817,7 @@ function renderRemote() {
   box.appendChild(field(t('np.pref'),
     seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
       S.pref, v => commit(() => { S.pref = v; }, { run: true }), 'np-seg-s')));
-  /* 소모량 초기화는 계산 입력이 아니다 — commit 으로 계산을 멈추지 않는다 */
+  /* 소모량 초기화는 계산 입력이 아니다 - commit 으로 계산을 멈추지 않는다 */
   const reset = (k, label) => btn('np-rreset', t('np.reset'), () => repaint(() => { S.spent[k] = 0; save(); }),
     { title: t('np.resetOf', label), disabled: !S.spent[k] });
   box.appendChild(field(t('np.spent'),
@@ -718,6 +835,8 @@ function renderGoals(prog) {
     seg([['opt', t('np.modeOpt'), t('np.modeOptHint')], ['lv', t('np.modeLv'), t('np.modeLvHint')], ['tier', t('np.modeTier'), t('np.modeTierHint')]],
       S.goals.mode, v => commit(() => { S.goals.mode = v; }, { goal: true }), 'np-seg-s')));
   card.appendChild(h('p', 'np-note', t('np.goalsHint')));
+  const pc = profCard();
+  if (pc) card.appendChild(pc);
 
   const order = goalOrder();
   const chips = h('div', 'np-chips');
@@ -742,7 +861,7 @@ function renderGoals(prog) {
     const g = S.goals.items[id];
     const pr = prog.find(p => p.opt === id);
     const row = h('div', 'np-grow' + (pr?.ok ? ' ok' : ''));
-    /* 머리 줄 — 이름 · 줄 수 · (목표 단계면) 단계 배지 · 빼기 */
+    /* 머리 줄 - 이름 · 줄 수 · (목표 단계면) 단계 배지 · 빼기 */
     const head = h('div', 'np-ghead', h('span', 'np-gname', short(id)));
     if (!g.eff) {
       const st = stepper(g.count, v => commit(() => { g.count = v; g.lvs = fitLvs(g.lvs, v, g.minLv); }, { goal: true }), { min: 1, max: 4, label: t('np.lines') });
@@ -797,7 +916,7 @@ function renderGoals(prog) {
   return card;
 }
 
-/* 목표 단계 — 줄마다 단계 배지. 누르면 1~15 고르는 칸이 바로 아래에 뜬다 (순서는 상관없다 — 어느 줄이 어느 단계를 채워도 된다) */
+/* 목표 단계 - 줄마다 단계 배지. 누르면 1~15 고르는 칸이 바로 아래에 뜬다 (순서는 상관없다 - 어느 줄이 어느 단계를 채워도 된다) */
 function lvBadges(id, g) {
   const lvs = fitLvs(g.lvs, g.count, g.minLv);
   const wrap = h('span', 'np-lvbadges');
@@ -822,7 +941,7 @@ function lvBadges(id, g) {
   return wrap;
 }
 
-/* [계산] — 누르기 전에는 아무것도 계산하지 않는다 */
+/* [계산] - 누르기 전에는 아무것도 계산하지 않는다 */
 function calcRow() {
   const fresh = S.armed && ui.rec && ui.rec.stateNo === S.stateNo;
   return h('div', 'np-calcrow',
@@ -886,7 +1005,7 @@ function renderRec(prog) {
     fresh.mod || fresh.key ? h('small', null, ` (${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
     act.cost.estimated ? h('small', 'np-est', ' · ' + t('np.estimated')) : null]);
   const pc = a.pieces[a.piece];
-  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` ${x.m}+` : '')).join('·') || '—', num(pc.m),
+  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` ${x.m}+` : '')).join('·') || '-', num(pc.m),
     a.pieces.filter(x => x.v > 0).length));
   const kept = prog.filter(p => p.eff && p.ok);
   if (kept.length) fact(t('np.guard'), kept.map(p => `${short(p.opt)} ${fmtEff(p.cfg, p.have)}`).join(', '));
@@ -900,7 +1019,7 @@ function renderRec(prog) {
     probs.map(x => h('span', 'np-prob', t('np.prob_' + x)))));
   card.appendChild(main);
 
-  /* 대안 — 모듈 절약 / 균형 / 락키 미사용 (다른 것만) */
+  /* 대안 - 모듈 절약 / 균형 / 락키 미사용 (다른 것만) */
   const others = ['mod', 'balanced', 'key'].filter(p => p !== r.pick && r.alts[p]?.ok);
   const sig = x => JSON.stringify([x.piece, x.act]);
   const distinct = others.filter(p => sig(r.alts[p]) !== sig(a) || Math.abs(r.alts[p].k - a.k) > 0.5 || Math.abs(r.alts[p].m - a.m) > 0.5);
@@ -926,7 +1045,7 @@ function renderRec(prog) {
   det.appendChild(h('ul', 'np-plan', a.pieces.map((x, p) => h('li', null,
     h('b', null, t('np.piece_' + p)), ' ',
     x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` ${s.m}+` : '')).join('·') : t('np.nothingHere'),
-    x.v > 0 ? ` — ${t('np.meanText', num(x.m), num(x.k))}${x.first ? ' · ' + t('np.firstIncl') : ''}` : ` — ${t('np.pieceOk')}`))));
+    x.v > 0 ? ` - ${t('np.meanText', num(x.m), num(x.k))}${x.first ? ' · ' + t('np.firstIncl') : ''}` : ` - ${t('np.pieceOk')}`))));
   if (r.stats) det.appendChild(h('p', 'np-note', t('np.tableStats', r.stats.loaded, r.stats.built)));
   card.appendChild(det);
   return card;
@@ -957,7 +1076,7 @@ function renderGear() {
   return card;
 }
 
-/* 직접 설정의 시작점 — 같은 부위면 지금 행동을, 아니면 그 부위의 기존 영구 잠금을 그대로 */
+/* 직접 설정의 시작점 - 같은 부위면 지금 행동을, 아니면 그 부위의 기존 영구 잠금을 그대로 */
 function planFromAction(a, piece) {
   if (a && a.piece === piece && a.kind !== 'first') {
     return { piece, kind: a.kind, prot: Object.fromEntries(a.protect.map(x => [x.line, x.mat])) };
@@ -990,7 +1109,7 @@ function pieceCard(g, p, act) {
   return box;
 }
 
-/* 자물쇠 상태 — 시작 전: 원래 잠겨 있던 줄. 시작 후: 이번 실행에서 보호할 줄 (대상 부위), 나머지는 기존 영구 잠금. */
+/* 자물쇠 상태 - 시작 전: 원래 잠겨 있던 줄. 시작 후: 이번 실행에서 보호할 줄 (대상 부위), 나머지는 기존 영구 잠금. */
 function lockState(g, p, i, act) {
   if (started() && act && act.piece === p && act.kind !== 'first') {
     const pr = act.protect.find(x => x.line === i);
@@ -1000,8 +1119,8 @@ function lockState(g, p, i, act) {
 }
 
 /* 자물쇠 누름
-   시작 전 — 원래 잠겨 있던 줄로 표시/해제 (비용 없음, 입력 변경)
-   시작 후 — 이번 실행의 잠금을 직접 정한다: 없음 → 영구 → 락키 → 없음. 새로 거는 잠금은 이번 비용에 들어간다. */
+   시작 전 - 원래 잠겨 있던 줄로 표시/해제 (비용 없음, 입력 변경)
+   시작 후 - 이번 실행의 잠금을 직접 정한다: 없음 → 영구 → 락키 → 없음. 새로 거는 잠금은 이번 비용에 들어간다. */
 function toggleLock(g, p, i) {
   if (S.pending || !g.lines[i].opt) return;
   if (!started()) {
@@ -1099,7 +1218,7 @@ function manualBar() {
     bar.appendChild(seg([['change', t('np.kindChange')], ['reset', t('np.kindReset')]], S.plan.kind,
       v => repaint(() => { S.plan.kind = v; save(); })));
   }
-  bar.appendChild(h('span', 'np-mdesc', a ? `${actionText(a)} — ${costText(a.cost)}${a.cost.estimated ? ' · ' + t('np.estimated') : ''}` : ''));
+  bar.appendChild(h('span', 'np-mdesc', a ? `${actionText(a)} - ${costText(a.cost)}${a.cost.estimated ? ' · ' + t('np.estimated') : ''}` : ''));
   const probs = actionProblems(a);
   if (!S.armed) probs.push('calc');
   bar.appendChild(h('div', 'np-goRow',
@@ -1173,7 +1292,7 @@ function renderModal(prog) {
   return bg;
 }
 
-/* 실전 기록 — 게임에서 나온 세 줄을 입력한다 */
+/* 실전 기록 - 게임에서 나온 세 줄을 입력한다 */
 function resultForm(pd) {
   const wrap = h('div', 'np-side new np-form');
   wrap.appendChild(h('div', 'np-sidettl', t('np.enterResult')));
@@ -1246,7 +1365,7 @@ function paint() {
     olCard(t('np.olChanged'), S.gear, { ref })));
   const main = h('div', 'np-main');
   main.appendChild(renderGoals(prog));
-  /* 메인 프레임 — 오버로드 옵션 → 계산하기 → 기록 */
+  /* 메인 프레임 - 오버로드 옵션 → 계산하기 → 기록 */
   const right = h('div', 'np-col');
   right.appendChild(renderGear());
   right.appendChild(renderRec(prog));
@@ -1255,6 +1374,13 @@ function paint() {
   root.appendChild(main);
   root.appendChild(renderRemote());
   if (S.pending) root.appendChild(renderModal(prog));
+  else if (ui.askProf && PROF) {
+    const p = ui.askProf === S.nikke.rid ? profOf(ui.askProf) : null;
+    if (applicable(p).length) {
+      root.appendChild(renderAskProf(p));
+      if (ui.askFocus) { ui.askFocus = false; requestAnimationFrame(() => root.querySelector('.np-askopt')?.focus()); }
+    } else ui.askProf = null;        // 미확정·효과작 보류 - 자동 목표 없음 (문서 「목표를 경로 계산에 넘길 때」)
+  }
   if (focusId) document.getElementById(focusId)?.focus();
 }
 
@@ -1275,10 +1401,11 @@ function wireOutside() {
     if (ui.lvPick && !inside('.np-lvbadges')) { ui.lvPick = null; dirty = true; }
     if (dirty) paint();
   });
-  /* Esc — 결과 창이 떠 있으면 이번 시도 취소, 아니면 줄 편집·직접 설정을 닫는다 */
+  /* Esc - 결과 창이 떠 있으면 이번 시도 취소, 아니면 줄 편집·직접 설정을 닫는다 */
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !mounted?.isConnected) return;
     if (S.pending) { e.preventDefault(); cancelPending(); return; }
+    if (ui.askProf) { ui.askProf = null; paint(); return; }
     if (ui.lvPick) { ui.lvPick = null; paint(); return; }
     if (ui.edit) { ui.edit = null; paint(); return; }
     if (ui.manual) { ui.manual = false; paint(); }
@@ -1288,7 +1415,7 @@ function wireOutside() {
 export async function renderNipago(root, context) {
   ctx = context;
   mounted = root;
-  search = null;                     // 언어가 바뀌었을 수 있다 — 검색 줄은 새로 만든다
+  search = null;                     // 언어가 바뀌었을 수 있다 - 검색 줄은 새로 만든다
   if (!D) {
     root.textContent = '';
     root.appendChild(h('p', 'notice', t('np.loading')));
@@ -1303,6 +1430,7 @@ export async function renderNipago(root, context) {
   }
   wireOutside();
   paint();
+  loadProfiles();
   loadNikkeStats();
   if (S.pending && S.pending.result && !ui.cmp) requestCompare();
   if (S.armed && (!ui.rec || ui.rec.stateNo !== S.stateNo)) requestRec();

@@ -1,5 +1,5 @@
 {
- "note": "하모니 큐브. 게임 API 가 주는 harmony_cube_tid 를 이름으로 옮기기 위한 표다. 전투력에는 큐브 종류가 아니라 레벨만 들어가므로(cp.js) 이 표는 표시 전용이다. 이름은 세 언어 모두 라이브 데이터에서 온 정식 명칭이고, 약칭(short)·효과(effect)는 우리가 붙인 표시용 문구라 ko/en 만 있다 — 일본어는 항목 단위로 en 에 떨어진다(roster.js cubeInfo). 영문 이름은 한국어 이름의 번역이 아니라 게임 안에서 따로 붙은 이름이라 대응이 어긋난다 — 효과로 맞춰 둔 것이다. tools/update_data.py --cubes 가 라이브와 대조해 갱신한다 (아이콘은 assets/icons/cube/<tid>.webp).",
+ "note": "하모니 큐브. 게임 API 가 주는 harmony_cube_tid 를 이름으로 옮기기 위한 표다. 전투력에는 큐브 종류가 아니라 레벨만 들어가므로(cp.js) 이 표는 표시 전용이다. 이름은 세 언어 모두 라이브 데이터에서 온 정식 명칭이고, 약칭(short)·효과(effect)는 우리가 붙인 표시용 문구라 ko/en 만 있다 - 일본어는 항목 단위로 en 에 떨어진다(roster.js cubeInfo). 영문 이름은 한국어 이름의 번역이 아니라 게임 안에서 따로 붙은 이름이라 대응이 어긋난다 - 효과로 맞춰 둔 것이다. tools/update_data.py --cubes 가 라이브와 대조해 갱신한다 (아이콘은 assets/icons/cube/<tid>.webp).",
  "cubes": {
   "1000301": {
    "ko": { "short": "명중", "name": "렐릭 어설트 큐브", "effect": "명중률 증가" },

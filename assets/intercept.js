@@ -1,4 +1,4 @@
-/* 특특요 탭 — 이상 개체 요격전(특특요)의 하루치 획득 확률 분포.
+/* 특특요 탭 - 이상 개체 요격전(특특요)의 하루치 획득 확률 분포.
 
    분포표를 옮겨 담지 않고 수급량 표 두 개(`module_settings` = 3.5주년 이후, `module_settings_pre35` = 이전)에서 바로 계산한다.
    워크북 `특특요_확률분포` / `3.5주년 이전 특특요` 시트와 소수점 9자리까지 맞는다.
@@ -6,8 +6,8 @@
    모형 (시트 §2·§3·§7):
      · 하루 진입 3회 + 싱크로 부스트(400레벨 +1, 600레벨 +1), 풀버스트 이벤트 날은 진입당 2게임.
        그래서 G = 3·4·5 또는 6·8·10.
-     · 모듈 모드(크라켄) — 게임마다 랜덤박스가 P_box 로 뜨고 1/2/3개가 p₁/p₂/p₃ 로 나오며, 하루 분포는 이를 G번 합성곱한 정확한 값이다.
-     · 장비 모드(크라켄 외 보스) — 게임마다 장비 박스가 P_eq 로 뜨는 이항분포 B(G, P_eq).
+     · 모듈 모드(크라켄) - 게임마다 랜덤박스가 P_box 로 뜨고 1/2/3개가 p₁/p₂/p₃ 로 나오며, 하루 분포는 이를 G번 합성곱한 정확한 값이다.
+     · 장비 모드(크라켄 외 보스) - 게임마다 장비 박스가 P_eq 로 뜨는 이항분포 B(G, P_eq).
      · 모듈피스는 확정 획득이라 100개당 모듈 1개 몫만큼 분포를 오른쪽으로 민다.
 
    목적이 3.5주년 전후 비교라 모든 표가 두 시대와 차이(Δ)를 나란히 보여준다.
@@ -17,9 +17,9 @@
 const STORE = 'intercept.input';
 const NEED = ['module_settings_pre35', 'module_settings'];
 
-/* 하루 기본 진입 횟수 — 풀버스트 이벤트 날은 진입당 2게임이다. */
+/* 하루 기본 진입 횟수 - 풀버스트 이벤트 날은 진입당 2게임이다. */
 const ENTRIES = 3;
-/* 싱크로 부스트(4주년~) — 싱크로 디바이스 레벨이 이 값에 닿을 때마다 요격 횟수 +1. */
+/* 싱크로 부스트(4주년~) - 싱크로 디바이스 레벨이 이 값에 닿을 때마다 요격 횟수 +1. */
 const SYNC_BOOST = [400, 600];
 /* 모듈피스 100개 = 완성 모듈 1개. */
 const PIECES_PER_MODULE = 100;
@@ -54,7 +54,7 @@ function scrollBox(table) {
 /* ── 로드 ─────────────────────────────────────────────────── */
 async function fetchJSON(url) {
   const r = await fetch(url, { cache: 'no-cache' });
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText} - ${url}`);
   return r.json();
 }
 
@@ -97,7 +97,7 @@ function fold(single, games) {
 
 /* 모듈 랜덤박스: 안 뜸 / 1개 / 2개 / 3개 */
 const boxSingle = row => [1 - row.box, row.box * row.p[0], row.box * row.p[1], row.box * row.p[2]];
-/* 장비 랜덤박스: 안 뜸 / 뜸 — G번 접으면 곧 B(G, P_eq) */
+/* 장비 랜덤박스: 안 뜸 / 뜸 - G번 접으면 곧 B(G, P_eq) */
 const equipSingle = row => [1 - row.eq, row.eq];
 
 function moments(pmf) {
@@ -247,7 +247,7 @@ function renderForm(root) {
 }
 
 /* ── 비교 요약 ────────────────────────────────────────────── */
-/* neutral=true 는 '늘어난 게 좋은 것'이 아닌 값(표준편차)용 — 부호만 남기고 좋음/나쁨 색은 쓰지 않는다. */
+/* neutral=true 는 '늘어난 게 좋은 것'이 아닌 값(표준편차)용 - 부호만 남기고 좋음/나쁨 색은 쓰지 않는다. */
 function cmpCard(label, before, after, digits, neutral) {
   const c = el('div', 'ic-cmp');
   c.appendChild(el('div', 'ic-cmpLbl', label));
@@ -334,7 +334,7 @@ function renderParams(a, b) {
   for (const [key, lab, digits, isMod] of PARAMS) {
     const i = D.ci[key];
     const before = a.row.raw[i], after = b.row.raw[i];
-    /* 지금 보고 있는 모드에 안 쓰이는 값은 흐리게 — 표에서 빼지는 않는다. */
+    /* 지금 보고 있는 모드에 안 쓰이는 값은 흐리게 - 표에서 빼지는 않는다. */
     const tr = el('tr', (S.mode === 'module') === isMod ? null : 'ic-off');
     tr.appendChild(el('td', null, t(lab)));
     tr.appendChild(el('td', 'num', dec(before, digits)));
@@ -412,7 +412,7 @@ function renderDist(a, b) {
     tr.appendChild(barCell(before, after, max));
     tr.appendChild(el('td', 'num', pct(before)));
     tr.appendChild(el('td', 'num ic-em', pct(after)));
-    /* 초록/빨강은 안 쓴다 — k=0 확률이 줄어든 건 상향인데 빨강이면 거꾸로 읽힌다. */
+    /* 초록/빨강은 안 쓴다 - k=0 확률이 줄어든 건 상향인데 빨강이면 거꾸로 읽힌다. */
     tr.appendChild(el('td', 'num ' + (d > 1e-9 ? 'ic-more' : d < -1e-9 ? 'ic-less' : 'ic-flat'),
       Math.abs(d) < 0.0005 ? '±0' : signed(d)));
     body.appendChild(tr);
@@ -459,7 +459,7 @@ function renderSteps(root) {
     tr.appendChild(el('td', 'num ic-em', dec(after)));
     tr.appendChild(el('td', 'num ' + (d > 1e-9 ? 'ic-up' : d < -1e-9 ? 'ic-dn' : 'ic-flat'),
       signed(d)));
-    tr.appendChild(el('td', 'num', before > 0 ? '×' + dec(after / before, 2) : '—'));
+    tr.appendChild(el('td', 'num', before > 0 ? '×' + dec(after / before, 2) : '-'));
     body.appendChild(tr);
   }
   tbl.appendChild(body);

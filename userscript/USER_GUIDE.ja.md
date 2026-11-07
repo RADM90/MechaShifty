@@ -7,7 +7,7 @@ Blablalink（Shiftypad）にログインすれば見られる **自分のアカ�
 取り込むと所持ニケ全員の補正済み戦闘力が一覧で出て、どのニケを押してもそのまま計算機の
 入力欄に載ります。
 
-Shiftypad が表示する戦闘力とゲーム内の値がずれている——それがこのプロジェクトの出発点なので、
+Shiftypad が表示する戦闘力とゲーム内の値がずれている--それがこのプロジェクトの出発点なので、
 **収集スクリプトは計算を一切行いません。** スクリプトはゲームが返す値をそのまま運ぶだけで、
 戦闘力は MechaShifty 側がワークブックで検証した式（`COMBAT_POWER.md`）で計算します。
 
@@ -39,7 +39,7 @@ Shiftypad が表示する戦闘力とゲーム内の値がずれている——�
 [tampermonkey.net](https://www.tampermonkey.net/) から、お使いのブラウザ用を導入します。
 Chrome・Edge・Firefox・Safari・Opera に対応しています。
 
-### 1-2. ⚠️ 「ユーザースクリプトを許可」をオンにする — Chrome / Edge 系は必須
+### 1-2. ⚠️ 「ユーザースクリプトを許可」をオンにする - Chrome / Edge 系は必須
 
 Chrome が拡張機能を MV3 へ移行したことで、ユーザースクリプトを動かすには
 **既定でオフになっている権限をもう一段オンにする必要があります。** これを入れないと、
@@ -83,7 +83,7 @@ Tampermonkey は導入できてアイコンも出るのに **スクリプトが�
 3. メニューの **所持ニケデータを書き出す** を押します。
 
 > その項目がメニューに無いときは、(a) 1-2 のトグル、(b) 今開いているアドレスが
-> `www.blablalink.com` か、(c) Tampermonkey のダッシュボードでスクリプトが **有効** か——
+> `www.blablalink.com` か、(c) Tampermonkey のダッシュボードでスクリプトが **有効** か--
 > この順で確認してください。
 
 ### 自動更新について
@@ -104,7 +104,7 @@ Tampermonkey が使えない環境（社用 PC、一部のスマホブラウザ�
 新しい **ブックマーク（お気に入り）** を作り、**URL** 欄に下の1行をそのまま貼り付けます。名前は任意。
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='64df14a4b4f0963e2527d6fbd5ea1f857ad6d9c8529eefd2c69c35150ce83168',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='4bd095d03977e982224e20191ae61c182c89883f0520173ea40cb471a9a483ff',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink にログインした状態で、このブックマークを押すだけです。
@@ -112,7 +112,7 @@ blablalink にログインした状態で、このブックマークを押すだ
 この1行がしているのは、スクリプトを取得して **SHA-256 が上に埋め込まれた値と一致したときだけ**
 実行することです。配布物が1文字でも違えば実行を拒否します。そのためスクリプトが更新されると
 このブックマークは動かなくなり、ここから新しい1行を貼り直す必要があります。
-**不便なのではなく、そうなるように作ってあります** — 自分が確認したコード以外は動きません。
+**不便なのではなく、そうなるように作ってあります** - 自分が確認したコード以外は動きません。
 
 読みやすい原本は [`bookmarklet.js`](bookmarklet.js) にあります。
 
@@ -122,12 +122,12 @@ blablalink にログインした状態で、このブックマークを押すだ
 
 収集が終わると、ウィンドウに3つの方法が出ます。
 
-- **MechaShifty 計算機に送る** — 新しいタブが開いてそのまま入ります。
+- **MechaShifty 計算機に送る** - 新しいタブが開いてそのまま入ります。
   タブ間の受け渡しは送信先 origin を `https://radm90.github.io` に固定しているので、
   他サイトが横取りすることはできません。
-- **JSONファイルとして保存** — 計算機の *アカウント → JSONを開く* から選びます。
+- **JSONファイルとして保存** - 計算機の *アカウント → JSONを開く* から選びます。
   ネットワークを一切経由しない方法です。
-- **クリップボードにコピー** — *貼り付け* 欄に貼り付けます。スマホではこちらが楽です。
+- **クリップボードにコピー** - *貼り付け* 欄に貼り付けます。スマホではこちらが楽です。
 
 読み込んだデータは **このブラウザの localStorage にのみ** 残ります。サーバーには送信しません。
 消すときは計算機の *消去* を押してください。
@@ -144,7 +144,7 @@ blablalink にログインした状態で、このブックマークを押すだ
   キャンペーン進行度（ノーマル／ハードの最終クリアステージ）・基地防御レベル・各タワーのクリア階
   （企業別タワー4種・トライブタワー）
 
-アカウントの値は計算機だけでなく **前哨基地タブ** も使います——キャンペーン進行度から
+アカウントの値は計算機だけでなく **前哨基地タブ** も使います--キャンペーン進行度から
 基地防御レベルと資源の収入を埋め、企業別タワーのカードには各タワーのクリア階と、アカウント作成時刻
 から求めた到達可能な最大階を並べて表示します。
 
@@ -153,11 +153,11 @@ blablalink にログインした状態で、このブックマークを押すだ
 
 **持ち出さないもの**
 
-- ログイン Cookie・セッション・認証トークン — 読み取りません。
-- **openid（アカウント識別子）** — API 呼び出しの引数としてのみ使い、成果物には入れません。
+- ログイン Cookie・セッション・認証トークン - 読み取りません。
+- **openid（アカウント識別子）** - API 呼び出しの引数としてのみ使い、成果物には入れません。
   スクリプト内の `scrub()` が、結果に識別子らしき文字列が残っていれば書き出し自体を中止します。
-- **ニックネームとサーバー** — 計算機が使わないので含めません。
-- 他人のアカウント — 自分のものだけを読みます。URL 上の他ユーザー ID を辿ることはしません。
+- **ニックネームとサーバー** - 計算機が使わないので含めません。
+- 他人のアカウント - 自分のものだけを読みます。URL 上の他ユーザー ID を辿ることはしません。
 
 ---
 

@@ -1,14 +1,14 @@
-/* 니파고 — 경로 추천 엔진 (명세 22~23절).
+/* 니파고 - 경로 추천 엔진 (명세 22~23절).
    DOM 을 쓰지 않는다. 화면(nipago.js)은 worker.js 를 거쳐 부르고, 검증 스크립트는 직접 import 한다.
 
    구성
-   1) 부위 하나의 MDP — 목표 옵션 집합 T(최대 3개)를 그 부위에 갖추는 기대 비용을 가치 반복으로 푼다.
+   1) 부위 하나의 MDP - 목표 옵션 집합 T(최대 3개)를 그 부위에 갖추는 기대 비용을 가치 반복으로 푼다.
       줄 상태 = 빈칸 / 무효 / 목표 k 의 (단계 구간, 충족 여부) + 영구 잠금.
       중복 방지 재추첨은 직전 단계의 확률에만 좌우되고, 확률은 구간(1~5·6~10·11~15) 안에서 같으므로
       이렇게 묶어도 이후 행동·비용·분포·판정이 같다 (23.8).
-   2) 네 부위 배분 — 목표 개수를 부위별 T 로 나누는 경우 중 기대 비용 합이 최소인 것.
-   3) 유지·적용 — 두 전체 상태의 남은 기대 비용을 비교한다 (23.5).
-   (예산 안 완료 확률 — 몬테카를로 — 은 보유 재화 입력과 함께 뺐다.)
+   2) 네 부위 배분 - 목표 개수를 부위별 T 로 나누는 경우 중 기대 비용 합이 최소인 것.
+   3) 유지·적용 - 두 전체 상태의 남은 기대 비용을 비교한다 (23.5).
+   (예산 안 완료 확률 - 몬테카를로 - 은 보유 재화 입력과 함께 뺐다.)
    부위 표는 목표 묶음(가중치·최소 단계)과 λ 만으로 정해진다. tools/nipago_tables.mjs 가 모든 묶음의
    최선 행동(정책)을 미리 풀어 data/nipago/ 에 싣고, 여기서는 그 정책을 한 번 평가만 한다.
    파일이 없거나 규칙이 바뀌었으면 가치 반복으로 직접 푼다.
@@ -23,14 +23,14 @@ import { effValue, effProfiles } from './effective.js';
 export const LAMBDAS = { mod: 0.01, balanced: 0.1, key: Infinity };
 export const PREFS = ['mod', 'balanced', 'key'];
 
-/* 행동 목록 순서·상태 열거를 바꾸면 올린다 — 미리 푼 정책 파일과 맞지 않게 된다 */
+/* 행동 목록 순서·상태 열거를 바꾸면 올린다 - 미리 푼 정책 파일과 맞지 않게 된다 */
 export const ENGINE_VERSION = 1;
 
 const NC = 4;                        // 목표 하나당 최대 단계 묶음 수
 const BIG = 1e12;
 const bandOf = lv => (lv <= 5 ? 0 : lv <= 10 ? 1 : 2);
 
-/* 최소 단계 m 에서의 단계 묶음 — (구간, 충족) 쌍. m ≤ 1 이면 하나뿐이다. */
+/* 최소 단계 m 에서의 단계 묶음 - (구간, 충족) 쌍. m ≤ 1 이면 하나뿐이다. */
 function classesFor(m, lp) {
   const list = [], of = new Array(MAX_LV + 1).fill(-1);
   for (let lv = 1; lv <= MAX_LV; lv++) {
@@ -42,7 +42,7 @@ function classesFor(m, lp) {
     of[lv] = c;
   }
   const single = list.length === 1;
-  /* 직전 묶음 pc 에서 같은 효과가 다시 나왔을 때 — 직전 단계 하나가 빠진다 */
+  /* 직전 묶음 pc 에서 같은 효과가 다시 나왔을 때 - 직전 단계 하나가 빠진다 */
   const dedup = list.map((prev, pc) => list.map((x, c) => {
     if (single) return 1;
     return (x.p - (c === pc ? prev.pl : 0)) / (1 - prev.pl);
@@ -51,7 +51,7 @@ function classesFor(m, lp) {
 }
 
 /* ── 1) 부위 하나의 MDP ─────────────────────────────────── */
-/* targets: [{ w, m }] — 정규화된 순서. lam: λ. */
+/* targets: [{ w, m }] - 정규화된 순서. lam: λ. */
 class PieceTable {
   /* policy: 미리 푼 최선 행동 번호 (this.states 순서, 255 = 행동 없음). 주면 평가만 한다. */
   constructor(D, targets, lam, policy = null) {
@@ -62,7 +62,7 @@ class PieceTable {
     this.useKey = Number.isFinite(lam);
     this.cls = targets.map(t => classesFor(t.m, D.lp));
     this.NCODE = 2 + this.K * NC * 2;
-    /* 목표 k 에 대응하는 실제 옵션 자리 — 가중치만 맞으면 어느 옵션이든 같다 */
+    /* 목표 k 에 대응하는 실제 옵션 자리 - 가중치만 맞으면 어느 옵션이든 같다 */
     const used = new Set();
     this.tOpt = targets.map(t => {
       const i = D.opts.findIndex((o, j) => !used.has(j) && Math.abs(o.w - t.w) < 1e-9);
@@ -74,7 +74,7 @@ class PieceTable {
     this.build();
   }
 
-  /* 미리 풀어 둘 정책 — this.states 순서 */
+  /* 미리 풀어 둘 정책 - this.states 순서 */
   exportPolicy() {
     const out = new Uint8Array(this.states.length);
     this.states.forEach((l, n) => {
@@ -148,7 +148,7 @@ class PieceTable {
   }
 
   /* 상태 i 에서 가능한 행동 (23.2).
-     보호는 목표 줄에만 건다 — 빈칸·무효를 지킬 이유가 없다. 보호하지 않는 영구 잠금은 해제한다. */
+     보호는 목표 줄에만 건다 - 빈칸·무효를 지킬 이유가 없다. 보호하지 않는 영구 잠금은 해제한다. */
   actionsOf(l) {
     const out = [];
     const tl = [0, 1, 2].filter(i => l[i] >= 2);
@@ -175,7 +175,7 @@ class PieceTable {
         const protect = P.map((line, j) => ({ line, mat: mat[j] === 'key' ? 'key' : 'perm', fresh: mat[j] !== 'held' }));
         const cost = tryCost(protect, this.lam);
         const c = cost.mod + (cost.key ? (this.useKey ? this.lam * cost.key : BIG) : 0);
-        /* 유지했을 때 남는 상태 — 새 영구는 남고, 락키와 해제한 영구는 없다 */
+        /* 유지했을 때 남는 상태 - 새 영구는 남고, 락키와 해제한 영구는 없다 */
         const keep = l.map((code, i) => {
           if (code < 2) return code;
           const d = this.dec(code);
@@ -231,7 +231,7 @@ class PieceTable {
   build() {
     const N = this.NCODE;
     const states = [];
-    for (let a = 2; a < N; a++) {   // 1번 줄은 늘 있다 — 빈칸은 1(무효)부터
+    for (let a = 2; a < N; a++) {   // 1번 줄은 늘 있다 - 빈칸은 1(무효)부터
       if (!this.validCode(a)) continue;
       for (let b = 0; b < N; b++) {
         if (!this.validCode(b)) continue;
@@ -271,11 +271,11 @@ class PieceTable {
         best[i] = pol[n] === 255 ? -1 : pol[n];
       }
     });
-    /* 충족 줄이 많은 상태부터 — 가우스-자이델이 빨리 닫힌다 */
+    /* 충족 줄이 많은 상태부터 - 가우스-자이델이 빨리 닫힌다 */
     const score = l => l.reduce((a, x) => a + (x >= 2 ? (this.cls[this.dec(x).k].sat[this.dec(x).c] ? 2 : 1) : 0), 0);
     const order = states.filter(l => !goal[this.idx(l)]).sort((x, y) => score(y) - score(x));
 
-    /* 행동 하나의 결과 분포를 한 번 펼쳐 같은 상태끼리 합친다 — 정책을 평가할 때는 상태당 한 번이면 된다 */
+    /* 행동 하나의 결과 분포를 한 번 펼쳐 같은 상태끼리 합친다 - 정책을 평가할 때는 상태당 한 번이면 된다 */
     const compiled = new Array(size);
     const compile = (l, i, a) => {
       if (compiled[i]) return compiled[i];
@@ -297,7 +297,7 @@ class PieceTable {
         for (let n = 0; n < ps.length; n++) s += ps[n] * Math.min(vk, V[vs[n]]);
         return s;
       }
-      /* 유지하면 제자리 — 자기 고리를 풀어서 계산한다 */
+      /* 유지하면 제자리 - 자기 고리를 풀어서 계산한다 */
       let t = V[i], r = Infinity;
       for (let it = 0; it < 4; it++) {
         let acc = a.c, stay = 0;
@@ -318,7 +318,7 @@ class PieceTable {
         const i = this.idx(l);
         let bv = Infinity, ba = -1;
         if (pol) {
-          /* 정해진 정책 — 그 행동 하나만 평가한다 */
+          /* 정해진 정책 - 그 행동 하나만 평가한다 */
           ba = best[i];
           if (ba >= 0) bv = q(l, i, acts[i][ba], compile(l, i, acts[i][ba]));
         } else {
@@ -361,7 +361,7 @@ class PieceTable {
     }
     Object.assign(this, { V, EM, EK, acts, best, goal });
 
-    /* 최초 개조 — 모듈 1개, 붙는 옵션은 T11 고정, 결과는 고를 수 없다 */
+    /* 최초 개조 - 모듈 1개, 붙는 옵션은 T11 고정, 결과는 고를 수 없다 */
     let fv = 1, fm = 1, fk = 0;
     for (const t of this.tuples([0, 1, 2], 0)) {
       const l = t.r.map(r => (r === -2 ? 0 : r === -1 ? 1 : this.code(r, this.cls[r].of[FIRST_LV], 0)));
@@ -375,7 +375,7 @@ class PieceTable {
   encode(piece, tgt) {
     return [0, 1, 2].map(i => {
       const ln = piece.lines[i];
-      if (!ln || !ln.opt) return i === 0 ? 1 : 0;   // 1번 줄은 늘 있다 — 비어 들어오면 무효로 본다
+      if (!ln || !ln.opt) return i === 0 ? 1 : 0;   // 1번 줄은 늘 있다 - 비어 들어오면 무효로 본다
       const k = tgt.findIndex(t => t.opt === ln.opt);
       if (k < 0) return 1;
       return this.code(k, this.cls[k].of[ln.lv], piece.perm[i] === true);
@@ -443,9 +443,9 @@ export function roll(D, piece, kind, protectLines, r) {
 
 /* ── 목표 ──────────────────────────────────────────────── */
 /* goals: { mode: 'opt' | 'lv' | 'tier', items: { [opt]: { count, minLv, lvs?, eff?: { min, model } } } }
-   opt  종류만 — 단계 무관
-   lv   최소 단계 — count 줄 모두 minLv 이상
-   tier 목표 단계 — 줄마다 단계를 따로 (lvs, 길이 count)
+   opt  종류만 - 단계 무관
+   lv   최소 단계 - count 줄 모두 minLv 이상
+   tier 목표 단계 - 줄마다 단계를 따로 (lvs, 길이 count)
    nikke: { baseAmmo, chargeTime } */
 export function effCfg(opt, g, nikke) {
   const kind = EFF_OPTS[opt];
@@ -465,7 +465,7 @@ export function goalLevels(goals, g) {
   return new Array(n).fill(goals.mode === 'lv' ? g.minLv || 1 : 1);
 }
 
-/* 있는 단계들로 채울 수 있는 목표 줄 수 — 낮은 것부터 맞춰 가는 탐욕법이 최대다 */
+/* 있는 단계들로 채울 수 있는 목표 줄 수 - 낮은 것부터 맞춰 가는 탐욕법이 최대다 */
 function matched(have, need) {
   const hv = have.slice().sort((a, b) => a - b), nd = need.slice().sort((a, b) => a - b);
   let j = 0;
@@ -476,7 +476,7 @@ function matched(have, need) {
 const allLines = (gear, opt) => gear.flatMap(p => (p.overloaded ? p.lines : []))
   .filter(l => l && l.opt === opt);
 
-/* 지금 상태의 목표별 진행 — 화면 요약과 완료 판정이 같이 쓴다 */
+/* 지금 상태의 목표별 진행 - 화면 요약과 완료 판정이 같이 쓴다 */
 export function progress(D, gear, goals, nikke) {
   const out = [];
   for (const [opt, g] of Object.entries(goals.items)) {
@@ -508,7 +508,7 @@ function reqVariants(D, gear, goals, nikke) {
   for (const [opt, g] of Object.entries(goals.items)) {
     const cfg = effCfg(opt, g, nikke);
     if (!cfg) {
-      /* 같은 단계끼리 한 묶음 — 목표 단계 모드면 단계마다 따로 */
+      /* 같은 단계끼리 한 묶음 - 목표 단계 모드면 단계마다 따로 */
       const byLv = new Map();
       for (const m of goalLevels(goals, g)) byLv.set(m, (byLv.get(m) || 0) + 1);
       for (const [m, count] of byLv) base.push({ opt, count, m });
@@ -517,7 +517,7 @@ function reqVariants(D, gear, goals, nikke) {
     const ls = allLines(gear, opt);
     const cur = effValue(cfg, ls.map(l => l.lv), D.byId[opt].bp);
     const cands = [];
-    /* 이미 넘었으면 지금 줄들을 지킨다 — 단계 조합이 바뀌면 다시 판정 */
+    /* 이미 넘었으면 지금 줄들을 지킨다 - 단계 조합이 바뀌면 다시 판정 */
     if (cur.value >= g.eff.min && ls.length) cands.push({ opt, count: ls.length, m: Math.min(...ls.map(l => l.lv)) });
     for (const p of profilesOf(D, opt, cfg, g.eff.min)) cands.push({ opt, count: p.k, m: p.m });
     if (g.eff.min <= 0) cands.push({ opt, count: 0, m: 1 });
@@ -529,7 +529,7 @@ function reqVariants(D, gear, goals, nikke) {
 }
 
 /* ── 2) 네 부위 배분 ─────────────────────────────────────── */
-/* 한 부위가 맡을 수 있는 묶음 조합 — 3개 이하, 같은 옵션은 하나 */
+/* 한 부위가 맡을 수 있는 묶음 조합 - 3개 이하, 같은 옵션은 하나 */
 function pieceMasks(reqs) {
   const out = [];
   for (let mask = 0; mask < 1 << reqs.length; mask++) {
@@ -540,7 +540,7 @@ function pieceMasks(reqs) {
   return out;
 }
 
-/* 부위 표의 이름 — 목표의 (가중치, 최소 단계) 를 정렬한 것 + λ */
+/* 부위 표의 이름 - 목표의 (가중치, 최소 단계) 를 정렬한 것 + λ */
 const sortTargets = (D, S) => S.map(r => ({ opt: r.opt, m: r.m, w: D.byId[r.opt].w }))
   .sort((a, b) => a.w - b.w || a.m - b.m || (a.opt < b.opt ? -1 : 1));
 export const tableKey = (tgt, lam) => tgt.map(t => `${t.w}:${t.m}`).join('|') + '@' + lam;
@@ -573,12 +573,12 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return { ...tb.at(piece, tgt), tgt, tb };
   }
 
-  /* reqs 를 네 부위에 나눈다 — 남은 개수 벡터 위의 DP */
+  /* reqs 를 네 부위에 나눈다 - 남은 개수 벡터 위의 DP */
   function assign(gear, reqs, lam) {
     const fail = { v: Infinity, pieces: gear.map(() => ({ S: [], v: Infinity })) };
     const perOpt = new Map();
     for (const r of reqs) perOpt.set(r.opt, (perOpt.get(r.opt) || 0) + r.count);
-    if ([...perOpt.values()].some(n => n > 4)) return fail;     // 한 부위에 같은 옵션은 하나 — 네 부위면 4줄까지
+    if ([...perOpt.values()].some(n => n > 4)) return fail;     // 한 부위에 같은 옵션은 하나 - 네 부위면 4줄까지
     const G = reqs.length;
     const subsets = pieceMasks(reqs);
     const cache = gear.map(() => new Map());
@@ -622,7 +622,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return { v: r.v, m: pieces.reduce((a, x) => a + x.m, 0), k: pieces.reduce((a, x) => a + x.k, 0), pieces };
   }
 
-  /* 전체 계획 — 실효값 후보 중 가장 싼 것 */
+  /* 전체 계획 - 실효값 후보 중 가장 싼 것 */
   function plan(st, pref) {
     const lam = LAMBDAS[pref];
     let best = null;
@@ -633,7 +633,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return best;
   }
 
-  /* 다음 한 번 — 남은 비용이 가장 작은 부위부터, 같으면 부위 순서 */
+  /* 다음 한 번 - 남은 비용이 가장 작은 부위부터, 같으면 부위 순서 */
   function next(st, pref, exclude = new Set()) {
     const p = plan(st, pref);
     if (!p || !Number.isFinite(p.v)) return { plan: p, piece: -1 };
@@ -654,13 +654,13 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return { kind: a.kind, protect: a.protect.map(x => ({ ...x })), unlock, cost: a.cost };
   }
 
-  /* 3) 유지·적용 비교 — 둘 다 이번 비용은 이미 낸 상태 */
+  /* 3) 유지·적용 비교 - 둘 다 이번 비용은 이미 낸 상태 */
   function compare(st, keepGear, acceptGear, pref) {
     const keep = plan({ ...st, gear: keepGear }, pref);
     const acc = plan({ ...st, gear: acceptGear }, pref);
     const prog0 = progress(D, keepGear, st.goals, st.nikke);
     const prog1 = progress(D, acceptGear, st.goals, st.nikke);
-    /* 보존 조건 — 이미 넘은 실효값 목표를 깨는 결과는 후보에서 뺀다 */
+    /* 보존 조건 - 이미 넘은 실효값 목표를 깨는 결과는 후보에서 뺀다 */
     const breaks = st.keep?.allowDrop ? [] : prog0.filter((p, i) => p.eff && p.ok && !prog1[i].ok).map(p => p.opt);
     let choice = 'keep';
     if (!breaks.length && acc.v < keep.v - 1e-9) choice = 'accept';
@@ -670,7 +670,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
   return { plan, next, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
 }
 
-/* 입력 검증 (26.2) — 결과로 들어온 세 줄이 이번 행동으로 나올 수 있는가 */
+/* 입력 검증 (26.2) - 결과로 들어온 세 줄이 이번 행동으로 나올 수 있는가 */
 export function validateResult(before, kind, protectLines, after) {
   const errs = [];
   const opts = after.filter(l => l.opt).map(l => l.opt);

@@ -2,7 +2,7 @@
 
    계산은 cp.js 가 하고 여기는 결과 표만 그린다.
    입력은 불러온 계정(roster.js)에서 온다.
-   원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 — syncro_stat 하나가 500KB 다. */
+   원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 - syncro_stat 하나가 500KB 다. */
 
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
   K, SLOTS, olRows, olTotals, olPct, olLevelCls } from './cp.js';
@@ -26,7 +26,7 @@ const el = (tag, cls, text) => {
   return n;
 };
 const t = (k, ...a) => ctx.t(k, ...a);
-const fmt = v => v == null ? '—' : Math.round(v).toLocaleString();
+const fmt = v => v == null ? '-' : Math.round(v).toLocaleString();
 
 /* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인 문구라 ko/en 만 있다. */
 function cubeInfo(tid) {
@@ -44,7 +44,7 @@ function scrollBox(table) {
 /* ── 로드 ─────────────────────────────────────────────────── */
 async function fetchJSON(url) {
   const r = await fetch(url, { cache: 'no-cache' });
-  if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${url}`);
+  if (!r.ok) throw new Error(`${r.status} ${r.statusText} - ${url}`);
   return r.json();
 }
 
@@ -90,7 +90,7 @@ function defaults() {
     bond: T.bondMax,
     skills: { s1: 10, s2: 10, burst: 10 },
     cube: '미착용',
-    cubeTid: null,          // 표시 전용 — 계수는 레벨만 본다
+    cubeTid: null,          // 표시 전용 - 계수는 레벨만 본다
     collection: { kind: 'none', level: '0' },
     console: { 공용: 0, 클래스: 0, 기업: 0 },
     gear: SLOTS.map(slot => ({ slot, tier: '', enhance: 0, options: [] })),
@@ -112,7 +112,7 @@ const adopt = v => {
   return r;
 };
 
-/* 옛 약어(크피·차뎀)로 저장된 입력을 지금 이름으로 바꾼다 — 안 그러면 셀렉트가 '없음'으로 떨어진다. */
+/* 옛 약어(크피·차뎀)로 저장된 입력을 지금 이름으로 바꾼다 - 안 그러면 셀렉트가 '없음'으로 떨어진다. */
 function renameOptions(v) {
   for (const g of v.gear || []) {
     for (const o of g.options || []) if (OPTION_ALIAS[o.name]) o.name = OPTION_ALIAS[o.name];
@@ -179,7 +179,7 @@ function renderMargin(n) {
   tbl.appendChild(thead);
 
   const body = el('tbody');
-  /* 돌파·코강을 맨 위에 둔다 — 여기서 붙는 전투력이 콘솔·옵션보다 한 자리 크다. */
+  /* 돌파·코강을 맨 위에 둔다 - 여기서 붙는 전투력이 콘솔·옵션보다 한 자리 크다. */
   const lim = limits(n.rarity);
   const lines = [
     [t('cp.marginBreak'), r => r?.brk,
@@ -198,7 +198,7 @@ function renderMargin(n) {
     for (const r of per) {
       const v = get(r);
       /* 0 은 '못 구했다'가 아니라 '더 올릴 수 없다'는 뜻이라 '+0' 이 아닌 '0' 으로 쓴다. */
-      const td = el('td', 'num', v == null ? '—' : v ? '+' + fmt(v) : '0');
+      const td = el('td', 'num', v == null ? '-' : v ? '+' + fmt(v) : '0');
       const why = v == null ? whyNone : v ? null : whyZero;
       if (why) td.title = why;
       tr.appendChild(td);
@@ -212,8 +212,8 @@ function renderMargin(n) {
 }
 
 /* ── 오버로드 옵션 집계 ───────────────────────────────────────
-   합치는 규칙은 cp.js 의 olTotals 하나가 정한다 — 차속·장탄만 단계 묶음 반올림, 나머지는 소수점까지. */
-/* hover 로는 원표 값을 그대로 보여준다 — 반올림 때문에 잃는 정보가 없게. */
+   합치는 규칙은 cp.js 의 olTotals 하나가 정한다 - 차속·장탄만 단계 묶음 반올림, 나머지는 소수점까지. */
+/* hover 로는 원표 값을 그대로 보여준다 - 반올림 때문에 잃는 정보가 없게. */
 const pctExact = v => (v * 100).toFixed(2) + '%';
 
 function overloadTotals(gear) {
@@ -230,13 +230,13 @@ function renderOverload(n) {
     box.appendChild(el('p', 'cp-note', t('cp.olNone')));
     return box;
   }
-  /* 인게임 옵션 창처럼 한 줄에 하나씩 — 왼쪽에 [정식 명칭], 오른쪽에 합계. */
+  /* 인게임 옵션 창처럼 한 줄에 하나씩 - 왼쪽에 [정식 명칭], 오른쪽에 합계. */
   const list = el('div', 'cp-olList');
   for (const o of totals) {
     const row = el('div', 'cp-olRow' + olLevelCls(o.top));
     row.title = `${o.parts} · ${t('cp.olExact', pctExact(o.exact))}`;
     const name = el('span', 'cp-olName', `[${optionFullLabel(o.name, ctx.lang)}]`);
-    // 몇 부위에 붙어 나온 합인지 — 같은 %라도 한 부위에 몰린 것과 다르다
+    // 몇 부위에 붙어 나온 합인지 - 같은 %라도 한 부위에 몰린 것과 다르다
     if (o.count > 1) name.appendChild(el('span', 'cp-olCount', ' ×' + o.count));
     row.append(name, el('span', 'cp-olVal', olPct(o)));
     list.appendChild(row);
@@ -246,7 +246,7 @@ function renderOverload(n) {
 }
 
 /* ── 옵션작 탭으로 넘기기 ─────────────────────────────────────
-   니파고(옵션작) 탭은 니케 한 명의 네 부위를 함께 계산한다 — 오버로드 부위를 한 번에 넘긴다.
+   니파고(옵션작) 탭은 니케 한 명의 네 부위를 함께 계산한다 - 오버로드 부위를 한 번에 넘긴다.
    계산기 자료에는 영구 잠금 정보가 없어 니파고 쪽에서 '미확인'으로 받는다. */
 function simButton(n) {
   const ol = SLOTS.map(slot => (n.gear || []).find(g => g.slot === slot))
@@ -258,7 +258,7 @@ function simButton(n) {
   btn.disabled = !ol.length || !ctx.goTab;
   if (btn.disabled) return btn;
 
-  /* 옵션작 탭의 입력을 덮어쓰므로 먼저 묻는다 — 예일 때만 이 니케의 장비를 넘긴다.
+  /* 옵션작 탭의 입력을 덮어쓰므로 먼저 묻는다 - 예일 때만 이 니케의 장비를 넘긴다.
      아니오면 아무것도 넘기지 않고 탭만 옮긴다 (옵션작에 있던 입력은 그대로). */
   const go = seed => {
     closeTip();
@@ -288,7 +288,7 @@ function simButton(n) {
   return btn;
 }
 
-/* 부위별 상세 — 어느 장비에 무엇이 붙어 있는지 그대로 편다. */
+/* 부위별 상세 - 어느 장비에 무엇이 붙어 있는지 그대로 편다. */
 function renderOverloadBySlot(n) {
   const box = el('div', 'cp-detailRow');
   const head = el('div', 'cp-rowHead');
@@ -300,7 +300,7 @@ function renderOverloadBySlot(n) {
     box.appendChild(el('p', 'cp-note', t('cp.olNone')));
     return box;
   }
-  /* 인게임 옵션 창과 같은 배치 — 부위가 열, 옵션 칸이 행(오버로드는 부위마다 최대 3개). */
+  /* 인게임 옵션 창과 같은 배치 - 부위가 열, 옵션 칸이 행(오버로드는 부위마다 최대 3개). */
   const grid = el('div', 'cp-olGrid');
   SLOTS.forEach((slot, col) => {
     const g = (n.gear || []).find(x => x.slot === slot);
@@ -309,7 +309,7 @@ function renderOverloadBySlot(n) {
     head.style.gridRow = 1;
     grid.appendChild(head);
 
-    // 오버로드가 아니면 옵션 자리 자체가 없다 — 무엇을 끼고 있는지만 알린다
+    // 오버로드가 아니면 옵션 자리 자체가 없다 - 무엇을 끼고 있는지만 알린다
     if (!g || g.tier !== '오버로드') {
       const cell = el('div', 'cp-olCell is-off', g && g.tier ? tierLabel(g.tier, t) : t('cp.none'));
       cell.style.gridColumn = col + 1;
@@ -350,7 +350,7 @@ function fitOlGrid(root) {
 }
 
 /* ── 눌러서 여는 상자 ─────────────────────────────────────────
-   상세 카드에서 두 군데가 쓴다 — 전투력 숫자의 계산식, 그리고 옵션 시뮬레이션의 부위 고르기. */
+   상세 카드에서 두 군데가 쓴다 - 전투력 숫자의 계산식, 그리고 옵션 시뮬레이션의 부위 고르기. */
 let tipState = null;
 
 function closeTip() {
@@ -401,7 +401,7 @@ function openTip(anchor, title, body) {
   addEventListener('scroll', closeTip, true);
 }
 
-/* 툴팁 속 내용 — 스탯 3종 + 계산 분해. */
+/* 툴팁 속 내용 - 스탯 3종 + 계산 분해. */
 function cpBreakdown(r) {
   const box = el('div', 'cp-tipBody');
 
@@ -442,15 +442,15 @@ function growthBadges(n) {
   const out = [];
   const named = (node, label) => {
     if (!node) return;
-    node.title = `${label} — ${node.title}`;
+    node.title = `${label} - ${node.title}`;
     out.push(node);
   };
   named(gradeBadge(n.grade, t), t('cp.grade'));
 
   const c = n.collection || { kind: 'none' };
   const coll = collBadge(c, t);
-  // 미착용은 감추지 않고 회색 자리로 남긴다 — 없는 것과 안 보여 준 것은 다르다
-  named(coll || badge('is-round is-none', '–', t('cp.none')), t('cp.collection'));
+  // 미착용은 감추지 않고 회색 자리로 남긴다 - 없는 것과 안 보여 준 것은 다르다
+  named(coll || badge('is-round is-none', '-', t('cp.none')), t('cp.collection'));
 
   named(bondBadge(n.bond, t), t('cp.bond'));
 
@@ -459,8 +459,8 @@ function growthBadges(n) {
   if (cube) {
     named(cube, t('cp.cube'));
   } else {
-    const off = el('span', 'cp-cubeBadge is-off', '–');
-    off.title = `${t('cp.cube')} — ${t('cp.none')}`;
+    const off = el('span', 'cp-cubeBadge is-off', '-');
+    off.title = `${t('cp.cube')} - ${t('cp.none')}`;
     out.push(off);
   }
   return out;
@@ -500,7 +500,7 @@ function renderDetail(root, n, r) {
 
   card.appendChild(head);
 
-  /* 1행 — 최종 전투력 3종. Lv.40 을 가장 크게, 이어서 Lv.400, 현재 레벨 순. */
+  /* 1행 - 최종 전투력 3종. Lv.40 을 가장 크게, 이어서 Lv.400, 현재 레벨 순. */
   const row1 = el('div', 'cp-detailRow');
   const cps = el('div', 'cp-cpRow');
   const cell = (label, res, big) => {
@@ -558,7 +558,7 @@ function renderCommander(n) {
   const sync = el('span', 'cp-fact');
   sync.appendChild(el('span', 'cp-factLbl', t('im.synchro')));
   sync.appendChild(el('span', 'cp-factVal',
-    acc && acc.synchro_level ? String(acc.synchro_level) : '—'));
+    acc && acc.synchro_level ? String(acc.synchro_level) : '-'));
   row1.prepend(sync, el('span', 'cp-tagSep'),
     cell(t('cp.console_공용'), null, null, research.common, true));
   box.appendChild(row1);
@@ -627,7 +627,7 @@ function reveal(root) {
 function paint(root) {
   /* 툴팁은 body 에 붙어 있어 root 를 비워도 남는다. */
   closeTip();
-  /* 니케 목록 스크롤 — 화면 전체 스크롤이 올라가는 것은 의도된 동작이라 그대로 둔다. */
+  /* 니케 목록 스크롤 - 화면 전체 스크롤이 올라가는 것은 의도된 동작이라 그대로 둔다. */
   const listScroll = root.querySelector('.cp-roster .cp-scroll');
   const listTop = listScroll ? listScroll.scrollTop : 0;
   root.textContent = '';
@@ -644,7 +644,7 @@ function paint(root) {
   if (back && back === listScroll && listTop) back.scrollTop = listTop;
 
   fitOlGrid(root);
-  // 폰트가 늦게 오면 글자 폭이 달라진다 — 오고 나서 한 번 더 잰다
+  // 폰트가 늦게 오면 글자 폭이 달라진다 - 오고 나서 한 번 더 잰다
   if (document.fonts?.ready) document.fonts.ready.then(() => fitOlGrid(root));
   /* 칸 폭은 창 크기를 따라가므로 (한 단 배치로 접히면 카드가 넓어진다) 다시 잰다. */
   mounted = root;

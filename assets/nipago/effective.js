@@ -1,10 +1,10 @@
-/* 니파고 — 차속·장탄 실효값 (명세 5.4~5.9, 23.7).
+/* 니파고 - 차속·장탄 실효값 (명세 5.4~5.9, 23.7).
    화면 표시·목표 판정·결과 비교·경로 계산이 모두 이 함수 하나를 부른다.
 
    같은 옵션·같은 단계끼리 먼저 더하고, 단계 묶음마다 반올림한 뒤 더한다.
    계산은 정수(basis point = 1/100 %)로만 해서 .5 경계가 이진 소수 오차로 바뀌지 않는다.
 
-     차속 %     Σ R[n·p]            정수 % — 기준 1초 시간 모델과 같다
+     차속 %     Σ R[n·p]            정수 % - 기준 1초 시간 모델과 같다
      차속 시간  Σ R2[C·n·p]         0.01초 단위, C = 기준 차지 시간
      장탄       Σ R[A·n·p]          발 단위, A = 기본 장탄수
 
@@ -19,11 +19,11 @@ export function groupTiers(levels) {
   return [...m.entries()].sort((a, b) => a[0] - b[0]).map(([lv, n]) => ({ lv, n }));
 }
 
-/* 양수 정수 나눗셈의 일반 반올림 — floor(x/d + 0.5) */
+/* 양수 정수 나눗셈의 일반 반올림 - floor(x/d + 0.5) */
 const roundDiv = (x, d) => Math.floor((2 * x + d) / (2 * d));
 
 /* cfg: { kind: 'charge' | 'ammo', model: 'pct' | 'time', C: 초, A: 발 }
-   value 단위 — 차속 %: 정수 %, 차속 시간: 0.01초, 장탄: 발 */
+   value 단위 - 차속 %: 정수 %, 차속 시간: 0.01초, 장탄: 발 */
 export function effValue(cfg, levels, bpByLv) {
   const groups = groupTiers(levels).map(({ lv, n }) => {
     const raw = n * bpByLv[lv - 1];                      // bp
@@ -39,15 +39,15 @@ export function effValue(cfg, levels, bpByLv) {
 
 export const effUnit = cfg => cfg.kind === 'ammo' ? 'shots' : cfg.model === 'time' ? 'cs' : 'pct';
 
-/* 화면용 — 값 하나. shot 은 장탄 단위 (언어별 '발' — 이 모듈은 문자열표를 모른다) */
+/* 화면용 - 값 하나. shot 은 장탄 단위 (언어별 '발' - 이 모듈은 문자열표를 모른다) */
 export function fmtEff(cfg, v, shot = '') {
-  if (v == null) return '—';
+  if (v == null) return '-';
   if (cfg.kind === 'ammo') return `+${v}${shot}`;
   if (cfg.model === 'time') return (v / 100).toFixed(2) + 's';
   return v + '%';
 }
 
-/* 계산 과정 — "12×2 → 9발" 처럼 묶음별로 */
+/* 계산 과정 - "12×2 → 9발" 처럼 묶음별로 */
 export function explainEff(cfg, res, shot = '') {
   return res.groups.map(g => `${g.lv}${g.n > 1 ? '×' + g.n : ''}→${fmtEff(cfg, g.r, shot).replace('+', '')}`).join(' + ');
 }
