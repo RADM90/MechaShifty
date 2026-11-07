@@ -832,7 +832,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-detailRow .cp-note { margin: 10px 0 0; }
 
 /* 1행 — 최종 전투력 3종, 같은 크기로 두고 현재 레벨만 색으로 가른다. */
-.cp-cpRow { display: flex; flex-wrap: wrap; gap: 7.5px 22.5px; align-items: flex-end; }
+.cp-cpRow { display: flex; flex-wrap: wrap; gap: 7.5px 18px; align-items: flex-end; }
 .cp-cpCell { display: grid; gap: 0; }
 .cp-cpLbl { font-size: 13px; color: var(--ink-muted); }
 /* 숫자 자체가 버튼이다 — 누르면 그 레벨의 계산식·스탯이 툴팁으로 열린다.
@@ -845,7 +845,8 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 }
 .cp-cpNum:hover, .cp-cpNum[aria-expanded="true"] { border-bottom-color: var(--accent); }
 .cp-cpNum:disabled { cursor: default; border-bottom-color: transparent; color: var(--ink-muted); }
-.cp-cpCell.is-now .cp-cpNum { color: var(--accent); font-weight: 800; }
+.cp-cpCell.is-main .cp-cpLbl { color: var(--accent); font-weight: 700; }
+.cp-cpCell.is-main .cp-cpNum { color: var(--accent); font-size: 28px; font-weight: 800; line-height: 1.15; }
 
 /* 2·3행 — 오버로드 옵션, 인게임 옵션 창과 같은 배치다.
    2행(종합)은 [정식 명칭] + 합계를 한 줄씩, 3행(부위별)은 부위가 열·옵션이 행.
@@ -1037,7 +1038,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 /* ── 니파고 탭 (오버로드 옵션작 경로 추천) ──────────────────────
    색은 기존 토큰만 쓴다 — 영구 잠금 = 액센트, 락키 = amber, 목표 충족 = st-good, 미달 = st-warn.
    옵션 단계 색은 계산기 탭과 같다 (.is-lv12 파랑 · .is-lv15 검정).
-   배치: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합] → 진행 칩
+   배치: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
         → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 오른쪽 아래 플로팅 리모컨. */
 /* 아래 여백은 플로팅 리모컨이 마지막 카드를 가리지 않게 */
 .npwrap { display: grid; gap: 15px; min-width: 0; padding-bottom: 120px; }
@@ -1129,14 +1130,19 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 
 /* 데이터 | 현재 OL 종합 | 변경된 OL 종합 */
 .np-datarow { display: grid; gap: 15px; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
-.np-dblock { display: grid; gap: 5px; }
-.np-dblock + .np-dblock { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
-.np-dttl { font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .03em; }
-.np-dgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(78px, 1fr)); gap: 6px 10px; }
-.np-dcell { display: grid; gap: 1px; min-width: 0; }
-.np-dk { font-size: 12.5px; color: var(--ink-muted); white-space: nowrap; }
-.np-dv { font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.np-dv small { display: block; font-size: 12px; font-weight: 400; color: var(--ink-muted); }
+/* 데이터 — 기본 | 옵션 두 열. 행 번호는 nipago.js 가 못박는다(장탄·차지 시간이 같은 행). 가운데 세로줄은 배경으로 */
+.np-dtable {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px;
+  background: linear-gradient(var(--line), var(--line)) center / 1px 100% no-repeat;
+}
+.np-dttl { font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .03em; padding-bottom: 5px; }
+.np-dcell {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 8px;
+  min-width: 0; padding: 6px 0; border-top: 1px solid var(--line);
+}
+.np-dk { font-size: 13px; color: var(--ink-muted); white-space: nowrap; }
+.np-dv { margin-left: auto; font-size: 16px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; text-align: right; }
+.np-dv small { margin-left: 5px; font-size: 12px; font-weight: 400; color: var(--ink-muted); }
 .np-olsum .cp-olList { margin: 0; }
 .np-delta { font-size: 12px; font-weight: 700; margin-right: 6px; }
 .np-delta.up { color: var(--st-good); }
@@ -1178,15 +1184,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-rreset:hover:not(:disabled) { color: var(--st-bad-ink); border-color: var(--st-bad-line); }
 .np-rreset:disabled { opacity: .4; cursor: default; }
 .np-rfield .np-note { margin: 0; font-size: 13px; }
-
-/* 진행 칩 */
-.np-progress { display: flex; flex-wrap: wrap; gap: 6px; }
-.np-pill {
-  font-size: 14px; padding: 4px 11px; border-radius: 999px; font-variant-numeric: tabular-nums;
-  background: var(--bg-panel); border: 1px solid var(--st-warn); color: var(--ink);
-}
-.np-pill.ok { border-color: var(--st-good); background: rgba(10, 125, 10, .08); }
-.np-pill.all { background: var(--st-good); color: var(--st-good-ink); font-weight: 700; }
 
 /* 목표 */
 .np-chips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; margin-bottom: 12px; }

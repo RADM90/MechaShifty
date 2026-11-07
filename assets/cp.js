@@ -103,6 +103,9 @@ export const optionFullLabel = (name, lang) =>
    차속·장탄만 같은 단계끼리 먼저 더해 정수 % 로 반올림한 뒤 더한다 (nipago/effective.js 의 % 모델과 같다).
    나머지 옵션은 원표 값을 소수점까지 그대로 더한다. */
 export const OL_ROUNDED = ['차속', '장탄'];
+/* 종합을 늘어놓는 순서 — 계산기·옵션작 탭 공통. 장비 한 부위 안의 상/중/하단 순서와는 별개다. */
+export const OL_ORDER = ['우코', '공증', '장탄', '크확', '크댐', '차속', '명중', '방어', '차댐'];
+export const olRank = name => { const i = OL_ORDER.indexOf(name); return i < 0 ? OL_ORDER.length : i; };
 
 /* 옵션 단계를 인게임과 같은 색으로 — 12~14 파랑, 15 검정. */
 export const olLevelCls = lv => (lv >= 15 ? ' is-lv15' : lv >= 12 ? ' is-lv12' : '');
@@ -134,7 +137,7 @@ export function olTotals(lines, valueOf) {
     out.push({ name, total: bp / 10000, exact: exactBp / 10000, steps, top, count, rounded,
       parts: parts.join(' + ') });
   }
-  return out.sort((a, b) => b.steps - a.steps);
+  return out.sort((a, b) => olRank(a.name) - olRank(b.name) || b.steps - a.steps);
 }
 
 /* 차속·장탄은 정수 %, 나머지는 소수 2자리. */

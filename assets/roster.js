@@ -566,7 +566,8 @@ export function renderImport(root, ctx) {
   const collCell = c => badgeCell(collBadge(c, t));
   const bondCell = bond => badgeCell(bondBadge(bond, t));
 
-  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. 둘 다 반올림 없이 소수점까지 더한다 (cp.js olTotals). */
+  /* 우공합 — 오버로드 옵션 종합 중 우월코드 대미지 + 공격력. 소수점까지 그대로 더하고(cp.js olTotals)
+     칸에는 정수 % 로 반올림해 보인다. 정렬과 hover 는 소수점 값 그대로라 반올림해 같아진 줄도 순서가 갈린다. */
   const OL_ATK = ['우코', '공증'];
   const pc = o => o.total * 100;
   const olSum = ol => (ol && ol.length ? ol.reduce((a, o) => a + pc(o), 0) : null);
@@ -574,8 +575,8 @@ export function renderImport(root, ctx) {
     const td = el('td', 'num cp-rOlAtk');
     const v = olSum(ol);
     if (v == null) { td.textContent = '–'; return td; }
-    td.textContent = v.toFixed(2) + '%';
-    td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o).toFixed(2)}%`).join(' + ');
+    td.textContent = Math.round(v) + '%';
+    td.title = ol.map(o => `${optionLabel(o.name, ctx.lang)} ${pc(o).toFixed(2)}%`).join(' + ') + ` = ${v.toFixed(2)}%`;
     return td;
   }
 

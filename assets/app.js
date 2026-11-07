@@ -155,6 +155,7 @@ const STR = {
   'cp.marginElem': ['우코 옵션 +1', 'Elemental option +1', '有利コードOP +1'],
   'cp.marginOther': ['그 외 옵션 +1', 'Other option +1', 'その他OP +1'],
   'cp.lv': [n => `Lv.${n}`, n => `Lv.${n}`, n => `Lv.${n}`],
+  'cp.lvCur': [n => `현재 Lv.${n}`, n => `Now Lv.${n}`, n => `現在 Lv.${n}`],
   'cp.cp': ['전투력', 'CP', '戦闘力'],
   'cp.noBase': [
     '이 조합의 기본 스탯 자료가 없습니다 (등급·클래스·레벨을 확인하세요).',

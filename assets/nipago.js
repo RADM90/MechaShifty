@@ -11,17 +11,17 @@
    계산은 [계산하기] 카드의 [계산] 을 눌러야 시작한다. 목표·장비를 고치면 다시 누를 때까지 멈추고,
    시뮬레이션 진행(실행·유지/적용·취소)은 그 계산을 이어 간다.
 
-   화면: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합] → 진행 칩
+   화면: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
          → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 플로팅 리모컨(탐색 모드·재화 우선순위·재화 소모량)
 
    흐름 (명세 23.4): 확정 상태 → 다음 설정 → 실행(이때 재화 차감) → 새 결과(미확정)
                     → 유지/적용 비교 → 실제 선택 → 다음 행동 재계산 */
 
-import { optionLabel, optionFullLabel, olRows, SLOTS, olTotals, olPct, olLevelCls } from './cp.js';
+import { optionLabel, optionFullLabel, olRows, SLOTS, olTotals, olPct, olLevelCls, OL_ORDER, olRank } from './cp.js';
 import { rosterGearFor } from './roster.js';
 import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, MAX_LV, buildData } from './nipago/rules.js';
 import { effValue, fmtEff as fmtEffRaw, explainEff as explainEffRaw } from './nipago/effective.js';
-import { roll, progress, isDone, validateResult, effCfg } from './nipago/engine.js';
+import { roll, progress, validateResult, effCfg } from './nipago/engine.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
@@ -60,8 +60,8 @@ const pctOf = (id, lv) => (opt(id).vals[lv - 1] * 100).toFixed(2) + '%';
 const num = v => (v == null || !Number.isFinite(v) ? '—' : v >= 100 || Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v).toLocaleString() : v.toFixed(1));
 /* 레벨 색은 계산기 탭과 같다 (cp.js olLevelCls — 12~14 파랑, 15 검정) */
 const lvCls = lv => olLevelCls(lv).trim();
-/* 목표 칩·목록 순서 — 3열 그리드로 3×3 */
-const GOAL_ORDER = ['우코', '공증', '장탄', '크확', '크댐', '차속', '명중', '방어', '차댐'];
+/* 목표 칩·목록 순서 — 오버로드 종합과 같은 순서(cp.js OL_ORDER), 3열 그리드로 3×3 */
+const GOAL_ORDER = OL_ORDER;
 const goalOrder = () => [...GOAL_ORDER.filter(id => D.byId[id]), ...D.opts.map(o => o.id).filter(id => !GOAL_ORDER.includes(id))];
 const nikkeOf = rid => (rid && (ctx.nikkes || []).find(n => n.rid === rid)) || null;
 const nikkeName = n => (n ? n.name[ctx.lang] || n.name.en || n.name.ko : '');
@@ -607,17 +607,18 @@ function renderData() {
   const A = S.nikke.baseAmmo || 0, C = S.nikke.chargeTime || 0;
   const lines = olLines(S.gear);
   const lvsOf = id => lines.filter(l => l.name === id).map(l => l.level);
+  /* 기본 | 옵션 두 열을 세로로 늘어놓는다. 장탄·차지 시간은 두 열이 같은 행에 오게 행 번호를 못박는다. */
+  const grid = h('div', 'np-dtable');
+  const put = (col, row, node) => { node.style.gridColumn = String(col); node.style.gridRow = String(row); grid.appendChild(node); };
   const cell = (k, v, sub, title) => h('div', { class: 'np-dcell', title },
-    h('span', 'np-dk', k), h('span', 'np-dv', v, sub ? h('small', null, ' ' + sub) : null));
-  const block = (label, cells) => h('div', 'np-dblock', h('span', 'np-dttl', label), h('div', 'np-dgrid', cells));
+    h('span', 'np-dk', k), h('span', 'np-dv', v, sub ? h('small', null, sub) : null));
 
   const role = chargeRole();
   const roleEl = role.cls ? h('span', 'np-cls np-cls-' + role.cls, role.text) : role.text;
-  card.appendChild(block(t('np.dataBase'), [
-    cell(t('np.dAmmo'), A ? A + t('np.shot') : '—'),
-    cell(t('np.dCharge'), C ? C.toFixed(2) + 's' : '—'),
-    cell(t('np.dChargeCls'), roleEl, null, role.title),
-  ]));
+  put(1, 1, h('span', 'np-dttl', t('np.dataBase')));
+  put(1, 2, cell(t('np.dAmmo'), A ? A + t('np.shot') : '—'));
+  put(1, 3, cell(t('np.dCharge'), C ? C.toFixed(2) + 's' : '—'));
+  put(1, 4, cell(t('np.dChargeCls'), roleEl, null, role.title));
 
   let ammo = '—', ammoSub = null;
   if (A) {
@@ -633,12 +634,12 @@ function renderData() {
   }
   const tot = olOf(S.gear);
   const sumOf = id => ((tot.find(o => o.name === id)?.total || 0) * 100).toFixed(2) + '%';
-  card.appendChild(block(t('np.dataOpt'), [
-    cell(t('np.dAmmo'), ammo, ammoSub),
-    cell(t('np.dCharge'), chg, chgSub),
-    cell(t('np.dElem'), sumOf('우코')),
-    cell(t('np.dAtk'), sumOf('공증')),
-  ]));
+  put(2, 1, h('span', 'np-dttl', t('np.dataOpt')));
+  put(2, 2, cell(t('np.dAmmo'), ammo, ammoSub));
+  put(2, 3, cell(t('np.dCharge'), chg, chgSub));
+  put(2, 4, cell(t('np.dElem'), sumOf('우코')));
+  put(2, 5, cell(t('np.dAtk'), sumOf('공증')));
+  card.appendChild(grid);
   return card;
 }
 
@@ -656,6 +657,7 @@ function olCard(title, gear, { src = null, ref = null } = {}) {
     for (const [name, r] of ref) {
       if (!totals.some(o => o.name === name)) rows.push({ o: { ...r, total: 0, exact: 0, count: 0, top: 0 }, d: -r.total, gone: true });
     }
+    rows.sort((a, b) => olRank(a.o.name) - olRank(b.o.name));
   }
   const same = ref && rows.length && rows.every(x => Math.abs(x.d) < 1e-9);
   const meta = same ? t('np.olSame') : src;
@@ -1242,13 +1244,6 @@ function paint() {
     renderData(),
     olCard(t('np.olNow'), base.gear, { src: base.src ? t(base.src === 'acct' ? 'np.olFromAcct' : 'np.olFromStart') : null }),
     olCard(t('np.olChanged'), S.gear, { ref })));
-  if (prog.length) {
-    root.appendChild(h('div', { class: 'np-progress', role: 'status' },
-      prog.map(x => h('span', 'np-pill' + (x.ok ? ' ok' : ''),
-        h('b', null, short(x.opt)), ' ',
-        x.eff ? `${fmtEff(x.cfg, x.have)} / ${fmtEff(x.cfg, x.need)}` : `${x.have}/${x.need}${lvsText(x)}`)),
-      isDone(prog) ? h('span', 'np-pill ok all', t('np.st_done')) : null));
-  }
   const main = h('div', 'np-main');
   main.appendChild(renderGoals(prog));
   /* 메인 프레임 — 오버로드 옵션 → 계산하기 → 기록 */
@@ -1263,8 +1258,6 @@ function paint() {
   if (focusId) document.getElementById(focusId)?.focus();
 }
 
-const lvsText = x => (x.tier ? ' · ' + x.lvs.join('·') : x.m > 1 ? ` · ${x.m}+` : '');
-
 /* 바깥을 누르면 줄 편집을 닫는다. */
 let wired = false;
 function wireOutside() {
@@ -1272,10 +1265,14 @@ function wireOutside() {
   wired = true;
   document.addEventListener('click', e => {
     if (!mounted || !mounted.isConnected) return;
-    if (search && !search.list.hidden && !e.target.closest('.np-search')) search.close();
+    /* 줄 편집의 단계 스테퍼처럼 클릭 처리 중에 자기 칸만 다시 그리면 e.target 은 이미 문서에서 떨어져 있어
+       closest() 로는 바깥으로 보인다. 경로는 디스패치 때 정해지므로 composedPath() 로 판단한다. */
+    const path = e.composedPath();
+    const inside = sel => path.some(n => n instanceof Element && n.matches(sel));
+    if (search && !search.list.hidden && !inside('.np-search')) search.close();
     let dirty = false;
-    if (ui.edit && !e.target.closest('.np-lrow')) { ui.edit = null; dirty = true; }
-    if (ui.lvPick && !e.target.closest('.np-lvbadges')) { ui.lvPick = null; dirty = true; }
+    if (ui.edit && !inside('.np-lrow')) { ui.edit = null; dirty = true; }
+    if (ui.lvPick && !inside('.np-lvbadges')) { ui.lvPick = null; dirty = true; }
     if (dirty) paint();
   });
   /* Esc — 결과 창이 떠 있으면 이번 시도 취소, 아니면 줄 편집·직접 설정을 닫는다 */

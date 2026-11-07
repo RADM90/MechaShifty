@@ -500,11 +500,11 @@ function renderDetail(root, n, r) {
 
   card.appendChild(head);
 
-  /* 1행 — 최종 전투력 3종 (현재 레벨 / Lv.40 / Lv.400). */
+  /* 1행 — 최종 전투력 3종. Lv.40 을 가장 크게, 이어서 Lv.400, 현재 레벨 순. */
   const row1 = el('div', 'cp-detailRow');
   const cps = el('div', 'cp-cpRow');
   const cell = (label, res, big) => {
-    const c = el('div', 'cp-cpCell' + (big ? ' is-now' : ''));
+    const c = el('div', 'cp-cpCell' + (big ? ' is-main' : ''));
     c.appendChild(el('span', 'cp-cpLbl', label));
     const btn = el('button', 'cp-cpNum', fmt(res ? res.cp : null));
     btn.type = 'button';
@@ -518,11 +518,11 @@ function renderDetail(root, n, r) {
     c.appendChild(btn);
     return c;
   };
-  cps.appendChild(cell(t('cp.lv', r.level), r, true));
   for (const lv of ADJ_LEVELS) {
-    if (lv === r.level) continue;      // 현재 레벨이 40·400 이면 같은 값이 두 번 나온다
-    cps.appendChild(cell(t('cp.lv', lv), compute(T, n, lv)));
+    cps.appendChild(cell(t('cp.lv', lv), lv === r.level ? r : compute(T, n, lv), lv === 40));
   }
+  // 현재 레벨이 40·400 이면 같은 값이 두 번 나오므로 따로 붙이지 않는다
+  if (!ADJ_LEVELS.includes(r.level)) cps.appendChild(cell(t('cp.lvCur', r.level), r));
   row1.appendChild(cps);
   card.appendChild(row1);
 
