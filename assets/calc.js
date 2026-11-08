@@ -527,7 +527,9 @@ function renderDetail(root, n, r) {
   const nameEl = el('span', 'cp-detailName', nm);
   const mark = ctx.overspecMark && ctx.overspecMark(n._nikke.corporation_sub_type);
   if (mark) nameEl.appendChild(mark);
-  who.appendChild(nameEl);
+  /* 큐브 변경 칩은 이름 줄 오른쪽에 둔다 - 아래 아이콘 줄이 카드 폭을 다 쓰도록. */
+  who.appendChild(el('div', 'cp-detailNameRow'));
+  who.lastChild.append(nameEl, cubeChip(root, n));
   /* 목록에서는 속성·버스트만 아이콘으로 찍으므로, 나머지 축은 여기서 다 보여준다. */
   const tags = el('div', 'cp-tags');
   const src = n._nikke;
@@ -547,7 +549,6 @@ function renderDetail(root, n, r) {
   for (const b of growthBadges(n)) tags.appendChild(b);
   who.appendChild(tags);
   head.appendChild(who);
-  head.appendChild(cubeChip(root, n));
 
   card.appendChild(head);
 

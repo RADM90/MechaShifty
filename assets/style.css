@@ -37,7 +37,7 @@
 
   /* 목록 배지 - 돌파(별)·코어강화·소장품 등급의 시그니처 색 */
   --bd-none:  #9aa0ad;  --bd-break: #dda211;  --bd-core: #a132d6;
-  --bd-r:     #2a78d6;  --bd-sr:    #7c3aed;  --bd-fav:  #e2670f;
+  --bd-r:     #2f95ee;  --bd-sr:    #620ce4;  --bd-fav:  #e2670f;
   --bd-ink:   #12131a;
   /* 장비 등급 시그니처 색 - 분홍 오버로드 / 주황 9티어 (기업·일반 같은 색) */
   --gr-ol:    #ea5a97;  --gr-t9:    #e2913a;
@@ -104,7 +104,7 @@
   --amber:        #f0a020;
 
   --bd-none:  #79808f;  --bd-break: #f0b429;  --bd-core: #c069f0;
-  --bd-r:     #4a93ea;  --bd-sr:    #a186f2;  --bd-fav:  #f2802e;
+  --bd-r:     #4ea9f4;  --bd-sr:    #8f5cf5;  --bd-fav:  #f2802e;
   --bd-ink:   #0d0d12;
   --gr-ol:    #f472ac;  --gr-t9:    #eda049;
   /* 다크는 인게임 그대로 하늘색을 쓸 수 있다 (#7fd7ff on #0f1e35 = 9.9:1) */
@@ -795,6 +795,7 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 }
 .cp-detailWho { display: grid; gap: 5px; min-width: 0; flex: 1; }
 .cp-detailName { font-size: 17px; font-weight: 700; }
+.cp-detailNameRow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 
 /* 아이콘 줄 뒤에 이어 붙는 키운 상태 배지(돌파·소장품·호감도·큐브)와 그 구분선.
    배지 도형은 목록 표와 같은 .cp-badge 를 그대로 쓴다. */
@@ -809,7 +810,6 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-cubeBadge.is-off { color: var(--ink-muted); }
 
 /* 큐브 교체 - 카드 머리 오른쪽 칩과, 누르면 뜨는 목록 (calc.js cubeChip). 판은 전투력 툴팁(.cp-tip)과 같다. */
-.cp-cubeChip { margin-top: 1px; }
 .cp-cubeList { display: grid; gap: 7.5px; }
 .cp-cubeList .cp-note { margin: 0; }
 .cp-cubeOpts {
