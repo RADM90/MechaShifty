@@ -37,57 +37,106 @@ Both do exactly the same thing and share one file, `mechashifty.user.js`.
 
 ## 1. Tampermonkey (recommended)
 
-### 1-1. Install the extension
+**Tampermonkey** is a browser **extension** that adds small programs (userscripts) on top of web pages.
+Do the three setup steps below once, and from then on it takes **two clicks on an icon**.
 
-Get it for your browser from [tampermonkey.net](https://www.tampermonkey.net/).
-Chrome, Edge, Firefox, Safari and Opera are supported.
+These steps are for **Chrome on a PC**. Edge follows the same order with slightly different button names.
+Firefox and Safari skip 1-2. On a phone, the [2. Bookmarklet](#2-bookmarklet) is easier.
 
-### 1-2. ⚠️ Turn on "Allow user scripts" - required on Chrome / Edge
+| Step | What you do | When |
+|---|---|---|
+| 1-1 | Install Tampermonkey | Once |
+| 1-2 | Turn on "Allow User Scripts" | Once |
+| 1-3 | Install the MechaShifty script | Once |
+| 1-4 | Run it | **Every time** |
 
-When Chrome moved extensions to MV3, running userscripts started to need **one extra
-permission that is off by default.** Without it Tampermonkey installs fine and its icon
-shows up, but **no script ever runs.** "I installed it and the menu is empty" is almost
-always this.
+> **Two words you will see**
+> - **Extension**: a small add-on app for the browser. Tampermonkey is one.
+> - **Toolbar**: the row of icons to the right of the address bar.
 
-**Chrome 138+ and current Edge**
+### 1-1. Install Tampermonkey
 
-1. Open `chrome://extensions` (`edge://extensions` on Edge) in the address bar.
-   Right-clicking the Tampermonkey icon → *Manage extension* gets you to the same place.
-2. Find **Tampermonkey** in the list and click **Details**.
-3. Turn **Allow user scripts** **on**.
-4. Reload the Tampermonkey dashboard once.
+![Adding Tampermonkey from the Chrome Web Store](img/tm-1-install.gif)
+
+1. Open **[Tampermonkey on the Chrome Web Store](https://chromewebstore.google.com/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo)**.
+   There are many look-alike extensions, so use this link.
+2. Click the blue **Add to Chrome** button at the top right.
+3. In the small dialog that pops up, click **Add extension**.
+4. When the blue button changes to **Remove from Chrome**, it is installed.
+   An icon showing **two circles inside a black square** also appears to the right of the address bar.
+
+- **Edge**: [Tampermonkey on Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd) → **Get** → **Add extension**.
+- **Firefox, Safari, Opera**: pick your browser on [tampermonkey.net](https://www.tampermonkey.net/).
+
+> If you cannot see the icon, click the **puzzle-piece icon** (Extensions) to the right of the
+> address bar. Tampermonkey is in that list.
+
+### 1-2. ⚠️ Turn on "Allow User Scripts" (required on Chrome and Edge)
+
+![Turning on Allow User Scripts on the extension details page](img/tm-3-allow.gif)
+
+**This is where most people get stuck.** For security, Chrome blocks userscripts by default.
+Without this switch the Tampermonkey icon shows up, but **no script ever runs.**
+
+**Chrome 138 or later, current Edge** (almost everyone)
+
+1. **Right-click** the Tampermonkey icon on the toolbar.
+2. Click **Manage Extension**. Tampermonkey's details page opens.
+   If you cannot see the icon, type `chrome://extensions` (`edge://extensions` on Edge) in the
+   address bar and click **Details** under Tampermonkey. It is the same page.
+3. Scroll down a little, find the **Allow User Scripts** switch and **turn it on** (blue means on).
+4. You can close that tab.
 
 **Chrome older than 138**
 
-Turn on **Developer mode** with the toggle at the top right of that same
-`chrome://extensions` page, then restart the browser once.
+1. Type `chrome://extensions` in the address bar and press Enter.
+2. Turn on the **Developer mode** switch at the top right.
+3. Quit the browser completely and open it again.
 
-> A common trap: Tampermonkey may say "developer mode is required" when what is actually
-> missing is the **"Allow user scripts" toggle**, not developer mode. If you enabled
-> developer mode and it still does not work, go back to step 3.
+> To check your Chrome version, type `chrome://version` in the address bar. It is on the first line.
+>
+> A common trap: Tampermonkey may say "developer mode is required", but on Chrome 138 or later
+> what you actually need is the **"Allow User Scripts" switch**, not developer mode.
 
-**Firefox and Safari** do not need this step. On Safari, give the Tampermonkey extension
-**Always Allow** access to `blablalink.com` instead.
+- **Firefox and Safari**: there is no such step. On Safari, give the Tampermonkey extension
+  **Always Allow** access to `blablalink.com` instead.
 
-### 1-3. Install the script
+### 1-3. Install the MechaShifty script
 
-1. Open **[mechashifty.user.js](https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js)**.
-   Tampermonkey shows its install screen.
-2. **Read the code before you install it.** Everything this script does is on that screen -
-   in particular, the five `API_` constants are the complete list of addresses it contacts.
-3. Click **Install**.
+![Clicking Install on the script install page, then checking the dashboard](img/tm-4-script.gif)
 
-### 1-4. Run it
+1. Click **[mechashifty.user.js](https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js)**.
+2. A *Script Installation* page from tampermonkey.net shows briefly, then the install page opens in a new tab.
+   The name *MechaShifty - Export my Nikke roster* is at the top.
+3. Click **Install**. The tab closes and you are back where you were.
+4. To check: Tampermonkey icon → **Dashboard**. MechaShifty is in the list.
+
+> **If you get a page full of plain text (code) instead of the install page**, Tampermonkey is
+> turned off or step 1-2 was skipped. Check 1-2 and click the link again.
+>
+> The "malicious scripts" warning on the install page is shown for every script.
+> If you have a minute, skim the code below it. Everything the script does is there,
+> and the five `API_` constants are the complete list of addresses it contacts.
+>
+> On sites other than blablalink, the icon's menu says *No script is running*. That is normal:
+> this script only runs on blablalink.
+
+### 1-4. Run it (this is all you do each time)
+
+![Running the export from the Tampermonkey menu on blablalink](img/tm-5-run.gif)
+
+The Tampermonkey menu in this GIF is in Korean. The entry is in the same place in other languages.
 
 1. **Log in** at [blablalink.com](https://www.blablalink.com/).
-   Run it from that logged-in tab, not a different one.
-2. Click the Tampermonkey icon in the toolbar. If you cannot see it, open the browser's
-   extensions puzzle-piece menu and **pin** it.
-3. Choose **Export my Nikke roster**.
+2. **With that logged-in tab open**, click the Tampermonkey icon on the toolbar.
+3. Click **Export my Nikke roster**, right below the *MechaShifty* line in the menu.
+4. The MechaShifty window appears in the middle of the page and starts collecting. It takes a few seconds, depending on how many Nikkes you have.
+5. When three buttons appear, it is done. Go to [3. Getting it into the calculator](#3-getting-it-into-the-calculator).
 
-> If that entry is not in the menu, check in this order: (a) the toggle from 1-2,
-> (b) that the page you are on is `www.blablalink.com`, (c) that the script is **Enabled**
-> in the Tampermonkey dashboard.
+> **If that entry is not in the menu**, check these in order:
+> 1. The "Allow User Scripts" switch from 1-2 is on
+> 2. The current tab is on `www.blablalink.com` (the entry does not appear on other sites)
+> 3. Tampermonkey icon → **Dashboard**: the MechaShifty script is **Enabled**
 
 ### About automatic updates
 
@@ -189,8 +238,9 @@ already matched.)
 
 | Symptom | What to check |
 |---|---|
-| No entry at all in the Tampermonkey menu | **The "Allow user scripts" toggle from 1-2.** By far the most common cause |
-| It says "developer mode is required" | It may really be the "Allow user scripts" toggle. See 1-2 |
+| No entry at all in the Tampermonkey menu | **The "Allow User Scripts" toggle from 1-2.** By far the most common cause |
+| It says "developer mode is required" | It may really be the "Allow User Scripts" toggle. See 1-2 |
+| The script link opens a page full of plain code | Tampermonkey is off, or 1-2 was skipped. Do 1-2 and click the link again |
 | Icon shows but the menu is empty | Whether the current page is `www.blablalink.com`, and whether the script is *Enabled* |
 | "You are not logged in…" | Whether you are logged in to blablalink, and ran it from that tab |
 | "Could not find your game server" | Account linking and public-profile settings. A private account gets no API response |
