@@ -11,6 +11,8 @@
    app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐.
    프로필 응답을 직접 넣는 setProgress() 도 내보내지만 평소에는 위처럼 가져온다. */
 
+import { ITEM, itemIcon } from './items.js';
+
 const STORE = 'outpost.input';
 
 /* 스테이지 5개당 전초기지 레벨 1. */
@@ -546,12 +548,12 @@ function renderHero(d) {
   return head;
 }
 
-/* [키, 라벨, 소수 자릿수 {분, 시, 일}]. */
+/* [키, 라벨, 소수 자릿수 {분, 시, 일}, 아이템 id]. 화면에는 이름 대신 아이콘을 쓴다. */
 const RES = [
-  ['core', 'op.dust', { min: 4, hr: 4, day: 1 }],
-  ['cred', 'op.credit', { min: 0, hr: 0, day: 0 }],
-  ['batt', 'op.battle', { min: 0, hr: 0, day: 0 }],
-  ['comm', 'op.exp', { min: 0, hr: 0, day: 0 }],
+  ['core', 'op.dust', { min: 4, hr: 4, day: 1 }, ITEM.dust],
+  ['cred', 'op.credit', { min: 0, hr: 0, day: 0 }, ITEM.credit],
+  ['batt', 'op.battle', { min: 0, hr: 0, day: 0 }, ITEM.battle],
+  ['comm', 'op.exp', { min: 0, hr: 0, day: 0 }, ITEM.exp],
 ];
 const num = (v, d) => (d ? dec(v, d) : int(v));
 
@@ -568,10 +570,10 @@ function renderIncome(d) {
   card.appendChild(el('h3', null, t('op.income')));
 
   const cards = el('div', 'op-stats');
-  for (const [key, lab, dg] of RES) {
+  for (const [key, lab, dg, item] of RES) {
     const a = applied(d.row, key);
     const c = el('div', 'op-stat');
-    c.appendChild(el('span', 'op-statLbl', t(lab)));
+    c.appendChild(el('span', 'op-statLbl')).appendChild(itemIcon(item, t(lab), 'ic-lg'));
     c.appendChild(el('span', 'op-statNum', num(a?.hr, dg.hr)));
     c.appendChild(el('span', 'op-statSub', t('op.perHr')));
     cards.appendChild(c);
@@ -586,11 +588,11 @@ function renderIncome(d) {
   thead.appendChild(hr); tbl.appendChild(thead);
 
   const body = el('tbody');
-  for (const [key, lab, dg] of RES) {
+  for (const [key, lab, dg, item] of RES) {
     const a = applied(d.row, key);
     const raw = d.row ? d.row[key] : null;
     const tr = el('tr');
-    tr.appendChild(el('td', null, t(lab)));
+    tr.appendChild(el('td')).appendChild(itemIcon(item, t(lab)));
     tr.appendChild(el('td', 'num', D.boost[key] ? '+' + Math.round(D.boost[key] * 100) + '%' : '-'));
     tr.appendChild(el('td', 'num', num(raw?.hr, dg.hr)));
     tr.appendChild(el('td', 'num op-em', num(a?.hr, dg.hr)));

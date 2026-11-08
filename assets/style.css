@@ -364,6 +364,11 @@ table.grid td.ic-only .ic { vertical-align: middle; }
 /* 오버스펙 도장 - 이름 바로 뒤에 붙고, 이름과 붙어 보이지 않게 앞에 여백을 둔다. */
 .ic-ovr { height: 19px; margin-left: 6.5px; vertical-align: -2.5px; }
 .iconlbl { display: inline-flex; align-items: center; gap: 6.5px; white-space: nowrap; }
+/* 재화 아이콘 - 이름 대신 쓰는 아이콘 (assets/items.js). 숫자와 붙여 한 덩어리로 둔다. */
+.ic-item { vertical-align: -5px; }
+.np-cost { display: inline-flex; align-items: center; gap: 2px; white-space: nowrap; }
+.np-cost .ic-item { height: 18px; }
+.op-statLbl .ic-item { height: 28px; }
 
 /* 실루엣 아이콘 보정 - 네 축(class·burst·weapon·company)과 오버스펙 도장은 순백(lum 255 / 채도 0)이라 라이트 표면에서 사라진다.
    채도가 0 이라 검게 바꿔도 잃을 색이 없고, element·rarity 는 유채색이라 손대지 않는다. */

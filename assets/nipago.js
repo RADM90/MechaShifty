@@ -25,6 +25,7 @@ import { rosterGearFor } from './roster.js';
 import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, MAX_LV, buildData } from './nipago/rules.js';
 import { effValue, fmtEff as fmtEffRaw, explainEff as explainEffRaw } from './nipago/effective.js';
 import { roll, progress, validateResult, effCfg } from './nipago/engine.js';
+import { ITEM, itemIcon } from './items.js';
 
 const STORE = 'nipago.input';
 const NEED = ['equip_option', 'equip_glossary'];
@@ -822,8 +823,8 @@ function renderRemote() {
     { title: t('np.resetOf', label), disabled: !S.spent[k] });
   box.appendChild(field(t('np.spent'),
     h('div', 'np-rrow',
-      h('span', { class: 'np-rpair', title: t('np.mod') }, h('span', 'np-rk', '🔵'), h('b', 'np-m', String(S.spent.mod)), reset('mod', t('np.mod'))),
-      h('span', { class: 'np-rpair', title: t('np.key') }, h('span', 'np-rk', '🔑'), h('b', 'np-k', String(S.spent.key)), reset('key', t('np.key')))),
+      h('span', { class: 'np-rpair', title: t('np.mod') }, h('span', 'np-rk', icMod()), h('b', 'np-m', String(S.spent.mod)), reset('mod', t('np.mod'))),
+      h('span', { class: 'np-rpair', title: t('np.key') }, h('span', 'np-rk', icKey()), h('b', 'np-k', String(S.spent.key)), reset('key', t('np.key')))),
     h('span', 'np-note', t('np.tries', S.log.length))));
   return box;
 }
@@ -958,11 +959,11 @@ function actionText(a) {
   const prot = a.protect.map(p => t('np.protOne', p.line + 1, t(p.mat === 'key' ? 'np.matKey' : p.fresh ? 'np.matPermNew' : 'np.matPerm')));
   return t(a.kind === 'reset' ? 'np.doReset' : 'np.doChange', piece, prot.length ? prot.join(', ') : t('np.noProtect'));
 }
-function costText(c) {
-  const parts = [t('np.costMod', c.mod)];
-  if (c.key) parts.push(t('np.costKey', c.key));
-  return parts.join(' + ');
-}
+/* 모듈·락키 수 - 재화 이름 대신 아이콘 */
+const icMod = () => itemIcon(ITEM.module, t('np.mod'));
+const icKey = () => itemIcon(ITEM.lockKey, t('np.key'));
+const costNode = c => h('span', 'np-cost', icMod(), String(c.mod), c.key ? [' + ', icKey(), String(c.key)] : null);
+const meanNode = (m, k) => h('span', 'np-cost', icMod(), num(m), ' · ', icKey(), num(k));
 
 function renderRec(prog) {
   const card = h('section', 'np-card np-rec');
@@ -1001,7 +1002,7 @@ function renderRec(prog) {
   const fact = (k, v, cls) => facts.append(h('dt', null, k), h('dd', cls, v));
   const lockPart = tryCost(act.protect.map(p => ({ ...p, fresh: false })));
   const fresh = { mod: act.cost.mod - lockPart.mod, key: act.cost.key };
-  fact(t('np.thisCost'), [costText(act.cost),
+  fact(t('np.thisCost'), [costNode(act.cost),
     fresh.mod || fresh.key ? h('small', null, ` (${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
     act.cost.estimated ? h('small', 'np-est', ' · ' + t('np.estimated')) : null]);
   const pc = a.pieces[a.piece];
@@ -1009,7 +1010,7 @@ function renderRec(prog) {
     a.pieces.filter(x => x.v > 0).length));
   const kept = prog.filter(p => p.eff && p.ok);
   if (kept.length) fact(t('np.guard'), kept.map(p => `${short(p.opt)} ${fmtEff(p.cfg, p.have)}`).join(', '));
-  fact(t('np.outlookMean'), t('np.meanText', num(a.m), num(a.k)));
+  fact(t('np.outlookMean'), meanNode(a.m, a.k));
   main.appendChild(facts);
 
   const probs = actionProblems(act);
@@ -1029,7 +1030,7 @@ function renderRec(prog) {
     const x = r.alts[p];
     alts.appendChild(h('div', 'np-alt',
       h('span', 'np-altk', t('np.pref_' + p)),
-      h('span', 'np-altd', actionText({ piece: x.piece, kind: x.act.kind, protect: x.act.protect }) + ' · ' + t('np.meanText', num(x.m), num(x.k))),
+      h('span', 'np-altd', actionText({ piece: x.piece, kind: x.act.kind, protect: x.act.protect }), ' · ', meanNode(x.m, x.k)),
       btn('np-altb', t('np.useThis'), () => commit(() => { S.pref = p; }, { run: true }))));
   }
   alts.appendChild(h('div', 'np-alt',
@@ -1045,7 +1046,7 @@ function renderRec(prog) {
   det.appendChild(h('ul', 'np-plan', a.pieces.map((x, p) => h('li', null,
     h('b', null, t('np.piece_' + p)), ' ',
     x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` ${s.m}+` : '')).join('·') : t('np.nothingHere'),
-    x.v > 0 ? ` - ${t('np.meanText', num(x.m), num(x.k))}${x.first ? ' · ' + t('np.firstIncl') : ''}` : ` - ${t('np.pieceOk')}`))));
+    x.v > 0 ? [' - ', meanNode(x.m, x.k), x.first ? ' · ' + t('np.firstIncl') : ''] : ` - ${t('np.pieceOk')}`))));
   if (r.stats) det.appendChild(h('p', 'np-note', t('np.tableStats', r.stats.loaded, r.stats.built)));
   card.appendChild(det);
   return card;
@@ -1218,7 +1219,7 @@ function manualBar() {
     bar.appendChild(seg([['change', t('np.kindChange')], ['reset', t('np.kindReset')]], S.plan.kind,
       v => repaint(() => { S.plan.kind = v; save(); })));
   }
-  bar.appendChild(h('span', 'np-mdesc', a ? `${actionText(a)} - ${costText(a.cost)}${a.cost.estimated ? ' · ' + t('np.estimated') : ''}` : ''));
+  bar.appendChild(h('span', 'np-mdesc', a ? [actionText(a), ' - ', costNode(a.cost), a.cost.estimated ? ' · ' + t('np.estimated') : ''] : ''));
   const probs = actionProblems(a);
   if (!S.armed) probs.push('calc');
   bar.appendChild(h('div', 'np-goRow',
@@ -1236,7 +1237,7 @@ function renderModal(prog) {
   const box = h('div', { class: 'np-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.resultTitle') });
   box.appendChild(h('div', 'np-modalhead',
     h('span', null, t('np.resultTitle'), ' · ', actionText({ ...pd })),
-    h('span', 'np-meta', t('np.paid', costText(pd.cost)))));
+    h('span', 'np-meta', costNode(pd.cost), ' ', t('np.paid'))));
 
   const body = h('div', 'np-modalbody');
   const side = (title, lines, cls, mark) => h('div', 'np-side ' + cls, h('div', 'np-sidettl', title),
@@ -1264,8 +1265,8 @@ function renderModal(prog) {
     else if (c.err) cmp.appendChild(h('p', 'np-warn', c.err));
     else {
       cmp.appendChild(h('div', 'np-cmprow',
-        h('div', 'np-cmpcell' + (c.choice === 'keep' ? ' best' : ''), h('small', null, t('np.ifKeep')), h('b', null, t('np.meanText', num(c.keep.m), num(c.keep.k)))),
-        h('div', 'np-cmpcell' + (c.choice === 'accept' ? ' best' : ''), h('small', null, t('np.ifAccept')), h('b', null, t('np.meanText', num(c.acc.m), num(c.acc.k))))));
+        h('div', 'np-cmpcell' + (c.choice === 'keep' ? ' best' : ''), h('small', null, t('np.ifKeep')), h('b', null, meanNode(c.keep.m, c.keep.k))),
+        h('div', 'np-cmpcell' + (c.choice === 'accept' ? ' best' : ''), h('small', null, t('np.ifAccept')), h('b', null, meanNode(c.acc.m, c.acc.k)))));
       if (c.breaks.length) cmp.appendChild(h('p', 'np-warn', t('np.breaks', c.breaks.map(short).join(', '))));
       const d = c.prog1.filter((x, i) => JSON.stringify(x.have) !== JSON.stringify(c.prog0[i].have));
       if (d.length) cmp.appendChild(h('p', 'np-note', t('np.delta') + ' ' + d.map(x => {
@@ -1332,7 +1333,7 @@ function renderLog() {
     for (const x of S.log.slice(-40).reverse()) {
       ol.appendChild(h('li', null,
         h('span', 'np-logk', actionText(x)),
-        h('span', 'np-logc', costText(x.cost)),
+        h('span', 'np-logc', costNode(x.cost)),
         h('span', 'np-logr', x.choice ? t('np.choice_' + x.choice) + (x.advice && x.advice !== x.choice && x.kind !== 'first' ? ' · ' + t('np.againstAdvice') : '') : t('np.pendingS')),
         x.followed === false ? h('span', 'np-logm', t('np.manualS')) : null,
         x.src === 'sim' ? h('span', 'np-logm', t('np.srcSim')) : null));

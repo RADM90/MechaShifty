@@ -628,8 +628,6 @@ const STR = {
   'np.matPermNew': ['영구 잠금', 'perma-locked', 'カスモロック'],
   'np.unlockLines': [s => `${s}번 줄의 영구 잠금은 풉니다`, s => `Unlock line ${s}`, s => `${s}段のロックは解除`],
   'np.thisCost': ['이번 비용', 'This roll', '今回の費用'],
-  'np.costMod': [n => `모듈 ${n}`, n => `${n} modules`, n => `カスモ${n}`],
-  'np.costKey': [n => `락키 ${n}`, n => `${n} keys`, n => `ロックキー${n}`],
   'np.costSplit': [
     (r, m, k) => `매회 ${r}` + (m ? ` + 새 잠금 모듈 ${m}` : '') + (k ? ` + 락키 ${k}` : ''),
     (r, m, k) => `${r} per roll` + (m ? ` + ${m} for the new lock` : '') + (k ? ` + ${k} keys` : ''),
@@ -644,7 +642,6 @@ const STR = {
   ],
   'np.guard': ['지키는 조건', 'Keeps', '維持する条件'],
   'np.outlookMean': ['완료까지 평균', 'Average to finish', '完了までの平均'],
-  'np.meanText': [(m, k) => `모듈 ${m} · 락키 ${k}`, (m, k) => `${m} modules · ${k} keys`, (m, k) => `カスモ${m}・キー${k}`],
   'np.goSim': ['이대로 굴리기', 'Roll this', 'これで回す'],
   'np.goReal': ['실행했어요 - 결과 입력', 'Done in game - enter result', '実行した - 結果入力'],
   'np.prob_line1': ['1번 줄이 비어 있습니다', 'Line 1 is empty', '上段が空です'],
@@ -709,7 +706,7 @@ const STR = {
   'np.cancel': ['취소', 'Cancel', 'キャンセル'],
 
   'np.resultTitle': ['결과', 'Result', '結果'],
-  'np.paid': [c => `${c} 소모됨`, c => `${c} spent`, c => `${c} 消費済み`],
+  'np.paid': ['소모됨', 'spent', '消費済み'],
   'np.paidNote': [
     '비용은 실행할 때 이미 나갔습니다. 유지해도 돌려받지 못하고, 이번에 건 영구 잠금은 그대로 남습니다. 두 결과에서 줄을 골라 섞을 수는 없습니다.',
     'The cost was paid when you rolled. Keeping the old result doesn’t refund it, and any perma-lock you just bought stays. You can’t mix lines from the two results.',
