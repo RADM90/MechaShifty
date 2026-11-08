@@ -171,6 +171,7 @@ function cleanEntry(e) {
   const s = e.skills || {};
   const c = e.collection || {};
   const cube = e.cube || {};
+  const arena = e.arena_cube || {};
   return {
     name_code: code,
     level: int(e.level, 1, 1400, 1),
@@ -178,6 +179,7 @@ function cleanEntry(e) {
     bond: int(e.bond, 1, 999, 1),
     skills: { s1: int(s.s1, 1, 10, 1), s2: int(s.s2, 1, 10, 1), burst: int(s.burst, 1, 10, 1) },
     cube: { tid: int(cube.tid, 1, 99999999, null), level: int(cube.level, 0, 15, 0) },
+    arena_cube: { tid: int(arena.tid, 1, 99999999, null), level: int(arena.level, 0, 15, 0) },
     collection: {
       kind: ['none', 'R', 'SR', '애장품'].includes(c.kind) ? c.kind : 'none',
       level: /^(\d{1,2}|[0-2]\.0)$/.test(c.level) ? c.level : '0',
@@ -248,8 +250,7 @@ function restore() {
 /* 옵션작 탭이 '현재 장비'로 쓴다 - 불러온 계정에서 그 니케의 네 부위를 찾는다. 없으면 null.
    계정 자료는 크지 않지만 탭을 그릴 때마다 읽지 않게, 저장된 문자열이 같으면 지난번 결과를 쓴다. */
 let rosterCache = { raw: null, data: null };
-export function rosterGearFor(nikke) {
-  if (!nikke || !nikke.name_code) return null;
+function cachedRoster() {
   let raw = null;
   try { raw = localStorage.getItem(STORE); } catch { return null; }
   if (!raw) return null;
@@ -258,8 +259,32 @@ export function rosterGearFor(nikke) {
     try { data = parseRoster(raw); } catch { data = null; }
     rosterCache = { raw, data };
   }
-  const e = rosterCache.data && rosterCache.data.nikkes.find(x => x.name_code === nikke.name_code);
+  return rosterCache.data;
+}
+export function rosterGearFor(nikke) {
+  if (!nikke || !nikke.name_code) return null;
+  const data = cachedRoster();
+  const e = data && data.nikkes.find(x => x.name_code === nikke.name_code);
   return e ? e.gear.map(g => ({ ...g, options: g.options.map(o => ({ ...o })) })) : null;
+}
+
+/* 계산기 큐브 교체 목록 - 게임 API 는 큐브 보관함을 주지 않아서, 니케들이 낀 큐브(전투·아레나 세팅)를 모은다.
+   아무도 안 낀 큐브는 알 수 없다. 큐브 레벨은 큐브마다 하나라 같은 큐브면 값이 같다 - 어긋나면 큰 쪽을 쓴다.
+   { list: [{ tid, level }] (tid 순), equipped: 이 니케가 전투 세팅에 낀 큐브 tid | null }. 계정 자료가 없으면 null. */
+export function rosterCubes(nikke) {
+  const data = cachedRoster();
+  if (!data) return null;
+  const lv = new Map();
+  for (const e of data.nikkes) {
+    for (const c of [e.cube, e.arena_cube]) {
+      if (c && c.tid && c.level) lv.set(c.tid, Math.max(lv.get(c.tid) || 0, c.level));
+    }
+  }
+  const me = nikke && nikke.name_code ? data.nikkes.find(x => x.name_code === nikke.name_code) : null;
+  return {
+    list: [...lv].sort((a, b) => a[0] - b[0]).map(([tid, level]) => ({ tid, level })),
+    equipped: me && me.cube.level ? me.cube.tid : null,
+  };
 }
 
 /* ── 탭 간 수신 ───────────────────────────────────────────────
@@ -498,7 +523,7 @@ export function renderImport(root, ctx) {
     return bar;
   }
 
-  /* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인 문구라 ko/en 만 있다. */
+  /* data/cubes.json 의 약칭·효과는 우리가 붙인 문구다. 언어에 없는 항목은 en, 그다음 ko 로 떨어진다. */
   function cubeInfo(tid) {
     const c = tid && ctx.cubes ? ctx.cubes[tid] : null;
     return c ? { ...c.ko, ...c.en, ...c[ctx.lang] } : null;

@@ -7,7 +7,7 @@
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
   K, SLOTS, olRows, olTotals, olPct, olLevelCls } from './cp.js';
 import { renderImport, OPTION_ALIAS, CHIP_AXES, badge, gradeBadge, collBadge, bondBadge,
-  cubeBadge } from './roster.js';
+  cubeBadge, rosterCubes } from './roster.js';
 
 const NEED = ['syncro_stat', 'attraction_stat', 'attraction_grade', 'equip_stat',
   'equip_option', 'cube_stat', 'collection_stat', 'collection_bonus', 'cp_penalty'];
@@ -28,7 +28,7 @@ const el = (tag, cls, text) => {
 const t = (k, ...a) => ctx.t(k, ...a);
 const fmt = v => v == null ? '-' : Math.round(v).toLocaleString();
 
-/* data/cubes.json 은 이름을 세 언어로 들고 있지만 약칭·효과는 우리가 붙인 문구라 ko/en 만 있다. */
+/* data/cubes.json 의 약칭·효과는 우리가 붙인 문구다. 언어에 없는 항목은 en, 그다음 ko 로 떨어진다. */
 function cubeInfo(tid) {
   const c = tid != null && cubes ? cubes[String(tid)] : null;
   return c ? { ...c.ko, ...c.en, ...c[ctx.lang] } : null;
@@ -466,6 +466,56 @@ function growthBadges(n) {
   return out;
 }
 
+/* ── 큐브 교체 ────────────────────────────────────────────────
+   게임 API 는 큐브 보관함을 주지 않아서, 불러온 계정의 니케들이 낀 큐브(전투·아레나 세팅)만 고를 수 있다 (roster.js rosterCubes).
+   전투력에는 큐브 종류가 아니라 레벨만 들어간다. 목록은 아이콘·약칭·레벨만 보여 주고 이름은 마우스를 올리면 뜬다. */
+function cubeChip(root, n) {
+  const b = el('button', 'cp-simBtn cp-cubeChip', t('cp.cubeSwap'));
+  b.type = 'button';
+  b.setAttribute('aria-haspopup', 'dialog');
+  b.setAttribute('aria-expanded', 'false');
+  b.onclick = () => openTip(b, t('cp.cubeSwap'), cubeList(root, n));
+  return b;
+}
+
+function cubeList(root, n) {
+  const box = el('div', 'cp-tipBody cp-cubeList');
+  const own = rosterCubes(n._nikke);
+  const curTid = n.cube === '미착용' ? null : n.cubeTid;
+  const pick = (tid, level) => {
+    input.cube = level ? String(level) : '미착용';
+    input.cubeTid = level ? tid : null;
+    save();
+    paint(root);
+  };
+  const opts = el('div', 'cp-cubeOpts');
+  const opt = (tid, level, kids, title) => {
+    const on = tid === curTid;
+    const o = el('button', 'cp-cubeOpt' + (on ? ' is-on' : ''));
+    o.type = 'button';
+    o.setAttribute('aria-pressed', String(on));
+    if (title) o.title = title;
+    o.append(...kids);
+    o.onclick = () => pick(tid, level);
+    opts.appendChild(o);
+  };
+  opt(null, 0, [el('span', 'cp-cubeOptNone', '-'), el('span', 'cp-cubeOptName', t('cp.none'))]);
+  for (const c of (own && own.list) || []) {
+    const info = cubeInfo(c.tid);
+    const ic = ctx.iconEl('cube', c.tid);
+    opt(c.tid, c.level, [
+      ic || el('span', 'cp-cubeOptNone', '?'),
+      el('span', 'cp-cubeOptName', info ? info.short : '#' + c.tid),
+      el('span', 'cp-cubeOptLv', String(c.level)),
+      c.tid === own.equipped ? el('span', 'cp-cubeOptTag', t('cp.cubeEquipped')) : null,
+    ].filter(Boolean), info ? info.name : null);
+  }
+  box.appendChild(opts);
+  if (!own || !own.list.length) box.appendChild(el('p', 'cp-note', t(own ? 'cp.cubeNoneOwned' : 'cp.cubeNoAccount')));
+  box.appendChild(el('p', 'cp-note', t('cp.cubeNote')));
+  return box;
+}
+
 /* ── 상세정보 카드 ────────────────────────────────────────────
    1행 최종 전투력 3종 · 2행 오버로드 종합 · 3행 부위별 상세 · 4행 콘솔/옵션 1단계당 증가분. */
 function renderDetail(root, n, r) {
@@ -497,6 +547,7 @@ function renderDetail(root, n, r) {
   for (const b of growthBadges(n)) tags.appendChild(b);
   who.appendChild(tags);
   head.appendChild(who);
+  head.appendChild(cubeChip(root, n));
 
   card.appendChild(head);
 

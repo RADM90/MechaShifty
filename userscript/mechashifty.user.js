@@ -3,7 +3,7 @@
 // @name:en      MechaShifty - Export my Nikke roster
 // @name:ja      MechaShifty - 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.5.1
+// @version      1.6.0
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -340,6 +340,7 @@
   function entryOf(d, levels) {
     const code = num(d.name_code);
     const lv = num(d.harmony_cube_lv);
+    const alv = num(d.arena_harmony_cube_lv);
     return {
       name_code: code,
       level: levels[code] || 1,
@@ -353,6 +354,8 @@
       },
       // tid 는 어떤 큐브인지 표시하는 용도. 전투력에는 레벨만 쓰인다.
       cube: { tid: num(d.harmony_cube_tid) || null, level: lv > 0 ? Math.min(15, lv) : 0 },
+      /* 아레나 큐브 세팅. 전투력에는 안 쓰고, 계산기의 큐브 교체 목록(가진 큐브와 레벨)을 채우는 데만 쓴다. */
+      arena_cube: { tid: num(d.arena_harmony_cube_tid) || null, level: alv > 0 ? Math.min(15, alv) : 0 },
       // 화면에는 안 나오지만 전투력에 들어가므로 남긴다.
       collection: collectionOf(d),
       gear: gearOf(d),

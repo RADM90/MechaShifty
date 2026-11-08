@@ -121,6 +121,7 @@ CP = round( ((1) + (2) + (3)) × ((4) + (5)) / 100 )
 | `attractive_lv` | 호감도 레벨 |
 | `skill1_lv` / `skill2_lv` / `ulti_skill_lv` | 스킬1 / 스킬2 / 버스트 |
 | `harmony_cube_lv` | 큐브 레벨 (0 = 미착용) |
+| `arena_harmony_cube_tid` / `_lv` | 아레나 큐브 세팅. 전투력에는 안 쓰고, 계산기 큐브 교체 목록(니케들이 낀 큐브를 모은 것)에만 쓴다. 게임 API 에 큐브 보관함 조회는 없다 |
 | `favorite_item_tid` / `_lv` | 소장품. tid 끝 두 자리 **01=R, 02=SR** (실측 오차 0으로 확정). tid가 `2`로 시작하면 캐릭터 전용 **애장품**(스탯·계수 모두 SR15와 동일) |
 | `{head,torso,arm,leg}_equip_tier` | **9 = 9티어 기업, 10 = 오버로드** |
 | `{...}_equip_lv` | 강화 단계 0~5 |

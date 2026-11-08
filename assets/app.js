@@ -46,6 +46,15 @@ const STR = {
   'cp.grade': ['돌파 / 코강', 'Break / Core', '凸・コア強化'],
   'cp.bond': ['호감도', 'Bond', '好感度'],
   'cp.cube': ['큐브', 'Cube', 'キューブ'],
+  'cp.cubeSwap': ['큐브 변경', 'Change cube', 'キューブ変更'],
+  'cp.cubeEquipped': ['장착', 'Equipped', '装備中'],
+  'cp.cubeNote': [
+    '인게임 큐브 세팅(전투/아레나)에 하나라도 장착되어 있어야 표기됩니다.',
+    'Only cubes equipped on at least one Nikke in your in-game cube setup (Battle/Arena) are listed.',
+    'ゲーム内のキューブ設定（バトル/アリーナ）で1体以上に装備しているキューブのみ表示されます。',
+  ],
+  'cp.cubeNoAccount': ['계정 데이터를 불러오면 가진 큐브가 여기에 나옵니다.', 'Import your account data to list your cubes here.', 'アカウントデータを読み込むと、所持キューブがここに表示されます。'],
+  'cp.cubeNoneOwned': ['장착된 큐브가 없습니다.', 'No equipped cubes found.', '装備中のキューブがありません。'],
   // 큐브 종류는 전투력에 안 들어가지만(레벨만 쓴다) 상태 줄에 이름을 내려면 필요하다
   'cp.collection': ['소장품', 'Collection', 'コレクション'],
   'cp.favorite': ['애장품', 'Favorite item', '宝もの'],
