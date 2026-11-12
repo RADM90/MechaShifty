@@ -128,8 +128,9 @@ Firefox · Safari 는 1-2 를 건너뜁니다. 휴대폰이라면 [2. 북마클�
 1. [blablalink.com](https://www.blablalink.com/) 에 **로그인**합니다.
 2. **로그인한 그 탭을 띄운 채로** 툴바의 Tampermonkey 아이콘을 누릅니다.
 3. 메뉴의 *MechaShifty* 줄 바로 아래에 있는 **내 니케 데이터 내보내기** 를 누릅니다.
-4. 화면 가운데에 MechaShifty 창이 뜨고 수집이 시작됩니다. 니케 수에 따라 몇 초 걸립니다.
-5. 버튼 세 개가 나오면 끝입니다. [3. 계산기로 넘기기](#3-계산기로-넘기기)로 가세요.
+4. 화면 가운데에 MechaShifty 창이 뜨고 서버 버튼이 나옵니다. blablalink 에 연동된 서버(없으면 지난번에 고른 서버)가 미리 골라져 있습니다.
+5. 내 계정이 있는 서버를 확인하고 **확인** 을 누르면 수집이 시작됩니다. 니케 수에 따라 몇 초 걸립니다.
+6. 버튼 세 개가 나오면 끝입니다. [3. 계산기로 넘기기](#3-계산기로-넘기기)로 가세요.
 
 > **메뉴에 그 항목이 없다면** 아래 세 가지를 순서대로 확인하세요.
 > 1. 1-2 의 '사용자 스크립트 허용' 스위치가 켜져 있는지
@@ -154,7 +155,7 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='3bc121136203e47d319dce6d9d2790346d1307f006c1df216d3bf971e3dce9b4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='bfe08cfceb054a8dea802b6ed50223287c19c3cf2a562b60747c9599c43871e4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
@@ -237,7 +238,8 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 | 스크립트 링크를 눌렀더니 코드만 가득한 페이지가 열림 | Tampermonkey 가 꺼져 있거나 1-2 를 안 한 것입니다. 1-2 를 하고 링크를 다시 누르세요 |
 | 아이콘은 보이는데 메뉴가 비어 있음 | 지금 주소가 `www.blablalink.com` 인지, 스크립트가 *사용* 상태인지 |
 | "로그인 상태가 아니거나…" | blablalink 에 로그인했는지, 로그인한 탭에서 실행했는지 |
-| "게임 서버를 찾지 못했습니다" | 계정 연동과 전적 공개 설정. 비공개면 API 가 응답하지 않습니다 |
+| "이 서버에서 게임 계정을 찾지 못했습니다" | 고른 서버, 계정 연동과 전적 공개 설정. 비공개면 API 가 응답하지 않습니다 |
+| 니케 수나 싱크로 레벨이 내 계정과 다름 | 다른 서버의 계정을 읽은 것입니다. 다시 실행해서 서버를 바꿔 고르세요 |
 | "팝업이 차단됐습니다" | 팝업 허용, 또는 JSON 파일로 저장해서 불러오기 |
 | "응답이 없습니다" | 열린 탭에서 **전투력 계산기** 탭이 떠 있어야 합니다. 안 되면 파일로 |
 | 북마클릿이 "배포본과 다릅니다" | 스크립트가 갱신된 것입니다. 위의 한 줄을 다시 복사하세요 |

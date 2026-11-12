@@ -130,8 +130,9 @@ Firefox・Safari は 1-2 を飛ばします。スマホなら [2. ブックマ�
 1. [blablalink.com](https://www.blablalink.com/) に **ログイン** します。
 2. **ログインしたそのタブを開いたまま**、ツールバーの Tampermonkey アイコンを押します。
 3. メニューの *MechaShifty* の行のすぐ下にある **所持ニケデータを書き出す** を押します。
-4. 画面中央に MechaShifty のウィンドウが出て収集が始まります。ニケの数によって数秒かかります。
-5. ボタンが3つ出たら完了です。[3. 計算機へ渡す](#3-計算機へ渡す) へ進んでください。
+4. 画面中央に MechaShifty のウィンドウが出て、サーバーのボタンが並びます。blablalink に連携しているサーバー（無ければ前回選んだサーバー）があらかじめ選ばれています。
+5. 自分のアカウントがあるサーバーか確かめて **確認** を押すと収集が始まります。ニケの数によって数秒かかります。
+6. ボタンが3つ出たら完了です。[3. 計算機へ渡す](#3-計算機へ渡す) へ進んでください。
 
 > **その項目がメニューに無いときは**、次の3つを順に確認してください。
 > 1. 1-2 の「ユーザースクリプトを許可」のスイッチがオンか
@@ -156,7 +157,7 @@ Tampermonkey が使えない環境（社用 PC、一部のスマホブラウザ�
 新しい **ブックマーク（お気に入り）** を作り、**URL** 欄に下の1行をそのまま貼り付けます。名前は任意。
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='3bc121136203e47d319dce6d9d2790346d1307f006c1df216d3bf971e3dce9b4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='bfe08cfceb054a8dea802b6ed50223287c19c3cf2a562b60747c9599c43871e4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink にログインした状態で、このブックマークを押すだけです。
@@ -239,7 +240,8 @@ blablalink にログインした状態で、このブックマークを押すだ
 | スクリプトのリンクを押すとコードだけのページが開く | Tampermonkey がオフか、1-2 が済んでいません。1-2 を済ませてリンクを押し直してください |
 | アイコンは出るがメニューが空 | 今のアドレスが `www.blablalink.com` か、スクリプトが *有効* か |
 | 「ログインしていないか…」 | blablalink にログインしているか、そのタブで実行したか |
-| 「ゲームサーバーが見つかりません」 | アカウント連携と戦績の公開設定。非公開だと API が応答しません |
+| 「このサーバーではゲームアカウントが見つかりません」 | 選んだサーバー、アカウント連携と戦績の公開設定。非公開だと API が応答しません |
+| ニケの数やシンクロレベルが自分のアカウントと違う | 別のサーバーのアカウントを読み取っています。もう一度実行してサーバーを選び直してください |
 | 「ポップアップがブロックされました」 | ポップアップを許可するか、JSONファイルとして保存して読み込む |
 | 「応答がありません」 | 開いたタブが **戦闘力計算機** タブである必要があります。駄目ならファイル経由で |
 | ブックマークレットが「配布物と異なります」 | スクリプトが更新されています。上の1行を貼り直してください |

@@ -18,7 +18,7 @@
  */
 javascript: (async () => {
   const URL_ = 'https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js';
-  const EXPECT = '3bc121136203e47d319dce6d9d2790346d1307f006c1df216d3bf971e3dce9b4';
+  const EXPECT = 'bfe08cfceb054a8dea802b6ed50223287c19c3cf2a562b60747c9599c43871e4';
   const l = (navigator.language || 'en').toLowerCase();
   const M = l.startsWith('ko')
     ? { bad: 'MechaShifty: 스크립트가 저장해 둔 것과 다릅니다.\n실행하지 않았습니다.\nUSER_GUIDE 에서 최신 북마클릿을 다시 복사해 주세요.',

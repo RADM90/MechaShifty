@@ -283,11 +283,11 @@
     "ja": "チャプター別ボス"
    },
    "note": {
-    "ko": "챕터 1~46 보스의 약점 속성과 권장 전투력. 챕터 N 은 캠페인 스테이지 목록의 '지역N' 과 같다. 보스 이름은 한국어·영어 표기만 있다.",
-    "en": "Weak element and recommended CP for the boss of chapters 1-46. Chapter N is the same as 'area N' in the campaign stage list; boss names are given in Korean and English only.",
-    "ja": "チャプター1〜46のボスの弱点属性と推奨戦闘力。チャプターNはキャンペーンステージ一覧の「地域N」に対応する。ボス名は韓国語・英語表記のみ。"
+    "ko": "챕터 1~50 보스의 약점 속성과 권장 전투력. 챕터 N 은 캠페인 스테이지 목록의 '지역N' 과 같다. 보스 이름은 한국어·영어 표기만 있다.",
+    "en": "Weak element and recommended CP for the boss of chapters 1-50. Chapter N is the same as 'area N' in the campaign stage list; boss names are given in Korean and English only.",
+    "ja": "チャプター1〜50のボスの弱点属性と推奨戦闘力。チャプターNはキャンペーンステージ一覧の「地域N」に対応する。ボス名は韓国語・英語表記のみ。"
    },
-   "rows": 46,
+   "rows": 50,
    "columns": 5
   },
   {

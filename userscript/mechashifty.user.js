@@ -3,7 +3,7 @@
 // @name:en      MechaShifty - Export my Nikke roster
 // @name:ja      MechaShifty - 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.6.0
+// @version      1.6.1
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -45,20 +45,23 @@
     return 'en';
   }
 
-  /* 고른 언어는 Tampermonkey 자체 저장소에 둔다. */
-  function loadLang() {
+  /* 고른 언어와 서버는 Tampermonkey 자체 저장소에 둔다. */
+  function loadPref(key) {
     try {
-      const v = typeof GM_getValue === 'function'
-        ? GM_getValue(LANG_KEY, '') : localStorage.getItem(LANG_KEY);
-      return LANGS.includes(v) ? v : null;
+      return typeof GM_getValue === 'function' ? GM_getValue(key, '') : localStorage.getItem(key);
     } catch { return null; }
   }
-  function saveLang(v) {
+  function savePref(key, v) {
     try {
-      if (typeof GM_setValue === 'function') GM_setValue(LANG_KEY, v);
-      else localStorage.setItem(LANG_KEY, v);
+      if (typeof GM_setValue === 'function') GM_setValue(key, v);
+      else localStorage.setItem(key, v);
     } catch { /* 저장 못 해도 이번 실행에는 적용된다 */ }
   }
+  function loadLang() {
+    const v = loadPref(LANG_KEY);
+    return LANGS.includes(v) ? v : null;
+  }
+  const saveLang = v => savePref(LANG_KEY, v);
 
   let lang = loadLang() || detectLang();
 
@@ -76,6 +79,15 @@
 
     stepLogin: ['로그인 계정을 확인하는 중…', 'Checking your login…', 'ログイン中のアカウントを確認しています…'],
     stepArea: ['게임 서버를 찾는 중…', 'Looking for your game server…', 'ゲームサーバーを探しています…'],
+    stepPick: [
+      saved => (saved ? `blablalink 에 연동된 서버는 ${saved} 입니다.\n` : '')
+        + '수집할 서버를 고른 뒤 확인을 누르세요.',
+      saved => (saved ? `Your linked server on blablalink is ${saved}.\n` : '')
+        + 'Pick the server to read, then press Confirm.',
+      saved => (saved ? `blablalink に連携しているサーバーは ${saved} です。\n` : '')
+        + '読み取るサーバーを選んで「確認」を押してください。',
+    ],
+    btnConfirm: ['확인', 'Confirm', '確認'],
     stepFound: [
       (n, area) => `보유 니케 ${n}명 · ${area} 서버`,
       (n, area) => `${n} Nikkes · ${area} server`,
@@ -94,9 +106,9 @@
       'ログインしていないか、アカウント情報を読み取れませんでした。',
     ],
     errArea: [
-      '게임 서버를 찾지 못했습니다. 계정 공개 설정을 확인해 주세요.',
-      'Could not find your game server - check that your account is set to public.',
-      'ゲームサーバーが見つかりません。アカウントの公開設定を確認してください。',
+      '이 서버에서 게임 계정을 찾지 못했습니다. 서버 선택과 계정 공개 설정을 확인해 주세요.',
+      'No game account found on this server - check the server you picked and that your account is set to public.',
+      'このサーバーではゲームアカウントが見つかりません。選んだサーバーとアカウントの公開設定を確認してください。',
     ],
     errScrub: [
       '내보낼 데이터에 계정 식별자가 남아 있어 중단했습니다.',
@@ -180,9 +192,12 @@
   const API_DETAILS = 'https://api.blablalink.com/api/game/proxy/Game/GetUserCharacterDetails';
   const API_OUTPOST = 'https://api.blablalink.com/api/game/proxy/Game/GetUserProfileOutpostInfo';
   const API_BASIC = 'https://api.blablalink.com/api/game/proxy/Game/GetUserProfileBasicInfo';
+  const API_ROLE = 'https://api.blablalink.com/api/game/proxy/Game/GetSavedRoleInfo';
 
-  /* 게임 서버. 어느 서버 계정인지 미리 알 수 없어서 순서대로 찔러 본다. */
-  const AREAS = { 81: 'JP', 82: 'NA', 83: 'KR', 84: 'Global', 85: 'SEA', 86: 'TW' };
+  /* 게임 서버 (blablalink GetRegionList). 81~85 는 글로벌판(game_id 29080), 91 은 별도 클라이언트인 HMT판(29157)이다.
+     SEA 와 HMT 는 다른 서버다. 칩은 이 배열 순서대로 그린다 - 객체 키는 숫자 순으로 돌아 KR 이 JP 뒤로 밀린다. */
+  const AREA_LIST = [[83, 'KR'], [81, 'JP'], [82, 'NA'], [84, 'Global'], [85, 'SEA'], [91, 'HMT']];
+  const AREAS = Object.fromEntries(AREA_LIST);
   const CHUNK = 50;                       // 상세 조회 1회당 캐릭터 수
 
   /* 전초기지 리사이클 룸 연구. */
@@ -224,16 +239,28 @@
     return m ? m[1] : null;
   }
 
-  /* 서버 탐색. 캐릭터 목록 호출을 그대로 재활용한다 - 어차피 다음 단계에서 쓸 응답이고, 특정 니케 번호를 상수로 박아
-     두지 않아도 된다. */
-  async function findArea(openId) {
-    for (const area of Object.keys(AREAS)) {
-      try {
-        const j = await post(API_CHARS, { intl_open_id: openId, nikke_area_id: Number(area) });
-        if (j.code === 0 && j.data && j.data.characters) return { area: Number(area), list: j.data.characters };
-      } catch { /* 다음 서버 */ }
-    }
-    return null;
+  /* blablalink 에 연동해 둔 게임 계정의 서버. Shiftypad 도 이 값으로 서버를 고른다. */
+  async function savedArea() {
+    try {
+      const j = await post(API_ROLE, {});
+      const area = Number(j && j.data && j.data.role_info && j.data.role_info.area_id);
+      return AREAS[area] ? area : null;
+    } catch { return null; }
+  }
+
+  async function charactersIn(openId, area) {
+    try {
+      const j = await post(API_CHARS, { intl_open_id: openId, nikke_area_id: area });
+      return j.code === 0 && j.data && j.data.characters ? j.data.characters : null;
+    } catch { return null; }
+  }
+
+  /* 서버는 사용자가 칩으로 고른다. 예전에는 서버를 순서대로 찔러 첫 응답을 썼는데, 다른 서버의 작은 부계정이나 빈
+     계정이 먼저 응답해 니케 24명 · 싱크로 1 로 읽힌 적이 있다. 연동된 서버나 지난번에 고른 서버를 미리 골라 둔다. */
+  const AREA_KEY = 'mechashifty.area';
+  function loadArea() {
+    const v = Number(loadPref(AREA_KEY));
+    return AREAS[v] ? v : null;
   }
 
   /* 계정 생성 시각. 어느 필드에 들어 있는지 확실하지 않아 응답을 훑어서 이름이 create/regist 계열인 값 중 니케
@@ -386,15 +413,9 @@
   }
 
   // ── 수집 ───────────────────────────────────────────────────
-  async function collect(say) {
-    say('stepLogin');
-    const openId = await myOpenId();
-    if (!openId) throw new Error('errLogin');
-
-    say('stepArea');
-    const found = await findArea(openId);
-    if (!found) throw new Error('errArea');
-    const { area, list } = found;
+  async function collect(say, openId, area) {
+    const list = await charactersIn(openId, area);
+    if (!list) throw new Error('errArea');
 
     const levels = {};
     const codes = [];
@@ -454,6 +475,12 @@
     #ms-export .ms-langs button{width:auto;flex:1;margin:0;padding:5px 6px;font-size:12px;
       font-weight:500;background:#eef0f4;color:#4b5563}
     #ms-export .ms-langs button[aria-pressed="true"]{background:#0f766e;color:#fff;font-weight:700}
+    #ms-export .ms-chips{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+    #ms-export .ms-chips button{margin:0;padding:8px 6px;font-size:13px;font-weight:500;
+      background:#eef0f4;color:#4b5563;border:1px solid transparent}
+    #ms-export .ms-chips button[aria-pressed="true"]{background:#e6f4f2;color:#0f766e;
+      border-color:#0f766e;font-weight:700}
+    #ms-export button:disabled{opacity:.45;cursor:default}
     #ms-export .ms-status{margin:0 0 16px;font-weight:600;min-height:42px;white-space:pre-line}
     #ms-export .ms-note{margin:14px 0 0;font-size:11.5px;color:#6b7280}
     #ms-export button{display:block;width:100%;margin:8px 0 0;padding:11px;border:0;
@@ -534,6 +561,24 @@
         actions.appendChild(b);
         return b;
       },
+      /* 서버 칩. 하나만 고를 수 있고, 고를 때마다 onPick 을 부른다. */
+      chips: (items, picked, onPick) => {
+        const row = document.createElement('div');
+        row.className = 'ms-chips';
+        const btns = items.map(([value, label]) => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = label;
+          b.setAttribute('aria-pressed', String(value === picked));
+          b.onclick = () => {
+            btns.forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+            onPick(value);
+          };
+          row.appendChild(b);
+          return b;
+        });
+        actions.appendChild(row);
+      },
       note: text => { note.textContent = text; note.hidden = false; },
       clear: () => { actions.textContent = ''; },
       /* 결과 화면은 버튼까지 다시 그려야 해서 run() 이 그리는 함수를 넘겨 준다. */
@@ -578,14 +623,52 @@
 
   async function run() {
     const ui = panel();
-    let payload;
+    let openId, saved;
     try {
-      payload = await collect(ui.say);
+      ui.say('stepLogin');
+      openId = await myOpenId();
+      if (!openId) throw new Error('errLogin');
+      ui.say('stepArea');
+      saved = await savedArea();
     } catch (e) {
-      /* collect/scrub 이 던지는 건 STR 키다. */
       ui.bad('failed', e.message);
       return;
     }
+
+    /* 서버를 고르고 확인을 눌러야 수집한다. 언어를 바꾸면 확인 버튼 문구까지 다시 그리도록 함수로 둔다. */
+    let picked = saved || loadArea();
+    const showPicker = () => {
+      ui.clear();
+      let go = null;
+      ui.chips(AREA_LIST, picked, v => {
+        picked = v;
+        go.disabled = false;
+      });
+      go = ui.button(S('btnConfirm'), 'ms-go', () => start());
+      go.disabled = !picked;
+    };
+    const pick = (bad, key, ...args) => {
+      ui.onLang(showPicker);
+      showPicker();
+      (bad ? ui.bad : ui.say)(key, ...args);
+    };
+
+    let payload;
+    const start = async () => {
+      savePref(AREA_KEY, String(picked));
+      ui.onLang(null);
+      ui.clear();
+      try {
+        payload = await collect(ui.say, openId, picked);
+      } catch (e) {
+        /* collect/scrub 이 던지는 건 STR 키다. 서버를 잘못 골랐을 수 있으니 다시 고르게 한다. */
+        pick(true, 'failed', e.message);
+        return;
+      }
+      ui.onLang(showResult);
+      ui.say('done', payload.nikkes.length, payload.account.synchro_level);
+      showResult();
+    };
 
     /* 언어를 바꾸면 버튼 문구까지 다시 그려야 하므로 결과 화면을 함수로 둔다. */
     const showResult = () => {
@@ -603,9 +686,8 @@
       });
       ui.note(S('note'));
     };
-    ui.onLang(showResult);
-    ui.say('done', payload.nikkes.length, payload.account.synchro_level);
-    showResult();
+
+    pick(false, 'stepPick', saved ? AREAS[saved] : '');
   }
 
   /* 유저스크립트로 설치했으면 Tampermonkey 메뉴에 걸고, 북마클릿으로 실행했으면 (메뉴 API 가 없으므로) 바로 연다. */

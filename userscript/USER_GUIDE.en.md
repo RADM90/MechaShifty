@@ -130,8 +130,9 @@ The Tampermonkey menu in this GIF is in Korean. The entry is in the same place i
 1. **Log in** at [blablalink.com](https://www.blablalink.com/).
 2. **With that logged-in tab open**, click the Tampermonkey icon on the toolbar.
 3. Click **Export my Nikke roster**, right below the *MechaShifty* line in the menu.
-4. The MechaShifty window appears in the middle of the page and starts collecting. It takes a few seconds, depending on how many Nikkes you have.
-5. When three buttons appear, it is done. Go to [3. Getting it into the calculator](#3-getting-it-into-the-calculator).
+4. The MechaShifty window appears in the middle of the page with a row of server buttons. The server linked on blablalink (or, failing that, the one you picked last time) is already selected.
+5. Check that it is the server your account is on and press **Confirm** to start collecting. It takes a few seconds, depending on how many Nikkes you have.
+6. When three buttons appear, it is done. Go to [3. Getting it into the calculator](#3-getting-it-into-the-calculator).
 
 > **If that entry is not in the menu**, check these in order:
 > 1. The "Allow User Scripts" switch from 1-2 is on
@@ -156,7 +157,7 @@ For places where Tampermonkey is not an option (work machines, some mobile brows
 Create a new **bookmark** and paste the whole line below into its **URL** field. Any name will do.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='3bc121136203e47d319dce6d9d2790346d1307f006c1df216d3bf971e3dce9b4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='bfe08cfceb054a8dea802b6ed50223287c19c3cf2a562b60747c9599c43871e4',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 Click the bookmark while you are logged in to blablalink.
@@ -243,7 +244,8 @@ already matched.)
 | The script link opens a page full of plain code | Tampermonkey is off, or 1-2 was skipped. Do 1-2 and click the link again |
 | Icon shows but the menu is empty | Whether the current page is `www.blablalink.com`, and whether the script is *Enabled* |
 | "You are not logged in…" | Whether you are logged in to blablalink, and ran it from that tab |
-| "Could not find your game server" | Account linking and public-profile settings. A private account gets no API response |
+| "No game account found on this server" | The server you picked, account linking and public-profile settings. A private account gets no API response |
+| Nikke count or synchro level does not match your account | It read an account on another server. Run it again and pick a different server |
 | "The popup was blocked" | Allow popups, or save a JSON file and import that instead |
 | "No reply" | The tab that opened has to be on the **CP calculator**. Otherwise use the file route |
 | Bookmarklet says it "differs from the release" | The script was updated - copy the line above again |
