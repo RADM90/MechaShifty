@@ -2,14 +2,14 @@
 
    공식의 출처와 검증은 COMBAT_POWER.md 참고.
      스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수 + 장비4부위 + 큐브 + 소장품)
-     CP   = (round(HP×0.7) + round(ATK×19.35) + round(DEF×70)) × ((4)+(5)) / 100
+     CP   = round((floor((HP + DEF×100)×0.7) + floor(ATK×19.35)) × ((3)+(4)) / 100)
 
    시트와 다른 곳이 두 군데 있고, 둘 다 실계정 176명으로 확인했다:
      - 소장품 R0 계수: 시트는 0(미착용과 혼동)이지만 실제로는 skill1+6.33.
      - 레벨 보정: 시트는 전부 상한(cap)이지만 협전·솔레는 고정이라 레벨이 낮아도 지정 레벨로 올린다 (mode). */
 
 export const K = {
-  HP: 0.7, ATK: 19.35, DEF: 70,          // 스탯 -> CP 환산 계수
+  HP: 0.7, ATK: 19.35, DEF_TO_HP: 100,   // 스탯 -> CP 환산 계수 (ATK 19.35 = 18 × (1 + 치명 15% × 치피 50%))
   ELEM_DMG: 0.00828, OTHER_OPT: 0.0069,  // 오버로드 옵션 레벨 계수
   CUBE: 0.0092, COLLECTION: 0.0069,      // 큐브 / 소장품 계수
   PER_BREAK: 0.02, PER_CORE: 0.02,       // 돌파·코강 1단계당
@@ -48,9 +48,11 @@ export function olRows(options) {
   return rows;
 }
 
-/* 장비 등급 - 원본 표에는 티어(T1~T10)뿐이고, '기업' 은 T9 에 붙는 보너스다. */
-export const TIERS = ['9티어_일반', '9티어_기업', '오버로드'];
+/* 장비 등급 (낮은 등급부터). 기업 보너스는 T9 에만 있고, '9티어_기업' 은 장비 기업이 니케 기업과 맞을 때만 쓴다. */
+const LOW_TIERS = ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8'];
+export const TIERS = [...LOW_TIERS, '9티어_일반', '9티어_기업', '오버로드'];
 const TIER_SEED = {
+  ...Object.fromEntries(LOW_TIERS.map(t => [t, [t, false]])),
   '9티어_일반': ['T9', false],
   '9티어_기업': ['T9', true],
   오버로드: ['T10', false],
@@ -150,7 +152,11 @@ export function gradeLabel(key, t) {
   const brk = /^([0-3])돌$/.exec(key);
   return brk ? t('cp.break', brk[1]) : key;
 }
-export const tierLabel = (key, t) => (key ? t('cp.tier_' + key) : '');
+export const tierLabel = (key, t) => {
+  if (!key) return '';
+  const low = /^T([1-8])$/.exec(key);
+  return low ? t('cp.tierN', Number(low[1])) : t('cp.tier_' + key);
+};
 
 /* ── 원본 표 -> 조회용 인덱스 ────────────────────────────────
    data/raw/*.json 은 {columns, rows} 배열 형태라 그대로 쓰면 매번 컬럼을 찾아야 한다. */
@@ -301,7 +307,7 @@ export function compute(T, input, level = input.level) {
 
   /* 반올림 자리가 결과를 가른다.
      기본×돌파계수는 내림 -> 코강계수 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
-     CP 환산은 스탯마다 내림, 마지막에 반올림. */
+     CP 환산은 생존(HP + DEF×100)과 공격(ATK) 두 항을 각각 내림, 마지막에 반올림. */
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
     const inner = Math.floor(base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks);
@@ -314,12 +320,11 @@ export function compute(T, input, level = input.level) {
   // 이 항도 소수 4자리로 끊는다 (안 끊으면 결과가 달라진다)
   const c5 = round(cube.coef * K.CUBE + coll.coef * K.COLLECTION, 4);
 
-  const parts = {
-    hp: Math.floor(stats.hp * K.HP),
-    atk: Math.floor(stats.atk * K.ATK),
-    def: Math.floor(stats.def * K.DEF),
-  };
-  const cp = Math.round((parts.hp + parts.atk + parts.def) * (c4 + c5) / 100);
+  /* HP 와 DEF 는 합친 뒤 한 번만 내린다. 부동소수 0.7 은 10의 배수에서 1 이 빠지므로 정수 분수로 계산한다. */
+  const survive = Math.floor((stats.hp + stats.def * K.DEF_TO_HP) * 7 / 10);
+  const attack = Math.floor(stats.atk * 387 / 20);
+  const parts = { survive, atk: attack, total: survive + attack };
+  const cp = Math.round(parts.total * (c4 + c5) / 100);
 
   return { level, stats, parts, skillCoef, elemDmg, other, c4, c5, cp,
     breaks: grade.breaks, cores: grade.cores };

@@ -3,7 +3,7 @@
 // @name:en      MechaShifty - Export my Nikke roster
 // @name:ja      MechaShifty - 所持ニケデータの書き出し
 // @namespace    https://radm90.github.io/MechaShifty/
-// @version      1.6.1
+// @version      1.7.0
 // @description  Blablalink 로그인 상태에서 내 계정의 니케 데이터를 읽어 MechaShifty 전투력 계산기로 넘깁니다. 외부 코드를 일절 불러오지 않습니다.
 // @description:en Reads your own Nikke roster from Blablalink and hands it to the MechaShifty CP calculator. Loads no external code.
 // @description:ja Blablalink にログインした状態で自分のニケデータを読み取り、MechaShifty 戦闘力計算機に渡します。外部コードは一切読み込みません。
@@ -215,6 +215,9 @@
     '09': '차댐', '10': '차속', '11': '크확', '12': '크댐', '13': '방어',
   };
 
+  /* 장비의 기업 코드 (`_equip_corporation_type`). 리사이클 룸 tid 와 달리 어브노멀이 7 이고, 오버로드(T10)는 항상 0 이다. */
+  const EQUIP_CORP = { 1: 'ELYSION', 2: 'MISSILIS', 3: 'TETRA', 4: 'PILGRIM', 7: 'ABNORMAL' };
+
   /* 게임 API 의 부위 이름 -> 계산기의 슬롯 이름 */
   const SLOTS = [['head', '머리'], ['torso', '몸'], ['arm', '팔'], ['leg', '다리']];
 
@@ -335,7 +338,8 @@
     return { kind: 'none', level: '0' };
   }
 
-  /* 장비 4부위. 등급은 `_equip_tier`(9·10)와 `_equip_corporation_type`(0 이면 비기업) 에서 그대로 읽는다. */
+  /* 장비 4부위. 등급은 `_equip_tier`(1~10)와 `_equip_corporation_type`(0 이면 비기업) 에서 그대로 읽는다.
+     니케 기업은 모르므로 장비 쪽 기업(corp)을 넘기고, 기업 일치 여부는 사이트가 판정한다. */
   function gearOf(d) {
     return SLOTS.map(([api, slot]) => {
       const tid = num(d[`${api}_equip_tid`]);
@@ -351,15 +355,19 @@
       const rank = num(d[`${api}_equip_tier`]);
       const corp = num(d[`${api}_equip_corporation_type`]);
       const tier = rank >= 10 ? '오버로드'
-        : rank === 9 ? (corp ? '9티어_기업' : '9티어_일반') : '';
+        : rank === 9 ? (corp ? '9티어_기업' : '9티어_일반')
+          : rank >= 1 ? `T${rank}` : '';
       if (!tid || !tier) return { slot, tier: '', enhance: 0, options: [] };
-      return {
+      const out = {
         slot,
         tier,
         // 계산기의 강화 단계는 0~5 다.
         enhance: Math.max(0, Math.min(5, num(d[`${api}_equip_lv`]))),
-        options,
+        options: tier === '오버로드' ? options : [],
       };
+      /* 모르는 코드는 어느 니케와도 맞지 않게 그대로 남긴다 (보너스 없음). */
+      if (tier === '9티어_기업') out.corp = EQUIP_CORP[corp] || `C${corp}`;
+      return out;
     });
   }
 

@@ -157,7 +157,7 @@ function marginRows(n, lv) {
     const r = compute(T, { ...n, grade: next.key }, lv);
     return r ? r.cp - base.cp : null;
   };
-  const parts = base.parts.hp + base.parts.atk + base.parts.def;
+  const parts = base.parts.total;
   return {
     brk: bumpGrade('break'), core: bumpGrade('core'),
     공용: bump('공용'), 클래스: bump('클래스'), 기업: bump('기업'),
@@ -417,9 +417,8 @@ function cpBreakdown(r) {
   const tb = el('table', 'grid cp-break');
   const body = el('tbody');
   const rows = [
-    [t('cp.b1'), fmt(r.parts.hp)],
+    [t('cp.b1'), fmt(r.parts.survive)],
     [t('cp.b2'), fmt(r.parts.atk)],
-    [t('cp.b3'), fmt(r.parts.def)],
     [t('cp.b4'), r.c4.toFixed(4)],
     [t('cp.b5'), r.c5.toFixed(4)],
     [t('cp.b6'), fmt(r.cp)],

@@ -9,7 +9,7 @@
    3번은 계정 데이터라 출처(origin)를 확인한다.
    보내는 준비 신호도 대상 origin 을 지정해 blablalink 가 아닌 창에는 가지 않게 한다. */
 
-import { optionLabel, gradeLabel, tierLabel } from './cp.js';
+import { optionLabel, gradeLabel, tierLabel, TIERS as ALL_TIERS } from './cp.js';
 
 const STORE = 'cp.roster';
 const SCHEMA = 'mechashifty.roster/2';
@@ -19,7 +19,9 @@ const MAX_NIKKES = 600;
 
 const SLOTS = ['머리', '몸', '팔', '다리'];
 const GRADE = /^(?:[0-3]돌|[1-7]코강)$/;
-const TIERS = ['', '9티어_일반', '9티어_기업', '오버로드'];
+/* 낮은 등급부터 - 정렬 등수(gearRank)가 이 순서를 쓴다. */
+const TIERS = ['', ...ALL_TIERS];
+const CORPS = ['ELYSION', 'MISSILIS', 'TETRA', 'PILGRIM', 'ABNORMAL'];
 const OPTIONS = ['우코', '공증', '장탄', '크댐', '크확', '차속', '명중', '방어', '차댐'];
 /* 옛 약어 → 지금 약어. */
 export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
@@ -193,12 +195,16 @@ function cleanGear(gear) {
   return SLOTS.map(slot => {
     const g = by.get(slot) || {};
     const tier = TIERS.includes(g.tier) ? g.tier : '';
-    return {
+    const out = {
       slot,
       tier,
       enhance: int(g.enhance, 0, 5, 0),
       options: tier === '오버로드' ? cleanOptions(g.options) : [],
     };
+    /* T9 기업 장비의 장비 쪽 기업. 모르는 코드는 'C<숫자>' 로 와서 어느 니케와도 맞지 않는다. */
+    if (tier === '9티어_기업' && typeof g.corp === 'string'
+      && (CORPS.includes(g.corp) || /^C\d{1,3}$/.test(g.corp))) out.corp = g.corp;
+    return out;
   });
 }
 
@@ -214,6 +220,12 @@ function cleanOptions(options) {
 
 /* ── 계산기 입력으로 ──────────────────────────────────────────
    콘솔(리사이클 룸)은 계정 단위 표로 받아 두고, 니케의 클래스·기업에 맞는 줄만 여기서 골라 넣는다. */
+/* 장비 기업이 니케 기업과 다른 T9 기업 장비를 일반 T9 로 바꾼다. 장비 기업이 없는 옛 자료는 그대로 둔다. */
+export function gearFor(gear, nikke) {
+  return (gear || []).map(g => (g.tier === '9티어_기업' && g.corp && nikke
+    && g.corp !== nikke.corporation ? { ...g, tier: '9티어_일반' } : g));
+}
+
 export function toInput(entry, nikke, research, bondMax) {
   return {
     rid: nikke.rid,
@@ -230,7 +242,7 @@ export function toInput(entry, nikke, research, bondMax) {
       클래스: research.class[nikke.class] || 0,
       기업: research.corporation[nikke.corporation] || 0,
     },
-    gear: entry.gear.map(g => ({ ...g, options: g.options.map(o => ({ ...o })) })),
+    gear: gearFor(entry.gear, nikke).map(g => ({ ...g, options: g.options.map(o => ({ ...o })) })),
   };
 }
 
@@ -650,7 +662,7 @@ export function renderImport(root, ctx) {
         val: r => r.entry && (r.entry.skills.s1 + r.entry.skills.s2 + r.entry.skills.burst) },
       // 2×2 장비 칸 읽는 법은 상시 노출할 내용이 아니라 열 머리 hover 로만
       { key: 'gear', label: t('im.colGear'), title: t('im.gearNote'),
-        val: r => r.entry && gearRank(r.entry.gear) },
+        val: r => r.entry && gearRank(gearFor(r.entry.gear, r.nikke)) },
       { key: 'cube', label: t('im.colCube'), cls: 'num',
         val: r => r.entry && r.entry.cube.level },
       /* 우코·공증이 하나도 없으면 칸은 '-' 지만 정렬로는 0 이다 - 가장 약한 쪽이라 오름차순 맨 앞이 맞다. */
@@ -737,7 +749,7 @@ export function renderImport(root, ctx) {
         tr.appendChild(collCell(r.entry.collection));
         tr.appendChild(bondCell(r.entry.bond));
         tr.appendChild(el('td', 'cp-rSkill', `${sk.s1}/${sk.s2}/${sk.burst}`));
-        tr.appendChild(el('td')).appendChild(gearGrid(r.entry.gear));
+        tr.appendChild(el('td')).appendChild(gearGrid(gearFor(r.entry.gear, r.nikke)));
         tr.appendChild(cubeCell(r.entry.cube));
         tr.appendChild(olAtkCell(r.ol));
         tr.appendChild(el('td', 'num', String(r.entry.level)));
