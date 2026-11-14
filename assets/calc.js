@@ -1,8 +1,5 @@
-/* 보정 전투력 계산기 탭.
-
-   계산은 cp.js 가 하고 여기는 결과 표만 그린다.
-   입력은 불러온 계정(roster.js)에서 온다.
-   원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 - syncro_stat 하나가 500KB 다. */
+/* 보정 전투력 계산기 탭. 계산은 cp.js 가 하고, 여기서는 불러온 계정(roster.js)을 입력으로 결과 표를 그린다.
+   원본 스탯표(data/raw/*.json)와 규칙(data/cp_rules.json)은 탭을 처음 열 때 받는다 (syncro_stat 하나가 500KB). */
 
 import { buildTables, compute, optionLabel, optionFullLabel, tierLabel,
   K, SLOTS, olRows, olTotals, olPct, olLevelCls } from './cp.js';

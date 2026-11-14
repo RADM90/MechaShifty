@@ -1,8 +1,5 @@
-/* 니파고 - 추천 한 건을 만든다 (명세 24.3).
-   worker.js 와 워커를 못 쓰는 환경의 화면 쪽 대체 경로가 같이 쓴다. DOM 없음.
-
-   부위 표는 data/nipago/policies.bin 의 미리 푼 정책을 받아 평가만 한다 (tables.js).
-   첫 계산 때 한 번 받고, 없거나 맞지 않으면 엔진이 직접 푼다. */
+/* 니파고 - 추천 한 건을 만든다 (명세 24.3, DOM 없음). worker.js 와 워커를 못 쓰는 환경의 화면 쪽 대체 경로가 같이 쓴다.
+   부위 표는 첫 계산 때 data/nipago/policies.bin 을 한 번 받아 평가만 하고(tables.js), 없거나 맞지 않으면 엔진이 직접 푼다. */
 
 import { buildData, rulesTag } from './rules.js';
 import { createPlanner, progress, isDone, PREFS, LAMBDAS } from './engine.js';

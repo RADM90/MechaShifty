@@ -1,15 +1,6 @@
-/* 전초기지 탭 - 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량.
-
-   레벨 산식은 워크북 `재화_계산기` 시트에, 시트에 없는 선지급 1스테이지(BONUS_STAGES)를 실측으로 더한 것이다.
-   실계정 덤프(`basic_info.progress_*_campaign`, `outpost_info.outpost_battle_level`)로 맞춰 봤다 (LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 참고).
-
-   전술 아카데미는 항상 최대 레슨(마지막 행) 기준이라 입력이 없다.
-
-   진행도는 손으로 고를 수도 있지만 계산기 탭이 불러 둔 계정 자료(localStorage `cp.roster`)가 있으면 거기서 가져온다.
-   계정 생성 시각과 타워별 클리어 층(`progress_*_tower`)은 기업 타워 카드가 쓴다 (renderTower).
-
-   app.js 와의 결합은 renderOutpost(root, ctx) 한 곳뿐.
-   프로필 응답을 직접 넣는 setProgress() 도 내보내지만 평소에는 위처럼 가져온다. */
+/* 전초기지 탭 - 캠페인 클리어 진행도 → 전초기지 레벨 → 재화 수급량. 레벨 산식은 LEVEL_STEP / SKIP_REGIONS / BONUS_STAGES 에 있다.
+   진행도는 손으로 고르거나, 계산기 탭이 불러 둔 계정 자료(localStorage `cp.roster`)에서 가져온다. 전술 아카데미는 항상 최대 레슨 기준이다.
+   계정 생성 시각과 타워별 클리어 층(`progress_*_tower`)은 기업 타워 카드(renderTower)가 쓴다. */
 
 import { ITEM, itemIcon } from './items.js';
 

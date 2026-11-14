@@ -1,20 +1,6 @@
-/* 니파고 - 경로 추천 엔진 (명세 22~23절).
-   DOM 을 쓰지 않는다. 화면(nipago.js)은 worker.js 를 거쳐 부르고, 검증 스크립트는 직접 import 한다.
-
-   구성
-   1) 부위 하나의 MDP - 목표 옵션 집합 T(최대 3개)를 그 부위에 갖추는 기대 비용을 가치 반복으로 푼다.
-      줄 상태 = 빈칸 / 무효 / 목표 k 의 (단계 구간, 충족 여부) + 영구 잠금.
-      중복 방지 재추첨은 직전 단계의 확률에만 좌우되고, 확률은 구간(1~5·6~10·11~15) 안에서 같으므로
-      이렇게 묶어도 이후 행동·비용·분포·판정이 같다 (23.8).
-   2) 네 부위 배분 - 목표 개수를 부위별 T 로 나누는 경우 중 기대 비용 합이 최소인 것.
-   3) 유지·적용 - 두 전체 상태의 남은 기대 비용을 비교한다 (23.5).
-   (예산 안 완료 확률 - 몬테카를로 - 은 보유 재화 입력과 함께 뺐다.)
-   부위 표는 목표 묶음(가중치·최소 단계)과 λ 만으로 정해진다. tools/nipago_tables.mjs 가 모든 묶음의
-   최선 행동(정책)을 미리 풀어 data/nipago/ 에 싣고, 여기서는 그 정책을 한 번 평가만 한다.
-   파일이 없거나 규칙이 바뀌었으면 가치 반복으로 직접 푼다.
-
-   비용 기준은 M + λK. λ 는 숨은 환율이 아니라 사용자가 고른 재화 우선순위다 (22.6~22.7).
-   어떤 λ 로 풀었든 기대 모듈과 기대 락키는 따로 다시 계산해서 낸다. */
+/* 니파고 - 경로 추천 엔진 (명세 22~23절, DOM 없음). 부위 MDP, 네 부위 배분, 유지·적용 비교(23.5)를 맡고, 비용 기준은 M + λK 다.
+   줄 상태는 빈칸 / 무효 / 목표 k 의 (단계 구간, 충족 여부) + 영구 잠금이다. 재추첨 확률이 구간 안에서 같아 이렇게 묶어도 결과가 같다 (23.8).
+   부위 표는 data/nipago/ 의 미리 푼 정책을 평가만 하고, 파일이 없거나 규칙이 바뀌었으면 가치 반복으로 직접 푼다. */
 
 import { SLOT_P, FIRST_LV, MAX_LV, MAX_PROTECT, tryCost, EFF_OPTS } from './rules.js';
 import { effValue, effProfiles } from './effective.js';
@@ -464,11 +450,8 @@ export function roll(D, piece, kind, protectLines, r) {
 }
 
 /* ── 목표 ──────────────────────────────────────────────── */
-/* goals: { mode: 'opt' | 'lv' | 'tier', items: { [opt]: { count, minLv, lvs?, eff?: { min, model } } } }
-   opt  종류만 - 단계 무관
-   lv   최소 단계 - count 줄 모두 minLv 이상
-   tier 목표 단계 - 줄마다 단계를 따로 (lvs, 길이 count)
-   nikke: { baseAmmo, chargeTime } */
+/* goals: { mode: 'opt' | 'lv' | 'tier', items: { [opt]: { count, minLv, lvs?, eff?: { min, model } } } }, nikke: { baseAmmo, chargeTime }
+   mode: opt 는 종류만, lv 는 count 줄 모두 minLv 이상, tier 는 줄마다 목표 단계(lvs, 길이 count). */
 export function effCfg(opt, g, nikke) {
   const kind = EFF_OPTS[opt];
   if (!kind || !g.eff) return null;

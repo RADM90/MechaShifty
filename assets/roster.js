@@ -1,13 +1,6 @@
-/* 내 계정 - Blablalink 에서 뽑아 온 내 니케 데이터를 계산기에 붙인다.
-
-   수집은 `userscript/mechashifty.user.js`(Tampermonkey) 또는 같은 코드를 해시로 고정한 북마클릿이 한다.
-   여기서는 payload 를 검증해 계산기 입력으로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
-
-   받는 경로는 셋이고 전부 사용자가 시작한다:
-     1) JSON 열기      2) 붙여넣기      3) 수집 스크립트가 연 탭에서 postMessage
-
-   3번은 계정 데이터라 출처(origin)를 확인한다.
-   보내는 준비 신호도 대상 origin 을 지정해 blablalink 가 아닌 창에는 가지 않게 한다. */
+/* 내 계정 - 수집 스크립트(userscript/mechashifty.user.js)가 Blablalink 에서 뽑은 payload 를 검증해 계산기 입력으로 바꾸고, 계정 카드와 보유 니케 목록을 그린다.
+   받는 경로는 JSON 열기, 붙여넣기, 수집 스크립트가 연 탭의 postMessage 셋이고 전부 사용자가 시작한다.
+   postMessage 는 출처(origin)를 확인하고, 준비 신호도 blablalink origin 으로만 보낸다. */
 
 import { optionLabel, gradeLabel, tierLabel, TIERS as ALL_TIERS } from './cp.js';
 
@@ -273,6 +266,9 @@ function cachedRoster() {
   }
   return rosterCache.data;
 }
+/* 아레나 탭이 내 니케 전체를 읽는다. 저장된 자료가 없으면 null. */
+export const currentRoster = () => cachedRoster();
+
 export function rosterGearFor(nikke) {
   if (!nikke || !nikke.name_code) return null;
   const data = cachedRoster();

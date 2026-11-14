@@ -19,10 +19,6 @@
 // @grant        GM_setValue
 // ==/UserScript==
 
-/* ─────────────────────────────────────────────────────────────────────────────
- * 한국어 - 이 스크립트가 하는 일과 하지 않는 일.
- */
-
 (function () {
   'use strict';
 
@@ -31,8 +27,7 @@
   const LANGS = ['ko', 'en', 'ja'];
   const LANG_KEY = 'mechashifty.lang';
 
-  /* 브라우저가 내놓는 언어 목록의 '순서'는 UI 언어와 별개다 - 크롬 설정에서 영어가 한국어보다 위에 있으면 화면이
-     한글이어도 en-US 가 먼저 온다. */
+  /* 브라우저 언어 목록의 순서는 UI 언어와 별개다. 크롬 설정에서 영어가 한국어보다 위에 있으면 화면이 한글이어도 en-US 가 먼저 온다. */
   function detectLang() {
     const want = navigator.languages && navigator.languages.length
       ? navigator.languages : [navigator.language || 'en'];
@@ -68,8 +63,6 @@
   const STR = {
     menu: ['내 니케 데이터 내보내기', 'Export my Nikke roster', '所持ニケデータを書き出す'],
     title: ['MechaShifty 내보내기', 'MechaShifty export', 'MechaShifty 書き出し'],
-    /* 예전 문구는 '닉네임·서버 외의 식별자는 담지 않는다' 였는데, 실제로는 닉네임도 서버도 결과물에 넣지 않는다
-       (entryOf/account 참고). */
     sub: [
       '내 계정의 니케 데이터만 읽습니다. 닉네임·서버·계정 식별자는 담지 않습니다.',
       'Reads only your own roster. Nickname, server and account identifiers are not included.',
@@ -258,16 +251,15 @@
     } catch { return null; }
   }
 
-  /* 서버는 사용자가 칩으로 고른다. 예전에는 서버를 순서대로 찔러 첫 응답을 썼는데, 다른 서버의 작은 부계정이나 빈
-     계정이 먼저 응답해 니케 24명 · 싱크로 1 로 읽힌 적이 있다. 연동된 서버나 지난번에 고른 서버를 미리 골라 둔다. */
+  /* 서버는 사용자가 칩으로 고르고, 연동된 서버나 지난번에 고른 서버를 미리 골라 둔다.
+     첫 응답을 쓰면 다른 서버의 부계정이나 빈 계정을 읽을 수 있으므로 자동으로 고르지 않는다. */
   const AREA_KEY = 'mechashifty.area';
   function loadArea() {
     const v = Number(loadPref(AREA_KEY));
     return AREAS[v] ? v : null;
   }
 
-  /* 계정 생성 시각. 어느 필드에 들어 있는지 확실하지 않아 응답을 훑어서 이름이 create/regist 계열인 값 중 니케
-     서비스 개시(2022-11) 이후의 Unix 시각처럼 보이는 것을 찾는다. */
+  /* 계정 생성 시각. 필드가 정해져 있지 않아, 이름이 create/regist 계열인 값 중 서비스 개시(2022-11) 이후의 Unix 시각을 찾는다. */
   const LAUNCH = 1667000000;                         // 2022-10-29
   function findCreatedAt(obj, depth = 0) {
     if (!obj || typeof obj !== 'object' || depth > 4) return null;
@@ -456,8 +448,7 @@
       account: {
         synchro_level: num(outpost && outpost.synchro_level) || null,
         created_at: basic.created_at || null,           // Unix 초
-        /* 전초기지 탭용. 진행도 두 개로 레벨을 계산하고, 게임이 알려준 outpost_battle_level 과 대조해 어긋나면
-           경고를 띄운다. */
+        /* 전초기지 탭용. 사이트는 진행도 두 개로 레벨을 계산하고, outpost_battle_level 과 다르면 경고를 띄운다. */
         progress_normal_campaign: basic.progress_normal_campaign || null,
         progress_hard_campaign: basic.progress_hard_campaign || null,
         outpost_battle_level: num(outpost && outpost.outpost_battle_level) || null,
@@ -524,8 +515,7 @@
     close.className = 'ms-x';
     close.onclick = () => root.remove();
 
-    /* 언어 버튼. 브라우저가 내놓는 언어 순서가 UI 언어와 다른 경우가 흔해서 (한글 크롬인데 en-US 가 먼저 오는 등)
-       자동 감지만 믿지 않고 직접 고르게 둔다. */
+    /* 언어 버튼. 브라우저 언어 순서가 UI 언어와 다른 경우가 많아 자동 감지와 별개로 직접 고르게 둔다. */
     const langs = document.createElement('div');
     langs.className = 'ms-langs';
     const langBtns = LANGS.map((code, i) => {

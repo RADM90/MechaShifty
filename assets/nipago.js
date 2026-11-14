@@ -1,25 +1,6 @@
-/* 니파고 탭 - 오버로드 옵션작 경로 추천.
-   니케 한 명의 네 부위를 함께 보고, 결과가 나올 때마다 다음 한 번을 다시 계산한다.
-
-   로직은 assets/nipago/ 에 있다 (DOM 없음 - tools/nipago_check.mjs 가 그대로 검증한다).
-     rules.js      게임 규칙·비용·버전, 니케별 차속 분류
-     effective.js  차속·장탄 동일 단계 묶음 반올림
-     engine.js     부위 MDP · 네 부위 배분 · 유지/적용 · 추첨
-     tables.js     미리 푼 부위 정책 파일 (data/nipago/, tools/nipago_tables.mjs 가 만든다)
-     service.js    추천 한 건 조립 - worker.js 가 돌린다
-
-   니케별 권장·종결 옵션은 data/nipago/profiles.json (RefDoc 문서 → tools/nipago_profiles.mjs).
-   니케를 고르거나 계산기에서 넘어오면 그 옵션을 목표로 둘지 묻는다.
-
-   계산은 [계산] 을 눌러야 시작한다. 목표·장비를 고치면 다시 누를 때까지 멈추고,
-   시뮬레이션 진행(실행·유지/적용·취소)은 그 계산을 이어 간다.
-
-   화면: 니케 검색 → 리모컨(탐색 모드·재화 우선순위·재화 소모량) → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
-         → [목표 | 네 부위 · 선택 부위(개조 장비 효과) · 기록]
-
-   흐름 (게임 순서): 부위 선택 → 효과 변경 / 수치 재설정 선택 → 잠금·비용 확인 → 실행(이때 재화 차감)
-                    → 새 결과(미확정) → 효과 유지 / 효과 변경 → 다시 계산.
-   부위는 사용자가 고르고, 지금 볼 곳 하나에 붉은 네온(np-next)을 붙인다. */
+/* 니파고 탭 - 오버로드 옵션작 경로 추천. 니케 한 명의 네 부위를 함께 보고, 결과가 나올 때마다 다음 한 번을 다시 계산한다.
+   DOM 없는 로직은 assets/nipago/ 에 있다 (rules 규칙·비용, effective 실효값, engine MDP·배분, tables 정책 파일, service 추천 조립).
+   계산은 [계산] 을 눌러야 시작하고, 목표·장비를 고치면 멈춘다. 시뮬레이션 진행(실행·유지/적용·취소)은 그 계산을 이어 간다. */
 
 import { optionLabel, optionFullLabel, olRows, SLOTS, olTotals, olPct, olLevelCls, OL_ORDER, olRank } from './cp.js';
 import { rosterGearFor } from './roster.js';
@@ -353,8 +334,8 @@ const olOf = gear => olTotals(olLines(gear), (id, lv) => opt(id)?.vals[lv - 1]);
 /* 데이터를 아직 못 읽었을 때도 쓸 수 있게 - 옵션 확인은 normalize 가 한다 */
 const cleanLineRaw = (name, level) => ({ opt: fixOpt(name), lv: Math.min(15, Math.max(1, +level || FIRST_LV)) });
 
-/* 기본 장탄수·기준 차지 시간 - data/weapons.json (update_data.py 가 전투 원본에서 뽑는다).
-   손으로 고치는 칸은 없앴다 - 니케가 바뀌면 언제나 자료 값으로 맞춘다. 차지 무기가 아니면 차지 시간은 null. */
+/* 기본 장탄수·기준 차지 시간은 data/weapons.json 값을 쓰고, 니케가 바뀌면 언제나 자료 값으로 맞춘다.
+   차지 무기가 아니면 차지 시간은 null 이다. */
 let weapons = null;
 async function loadNikkeStats() {
   const rid = S.nikke.rid;
@@ -369,10 +350,9 @@ async function loadNikkeStats() {
   } catch {}
 }
 
-/* ── 니케별 권장·종결 옵션 ────────────────────────────────────
-   data/nipago/profiles.json - RefDoc/니케별_오버로드_종결옵션_권장옵션_*.md 를 tools/nipago_profiles.mjs 가 읽어 만든다.
+/* ── 니케별 권장·종결 옵션 (data/nipago/profiles.json) ────────
    안(案)마다 줄 수가 정해진 옵션(goals, 범위면 아래쪽 값), 실효 장탄(eff), 고르는 칸 메모(notes)가 있다.
-   적용하면 목표를 그 안으로 바꾼다 - 줄 수만 넣고, 크리·합 N·잔여처럼 고르는 칸은 사람이 정한다. */
+   적용하면 목표를 그 안으로 바꾼다. 줄 수만 넣고, 크리·합 N·잔여처럼 고르는 칸은 사람이 정한다. */
 let PROF = null, profLoading = null;
 function loadProfiles() {
   if (!profLoading) {
@@ -1612,8 +1592,8 @@ function wireOutside() {
   wired = true;
   document.addEventListener('click', e => {
     if (!mounted || !mounted.isConnected) return;
-    /* 줄 편집의 단계 스테퍼처럼 클릭 처리 중에 자기 칸만 다시 그리면 e.target 은 이미 문서에서 떨어져 있어
-       closest() 로는 바깥으로 보인다. 경로는 디스패치 때 정해지므로 composedPath() 로 판단한다. */
+    /* 클릭 처리 중에 자기 칸을 다시 그리면(단계 스테퍼 등) e.target 이 문서에서 떨어져 closest() 로는 바깥으로 보인다.
+       경로는 디스패치 때 정해지므로 composedPath() 로 판단한다. */
     const path = e.composedPath();
     const inside = sel => path.some(n => n instanceof Element && n.matches(sel));
     if (search && !search.list.hidden && !inside('.np-search')) search.close();

@@ -1,19 +1,6 @@
 /* ── 토큰 ──────────────────────────────────────────────────────
-   라이트가 기본, 다크는 data-theme="dark" 로 고른다.
-   다크는 라이트를 반전한 게 아니라 표면마다 따로 고른 스텝이다.
-
-   차트 색은 dataviz 검증기로 확정했다.
-     라이트 · surface #ffffff · 인접쌍 → 전 항목 PASS (최악 normal ΔE 20.8 / CVD ΔE 19.9, 대비 전부 ≥3:1)
-     다크   · surface #0f1e35 · 인접쌍 → 전 항목 PASS (최악 normal ΔE 20.9 / CVD ΔE 17.3)
-   전 쌍 기준으로는 전격↔수냉이 적록색약에서 안 갈리므로 속성 색은 항상 속성 이름과 같이 쓴다.
-
-   ── 크기 배율 ──
-   이 파일의 px 은 전부 1.25 배로 올린 값이다.
-   QHD 100% 에서 본문이 작고 폭(1180px)이 화면 절반도 안 차서, 줌 125% 렌더링을 100% 에서 내도록 폭·글자·여백을 함께 곱했다.
-   기준값은 본문 17.5px, 표 16.5px, 보조 15px, 잔글씨 12.5~14px, 여백 --pad 20px.
-
-   새 규칙도 이 배율 위에서 고른다 (11px 같은 옛 눈금은 그 줄만 작아 보인다).
-   테두리 1px 과 그림자는 배율과 무관하다. */
+   라이트가 기본이고 다크(data-theme="dark")는 표면마다 따로 고른 스텝이다. 전격과 수냉은 적록색약에서 구분되지 않으므로 속성 색은 항상 속성 이름과 같이 쓴다.
+   px 은 전부 1.25 배율 값이다 (본문 17.5px, 표 16.5px, 보조 15px, 잔글씨 12.5~14px, --pad 20px). 새 규칙도 이 배율로 고르고, 테두리 1px 과 그림자는 예외다. */
 :root {
   color-scheme: light;
 
@@ -709,11 +696,8 @@ table.cp-rosterTable thead th { font-size: 13px; white-space: normal; line-heigh
 .cp-rName .ic-ovr { height: 16.5px; margin-left: 4px; }
 .cp-rSkill { font-variant-numeric: tabular-nums; color: var(--ink-2); }
 /* ── 한 칸짜리 배지 ───────────────────────────────────────────
-   돌파(별)·코어강화(원)·소장품(원)·호감도(하트).
-   모양과 색이 종류를, 가운데 숫자가 단계를 나타내고 hover 에 원래 표기를 붙인다.
-
-   숫자는 도형보다 크게 잡아야 14px 표에서 읽히고, 삐져나온 만큼은 도형 색 후광으로 받친다.
-   글자색은 배지마다 --bd-fg 로 고른다 (금색·회색·주황 위에는 어두운 글자, 보라·파랑·빨강 위에는 흰 글자). */
+   돌파(별)·코어강화(원)·소장품(원)·호감도(하트). 모양과 색이 종류를, 가운데 숫자가 단계를 나타내고 hover 에 원래 표기를 붙인다.
+   숫자는 도형보다 크게 잡고 삐져나온 부분은 도형 색 후광으로 받친다. 글자색은 배지마다 --bd-fg 로 고른다. */
 .cp-badge {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   width: 22.5px; height: 22.5px; vertical-align: -5px;
@@ -1077,10 +1061,8 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 
 /* ── 니파고 탭 (오버로드 옵션작 경로 추천) ──────────────────────
-   색은 기존 토큰만 쓴다 - 영구 잠금 = 액센트, 락키 = amber, 목표 충족 = st-good, 미달 = st-warn.
-   옵션 단계 색은 계산기 탭과 같다 (.is-lv12 파랑 · .is-lv15 검정).
-   배치: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
-        → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 오른쪽 아래 플로팅 리모컨. */
+   색은 기존 토큰만 쓴다: 영구 잠금 = 액센트, 락키 = amber, 목표 충족 = st-good, 미달 = st-warn. 옵션 단계 색은 계산기 탭과 같다.
+   배치: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합] → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 오른쪽 아래 플로팅 리모컨. */
 /* 아래 여백은 플로팅 리모컨이 마지막 카드를 가리지 않게 */
 .npwrap { display: grid; gap: 15px; min-width: 0; padding-bottom: 120px; }
 .np-main {
@@ -1406,7 +1388,9 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-manualb.on { background: var(--amber); border-color: var(--amber); color: #fff; }
 .np-manualb:disabled { opacity: .4; }
-.np-pieces { display: grid; grid-template-columns: repeat(auto-fill, minmax(222px, 1fr)); gap: 10px; margin-bottom: 10px; }
+/* 네 부위를 한 줄에 - 좁으면 2열 */
+.np-pieces { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-bottom: 10px; }
+@media (max-width: 760px) { .np-pieces { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .np-piece {
   border: 1px solid var(--line-strong); border-radius: var(--r-s); padding: 8px;
   background: var(--bg-panel); display: grid; gap: 5px; align-content: start; min-width: 0;
@@ -1430,7 +1414,14 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-tline.is-lv12 { background: var(--ol-hi-bg); color: var(--ol-hi); }
 .np-tline.is-lv15 { background: var(--ol-max-bg); color: var(--ol-max-ink); }
 .np-tline .np-lvb { margin-left: auto; }
-.np-tlock { font-size: 11px; }
+.np-tlock {
+  flex: 0 0 24px; height: 22px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1;
+  border: 1px solid var(--line); border-radius: var(--r-s); background: var(--bg-panel);
+}
+.np-tlock-none { opacity: .45; }
+.np-tlock-held { border-color: var(--accent); }
+.np-tlock-new { background: var(--accent); border-color: var(--accent); }
+.np-tlock-key { background: var(--amber); border-color: var(--amber); }
 .np-tfoot { display: grid; gap: 4px; padding: 2px 2px 0; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .np-tgoals, .np-tgchips { display: flex; flex-wrap: wrap; gap: 4px; }
 .np-tcost { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; }
@@ -1770,7 +1761,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 /* 날짜 칸은 필터의 '출시일' 과 같은 .field 이고, 좁은 카드라 입력이 남은 폭을 다 쓴다. */
 .sc-date { margin-bottom: 12.5px; }
 .sc-date input[type="date"] { flex: 1 1 auto; min-width: 0; }
-/* 워크북 시트의 표를 그대로 옮긴 모양 - 등급 3행 · 소계 · 최대 레벨 · 합계 */
+/* 등급 3행 · 소계 · 최대 레벨 · 합계 표 */
 table.sc-tbl { width: 100%; border-collapse: collapse; font-size: 14px; }
 table.sc-tbl th, table.sc-tbl td {
   padding: 4px 5px; text-align: right; border: 1px solid var(--line);
@@ -1853,3 +1844,117 @@ table.sc-tbl .sc-total th, table.sc-tbl .sc-total td {
 }
 .mklink:hover { color: var(--accent); border-color: var(--accent); }
 @media (max-width: 700px) { .mklink { padding: 3.75px 7.5px; font-size: 12.5px; } }
+
+/* ── 아레나 탭 (Draft) ─────────────────────────────────────── */
+.tabs button[data-tab="arena"]::after {
+  content: "Draft"; margin-left: 6px; padding: 1px 6px; border-radius: 999px;
+  font-size: 12.5px; font-weight: 700; color: var(--amber);
+  border: 1px solid currentColor; vertical-align: 1px;
+}
+.ar-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 17.5px; }
+.ar-head h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; font-size: 19px;
+  font-weight: 700; letter-spacing: 0; text-transform: none; color: var(--ink); }
+.ar-draft { padding: 1px 8px; border-radius: 999px; font-size: 13px; font-weight: 700;
+  color: var(--amber); border: 1px solid currentColor; }
+.ar-ctlrow { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.ar-seg { display: inline-flex; flex-wrap: wrap; max-width: 100%; border: 1px solid var(--line-strong); border-radius: var(--r-s); overflow: hidden; }
+.ar-seg button { appearance: none; background: transparent; border: 0; color: var(--ink-muted);
+  font: inherit; font-size: 15px; font-weight: 600; padding: 7.5px 12.5px; cursor: pointer; white-space: nowrap; }
+.ar-seg button + button { border-left: 1px solid var(--line-strong); }
+.ar-seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+.ar-ctlrow .btn-reset:disabled { opacity: .45; cursor: not-allowed; }
+.ar-warn { margin: 12.5px 0 0; font-size: 15px; color: var(--ink-2); }
+.ar-table td, .ar-table th { white-space: nowrap; }
+table.grid.ar-table tbody tr { cursor: default; }
+table.grid.ar-table tbody tr.is-click { cursor: pointer; }
+.ar-table tr.is-on { background: var(--hover); box-shadow: inset 3px 0 0 var(--accent); }
+.ar-table .num { font-variant-numeric: tabular-nums; }
+.ar-names { max-width: 300px; overflow: hidden; text-overflow: ellipsis; color: var(--ink-2); font-size: 15px; }
+.ar-decks { display: grid; grid-template-columns: minmax(0, 1fr); gap: 15px; margin-bottom: 17.5px; }
+.ar-deckHead { display: flex; align-items: center; gap: 8px; margin: 0 0 7.5px; font-size: 16.5px; font-weight: 700; }
+.ar-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.ar-dot.is-me { background: var(--series-1); }
+.ar-dot.is-foe { background: var(--series-2); }
+.ar-slots { font-size: 15px; }
+.ar-nameCell { display: flex; align-items: center; gap: 5px; min-width: 215px; }
+.ar-icons { display: inline-flex; gap: 3px; flex: none; }
+.ar-icons .ic { width: 22px; height: 22px; object-fit: contain; }
+.ar-pick, .ar-pickS, .ar-num { font: inherit; font-size: 14.5px; color: var(--ink); background: var(--bg-raise);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s); padding: 4px 6px; }
+.ar-pick { flex: 1; min-width: 0; max-width: 210px; }
+.ar-num { width: 58px; }
+.ar-num.ar-lv { width: 44px; padding: 4px 3px; text-align: center; }
+.ar-skill, .ar-cube, .ar-coll { white-space: nowrap; }
+.ar-skill .ar-num + .ar-num, .ar-cube .ar-pickS + .ar-pickS, .ar-coll .ar-pickS + .ar-pickS { margin-left: 3px; }
+.ar-ovReset { padding: 2px 7px; font-size: 13px; flex: none; }
+.ar-presetNote { margin: 4px 0 0; }
+.ar-check { display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; font-size: 13.5px; }
+.ar-src { color: var(--ink-muted); font-size: 13.5px; }
+.ar-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 12.5px; }
+.ar-tile { display: flex; flex-direction: column; gap: 2px; padding: 10px 12.5px;
+  background: var(--bg-raise); border-radius: var(--r-s); }
+.ar-tileLbl, .ar-tileSub { font-size: 13.5px; color: var(--ink-muted); }
+.ar-tileVal { font-size: 24px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ar-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 15px; margin-bottom: 6px; font-size: 14.5px; }
+.ar-legItem { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; }
+.ar-legNote { color: var(--ink-muted); font-size: 13.5px; }
+.ar-chart { position: relative; overflow-x: auto; }
+.ar-chart svg { display: block; width: 100%; min-width: 680px; height: auto; touch-action: pan-x pan-y; }
+.ar-grid { stroke: var(--grid); stroke-width: 1; }
+.ar-axis { fill: var(--ink-muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.ar-axisRl { font-size: 11px; }
+.ar-line { fill: none; stroke-width: 2; stroke-linejoin: round; }
+.ar-line.is-me { stroke: var(--series-1); }
+.ar-line.is-foe { stroke: var(--series-2); }
+.ar-mark { stroke: var(--bg-panel); stroke-width: 2; }
+.ar-mark.is-me { fill: var(--series-1); }
+.ar-mark.is-foe { fill: var(--series-2); }
+.ar-tick { stroke-width: 1; stroke-dasharray: 3 3; opacity: .55; }
+.ar-tick.is-me { stroke: var(--series-1); }
+.ar-tick.is-foe { stroke: var(--series-2); }
+.ar-mlabel { fill: var(--ink); font-size: 12px; font-weight: 600; }
+.ar-cursor { stroke: var(--ink-2); stroke-width: 1; }
+.ar-tip { position: absolute; z-index: 2; min-width: 170px; padding: 7.5px 10px; pointer-events: none;
+  background: var(--tip-bg); color: var(--tip-ink); border-radius: var(--r-s); font-size: 14px; box-shadow: var(--shadow); }
+.ar-tip[hidden] { display: none; }
+.ar-tipRow { display: flex; align-items: center; gap: 6px; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.ar-frameBar { display: flex; flex-wrap: wrap; align-items: center; gap: 7.5px 15px; margin: 10px 0 17.5px; font-size: 15px; }
+.ar-sliderLbl { display: flex; align-items: center; gap: 8px; flex: 1 1 320px; color: var(--ink-muted); }
+.ar-slider { flex: 1; accent-color: var(--accent); }
+.ar-readout { font-weight: 700; font-variant-numeric: tabular-nums; }
+.ar-readStat { color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.ar-tables { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.ar-sub { margin: 0 0 7.5px; font-size: 15px; font-weight: 700; color: var(--ink-muted); }
+.ar-notes { margin: 0; padding-left: 20px; font-size: 15px; line-height: 1.6; color: var(--ink-2); }
+@media (max-width: 960px) {
+  .ar-tables { grid-template-columns: minmax(0, 1fr); }
+  .ar-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.ar-tuneRow { margin-top: 10px; }
+.ar-tuneItem { display: inline-flex; align-items: center; gap: 6px; font-size: 14.5px; color: var(--ink-muted); }
+.ar-death { fill: none; stroke-width: 2; stroke-linecap: round; }
+.ar-death.is-me { stroke: var(--series-1); }
+.ar-death.is-foe { stroke: var(--series-2); }
+.ar-teamCell { display: flex; align-items: center; gap: 6px; }
+.ar-deathBox { margin-top: 15px; }
+/* 스킬 발동 타임라인 - 팀은 색, 스킬은 모양(스킬 1 원, 스킬 2 빈 네모, 버스트 마름모)으로 가른다. */
+.ar-tlBox { margin: 12px 0 4px; }
+.ar-tlBox .op-note { margin: 6px 0 0; }
+.ar-tlName { fill: var(--ink-2); font-size: 12px; font-weight: 600; }
+.ar-tlMark { stroke-width: 2; }
+.ar-tlMark.is-me { fill: var(--series-1); stroke: var(--series-1); }
+.ar-tlMark.is-foe { fill: var(--series-2); stroke: var(--series-2); }
+.ar-tlMark.is-s2 { fill: var(--bg-panel); }
+.ar-tlMark.is-burst { stroke: var(--bg-panel); stroke-width: 1.5; }
+.ar-tlRun { stroke-width: 2; opacity: .6; }
+.ar-tlRun.is-me { stroke: var(--series-1); }
+.ar-tlRun.is-foe { stroke: var(--series-2); }
+.ar-tlDur { opacity: .3; }
+.ar-tlDur.is-me { fill: var(--series-1); }
+.ar-tlDur.is-foe { fill: var(--series-2); }
+.ar-tlDur.is-mode { opacity: .6; }
+.ar-tlDead { fill: var(--bg-panel); opacity: .7; }
+.ar-timeline .ar-tip { max-width: 320px; }
+.ar-tipHead { margin-top: 6px; font-size: 12.5px; font-weight: 700; opacity: .75; }
+.ar-linkAtk { margin-left: 5px; color: var(--ink-muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.ar-linkReset { margin-left: 8px; padding: 2px 8px; font-size: 13px; font-weight: 400; }

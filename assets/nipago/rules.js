@@ -1,8 +1,5 @@
-/* 니파고 - 게임 규칙과 버전.
-   DOM 을 쓰지 않는다 (tools/nipago_check.mjs 가 node 에서 그대로 읽는다).
-
-   옵션 가중치·단계별 수치·단계 확률은 data/raw/equip_option·equip_glossary 에서 읽고,
-   데이터에 없는 공식 수치만 여기 둔다. 근거는 NIPAGO_REROLL.md. */
+/* 니파고 - 게임 규칙과 버전 (DOM 없음). 근거는 NIPAGO_REROLL.md.
+   옵션 가중치·단계별 수치·단계 확률은 data/raw/equip_option·equip_glossary 에서 읽고, 데이터에 없는 공식 수치만 여기 둔다. */
 
 /* 규칙 계층별 버전 (명세 25.1) - 계산 결과와 기록에 붙는다. */
 export const RULES_VERSION = {
@@ -34,9 +31,8 @@ export const fixOpt = id => OPTION_ALIAS[id] || id;
 /* 실효값을 따로 계산하는 옵션 */
 export const EFF_OPTS = { 차속: 'charge', 장탄: 'ammo' };
 
-/* 1회 실행 비용.
-   protect: [{ mat: 'perm' | 'key', fresh: bool }] - fresh 는 이번에 새로 거는 잠금.
-   잠금 비용은 보호 줄 수에 따라 첫 줄 / 둘째 줄로 갈린다. 이미 지불한 영구 잠금은 다시 세지 않는다.
+/* 1회 실행 비용. protect: [{ mat: 'perm' | 'key', fresh: bool }], fresh 는 이번에 새로 거는 잠금이다.
+   잠금 비용은 보호 줄 수에 따라 첫 줄 / 둘째 줄로 갈리고, 이미 지불한 영구 잠금은 다시 세지 않는다.
    새 영구와 락키를 함께 걸면 어느 쪽이 첫 줄 값인지 공지에 없어 싼 쪽으로 계산하고 estimated 를 켠다. */
 export function tryCost(protect, lambda = 0.1) {
   const held = protect.filter(p => !p.fresh).length;

@@ -37,6 +37,7 @@ const STR = {
   'tab.pickups': ['픽업일정', 'Banners', 'ピックアップ'],
   'tab.stats': ['통계', 'Stats', '統計'],
   'tab.calc': ['전투력 계산기', 'CP calculator', '戦闘力計算機'],
+  'tab.arena': ['아레나', 'Arena', 'アリーナ'],
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オバロ厳選'],
   'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体'],
@@ -64,8 +65,8 @@ const STR = {
   'cp.tier_오버로드': ['오버로드', 'Overload', 'オーバーロード'],
   'cp.tier_9티어_기업': ['9티어 기업', 'Tier 9 (mfr.)', 'T9企業'],
   'cp.tier_9티어_일반': ['9티어 일반', 'Tier 9 (plain)', 'T9通常'],
-  'cp.none': ['미착용', 'None', '未装着'],
   'cp.tierN': [n => `${n}티어`, n => `Tier ${n}`, n => `T${n}`],
+  'cp.none': ['미착용', 'None', '未装着'],
   'cp.consoleOf': [
     n => `${n} 연구 레벨`,
     n => `${n} research level`,
@@ -257,6 +258,203 @@ const STR = {
       + 'Pink is overload, filled orange is tier-9 manufacturer, outlined orange is plain tier-9.',
     '装備欄は上段が頭・胴、下段が腕・足で、数字は強化段階です。ピンクがオーバーロード、'
       + '塗りつぶしのオレンジがT9企業装備、枠線だけのオレンジが通常T9です。',
+  ],
+
+  /* 아레나 탭 (arena.js 에서 ctx.t 로 받아 쓴다) */
+  'ar.loading': ['아레나 자료를 불러오는 중…', 'Loading arena data…', 'アリーナデータを読み込み中…'],
+  'ar.title': ['아레나 버스트 타이밍 비교', 'Arena burst timing', 'アリーナのバースト速度比較'],
+  'ar.lead': [
+    '내 니케 스펙으로 덱을 짜고 상대 덱과 게이지가 차는 시점을 프레임 단위로 비교합니다. 상대 스펙은 알 수 없으므로 난이도를 골라 가정합니다. 아직 초안이라 수치는 참고용입니다.',
+    'Build decks from your Nikkes and compare, frame by frame, when each side fills its burst gauge. Opponent specs are unknown, so pick a level to assume them. This is an early draft, so treat the numbers as a guide.',
+    '手持ちのニケで編成し、相手とのバーストゲージの溜まり方をフレーム単位で比べます。相手のスペックは分からないため、強さを選んで仮定します。試作版のため数値は目安です。',
+  ],
+  'ar.modeLabel': ['아레나 종류', 'Arena type', 'アリーナの種類'],
+  'ar.mode.rookie': ['루키 아레나 (1덱)', 'Rookie Arena (1 deck)', 'ルーキーアリーナ (1編成)'],
+  'ar.mode.special': ['스페셜 아레나 (3덱)', 'Special Arena (3 decks)', 'スペシャルアリーナ (3編成)'],
+  'ar.mode.champion': ['챔피언 아레나 (5덱)', 'Champion Arena (5 decks)', 'チャンピオンアリーナ (5編成)'],
+  'ar.sideLabel': ['내 진영', 'My side', '自分の陣営'],
+  'ar.attack': ['공격', 'Attack', '攻撃'],
+  'ar.defense': ['방어', 'Defense', '防衛'],
+  'ar.unitLabel': ['시간 단위', 'Time unit', '時間の単位'],
+  'ar.unitSec': ['초', 'Seconds', '秒'],
+  'ar.unitFrame': ['프레임', 'Frames', 'フレーム'],
+  'ar.sec': [v => `${v}초`, v => `${v}s`, v => `${v}秒`],
+  'ar.frame': [v => `${v}f`, v => `${v}f`, v => `${v}f`],
+  'ar.auto': ['내 덱 자동 편성', 'Auto-build my decks', '自動編成'],
+  'ar.autoHint': [
+    '버스트 속도만 보고 고릅니다. 대미지와 생존은 고려하지 않으며, 투자한 니케를 먼저 씁니다.',
+    'Picks by burst speed only, ignoring damage and survival. Invested Nikkes come first.',
+    'バースト速度だけで選びます。火力と耐久は見ず、育成済みのニケを優先します。',
+  ],
+  'ar.copyFoe': ['내 덱을 상대로 복사', 'Copy my decks to opponent', '自分の編成を相手へコピー'],
+  'ar.tuneDamage': ['전체 대미지 보정', 'Damage scale', '全体ダメージ補正'],
+  'ar.presetLabel': ['상대 난이도', 'Opponent level', '相手の強さ'],
+  'ar.preset.basic': ['기본', 'Basic', '基本'],
+  'ar.preset.mirror': ['거울상', 'Mirror', 'ミラー'],
+  'ar.preset.pressure': ['실압근', 'Seasoned', '実戦級'],
+  'ar.preset.heavy': ['헤비급', 'Heavyweight', 'ヘビー級'],
+  'ar.preset.gorilla': ['메카고릴라', 'Mecha Gorilla', 'メカゴリラ'],
+  'ar.presetNote.basic': [
+    '스펙 없이 덱 구성만으로 계산합니다 (돌파·장비·옵션·큐브·소장품 없음, 스킬 10레벨).',
+    'Uses the lineup only, with no specs (no limit break, gear, options, cube or collection; skills at level 10).',
+    'スペックなしで編成だけで計算します (限界突破・装備・オプション・キューブ・コレクションなし、スキルLv.10)。',
+  ],
+  'ar.presetNote.mirror': [
+    '상대 니케를 내 계정의 같은 니케 스펙으로 계산합니다. 내가 키우지 않은 니케는 내 같은 클래스·무기 니케들의 평균 육성을 씁니다.',
+    'Gives each opponent Nikke the same specs as yours. Nikkes you have not built use the average of your Nikkes with the same class and weapon.',
+    '相手のニケを自分のアカウントの同じニケのスペックで計算します。育成していないニケは、同じクラス・武器のニケの平均育成を使います。',
+  ],
+  'ar.presetNote.pressure': [
+    '1군 니케: 4코강, 스킬 10/10/10, 오버로드 5/5/5/0, 옵션 11레벨. 나머지: 3돌, 스킬 7/7/7, 오버로드 4/1/3/0, 옵션 5레벨. 공통: 호감도 30(필그림 40), 소장품 SR 15(애장품이 기본인 니케는 애장품 2단계), 재장전 큐브 15레벨.',
+    'Top-tier Nikkes: core +4, skills 10/10/10, Overload gear 5/5/5/0, options at level 11. Others: limit break 3, skills 7/7/7, gear 4/1/3/0, options at level 5. All: bond 30 (Pilgrim 40), SR collection 15 (Favorite Item phase 2 for Nikkes usually run with it), Reload cube level 15.',
+    '主力ニケ: コア強化4、スキル10/10/10、オーバーロード5/5/5/0、オプションLv.11。その他: 限界突破3、スキル7/7/7、4/1/3/0、オプションLv.5。共通: 好感度30 (ピルグリム40)、コレクションSR 15 (宝ものが基本のニケは宝もの2段階)、リロードキューブLv.15。',
+  ],
+  'ar.presetNote.heavy': [
+    '1군 니케 7코강, 나머지 3코강. 전원 스킬 10/10/10, 오버로드 5/5/5/5, 옵션 11레벨, 호감도 30(필그림 40), 소장품 SR 15(애장품이 기본인 니케는 애장품 2단계). 큐브는 RL·SR 차지 속도 15레벨, 그 밖 재장전 15레벨.',
+    'Top-tier Nikkes core +7, others core +3. Everyone: skills 10/10/10, Overload gear 5/5/5/5, options at level 11, bond 30 (Pilgrim 40), SR collection 15 (Favorite Item phase 2 where usual). Cube: Charge Speed level 15 for RL and SR, Reload level 15 for the rest.',
+    '主力ニケはコア強化7、その他はコア強化3。全員: スキル10/10/10、オーバーロード5/5/5/5、オプションLv.11、好感度30 (ピルグリム40)、コレクションSR 15 (宝ものが基本のニケは宝もの2段階)。キューブはRL・SRがチャージ速度Lv.15、その他はリロードLv.15。',
+  ],
+  'ar.presetNote.gorilla': [
+    '전원 7코강, 스킬 10/10/10, 오버로드 5/5/5/5, 옵션 15레벨, 호감도 30(필그림 40), 소장품 SR 15(애장품이 기본인 니케는 애장품 2단계). 큐브는 RL·SR 차지 속도 15레벨, 그 밖 재장전 15레벨.',
+    'Everyone: core +7, skills 10/10/10, Overload gear 5/5/5/5, options at level 15, bond 30 (Pilgrim 40), SR collection 15 (Favorite Item phase 2 where usual). Cube: Charge Speed level 15 for RL and SR, Reload level 15 for the rest.',
+    '全員: コア強化7、スキル10/10/10、オーバーロード5/5/5/5、オプションLv.15、好感度30 (ピルグリム40)、コレクションSR 15 (宝ものが基本のニケは宝もの2段階)。キューブはRL・SRがチャージ速度Lv.15、その他はリロードLv.15。',
+  ],
+  'ar.presetOptions': [
+    '옵션 12줄: 기본 우코 4 · 공증 4 · 장탄 4, 차지 속도가 핵심인 니케는 우코 4 · 차속 4 · 공증 2 · 장탄 2, 크리티컬이 핵심인 니케는 우코 4 · 공증 4 · 크댐 4 (또는 크댐 3에 장탄 1이나 크확 1). 칸마다 차지 속도, 스킬, 큐브, 소장품을 바꿀 수 있습니다.',
+    '12 option lines: by default Elem.DMG 4 · ATK 4 · Ammo 4; Nikkes built around charge speed get Elem.DMG 4 · Chg.Speed 4 · ATK 2 · Ammo 2; Nikkes built around crits get Elem.DMG 4 · ATK 4 · Crit.DMG 4 (or Crit.DMG 3 + one Ammo or Crit.Rate). Each slot lets you change charge speed, skills, cube and collection.',
+    'オプション12行: 基本は有利コード4 · 攻撃力4 · 装弾数4、チャージ速度が要のニケは有利コード4 · チャージ速度4 · 攻撃力2 · 装弾数2、クリティカルが要のニケは有利コード4 · 攻撃力4 · クリダメ4 (またはクリダメ3 + 装弾数かクリ率1)。各枠でチャージ速度・スキル・キューブ・コレクションを変更できます。',
+  ],
+  'ar.colSkill': ['스킬', 'Skills', 'スキル'],
+  'ar.colColl': ['소장품', 'Collection', 'コレクション'],
+  'ar.collNone': ['없음', 'None', 'なし'],
+  'ar.cubeLv': [n => `${n}레벨`, n => `Lv.${n}`, n => `Lv.${n}`],
+  'ar.ovReset': ['난이도 값으로', 'Back to level', '強さの値に戻す'],
+  'ar.ovResetHint': ['이 칸에서 바꾼 값을 지우고 고른 난이도의 값으로 되돌립니다.', 'Clears this slot’s changes and goes back to the chosen level’s values.', 'この枠で変えた値を消し、選んだ強さの値に戻します。'],
+  'ar.colHp': ['시점 체력', 'HP at time', '時点のHP'],
+  'ar.colTeam': ['진영', 'Side', '陣営'],
+  'ar.dead': ['쓰러짐', 'Down', '戦闘不能'],
+  'ar.deaths': ['사망 기록', 'Knockouts', '戦闘不能の記録'],
+  'ar.noDeath': ['15초 안에 쓰러지는 니케가 없습니다.', 'No Nikke goes down within 15s.', '15秒以内に戦闘不能になるニケはいません。'],
+  'ar.deathOf': [n => `${n} 쓰러짐`, n => `${n} down`, n => `${n} 戦闘不能`],
+  'ar.timeline': ['스킬 발동', 'Skill activations', 'スキル発動'],
+  'ar.timelineLabel': ['니케별 스킬 발동 시점', 'Skill activation timing by Nikke', 'ニケ別のスキル発動タイミング'],
+  'ar.timelineNote': ['일반 스킬은 원문에서 읽어 낸 발동 조건만 보입니다. 조건을 못 읽은 스킬은 빠집니다. 막대는 버프·디버프·무기 변경이 이어지는 시간입니다.',
+    'Only skills whose trigger could be read from the skill text are shown. Bars show how long buffs, debuffs and weapon changes last.',
+    'スキル文から発動条件を読み取れたスキルだけを表示します。バーはバフ・デバフ・武器変更の持続時間です。'],
+  'ar.skill.s1': ['스킬 1', 'Skill 1', 'スキル1'],
+  'ar.skill.s2': ['스킬 2', 'Skill 2', 'スキル2'],
+  'ar.skill.burst': ['버스트', 'Burst', 'バースト'],
+  'ar.lgDuration': ['지속', 'Duration', '持続'],
+  'ar.fx.damage': ['대미지', 'Damage', 'ダメージ'],
+  'ar.fx.buff': ['버프', 'Buff', 'バフ'],
+  'ar.fx.debuff': ['디버프', 'Debuff', 'デバフ'],
+  'ar.fx.heal': ['회복', 'Heal', '回復'],
+  'ar.fx.shield': ['보호막', 'Shield', 'バリア'],
+  'ar.fx.control': ['제어', 'Control', '制御'],
+  'ar.fx.gauge': ['게이지 충전', 'Gauge charge', 'ゲージ充填'],
+  'ar.fx.mode': ['무기 변경', 'Weapon change', '武器変更'],
+  'ar.tlNear': ['발동', 'Activated', '発動'],
+  'ar.tlActive': ['이어지는 효과', 'Active effects', '持続中の効果'],
+  'ar.tlTimes': [n => `${n}회`, n => `×${n}`, n => `${n}回`],
+  'ar.tlUntil': [s => `${s}까지`, s => `until ${s}`, s => `${s}まで`],
+  'ar.tlForever': ['끝까지 지속', 'lasts to the end', '最後まで持続'],
+  'ar.tlNone': ['이 시점에 발동하거나 이어지는 스킬이 없습니다.', 'No skill fires or lasts at this moment.', 'この時点で発動中・持続中のスキルはありません。'],
+  'ar.link': ['링크', 'Link', 'リンク'],
+  'ar.linkHint': [
+    '자칼 링크 대상입니다. 아레나 최종 공격력이 높은 순으로 자동 선택하며, 챔피언 아레나는 400레벨로 계산합니다. 직접 바꿀 수도 있습니다.',
+    'Jackal Link target. Picked automatically by highest Arena final ATK, using level 400 in Champion Arena. You can change it by hand.',
+    'ジャッカルのリンク対象です。アリーナの最終攻撃力が高い順に自動で選び、チャンピオンアリーナはレベル400で計算します。手動でも変更できます。',
+  ],
+  'ar.linkAuto': ['링크 자동 계산', 'Auto-pick Link', 'リンク自動計算'],
+  'ar.atk': [n => `최종 공격력 ${n}`, n => `Final ATK ${n}`, n => `最終攻撃力 ${n}`],
+  'ar.resetDecks': ['덱 비우기', 'Clear decks', '編成をクリア'],
+  'ar.noRoster': [
+    '불러온 계정 자료가 없어 모든 니케를 기본 스펙으로 표시합니다.',
+    'No account data loaded, so every Nikke uses default specs.',
+    'アカウント資料がないため、全ニケを初期スペックで表示します。',
+  ],
+  'ar.toCalc': ['계정 불러오기', 'Import account', 'アカウント読み込み'],
+  'ar.summary': ['대전 요약', 'Match summary', '対戦の概要'],
+  'ar.colDeck': ['덱', 'Deck', '編成'],
+  'ar.colMyDeck': ['내 편성', 'My lineup', '自分の編成'],
+  'ar.colMe': ['내 풀 버스트', 'My Full Burst', '自分のフルバースト'],
+  'ar.colFoeDeck': ['상대 편성', 'Opponent lineup', '相手の編成'],
+  'ar.colFoe': ['상대 풀 버스트', 'Opponent Full Burst', '相手のフルバースト'],
+  'ar.colDiff': ['차이', 'Gap', '差'],
+  'ar.colVerdict': ['판정', 'Result', '判定'],
+  'ar.vMe': ['내가 먼저', 'I burst first', '自分が先'],
+  'ar.vFoe': ['상대가 먼저', 'Opponent first', '相手が先'],
+  'ar.vTie': ['동시', 'Same frame', '同時'],
+  'ar.vNone': ['둘 다 불가', 'Neither bursts', '両方不可'],
+  'ar.emptyDeck': ['편성 없음', 'Empty', '未編成'],
+  'ar.emptySlot': ['비어 있음', 'Empty', '空き'],
+  'ar.noChain': ['체인 불가', 'No chain', 'チェーン不可'],
+  'ar.notFull': ['15초 내 미달', 'Not within 15s', '15秒以内に未達'],
+  'ar.me': ['내 덱', 'My deck', '自分'],
+  'ar.foe': ['상대 덱', 'Opponent', '相手'],
+  'ar.meShort': ['나', 'Me', '自分'],
+  'ar.foeShort': ['상대', 'Opp', '相手'],
+  'ar.step': [n => `${n}단계 버스트`, n => `Burst ${n}`, n => `バースト${n}`],
+  'ar.stepAll': ['전 단계 버스트', 'All bursts', '全段階バースト'],
+  'ar.colSlot': ['자리', 'Slot', '位置'],
+  'ar.colNikke': ['니케', 'Nikke', 'ニケ'],
+  'ar.colCharge': ['차지 속도', 'Charge speed', 'チャージ速度'],
+  'ar.colCube': ['큐브', 'Cube', 'キューブ'],
+  'ar.colGain': ['시점 충전량', 'Gauge at time', '時点の充填量'],
+  'ar.colSource': ['규칙 근거', 'Rule source', '根拠'],
+  'ar.noCube': ['없음', 'None', 'なし'],
+  'ar.treasure': ['애장품', 'Favorite item', '宝もの'],
+  'ar.srcMeasured': ['영상 실측', 'Measured', '実測'],
+  'ar.srcSite': ['표 대조', 'Table fit', '表と照合'],
+  'ar.srcEstimate': ['스킬 추정', 'Estimated', '推定'],
+  'ar.srcBase': ['기본 공식', 'Base formula', '基本式'],
+  'ar.chartLabel': ['시간에 따른 양 팀의 버스트 게이지', 'Burst gauge over time for both teams', '両チームのバーストゲージ推移'],
+  'ar.legendNote': ['B1~B3은 버스트 시점, 맨 끝 표시는 풀 버스트입니다.', 'B1 to B3 mark each burst; the last mark is Full Burst.', 'B1〜B3は各バースト、最後の印がフルバーストです。'],
+  'ar.burstN': [n => `${n}번째 버스트`, n => `Burst ${n}`, n => `${n}回目のバースト`],
+  'ar.fullBurst': ['풀 버스트', 'Full Burst', 'フルバースト'],
+  'ar.gaugeFull': ['게이지 100', 'Gauge 100', 'ゲージ100'],
+  'ar.matchTitle': [n => `덱 ${n} 분석`, n => `Deck ${n} analysis`, n => `編成${n}の分析`],
+  'ar.tileMe': ['내 풀 버스트', 'My Full Burst', '自分のフルバースト'],
+  'ar.tileFoe': ['상대 풀 버스트', 'Opponent Full Burst', '相手のフルバースト'],
+  'ar.tileDiff': ['차이', 'Gap', '差'],
+  'ar.tileVerdict': ['판정', 'Result', '判定'],
+  'ar.pickFrame': ['시점 선택', 'Pick a moment', '時点を選択'],
+  'ar.burstOrder': ['버스트 순서', 'Burst order', 'バースト順'],
+  'ar.checkpoints': ['시점별 게이지', 'Gauge by checkpoint', '時点別ゲージ'],
+  'ar.colStage': ['단계', 'Stage', '段階'],
+  'ar.colFrame': ['시점', 'Time', '時点'],
+  'ar.colPoint': ['기준', 'Mark', '基準'],
+  'ar.colGap': ['차이', 'Gap', '差'],
+  'ar.notes': ['계산 기준과 한계', 'Assumptions and limits', '計算の前提と限界'],
+  'ar.note1': [
+    '60프레임 기준이고 1RL은 76프레임입니다. 게이지가 100이 되면 25프레임 뒤 1번째 버스트, 이후 32프레임마다 다음 버스트로 계산합니다. 컷신을 끈 챔피언 아레나 영상에서 잰 값입니다.',
+    'Runs at 60 frames per second, with 1RL at 76 frames. The first burst comes 25 frames after gauge 100, then one every 32 frames. These were measured from Champion Arena videos with cutscenes turned off.',
+    '60フレーム基準で1RLは76フレームです。ゲージ100の25フレーム後に1回目のバースト、以降32フレームごとに次のバーストとして計算します。カットシーンをオフにしたチャンピオンアリーナの動画から測った値です。',
+  ],
+  'ar.note2': [
+    '내 니케는 불러온 계정의 오버로드 차지 속도·최대 장탄 수 옵션, 아레나 큐브, 스킬 레벨을 반영합니다. 상대는 칸마다 직접 입력합니다.',
+    'My Nikkes use the overload Charge Speed and Max Ammo options, Arena cube, and skill levels from your account. Enter opponent specs per slot.',
+    '自分のニケはアカウントのオーバーロードのチャージ速度・装弾数、アリーナキューブ、スキルレベルを反映します。相手は枠ごとに入力します。',
+  ],
+  'ar.note3': [
+    '자칼 반격은 본인과 링크 대상이 맞은 10회마다, 홍련 반격은 확률 기댓값으로 충전합니다. 링크 대상은 전투 시작 시점의 최종 공격력 순이고, 오버로드 옵션과 자기 공격력 버프를 포함합니다. 내 니케는 계정 스펙으로 현재 레벨(챔피언 아레나는 400레벨), 상대는 같은 레벨의 맨몸 값입니다. 아니스 : 스타와 차임의 편성 조건 버프는 뺐습니다. 맞는 자리는 SR이 P5, RL이 P1부터, SG를 포함한 나머지가 P1입니다. 레드 후드의 관통 추가 충전은 첫 2발에만 넣습니다.',
+    'Jackal charges every 10 hits taken by her or her linked allies, and Scarlet by the expected value of her counter chance. Link targets go by final ATK at battle start, including overload options and self ATK buffs: my Nikkes use account specs at current level (level 400 in Champion Arena), opponents use bare stats at the same level. Lineup-dependent buffs from Anis: Star and Chime are left out. SRs hit P5, RLs hit from P1, and everything else including SGs hits P1. Red Hood gets her extra piercing charge on the first 2 shots only.',
+    'ジャッカルは本人とリンク対象の被弾10回ごと、紅蓮は反撃確率の期待値で充填します。リンク対象は戦闘開始時の最終攻撃力順で、オーバーロードのオプションと自己バフを含みます。自分のニケはアカウントのスペックで現在レベル（チャンピオンアリーナはレベル400）、相手は同じレベルの素の値です。アニス：スターとチャイムの編成条件バフは含みません。狙う位置はSRがP5、RLがP1から、SGを含むその他がP1です。レッドフードの貫通による追加充填は最初の2発のみ計算します。',
+  ],
+  'ar.note4': [
+    '사이트 표와 대조하면 니케 227건 중 186건이 5% 이내로 맞습니다. 머신건은 사이트 값 대신 사격장 영상으로 확인한 연사 공식을 쓰고, iDoll 썬과 아이기스는 CDN 값을 씁니다. 탄창이 작은 AR도 재장전을 넣어 차이가 납니다.',
+    'Checked against the community table, 186 of 227 entries land within 5%. Machine guns use a fire-rate formula confirmed on shooting range videos instead of the table, iDoll Sun and Aigis use game data, and small-magazine ARs differ because reloads are included.',
+    'コミュニティの表と照合すると227件中186件が5%以内です。MGは表ではなく射撃場の動画で確認した連射式を使い、iDoll サンとアイギスはゲームデータを使います。弾数の少ないARはリロードを含むため差が出ます。',
+  ],
+  'ar.note6': [
+    '대미지 계산은 초안입니다. 버스트와 일반 스킬의 대미지·버프, 무기 변경, 지속 대미지, 회복, 보호막, 엄폐물을 넣었습니다. 영상 3개의 니케별 대미지와 비교하면 절반쯤이 실제의 2배 이내이고, 사망 시점은 평균 2초 넘게 어긋납니다. 상대 스펙을 모르면 승패 예측으로 쓰기 어렵습니다. 조건이 복잡한 스킬과 애장품으로 바뀐 스킬의 대미지는 일부 빠져 있습니다. 빗나간 사망 예측이 버스트 순서를 끊지 않도록 자기 팀 풀 버스트 전에는 체력이 0이 되어도 쓰러지지 않게 계산합니다. 로산나의 충전처럼 전투불능에 걸린 효과는 체력이 0이 되는 순간 발동합니다.',
+    'Damage is a draft. It covers burst and regular skill damage and buffs, weapon changes, damage over time, healing, shields and cover. Against per-Nikke damage from 3 videos, about half land within 2x of the real value, and knockout times miss by over 2 seconds on average. Without the opponent\'s stats it is not a reliable win predictor. Skills with complex conditions and skills changed by treasures are partly missing. To keep a wrong knockout prediction from breaking the burst order, a Nikke is not knocked out before her team\'s Full Burst even at 0 HP. Effects triggered by a knockout, such as Rosanna\'s gauge charge, still fire the moment HP reaches 0.',
+    'ダメージ計算は試作です。バーストと通常スキルのダメージ・バフ、武器変更、持続ダメージ、回復、シールド、遮蔽物を反映しています。動画3本のニケ別ダメージと比べると約半数が実際の2倍以内で、戦闘不能の時点は平均2秒以上ずれます。相手の育成状況が不明なら勝敗予測には向きません。条件が複雑なスキルや、愛用品で変わるスキルのダメージは一部未対応です。外れた戦闘不能の予測がバーストの順番を崩さないよう、自チームのフルバースト前はHPが0になっても戦闘不能にしません。ロザンナのチャージのように戦闘不能で発動する効果は、HPが0になった瞬間に発動します。',
+  ],
+  'ar.note5': [
+    '첫 풀 버스트 사이클까지만 계산합니다(최대 15초). 쿨타임과 그 뒤의 전투, 승패 판정은 다루지 않습니다.',
+    'The simulation covers the first Full Burst cycle only, up to 15 seconds. Cooldowns, later cycles, and match results are not covered.',
+    '最初のフルバーストのサイクルまで(最大15秒)を計算します。クールタイム、その後の戦闘、勝敗判定は扱いません。',
   ],
 
   /* 전초기지 탭 (outpost.js 에서 ctx.t 로 받아 쓴다) */
@@ -879,9 +1077,9 @@ const STR = {
     'カスモモードは1ゲーム分布をゲーム数だけ畳み込んだ厳密値、装備モードは二項分布 B(ゲーム数, 装備箱出現率)。近似ではない。',
   ],
   'ic.aboutSource': [
-    '수급량 표 두 개(3.5주년 이전 / 이후)에서 그때그때 계산한다. 워크북에 들어 있는 완성 분포표와 소수점 아래 9자리까지 일치하는 것을 확인했다.',
-    'Computed on the fly from the two drop-rate tables (pre / post 3.5th anniversary). Matches the pre-computed tables in the workbook to nine decimal places.',
-    '2つの排出率表（3.5周年以前／以降）からその都度計算する。ワークブックの完成済み分布表と小数9桁まで一致することを確認済み。',
+    '수급량 표 두 개(3.5주년 이전 / 이후)에서 그때그때 계산한다.',
+    'Computed on the fly from the two drop-rate tables (pre / post 3.5th anniversary).',
+    '2つの排出率表（3.5周年以前／以降）からその都度計算する。',
   ],
 
   'ic.pre': ['3.5주년 이전', 'Pre-3.5th', '3.5周年以前'],
@@ -1428,7 +1626,7 @@ export function nikkeMatcher(q) {
 }
 
 /* ── 스킬 키워드 ───────────────────────────────────────────────
-   data/keywords.json - NIKKE_KEYWORDS.md 의 분류 트리와 니케별 키워드 ID (tools/update_data.py 가 만든다).
+   data/keywords.json - NIKKE_KEYWORDS.md 의 분류 트리와 니케별 키워드 ID.
    키워드는 한국어 이름으로 부른다. 한 ID 가 두 키워드에 걸리기도 하고(균등/차등 분배) 그 반대도 있다. */
 const KW = { all: [], groups: new Map(), byRid: new Map() };
 
@@ -1514,7 +1712,7 @@ function matchPickup(p, except) {
   if (state.rerun === 'first' && p.rerun_of != null) return false;
   if (state.rerun === 'rerun' && p.rerun_of == null) return false;
 
-  // rid 가 없는 예정 배너는 니케 레코드가 없으므로 시트의 한국어 이름으로만 판정한다
+  // rid 가 없는 예정 배너는 니케 레코드가 없으므로 배너의 한국어 이름으로만 판정한다
   const m = matcher();
   if (m && !(m.name(p.name_ko) || (n && hitsNikke(m, n)))) return false;
   return true;
@@ -1541,7 +1739,7 @@ function writeHash() {
 }
 
 /* 없어진 탭(#tab=raw 같은 옛 북마크)으로 들어오면 패널이 없어 렌더가 깨진다 */
-const TABS = ['calc', 'nipago', 'outpost', 'nikkes', 'pickups', 'stats', 'intercept'];
+const TABS = ['calc', 'nipago', 'arena', 'outpost', 'nikkes', 'pickups', 'stats', 'intercept'];
 
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -2084,6 +2282,7 @@ function render() {
   $('#panel-pickups').hidden = state.tab !== 'pickups';
   $('#panel-stats').hidden = state.tab !== 'stats';
   $('#panel-calc').hidden = state.tab !== 'calc';
+  $('#panel-arena').hidden = state.tab !== 'arena';
   $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
@@ -2091,7 +2290,7 @@ function render() {
   $('#kwfilters').hidden = state.tab !== 'nikkes' || !D.keywords;
   $('#tlwrap').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['calc', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  $('.filters').hidden = ['calc', 'arena', 'outpost', 'nipago', 'intercept'].includes(state.tab);
   paintFold();
   /* 싱크로 상한 계산기는 니케 리스트 탭에서만. */
   syncCap(state.tab === 'nikkes');
@@ -2105,6 +2304,12 @@ function render() {
   if (state.tab === 'intercept') {
     writeHash();
     import('./intercept.js').then(m => m.renderIntercept($('#intercept'), { t, L, lang: lang() }));
+    return;
+  }
+  if (state.tab === 'arena') {
+    writeHash();
+    import('./arena.js').then(m => m.renderArena($('#arena'),
+      { t, L, lang: lang(), nikkes: D.nikkes, byRid, nameOf, iconEl, goTab }));
     return;
   }
   if (state.tab === 'outpost') {

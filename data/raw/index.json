@@ -45,9 +45,9 @@
     "ja": "シンクロ基本ステータス"
    },
    "note": {
-    "ko": "등급·클래스·레벨(1~1400)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. 빈칸은 그 조합의 니케가 없다는 뜻. 예전에는 워크북에서 뽑아 R 등급이 없고 레벨이 1200 에서 끊겼는데, 지금은 CDN 의 니케별 레벨 스탯 목록에서 만든다 - 겹치는 구간은 워크북 값과 전부 일치한다.",
-    "en": "Base HP/ATK/DEF by rarity, class and level (1-1400). DEF differs per weapon type; blank cells mean no Nikke has that combination. This used to come from the workbook, which had no R rarity and stopped at level 1200; it is now built from the CDN's per-nikke level stat lists, which match the workbook exactly over the overlapping range.",
-    "ja": "等級・クラス・レベル(1〜1400)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、空欄はその組み合わせが存在しないことを示す。以前はワークブック由来でR等級が無くレベル1200で途切れていたが、現在はCDNのニケ別レベルステータスから生成する - 重なる区間はワークブックの値と完全に一致する。"
+    "ko": "등급·클래스·레벨(1~1400)별 기본 Hp/공격력/방어력. 방어력은 무기 종류마다 다르다. 빈칸은 그 조합의 니케가 없다는 뜻. CDN 의 니케별 레벨 스탯 목록에서 만든다.",
+    "en": "Base HP/ATK/DEF by rarity, class and level (1-1400). DEF differs per weapon type; blank cells mean no Nikke has that combination. Built from the CDN's per-nikke level stat lists.",
+    "ja": "等級・クラス・レベル(1〜1400)別の基本HP/攻撃力/防御力。防御力は武器種ごとに異なり、空欄はその組み合わせが存在しないことを示す。CDNのニケ別レベルステータスから生成する。"
    },
    "rows": 7200,
    "columns": 11
@@ -232,9 +232,9 @@
     "ja": "前哨基地の収入"
    },
    "note": {
-    "ko": "전초기지 레벨 1~800의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상. 전초기지 레벨은 캠페인 스테이지 5개를 깰 때마다 1 오른다. 701~800은 워크북에 없어 표의 마지막 구간(534~) 생성식으로 이었다.",
-    "en": "Per-minute and per-hour income for outpost levels 1-800. Values are converted from a 20-second tick, so the decimals are not round. The outpost level rises by 1 for every 5 campaign stages cleared. Levels 701-800 are not in the workbook and were continued with the table's own last-segment formula (534+).",
-    "ja": "基地防御レベル1〜800の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。基地防御レベルはキャンペーンステージ5つクリアごとに1上がる。701〜800はワークブックにないため、表の最終区間(534〜)の生成式で延長した。"
+    "ko": "전초기지 레벨 1~800의 분당·시간당 재화 수급량. 20초마다 들어오는 값을 환산한 것이라 소수점이 깔끔하지 않은 게 정상. 전초기지 레벨은 캠페인 스테이지 5개를 깰 때마다 1 오른다. 701~800은 표의 마지막 구간(534~) 생성식으로 이었다.",
+    "en": "Per-minute and per-hour income for outpost levels 1-800. Values are converted from a 20-second tick, so the decimals are not round. The outpost level rises by 1 for every 5 campaign stages cleared. Levels 701-800 were continued with the table's own last-segment formula (534+).",
+    "ja": "基地防御レベル1〜800の分・時あたりの収入。20秒ごとの値を換算しているため小数が半端になる。基地防御レベルはキャンペーンステージ5つクリアごとに1上がる。701〜800は表の最終区間(534〜)の生成式で延長した。"
    },
    "rows": 800,
    "columns": 10

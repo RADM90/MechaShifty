@@ -1,16 +1,6 @@
-/* 니파고 - 미리 푼 부위 정책 파일.
-   tools/nipago_tables.mjs 가 쓰고, service.js 가 읽는다. DOM 없음.
-
-   부위 표 하나는 (목표 가중치·최소 단계 묶음, λ) 로 정해지고, 저장하는 것은 상태마다 최선 행동 번호 1바이트뿐이다.
-   가치·기대 모듈·락키는 받은 정책을 한 번 평가해서 다시 얻는다 (가치 반복보다 수십 배 빠르다).
-
-   전부 한 파일 - data/nipago/policies.bin (gzip). 처음 계산할 때 한 번 받는다.
-   data/nipago/manifest.json 에 해시가 있어, 규칙이 바뀌었으면 큰 파일을 받지 않는다.
-
-   형식 (gzip 압축 전)
-     'NPT1'  u32 해시  u16 표 개수
-     표마다  u8 이름 길이 · 이름(ASCII) · u32 정책 길이 · 정책 바이트
-   해시는 규칙·확률표·엔진 버전에서 만든다. 다르면 파일을 버리고 직접 계산한다. */
+/* 니파고 - 미리 푼 부위 정책 파일 data/nipago/policies.bin (gzip, DOM 없음). 상태마다 최선 행동 번호 1바이트만 담고, 가치는 평가로 다시 얻는다.
+   형식: 'NPT1' · u32 해시 · u16 표 개수, 표마다 u8 이름 길이 · 이름(ASCII) · u32 정책 길이 · 정책 바이트.
+   해시는 규칙·확률표·엔진 버전에서 만든다. manifest.json 의 해시가 다르면 파일을 받지 않고 직접 계산한다. */
 
 import { SLOT_P, LOCK_MOD, LOCK_KEY, FIRST_LV, MAX_PROTECT } from './rules.js';
 import { ENGINE_VERSION, LAMBDAS } from './engine.js';

@@ -2,19 +2,13 @@
 
 **한국어** · [English](USER_GUIDE.en.md) · [日本語](USER_GUIDE.ja.md)
 
-Blablalink(Shiftypad)에 로그인해서 볼 수 있는 **내 계정의 니케 데이터**를 읽어,
-[MechaShifty 전투력 계산기](https://radm90.github.io/MechaShifty/#tab=calc)에 넣는 방법입니다.
-넣고 나면 보유 니케 전원의 보정 전투력이 한 번에 나오고, 아무 니케나 눌러 계산기 폼에
-그대로 올릴 수 있습니다.
+Blablalink(Shiftypad)에 로그인해서 볼 수 있는 **내 계정의 니케 데이터**를 읽어, [MechaShifty 전투력 계산기](https://radm90.github.io/MechaShifty/#tab=calc)에 넣는 방법입니다.
+넣고 나면 보유 니케 전원의 보정 전투력이 한 번에 나오고, 아무 니케나 눌러 계산기 폼에 그대로 올릴 수 있습니다.
 
-Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이 프로젝트의 출발점이었으므로,
-**계산은 수집 스크립트가 하지 않습니다.** 스크립트는 게임이 주는 값을 그대로 옮기기만 하고,
-전투력은 MechaShifty 가 워크북 대조로 검증한 공식(`COMBAT_POWER.md`)으로 계산합니다.
+Shiftypad 가 보여주는 전투력과 인게임 값이 어긋나는 것이 이 프로젝트의 출발점이었으므로, **계산은 수집 스크립트가 하지 않습니다.** 스크립트는 게임이 주는 값을 그대로 옮기기만 하고, 전투력은 MechaShifty 가 실계정 대조로 검증한 공식(`COMBAT_POWER.md`)으로 계산합니다.
 
-수집 창의 문구는 한국어·영어·일본어를 지원합니다. 처음에는 브라우저 언어로 맞추지만,
-**창 위쪽의 한국어 / English / 日本語 버튼으로 언제든 바꿀 수 있고 그 선택은 저장됩니다.**
-브라우저의 언어 *순서* 는 화면 언어와 별개라(한글 크롬인데 목록 맨 위가 영어인 경우가 흔합니다)
-자동 감지가 어긋날 수 있어서, 직접 고른 값이 항상 이깁니다.
+수집 창의 문구는 한국어·영어·일본어를 지원합니다. 처음에는 브라우저 언어로 맞추지만, **창 위쪽의 한국어 / English / 日本語 버튼으로 언제든 바꿀 수 있고 그 선택은 저장됩니다.**
+브라우저의 언어 *순서* 는 화면 언어와 별개라(한글 크롬인데 목록 맨 위가 영어인 경우가 흔합니다) 자동 감지가 어긋날 수 있어서, 직접 고른 값이 항상 이깁니다.
 
 ---
 
@@ -82,8 +76,7 @@ Firefox · Safari 는 1-2 를 건너뜁니다. 휴대폰이라면 [2. 북마클�
 
 1. 툴바의 Tampermonkey 아이콘을 **마우스 오른쪽 버튼**으로 누릅니다.
 2. 메뉴에서 **확장 프로그램 관리**(Manage Extension) 를 누릅니다. Tampermonkey 의 세부정보 화면이 열립니다.
-   아이콘이 안 보이면 주소창에 `chrome://extensions` (Edge 는 `edge://extensions`) 를 입력하고
-   Tampermonkey 의 **세부정보**(Details) 를 눌러도 같은 화면입니다.
+   아이콘이 안 보이면 주소창에 `chrome://extensions` (Edge 는 `edge://extensions`) 를 입력하고 Tampermonkey 의 **세부정보**(Details) 를 눌러도 같은 화면입니다.
 3. 아래로 조금 내려 **사용자 스크립트 허용**(Allow User Scripts) 스위치를 찾아 **켭니다**(파란색이 되면 켜진 것).
 4. 그 탭은 닫아도 됩니다.
 
@@ -98,8 +91,7 @@ Firefox · Safari 는 1-2 를 건너뜁니다. 휴대폰이라면 [2. 북마클�
 > 헷갈리는 지점: Tampermonkey 가 "개발자 모드가 필요합니다" 라고 띄워도, Chrome 138 이상에서
 > 실제로 필요한 건 **개발자 모드가 아니라 '사용자 스크립트 허용' 스위치**입니다.
 
-- **Firefox · Safari**: 이 단계가 없습니다. Safari 는 대신 Tampermonkey 확장에
-  `blablalink.com` 접근 권한을 **항상 허용**으로 줘야 합니다.
+- **Firefox · Safari**: 이 단계가 없습니다. Safari 는 대신 Tampermonkey 확장에 `blablalink.com` 접근 권한을 **항상 허용**으로 줘야 합니다.
 
 ### 1-3. MechaShifty 스크립트 설치
 
@@ -140,8 +132,7 @@ Firefox · Safari 는 1-2 를 건너뜁니다. 휴대폰이라면 [2. 북마클�
 ### 자동 업데이트에 대해
 
 Tampermonkey 는 스크립트를 설치한 주소를 주기적으로 확인해서 새 버전이 있으면 받아 옵니다.
-그게 싫다면(= 개발자가 나중에 코드를 바꿔도 내 브라우저에서는 절대 안 바뀌게 하려면)
-둘 중 하나를 하세요.
+그게 싫다면(= 개발자가 나중에 코드를 바꿔도 내 브라우저에서는 절대 안 바뀌게 하려면) 둘 중 하나를 하세요.
 
 - Tampermonkey → 해당 스크립트 → **설정** 탭 → *업데이트 확인*을 **사용 안 함**으로.
 - 또는 URL 로 설치하지 말고, 대시보드에서 **새 스크립트**를 만들어 소스를 붙여넣기.
@@ -155,13 +146,12 @@ Tampermonkey 를 못 쓰는 환경(회사 PC, 일부 모바일 브라우저)용�
 새 **북마크(즐겨찾기)**를 만들고 **주소(URL)** 칸에 아래 한 줄을 통째로 붙여넣으세요. 이름은 아무거나.
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='c3fb6f1dd1b2c340741b776d8558d1a97bb31652350632dcf8b086da0467934f',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='a63f89ae15d54339fdb1139ad18f046c96d4f84ba37c9fb077b8bb5c7487828c',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
-이 한 줄이 하는 일은 스크립트를 받아서 **SHA-256 해시가 위에 박혀 있는 값과 같을 때만**
-실행하는 것입니다. 배포본이 한 글자라도 달라지면 실행을 거부합니다.
+이 한 줄이 하는 일은 스크립트를 받아서 **SHA-256 해시가 위에 박혀 있는 값과 같을 때만** 실행하는 것입니다. 배포본이 한 글자라도 달라지면 실행을 거부합니다.
 그래서 스크립트가 갱신되면 이 북마크는 동작을 멈추고, 여기서 새 줄을 다시 복사해야 합니다.
 **불편한 게 아니라 그러라고 만든 것입니다** - 내가 확인한 코드가 아니면 안 돌아갑니다.
 
@@ -174,8 +164,7 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 수집이 끝나면 창에 세 가지 방법이 나옵니다.
 
 - **MechaShifty 계산기로 보내기** - 새 탭이 열리고 바로 들어갑니다.
-  탭 사이 전달은 받는 쪽 주소를 `https://radm90.github.io` 로 못 박아서 보내므로,
-  다른 사이트가 가로챌 수 없습니다.
+  탭 사이 전달은 받는 쪽 주소를 `https://radm90.github.io` 로 못 박아서 보내므로, 다른 사이트가 가로챌 수 없습니다.
 - **JSON 파일로 저장** - 계산기의 *내 계정 → JSON 열기* 에서 고르면 됩니다.
   네트워크를 아예 타지 않는 방법입니다.
 - **클립보드로 복사** - *붙여넣기* 칸에 붙여 넣습니다. 모바일에서 편합니다.
@@ -189,24 +178,18 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 
 **가져가는 것** (전부 내 계정 화면에서 이미 보이는 값입니다)
 
-- 니케별: 레벨 · 돌파/코어강화 · 스킬 3종 레벨 · 장비 4부위와 오버로드 옵션 ·
-  하모니 큐브(종류·레벨) · 소장품/애장품 · 호감도
-- 계정: 싱크로 레벨 · 전초기지 리사이클 룸 연구 레벨 · 계정 생성 시각 ·
-  캠페인 진행도(노멀/하드 최종 클리어 스테이지) · 전초기지 레벨 · 타워별 클리어 층(기업 4종·트라이브)
+- 니케별: 레벨 · 돌파/코어강화 · 스킬 3종 레벨 · 장비 4부위와 오버로드 옵션 · 하모니 큐브(종류·레벨) · 소장품/애장품 · 호감도
+- 계정: 싱크로 레벨 · 전초기지 리사이클 룸 연구 레벨 · 계정 생성 시각 · 캠페인 진행도(노멀/하드 최종 클리어 스테이지) · 전초기지 레벨 · 타워별 클리어 층(기업 4종·트라이브)
 
-계정 값은 계산기 말고 **전초기지 탭**도 씁니다 - 캠페인 진행도로 전초기지 레벨과 재화
-수급량을 채우고, 기업 타워 카드에 타워별 클리어 층과 함께 계정 생성 시각으로 낸 도달 가능 최대 층을
-보여 줍니다.
+계정 값은 계산기 말고 **전초기지 탭**도 씁니다 - 캠페인 진행도로 전초기지 레벨과 재화 수급량을 채우고, 기업 타워 카드에 타워별 클리어 층과 함께 계정 생성 시각으로 낸 도달 가능 최대 층을 보여 줍니다.
 
-계산기 화면에 나오거나 전투력 계산에 들어가는 값만 담습니다. 그 밖의 값은 수집 단계에서
-버려서 애초에 파일에 들어가지 않습니다.
+계산기 화면에 나오거나 전투력 계산에 들어가는 값만 담습니다. 그 밖의 값은 수집 단계에서 버려서 애초에 파일에 들어가지 않습니다.
 
 **가져가지 않는 것**
 
 - 로그인 쿠키 · 세션 · 인증 토큰 - 읽지 않습니다.
 - **openid(계정 식별자)** - API 를 호출할 때 인자로만 쓰고, 결과물에는 넣지 않습니다.
-  스크립트 안에 `scrub()` 함수가 있어서, 결과에 식별자 비슷한 문자열이 남아 있으면
-  내보내기 자체를 중단합니다.
+  스크립트 안에 `scrub()` 함수가 있어서, 결과에 식별자 비슷한 문자열이 남아 있으면 내보내기 자체를 중단합니다.
 - **닉네임과 서버** - 계산기가 쓰지 않으므로 담지 않습니다.
 - 다른 사람의 계정 - 내 계정만 읽습니다. 주소창의 다른 유저 ID 를 따라가지 않습니다.
 
@@ -257,11 +240,8 @@ blablalink 에 로그인한 상태에서 이 북마크를 누르면 됩니다.
 shasum -a 256 userscript/mechashifty.user.js
 ```
 
-나온 해시를 `bookmarklet.js` 의 `EXPECT` 와 **세 언어 가이드 모두**의 북마클릿 한 줄에
-반영하고, `@version` 을 올립니다. 안 하면 기존 북마클릿 사용자는 실행이 거부됩니다(의도된 동작).
+나온 해시를 `bookmarklet.js` 의 `EXPECT` 와 **세 언어 가이드 모두**의 북마클릿 한 줄에 반영하고, `@version` 을 올립니다. 안 하면 기존 북마클릿 사용자는 실행이 거부됩니다(의도된 동작).
 
-payload 형식(`mechashifty.roster/2`)을 바꾸면 `assets/roster.js` 의 `parseRoster` 도
-같이 고쳐야 합니다. 니케를 짝짓는 열쇠는 `data/nikkes.json` 의 `name_code` 이고,
-이 값은 `tools/update_data.py --nikkes` 가 라이브 CDN 에서 채웁니다.
+payload 형식(`mechashifty.roster/2`)을 바꾸면 `assets/roster.js` 의 `parseRoster` 도 같이 고쳐야 합니다. 니케를 짝짓는 열쇠는 `data/nikkes.json` 의 `name_code` 입니다.
 
 화면 문구를 늘릴 때는 `mechashifty.user.js` 의 `STR` 표에 ko/en/ja 세 칸을 모두 채웁니다.

@@ -1,12 +1,6 @@
-/* 전투력(CP) 계산 - DOM 을 모르는 순수 모듈.
-
-   공식의 출처와 검증은 COMBAT_POWER.md 참고.
+/* 전투력(CP) 계산 - DOM 을 모르는 순수 모듈. 공식과 검증은 COMBAT_POWER.md.
      스탯 = round((기본×돌파계수 + 호감도 + 콘솔 + 고정보정×돌파수) × 코강계수 + 장비4부위 + 큐브 + 소장품)
-     CP   = round((floor((HP + DEF×100)×0.7) + floor(ATK×19.35)) × ((3)+(4)) / 100)
-
-   시트와 다른 곳이 두 군데 있고, 둘 다 실계정 176명으로 확인했다:
-     - 소장품 R0 계수: 시트는 0(미착용과 혼동)이지만 실제로는 skill1+6.33.
-     - 레벨 보정: 시트는 전부 상한(cap)이지만 협전·솔레는 고정이라 레벨이 낮아도 지정 레벨로 올린다 (mode). */
+     CP   = round((floor((HP + DEF×100)×0.7) + floor(ATK×19.35)) × ((3)+(4)) / 100) */
 
 export const K = {
   HP: 0.7, ATK: 19.35, DEF_TO_HP: 100,   // 스탯 -> CP 환산 계수 (ATK 19.35 = 18 × (1 + 치명 15% × 치피 50%))
@@ -101,9 +95,8 @@ export const optionFullLabel = (name, lang) =>
   (OPTION_FULL[lang] || OPTION_FULL.ko)[name] || optionLabel(name, lang);
 
 /* ── 오버로드 옵션 종합 ─────────────────────────────────────────
-   계산기 탭과 옵션작 탭이 같은 규칙으로 합친다.
-   차속·장탄만 같은 단계끼리 먼저 더해 정수 % 로 반올림한 뒤 더한다 (nipago/effective.js 의 % 모델과 같다).
-   나머지 옵션은 원표 값을 소수점까지 그대로 더한다. */
+   계산기 탭과 옵션작 탭이 같은 규칙으로 합친다. 차속·장탄만 같은 단계끼리 먼저 더해 정수 % 로 반올림한 뒤 더하고
+   (nipago/effective.js 의 % 모델과 같다), 나머지 옵션은 원표 값을 소수점까지 그대로 더한다. */
 export const OL_ROUNDED = ['차속', '장탄'];
 /* 종합을 늘어놓는 순서 - 계산기·옵션작 탭 공통. 장비 한 부위 안의 상/중/하단 순서와는 별개다. */
 export const OL_ORDER = ['우코', '공증', '장탄', '크확', '크댐', '차속', '명중', '방어', '차댐'];
@@ -248,7 +241,7 @@ function collectionOf(T, kind, level) {
   }
   const row = T.collection.get(`소장품|${kind}${level}`);
   if (!row) return { stat: ZERO, coef: 0 };
-  // 시트는 R0 에 계수 0 을 주지만 그건 '미착용'과 혼동한 버그다 (COMBAT_POWER.md)
+  // R0 소장품도 계수가 있다. 계수 0 은 미착용뿐이다.
   return { stat: row, coef: kind === 'SR' ? row.s1 + row.s2 + K.SR_BONUS : row.s1 + K.R_BONUS };
 }
 
@@ -307,7 +300,7 @@ export function compute(T, input, level = input.level) {
 
   /* 반올림 자리가 결과를 가른다.
      기본×돌파계수는 내림 -> 코강계수 곱하고 반올림 -> 장비·큐브·소장품은 정수라 그대로 더한다.
-     CP 환산은 생존(HP + DEF×100)과 공격(ATK) 두 항을 각각 내림, 마지막에 반올림. */
+     CP 환산은 생존(HP + DEF×100)과 공격(ATK) 두 항을 각각 내리고, 마지막에 반올림한다. */
   const stats = {};
   for (const k of ['hp', 'atk', 'def']) {
     const inner = Math.floor(base[k] * breakK + bond[k] + con[k] + fixed[k] * grade.breaks);
@@ -333,9 +326,7 @@ export function compute(T, input, level = input.level) {
 const round = (v, d) => { const p = 10 ** d; return Math.round(v * p) / p; };
 
 /* ── 컨텐츠별 보정 전투력 ──────────────────────────────────────
-   cap  = 내 레벨이 지정 레벨보다 높을 때만 깎는다 (요격전)
-   fix  = 내 레벨과 무관하게 지정 레벨로 고정 (협전·솔레·챔레나)
-   none = 무보정 */
+   cap: 내 레벨이 지정 레벨보다 높을 때만 깎는다(요격전) · fix: 내 레벨과 무관하게 지정 레벨로 고정(협전·솔레·챔레나) · none: 무보정 */
 export function adjustedLevel(mode, level, at) {
   if (mode === 'cap') return Math.min(level, at);
   if (mode === 'fix') return at;

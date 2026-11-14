@@ -2,19 +2,13 @@
 
 [한국어](USER_GUIDE.md) · [English](USER_GUIDE.en.md) · **日本語**
 
-Blablalink（Shiftypad）にログインすれば見られる **自分のアカウントのニケデータ** を読み取り、
-[MechaShifty 戦闘力計算機](https://radm90.github.io/MechaShifty/#tab=calc) に取り込む手順です。
-取り込むと所持ニケ全員の補正済み戦闘力が一覧で出て、どのニケを押してもそのまま計算機の
-入力欄に載ります。
+Blablalink（Shiftypad）にログインすれば見られる **自分のアカウントのニケデータ** を読み取り、 [MechaShifty 戦闘力計算機](https://radm90.github.io/MechaShifty/#tab=calc) に取り込む手順です。
+取り込むと所持ニケ全員の補正済み戦闘力が一覧で出て、どのニケを押してもそのまま計算機の入力欄に載ります。
 
-Shiftypad が表示する戦闘力とゲーム内の値がずれている--それがこのプロジェクトの出発点なので、
-**収集スクリプトは計算を一切行いません。** スクリプトはゲームが返す値をそのまま運ぶだけで、
-戦闘力は MechaShifty 側がワークブックで検証した式（`COMBAT_POWER.md`）で計算します。
+Shiftypad が表示する戦闘力とゲーム内の値がずれている--それがこのプロジェクトの出発点なので、 **収集スクリプトは計算を一切行いません。** スクリプトはゲームが返す値をそのまま運ぶだけで、戦闘力は MechaShifty 側が実アカウントとの照合で検証した式（`COMBAT_POWER.md`）で計算します。
 
-収集ウィンドウの文言は日本語・英語・韓国語に対応しています。最初はブラウザの言語に合わせますが、
-**ウィンドウ上部の 한국어 / English / 日本語 ボタンでいつでも切り替えられ、その選択は保存されます。**
-ブラウザの言語の*並び順*は表示言語とは別で（日本語表示なのに一覧の先頭が英語、ということがよくあります）、
-自動判定が外れることがあるため、自分で選んだ値が常に優先されます。
+収集ウィンドウの文言は日本語・英語・韓国語に対応しています。最初はブラウザの言語に合わせますが、 **ウィンドウ上部の 한국어 / English / 日本語 ボタンでいつでも切り替えられ、その選択は保存されます。**
+ブラウザの言語の*並び順*は表示言語とは別で（日本語表示なのに一覧の先頭が英語、ということがよくあります）、自動判定が外れることがあるため、自分で選んだ値が常に優先されます。
 
 ---
 
@@ -82,8 +76,7 @@ Firefox・Safari は 1-2 を飛ばします。スマホなら [2. ブックマ�
 
 1. ツールバーの Tampermonkey アイコンを **右クリック** します。
 2. メニューの **拡張機能を管理**（Manage Extension）を押します。Tampermonkey の詳細画面が開きます。
-   アイコンが見当たらないときは、アドレスバーに `chrome://extensions`（Edge は `edge://extensions`）と
-   入力し、Tampermonkey の **詳細**（Details）を押しても同じ画面です。
+   アイコンが見当たらないときは、アドレスバーに `chrome://extensions`（Edge は `edge://extensions`）と入力し、Tampermonkey の **詳細**（Details）を押しても同じ画面です。
 3. 少し下へスクロールし、**ユーザースクリプトを許可**（Allow User Scripts）のスイッチを **オン** にします（青くなればオン）。
 4. そのタブは閉じて構いません。
 
@@ -98,8 +91,7 @@ Firefox・Safari は 1-2 を飛ばします。スマホなら [2. ブックマ�
 > 紛らわしい点: Tampermonkey が「デベロッパーモードが必要です」と表示しても、Chrome 138 以降で
 > 実際に必要なのは **デベロッパーモードではなく「ユーザースクリプトを許可」のスイッチ** です。
 
-- **Firefox・Safari**: この手順はありません。Safari では代わりに、Tampermonkey 拡張に
-  `blablalink.com` への **「常に許可」** を与えてください。
+- **Firefox・Safari**: この手順はありません。Safari では代わりに、Tampermonkey 拡張に `blablalink.com` への **「常に許可」** を与えてください。
 
 ### 1-3. MechaShifty スクリプトを導入する
 
@@ -142,8 +134,7 @@ Firefox・Safari は 1-2 を飛ばします。スマホなら [2. ブックマ�
 ### 自動更新について
 
 Tampermonkey は導入元のアドレスを定期的に確認し、新しい版があれば取得します。
-それが嫌なら（＝作者が後からコードを変えても自分のブラウザでは絶対に変わらないようにしたいなら）、
-次のどちらかを行ってください。
+それが嫌なら（＝作者が後からコードを変えても自分のブラウザでは絶対に変わらないようにしたいなら）、次のどちらかを行ってください。
 
 - Tampermonkey → 対象スクリプト → **設定** タブ →「更新の確認」を **しない** に。
 - あるいは URL から導入せず、ダッシュボードで **新規スクリプト** を作ってソースを貼り付ける。
@@ -157,14 +148,12 @@ Tampermonkey が使えない環境（社用 PC、一部のスマホブラウザ�
 新しい **ブックマーク（お気に入り）** を作り、**URL** 欄に下の1行をそのまま貼り付けます。名前は任意。
 
 ```
-javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='c3fb6f1dd1b2c340741b776d8558d1a97bb31652350632dcf8b086da0467934f',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
+javascript:(async()=>{const U='https://radm90.github.io/MechaShifty/userscript/mechashifty.user.js',E='a63f89ae15d54339fdb1139ad18f046c96d4f84ba37c9fb077b8bb5c7487828c',l=(navigator.language||'en').toLowerCase(),M=l.startsWith('ko')?{b:'MechaShifty: 스크립트가 배포본과 다릅니다. 실행하지 않았습니다. USER_GUIDE 에서 북마클릿을 다시 복사하세요.',e:'MechaShifty: 불러오지 못했습니다 - '}:l.startsWith('ja')?{b:'MechaShifty: スクリプトが配布物と異なります。実行しませんでした。USER_GUIDE からブックマークレットをコピーし直してください。',e:'MechaShifty: 読み込めませんでした - '}:{b:'MechaShifty: the script differs from the release. Nothing was run. Copy the bookmarklet again from the USER_GUIDE.',e:'MechaShifty: could not load - '};try{const s=await(await fetch(U,{cache:'no-store'})).text();const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));const g=[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('');if(g!==E){alert(M.b);return}(0,eval)(s)}catch(e){alert(M.e+e.message)}})();
 ```
 
 blablalink にログインした状態で、このブックマークを押すだけです。
 
-この1行がしているのは、スクリプトを取得して **SHA-256 が上に埋め込まれた値と一致したときだけ**
-実行することです。配布物が1文字でも違えば実行を拒否します。そのためスクリプトが更新されると
-このブックマークは動かなくなり、ここから新しい1行を貼り直す必要があります。
+この1行がしているのは、スクリプトを取得して **SHA-256 が上に埋め込まれた値と一致したときだけ**実行することです。配布物が1文字でも違えば実行を拒否します。そのためスクリプトが更新されるとこのブックマークは動かなくなり、ここから新しい1行を貼り直す必要があります。
 **不便なのではなく、そうなるように作ってあります** - 自分が確認したコード以外は動きません。
 
 読みやすい原本は [`bookmarklet.js`](bookmarklet.js) にあります。
@@ -176,8 +165,7 @@ blablalink にログインした状態で、このブックマークを押すだ
 収集が終わると、ウィンドウに3つの方法が出ます。
 
 - **MechaShifty 計算機に送る** - 新しいタブが開いてそのまま入ります。
-  タブ間の受け渡しは送信先 origin を `https://radm90.github.io` に固定しているので、
-  他サイトが横取りすることはできません。
+  タブ間の受け渡しは送信先 origin を `https://radm90.github.io` に固定しているので、他サイトが横取りすることはできません。
 - **JSONファイルとして保存** - 計算機の *アカウント → JSONを開く* から選びます。
   ネットワークを一切経由しない方法です。
 - **クリップボードにコピー** - *貼り付け* 欄に貼り付けます。スマホではこちらが楽です。
@@ -191,18 +179,12 @@ blablalink にログインした状態で、このブックマークを押すだ
 
 **持ち出すもの**（すべて自分のアカウント画面で既に見えている値です）
 
-- ニケごと: レベル・凸／コア強化・スキル3種のレベル・装備4部位とオーバーロードOP・
-  ハーモニーキューブ（種類・レベル）・コレクション／宝もの・好感度
-- アカウント: シンクロレベル・前哨基地リサイクルルームの研究レベル・アカウント作成時刻・
-  キャンペーン進行度（ノーマル／ハードの最終クリアステージ）・基地防御レベル・各タワーのクリア階
-  （企業別タワー4種・トライブタワー）
+- ニケごと: レベル・凸／コア強化・スキル3種のレベル・装備4部位とオーバーロードOP・ハーモニーキューブ（種類・レベル）・コレクション／宝もの・好感度
+- アカウント: シンクロレベル・前哨基地リサイクルルームの研究レベル・アカウント作成時刻・キャンペーン進行度（ノーマル／ハードの最終クリアステージ）・基地防御レベル・各タワーのクリア階（企業別タワー4種・トライブタワー）
 
-アカウントの値は計算機だけでなく **前哨基地タブ** も使います--キャンペーン進行度から
-基地防御レベルと資源の収入を埋め、企業別タワーのカードには各タワーのクリア階と、アカウント作成時刻
-から求めた到達可能な最大階を並べて表示します。
+アカウントの値は計算機だけでなく **前哨基地タブ** も使います--キャンペーン進行度から基地防御レベルと資源の収入を埋め、企業別タワーのカードには各タワーのクリア階と、アカウント作成時刻から求めた到達可能な最大階を並べて表示します。
 
-計算機の画面に出るか、戦闘力の計算に入る値だけを残します。それ以外は収集の段階で捨てるので、
-そもそもファイルに入りません。
+計算機の画面に出るか、戦闘力の計算に入る値だけを残します。それ以外は収集の段階で捨てるので、そもそもファイルに入りません。
 
 **持ち出さないもの**
 
@@ -225,8 +207,7 @@ blablalink にログインした状態で、このブックマークを押すだ
 | 送信先 origin を明示。受け取る側も送信元 origin を確認する |
 | 書き出す直前に識別子検査を行い、アカウント情報が結果に混ざらないようにする |
 
-`mechashifty.user.js` の中には `eval`・`new Function`・`<script src>`・`import()` が
-ありません。一度読んだコードが後から静かに別のことを始める余地を無くすためです。
+`mechashifty.user.js` の中には `eval`・`new Function`・`<script src>`・`import()` がありません。一度読んだコードが後から静かに別のことを始める余地を無くすためです。
 （ブックマークレット版だけは `eval` を使いますが、ハッシュが一致したコードにのみ使います。）
 
 ---
@@ -259,12 +240,8 @@ blablalink にログインした状態で、このブックマークを押すだ
 shasum -a 256 userscript/mechashifty.user.js
 ```
 
-出たハッシュを `bookmarklet.js` の `EXPECT` と **3言語すべてのガイド** のブックマークレット
-1行に反映し、`@version` を上げます。忘れると既存のブックマークレット利用者は実行を拒否されます
-（意図した動作です）。
+出たハッシュを `bookmarklet.js` の `EXPECT` と **3言語すべてのガイド** のブックマークレット 1行に反映し、`@version` を上げます。忘れると既存のブックマークレット利用者は実行を拒否されます（意図した動作です）。
 
-payload 形式（`mechashifty.roster/2`）を変えるなら、`assets/roster.js` の `parseRoster` も
-併せて修正します。ニケの照合キーは `data/nikkes.json` の `name_code` で、この値は
-`tools/update_data.py --nikkes` がライブ CDN から埋めます。
+payload 形式（`mechashifty.roster/2`）を変えるなら、`assets/roster.js` の `parseRoster` も併せて修正します。ニケの照合キーは `data/nikkes.json` の `name_code` です。
 
 画面文言を追加するときは、`mechashifty.user.js` の `STR` 表に ko/en/ja の3欄をすべて埋めます。
