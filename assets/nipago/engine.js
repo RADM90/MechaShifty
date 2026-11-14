@@ -337,38 +337,38 @@ class PieceTable {
     }
 
     /* 정한 정책으로 기대 모듈·락키를 따로 (23.9) */
-    const EM = new Float64Array(size), EK = new Float64Array(size);
+    const EM = new Float64Array(size), EK = new Float64Array(size), ET = new Float64Array(size);
     for (let sweep = 0; sweep < 2000; sweep++) {
       let diff = 0;
       for (const l of order) {
         const i = this.idx(l);
         if (V[i] >= BIG / 2 || best[i] < 0) continue;
         const a = acts[i][best[i]];
-        let m = a.cost.mod, k = a.cost.key, self = 0;
+        let m = a.cost.mod, k = a.cost.key, n1 = 1, self = 0;
         const vk = a.keep === i ? V[i] : V[a.keep];
         const c = compile(l, i, a);
         for (let n = 0; n < c.ps.length; n++) {
           const j = c.vs[n], p = c.ps[n];
           const to = V[j] < vk - 1e-12 ? j : a.keep;
           if (to === i) { self += p; continue; }
-          m += p * EM[to]; k += p * EK[to];
+          m += p * EM[to]; k += p * EK[to]; n1 += p * ET[to];
         }
-        const nm = m / (1 - self), nk = k / (1 - self);
-        diff = Math.max(diff, Math.abs(nm - EM[i]) / Math.max(1, nm), Math.abs(nk - EK[i]) / Math.max(1, nk));
-        EM[i] = nm; EK[i] = nk;
+        const nm = m / (1 - self), nk = k / (1 - self), nt = n1 / (1 - self);
+        diff = Math.max(diff, Math.abs(nm - EM[i]) / Math.max(1, nm), Math.abs(nk - EK[i]) / Math.max(1, nk), Math.abs(nt - ET[i]) / Math.max(1, nt));
+        EM[i] = nm; EK[i] = nk; ET[i] = nt;
       }
       if (diff < 1e-9) break;
     }
-    Object.assign(this, { V, EM, EK, acts, best, goal });
+    Object.assign(this, { V, EM, EK, ET, acts, best, goal });
 
     /* 최초 개조 - 모듈 1개, 붙는 옵션은 T11 고정, 결과는 고를 수 없다 */
-    let fv = 1, fm = 1, fk = 0;
+    let fv = 1, fm = 1, fk = 0, ft = 1;
     for (const t of this.tuples([0, 1, 2], 0)) {
       const l = t.r.map(r => (r === -2 ? 0 : r === -1 ? 1 : this.code(r, this.cls[r].of[FIRST_LV], 0)));
       const j = this.idx(l);
-      fv += t.p * V[j]; fm += t.p * EM[j]; fk += t.p * EK[j];
+      fv += t.p * V[j]; fm += t.p * EM[j]; fk += t.p * EK[j]; ft += t.p * ET[j];
     }
-    this.first = { v: fv, m: fm, k: fk };
+    this.first = { v: fv, m: fm, k: fk, t: ft };
   }
 
   /* 실제 부위 → 줄 코드. tgt: [{ opt, m }] (this.targets 와 같은 순서) */
@@ -383,12 +383,34 @@ class PieceTable {
   }
 
   at(piece, tgt) {
-    if (!piece.overloaded) return { v: this.first.v, m: this.first.m, k: this.first.k, first: true };
+    if (!piece.overloaded) return { v: this.first.v, m: this.first.m, k: this.first.k, t: this.first.t, first: true };
     const l = this.encode(piece, tgt);
     const i = this.idx(l);
-    if (this.goal[i]) return { v: 0, m: 0, k: 0 };
+    if (this.goal[i]) return { v: 0, m: 0, k: 0, t: 0 };
     const a = this.best[i] >= 0 ? this.acts[i][this.best[i]] : null;
-    return { v: this.V[i], m: this.EM[i], k: this.EK[i], action: a, lines: l, i };
+    return { v: this.V[i], m: this.EM[i], k: this.EK[i], t: this.ET[i], action: a, lines: l, i };
+  }
+
+  /* 지금 상태에서 고를 수 있는 행동마다 - 이번 한 번만 이 행동을 하고 그 뒤는 정책대로 갈 때의 값.
+     pGoal: 이번에 부위 목표가 완성될 확률, pBetter: 결과가 지금보다 나을 확률. 최선 행동의 v 는 V 와 같다. */
+  options(piece, tgt) {
+    if (!piece.overloaded) return [];
+    const l = this.encode(piece, tgt);
+    const i = this.idx(l);
+    if (this.goal[i] || !this.acts[i]) return [];
+    const { V, EM, EK, ET, goal } = this;
+    return this.acts[i].map((a, n) => {
+      const vk = V[a.keep];
+      let v = a.c, m = a.cost.mod, k = a.cost.key, t = 1, pGoal = 0, pBetter = 0;
+      this.outcomes(l, a, (p, j) => {
+        const better = V[j] < vk - 1e-12;
+        const to = better ? j : a.keep;
+        v += p * V[to]; m += p * EM[to]; k += p * EK[to]; t += p * ET[to];
+        if (goal[j]) pGoal += p;
+        if (better) pBetter += p;
+      });
+      return { kind: a.kind, P: a.P, protect: a.protect, cost: a.cost, v, m, k, t, pGoal, pBetter, best: n === this.best[i] };
+    });
   }
 }
 
@@ -567,7 +589,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
 
   /* 부위 p 가 목표 묶음 S 를 갖추는 비용 */
   function pieceCost(piece, S, lam) {
-    if (!S.length) return { v: 0, m: 0, k: 0 };
+    if (!S.length) return { v: 0, m: 0, k: 0, t: 0 };
     const tgt = sortTargets(D, S);
     const tb = table(tgt, lam);
     return { ...tb.at(piece, tgt), tgt, tb };
@@ -619,7 +641,8 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
       const c = cost(p, mask);
       return { S: reqs.filter((_, g) => mask & (1 << g)), ...c };
     });
-    return { v: r.v, m: pieces.reduce((a, x) => a + x.m, 0), k: pieces.reduce((a, x) => a + x.k, 0), pieces };
+    const sum = f => pieces.reduce((a, x) => a + x[f], 0);
+    return { v: r.v, m: sum('m'), k: sum('k'), t: sum('t'), pieces };
   }
 
   /* 전체 계획 - 실효값 후보 중 가장 싼 것 */
@@ -633,16 +656,26 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return best;
   }
 
-  /* 다음 한 번 - 남은 비용이 가장 작은 부위부터, 같으면 부위 순서 */
-  function next(st, pref, exclude = new Set()) {
-    const p = plan(st, pref);
-    if (!p || !Number.isFinite(p.v)) return { plan: p, piece: -1 };
-    let pick = -1;
-    p.pieces.forEach((x, i) => {
-      if (exclude.has(i) || !(x.v > 0)) return;
-      if (pick < 0 || x.v < p.pieces[pick].v - 1e-9) pick = i;
-    });
-    return { plan: p, piece: pick, act: pick >= 0 ? concrete(st.gear[pick], p.pieces[pick]) : null };
+  /* 부위 p 하나 - targets([{ opt, m }])를 주면 그 목표로, 없으면 전체 배분에서 이 부위가 맡은 몫으로 본다.
+     부위는 사용자가 고른다. 여기서는 그 부위의 최선 행동과 고를 수 있는 행동별 수치만 낸다. */
+  function pieceView(st, pref, p, targets = null, pl = null) {
+    const lam = LAMBDAS[pref];
+    const piece = st.gear[p];
+    let pc;
+    if (targets) pc = { S: targets.map(x => ({ opt: x.opt, m: x.m, count: 1 })), ...pieceCost(piece, targets, lam) };
+    else {
+      const all = pl || plan(st, pref);
+      if (!all || !Number.isFinite(all.v)) return { S: [], v: Infinity, ok: false, options: [], act: null };
+      pc = all.pieces[p];
+    }
+    if (!Number.isFinite(pc.v) || pc.v >= BIG / 2) return { S: pc.S, v: Infinity, ok: false, options: [], act: null };
+    const options = pc.tb && pc.v > 0 ? pc.tb.options(piece, pc.tgt).map(o => ({
+      kind: o.kind, protect: o.protect.map(x => ({ ...x })), cost: o.cost,
+      unlock: [0, 1, 2].filter(i => piece.perm[i] === true && !o.P.includes(i)),
+      v: o.v, m: o.m, k: o.k, t: o.t, pGoal: o.pGoal, pBetter: o.pBetter, best: o.best,
+    })) : [];
+    return { S: pc.S, v: pc.v, m: pc.m, k: pc.k, t: pc.t, first: !!pc.first, ok: true, custom: !!targets,
+      act: pc.v > 0 ? concrete(piece, pc) : null, options };
   }
 
   /* 표의 행동 → 화면에 보일 행동 */
@@ -655,9 +688,11 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
   }
 
   /* 3) 유지·적용 비교 - 둘 다 이번 비용은 이미 낸 상태 */
-  function compare(st, keepGear, acceptGear, pref) {
-    const keep = plan({ ...st, gear: keepGear }, pref);
-    const acc = plan({ ...st, gear: acceptGear }, pref);
+  /* only: { piece, targets } 를 주면 그 부위의 그 목표만 본다 (선택한 부위만 최적화) */
+  function compare(st, keepGear, acceptGear, pref, only = null) {
+    const one = gear => pieceCost(gear[only.piece], only.targets, LAMBDAS[pref]);
+    const keep = only ? one(keepGear) : plan({ ...st, gear: keepGear }, pref);
+    const acc = only ? one(acceptGear) : plan({ ...st, gear: acceptGear }, pref);
     const prog0 = progress(D, keepGear, st.goals, st.nikke);
     const prog1 = progress(D, acceptGear, st.goals, st.nikke);
     /* 보존 조건 - 이미 넘은 실효값 목표를 깨는 결과는 후보에서 뺀다 */
@@ -667,7 +702,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return { keep, acc, choice, breaks, prog0, prog1 };
   }
 
-  return { plan, next, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
+  return { plan, pieceView, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
 }
 
 /* 입력 검증 (26.2) - 결과로 들어온 세 줄이 이번 행동으로 나올 수 있는가 */

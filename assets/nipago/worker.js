@@ -16,7 +16,7 @@ self.onmessage = e => {
         return;
       }
       const out = type === 'compare'
-        ? await svc.compare(payload.st, payload.keep, payload.acc)
+        ? await svc.compare(payload.st, payload.keep, payload.acc, payload.piece)
         : await svc.recommend(payload.st);
       self.postMessage({ id, ok: true, out });
     } catch (err) {

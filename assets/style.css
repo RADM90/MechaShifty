@@ -1199,13 +1199,18 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-cls-core, .np-cls-threshold { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .np-cls-none { background: var(--st-bad-bg); color: var(--st-bad-ink); border-color: var(--st-bad-line); }
 
-/* 플로팅 리모컨 - 탐색 모드 · 재화 우선순위 · 재화 소모량. 결과 창(100)·상세 시트(60)보다 아래. */
+/* 리모컨 - 탐색 모드 · 재화 우선순위 · 재화 소모량. 화면 위쪽에 붙어 따라온다. 결과 창(100)·상단바(40)보다 아래. */
 .np-remote {
-  position: fixed; right: 16px; bottom: 16px; z-index: 50; width: 300px; max-width: calc(100vw - 32px);
-  display: grid; gap: 10px; padding: 12px 14px;
+  position: sticky; top: calc(var(--np-top, 0px) + 6px); z-index: 30; margin-bottom: 12px;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding: 8px 14px;
   background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r); box-shadow: var(--shadow);
 }
-.np-remote.min { width: auto; padding: 8px 10px 8px 14px; }
+.np-remote > .np-rtoggle { margin-left: auto; }
+.np-remote .np-rfield { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.np-rtries { color: var(--ink-2); font-size: 14px; }
+.np-headchips { display: inline-flex; flex-wrap: wrap; gap: 6px; }
+.np-cardhead { flex-wrap: wrap; gap: 8px 10px; }
+.np-resetall { margin-left: auto; }
 .np-rhead { display: flex; align-items: center; gap: 10px; }
 .np-rttl { flex: 1; font-size: 13px; font-weight: 700; color: var(--ink-muted); letter-spacing: .04em; }
 .np-rmini { display: inline-flex; gap: 10px; font-size: 14.5px; font-variant-numeric: tabular-nums; }
@@ -1406,7 +1411,31 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
   border: 1px solid var(--line-strong); border-radius: var(--r-s); padding: 8px;
   background: var(--bg-panel); display: grid; gap: 5px; align-content: start; min-width: 0;
 }
-.np-piece.target { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.np-piece { cursor: pointer; font: inherit; color: var(--ink); text-align: left; }
+.np-piece:hover:not(:disabled) { border-color: var(--accent); }
+.np-piece:disabled { cursor: default; }
+.np-piece.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.np-piece.done { opacity: .75; }
+.np-tbadge { font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; white-space: nowrap; }
+.np-tbadge.sel { background: var(--accent); color: var(--accent-ink); }
+.np-tbadge.cheap { border: 1px solid var(--amber); color: var(--amber); }
+.np-tbadge.ok { background: var(--st-good); color: var(--st-good-ink); }
+.np-tline {
+  display: flex; align-items: center; gap: 6px; min-height: 28px; padding: 2px 7px; font-size: 13.5px;
+  background: var(--bg-raise); border-radius: var(--r-s); border-left: 3px solid var(--line);
+}
+.np-tline.empty { background: none; border: 1px dashed var(--line); color: var(--ink-muted); }
+.np-tline.goal { border-left-color: var(--st-good); }
+.np-tline.short { border-left-color: var(--st-warn); }
+.np-tline.is-lv12 { background: var(--ol-hi-bg); color: var(--ol-hi); }
+.np-tline.is-lv15 { background: var(--ol-max-bg); color: var(--ol-max-ink); }
+.np-tline .np-lvb { margin-left: auto; }
+.np-tlock { font-size: 11px; }
+.np-tfoot { display: grid; gap: 4px; padding: 2px 2px 0; font-size: 13px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.np-tgoals, .np-tgchips { display: flex; flex-wrap: wrap; gap: 4px; }
+.np-tcost { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; }
+.np-total { margin: 0 0 8px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px; }
+.np-total b { color: var(--ink); }
 .np-piece.off { background: var(--bg-raise); }
 .np-phead { display: flex; align-items: center; gap: 8px; padding: 0 2px 2px; }
 .np-pname { font-weight: 700; font-size: 15px; flex: 1; }
@@ -1420,7 +1449,8 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-lrow { position: relative; display: flex; gap: 5px; align-items: stretch; }
 .np-lrow > .np-line { flex: 1; min-width: 0; }
 .np-lockb {
-  flex: 0 0 34px; cursor: pointer; font-size: 15px; line-height: 1; padding: 0;
+  flex: 0 0 96px; cursor: pointer; font-size: 15px; line-height: 1; padding: 0 6px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
   background: var(--bg-raise); border: 1px solid var(--line); border-radius: var(--r-s); color: var(--ink-muted);
 }
 .np-lockb:hover:not(:disabled) { background: var(--hover); }
@@ -1429,15 +1459,22 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-lockb-held { background: var(--bg-panel); border-color: var(--accent); }
 .np-lockb-new { background: var(--accent); border-color: var(--accent); }
 .np-lockb-key { background: var(--amber); border-color: var(--amber); }
-.np-lockb.sug { box-shadow: 0 0 0 2px var(--st-good); }
+.np-lockb small { font-size: 12px; font-weight: 600; color: inherit; }
+.np-lockb-none small, .np-lockb-held small { color: var(--ink-2); }
+.np-lockb-new small { color: var(--accent-ink); }
+.np-lockb-key small { color: #fff; }
+.np-editb {
+  flex: 0 0 34px; cursor: pointer; font-size: 15px; line-height: 1; padding: 0;
+  background: none; border: 1px solid var(--line); border-radius: var(--r-s); color: var(--ink-muted);
+}
+.np-editb:hover:not(:disabled), .np-editb.on { background: var(--hover); color: var(--ink); border-color: var(--accent); }
+.np-editb:disabled { cursor: default; opacity: .5; }
 .np-line {
   width: 100%; min-height: 40px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
-  padding: 5px 8px; cursor: pointer; text-align: left; font: inherit; font-size: 14.5px;
+  padding: 5px 8px; text-align: left; font: inherit; font-size: 14.5px;
   background: var(--bg-raise); color: var(--ink);
   border: 1px solid var(--line); border-left-width: 3px; border-radius: var(--r-s);
 }
-.np-line:hover { background: var(--hover); }
-.np-line:disabled { cursor: default; }
 .np-line.empty { background: none; border-style: dashed; border-left-width: 1px; color: var(--ink-muted); }
 .np-line.goal { border-left-color: var(--st-good); }
 .np-line.short { border-left-color: var(--st-warn); }
@@ -1473,6 +1510,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-ptag-perm { background: var(--accent); color: var(--accent-ink); }
 .np-ptag-key { background: var(--amber); color: #fff; }
 .np-ptag-off { background: var(--track); color: var(--ink-muted); }
+.np-ptag-rec { border: 1px dashed var(--st-good); color: var(--st-good); background: none; }
 .np-editor {
   position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 20; min-width: 240px;
   padding: 10px 12px; display: grid; gap: 8px;
@@ -1546,17 +1584,103 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-cmpcell small { color: var(--ink-muted); font-size: 12.5px; }
 .np-cmpcell.best { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
-.np-modalbtns { display: grid; grid-template-columns: minmax(84px, .55fr); grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); border-top: 1px solid var(--line); }
+.np-modalbtns { display: grid; grid-template-columns: minmax(84px, .28fr) minmax(0, 1fr); border-top: 1px solid var(--line); }
+.np-picks { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; padding: 8px; }
+.np-picks .np-mb { border-radius: var(--r-s); min-height: 60px; padding: 6px 8px; }
 .np-mb {
   min-height: 52px; cursor: pointer; border: 0; font: inherit; font-size: 16px; font-weight: 600;
   display: grid; place-content: center; gap: 1px;
 }
 .np-mb small { font-size: 11.5px; font-weight: 700; letter-spacing: .05em; }
-.np-mb-keep { background: var(--bg-raise); color: var(--ink-2); }
+.np-mb-keep { background: var(--np-keep); color: #fff; }
 .np-mb-cancel { background: var(--bg-panel); color: var(--ink-muted); border-right: 1px solid var(--line); flex: 0 0 auto; }
 .np-mb-cancel small { font-weight: 400; letter-spacing: 0; }
-.np-mb-apply { background: var(--accent); color: var(--accent-ink); }
-.np-mb.rec { outline: 3px solid var(--st-good); outline-offset: -3px; }
+.np-mb-apply { background: var(--np-apply); color: #fff; }
+.np-mb.rec { outline: 3px solid var(--st-good); outline-offset: 1px; }
+.np-mb .np-mbcost { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 600; letter-spacing: 0; font-size: 12.5px; }
+.np-mb .np-recb { justify-self: center; }
+
+/* 선택 부위 - 개조 장비 효과 */
+:root { --np-keep: #b85c00; --np-apply: #0b63b8; --np-keep-ink: #b85c00; --np-apply-ink: #0b63b8; --np-neon: #ff2d55; }
+:root[data-theme="dark"] { --np-keep-ink: #ffab4d; --np-apply-ink: #6fb4ff; --np-neon: #ff4d6d; }
+.np-panel .np-cardhead { flex-wrap: wrap; }
+.np-tgrow { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; }
+.np-pgb {
+  padding: 2px 10px; cursor: pointer; font: inherit; font-size: 12.5px; color: var(--ink-2);
+  background: none; border: 1px solid var(--line-strong); border-radius: 999px;
+}
+.np-pgb.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.np-pged { flex-basis: 100%; display: grid; gap: 8px; padding: 10px 12px; border: 1px dashed var(--line-strong); border-radius: var(--r-s); }
+.np-fx { display: grid; gap: 5px; margin-bottom: 12px; }
+.np-held { font-size: 13px; color: var(--ink-2); flex-wrap: nowrap; }
+.np-kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; border-radius: var(--r-s); }
+.np-kind {
+  min-height: 62px; padding: 8px 10px; cursor: pointer; font: inherit; color: var(--ink);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 4px 8px;
+  background: var(--bg-raise); border: 2px solid var(--line-strong); border-radius: var(--r-s);
+}
+.np-kind:hover:not(:disabled) { border-color: var(--accent); }
+.np-kind:disabled { cursor: default; opacity: .5; }
+.np-kind.on { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; background: var(--bg-panel); }
+.np-kindttl { font-size: 16px; font-weight: 700; flex-basis: 100%; text-align: center; }
+.np-kindcost { font-variant-numeric: tabular-nums; font-size: 14px; }
+.np-recb {
+  font-size: 11.5px; font-weight: 700; padding: 1px 7px; border-radius: 999px; white-space: nowrap;
+  background: var(--st-good); color: var(--st-good-ink); letter-spacing: 0;
+}
+.np-moved { margin: 0 0 8px; }
+.np-confirm { display: grid; gap: 8px; padding: 10px 12px; margin-bottom: 12px; border: 1px solid var(--line); border-radius: var(--r-s); }
+.np-confirmcost { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 15px; font-variant-numeric: tabular-nums; }
+.np-confirmcost small { color: var(--ink-muted); font-size: 13px; }
+.np-follow {
+  padding: 8px 12px; cursor: pointer; font: inherit; font-size: 14px; color: var(--st-good);
+  background: none; border: 1px solid var(--st-good); border-radius: var(--r-s);
+}
+.np-follow:disabled { opacity: .4; cursor: default; }
+.np-basis { border-top: 1px solid var(--line); padding-top: 10px; }
+.np-basisttl { font-size: 14px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; }
+.np-btwrap { overflow-x: auto; }
+.np-btable { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+.np-btable th, .np-btable td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.np-btable thead th { font-size: 12.5px; font-weight: 600; color: var(--ink-muted); }
+.np-btable th:first-child { text-align: left; white-space: normal; min-width: 104px; }
+.np-pged .np-sel { flex: 1 1 120px; min-width: 96px; }
+.np-btable tbody th { font-weight: 400; }
+.np-btable tbody th b { margin-right: 6px; }
+.np-btable tbody th small { display: block; color: var(--ink-muted); font-size: 12.5px; }
+.np-btable tr.sel { background: var(--hover); box-shadow: 3px 0 0 var(--accent) inset; }
+.np-btable tr.rec td, .np-btable tr.rec th { color: var(--ink); font-weight: 600; }
+.np-btable td.na { text-align: center; color: var(--ink-muted); white-space: normal; }
+.np-btable .np-cost { justify-content: flex-end; }
+.np-worse { color: var(--st-bad-ink); display: inline-flex; align-items: center; gap: 1px; margin-left: 6px; }
+.np-worse .ic-item { height: 14px; }
+.np-basisfoot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; }
+.np-basisfoot .np-note { margin: 0; font-size: 13px; }
+
+/* 결과 창 - 위 현재 효과(주황), 아래 변경 효과(파랑) */
+.np-result { width: 440px; }
+.np-rbody { display: grid; gap: 4px; padding: 12px 16px; }
+.np-frame { border: 2px solid var(--line-strong); border-radius: var(--r); padding: 8px 10px 4px; min-width: 0; }
+.np-frame.cur { border-color: var(--np-keep-ink); }
+.np-frame.new { border-color: var(--np-apply-ink); }
+.np-framettl { font-size: 13.5px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+.np-frame.cur .np-framettl { color: var(--np-keep-ink); }
+.np-frame.new .np-framettl { color: var(--np-apply-ink); }
+.np-ovslot.moved { box-shadow: 0 0 0 1.5px var(--np-apply-ink) inset; }
+.np-rarrow { text-align: center; color: var(--np-apply-ink); font-size: 15px; line-height: 1; }
+.np-rbody > .np-form { border: 2px solid var(--np-apply-ink); border-radius: var(--r); padding: 10px; }
+.np-askscope { display: grid; gap: 3px; text-align: left; }
+.np-askscope span { font-size: 13px; color: var(--ink-muted); line-height: 1.5; }
+
+/* 다음에 볼 곳 - 붉은 네온. 한 번에 한 곳에만 붙는다 (nextStep) */
+.np-next { outline: 2px solid var(--np-neon, #ff2d55); outline-offset: 3px; animation: np-neon 1.2s ease-in-out infinite; }
+@keyframes np-neon {
+  0%, 100% { outline-color: rgba(255, 45, 85, .45); box-shadow: 0 0 3px 0 rgba(255, 45, 85, .35); }
+  50% { outline-color: rgba(255, 45, 85, 1); box-shadow: 0 0 12px 3px rgba(255, 45, 85, .8), 0 0 26px 8px rgba(255, 45, 85, .35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .np-next { animation: none; outline-color: #ff2d55; }
+}
 .np-modalfoot { padding: 8px 16px 12px; margin: 0; font-size: 12.5px; }
 
 @media (max-width: 1240px) {
@@ -1569,9 +1693,6 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 @media (max-width: 640px) {
   .np-datarow { grid-template-columns: minmax(0, 1fr); }
   .np-card { padding: 12px 13px; }
-  /* 좁은 화면 - 리모컨은 아래쪽 전폭 */
-  .np-remote { left: 8px; right: 8px; bottom: 8px; width: auto; max-width: none; }
-  .np-remote.min { left: auto; }
   .np-dl { grid-template-columns: minmax(0, 1fr); gap: 0 0; }
   .np-dl dd { margin-bottom: 6px; }
   .np-side + .np-side { border-left: 0; border-top: 1px solid var(--line); }

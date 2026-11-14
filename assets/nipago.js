@@ -11,14 +11,15 @@
    니케별 권장·종결 옵션은 data/nipago/profiles.json (RefDoc 문서 → tools/nipago_profiles.mjs).
    니케를 고르거나 계산기에서 넘어오면 그 옵션을 목표로 둘지 묻는다.
 
-   계산은 [계산하기] 카드의 [계산] 을 눌러야 시작한다. 목표·장비를 고치면 다시 누를 때까지 멈추고,
+   계산은 [계산] 을 눌러야 시작한다. 목표·장비를 고치면 다시 누를 때까지 멈추고,
    시뮬레이션 진행(실행·유지/적용·취소)은 그 계산을 이어 간다.
 
-   화면: 니케 검색 → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
-         → [목표 | 오버로드 옵션 · 계산하기 · 기록] + 플로팅 리모컨(탐색 모드·재화 우선순위·재화 소모량)
+   화면: 니케 검색 → 리모컨(탐색 모드·재화 우선순위·재화 소모량) → [데이터 | 현재 OL 종합 | 변경된 OL 종합]
+         → [목표 | 네 부위 · 선택 부위(개조 장비 효과) · 기록]
 
-   흐름 (명세 23.4): 확정 상태 → 다음 설정 → 실행(이때 재화 차감) → 새 결과(미확정)
-                    → 유지/적용 비교 → 실제 선택 → 다음 행동 재계산 */
+   흐름 (게임 순서): 부위 선택 → 효과 변경 / 수치 재설정 선택 → 잠금·비용 확인 → 실행(이때 재화 차감)
+                    → 새 결과(미확정) → 효과 유지 / 효과 변경 → 다시 계산.
+   부위는 사용자가 고르고, 지금 볼 곳 하나에 붉은 네온(np-next)을 붙인다. */
 
 import { optionLabel, optionFullLabel, olRows, SLOTS, olTotals, olPct, olLevelCls, OL_ORDER, olRank } from './cp.js';
 import { rosterGearFor } from './roster.js';
@@ -33,8 +34,8 @@ const E = () => ({ opt: '', lv: 0 });
 
 let ctx = null, D = null, RAW = null, base = './data/', mounted = null;
 let S = null;                        // 저장되는 상태
-let ui = { edit: null, rec: null, busy: false, cmp: null, draft: null, manual: false, err: null, detail: false, logOpen: false,
-  lvPick: null, remoteMin: loadRemoteMin(), askProf: null };
+let ui = { edit: null, rec: null, busy: false, cmp: null, draft: null, err: null, logOpen: false,
+  lvPick: null, remoteMin: loadRemoteMin(), askProf: null, askScope: false, pgEdit: false, recMoved: false };
 
 /* ── 작은 도우미 ─────────────────────────────────────────── */
 function h(tag, attrs, ...kids) {
@@ -116,7 +117,7 @@ async function compute(type, payload) {
     try { return await post(type, payload); } catch { worker = false; }
   }
   if (!inline) inline = (await import('./nipago/service.js')).createService(RAW.option, RAW.glossary, { base: absBase() });
-  return type === 'compare' ? inline.compare(payload.st, payload.keep, payload.acc) : inline.recommend(payload.st);
+  return type === 'compare' ? inline.compare(payload.st, payload.keep, payload.acc, payload.piece) : inline.recommend(payload.st);
 }
 /* 워커 안에서는 상대 주소가 워커 파일 기준이 된다 - 절대 주소로 넘긴다 */
 const absBase = () => new URL(base, location.href).href;
@@ -143,7 +144,11 @@ const defaults = () => ({
   spent: { mod: 0, key: 0 },
   log: [],
   pending: null,
-  plan: null,                       // 직접 설정 { piece, kind, prot: { [line]: 'perm' | 'key' } }
+  scope: 'all',                     // 'all' 전체 부위 최적화 | 'piece' 선택한 부위만 최적화
+  scopeAsked: false,                // 범위를 한 번 물었다
+  focus: null,                      // 사용자가 고른 부위 번호
+  pieceGoals: {},                   // 선택한 부위만 최적화 - 부위별 목표 { [p]: [{ opt, m }] }
+  plan: null,                       // 선택 부위의 실행 설정 { piece, kind, prot: { [line]: 'perm' | 'key' }, auto, sig }
   stateNo: 1,
   goalNo: 1,
 });
@@ -181,9 +186,20 @@ function normalize(v) {
   }
   const { budget, ...rest } = v;      // 보유 재화 입력은 없앴다
   const base = Array.isArray(v.base) && v.base.length === PIECES.length
-    ? v.base.map((g, p) => ({ slot: PIECES[p], overloaded: !!g?.overloaded, lines: [0, 1, 2].map(i => cleanLine(g?.lines?.[i])) }))
+    ? v.base.map((g, p) => ({ slot: PIECES[p], overloaded: !!g?.overloaded, lines: [0, 1, 2].map(i => cleanLine(g?.lines?.[i])),
+      perm: [0, 1, 2].map(i => g?.perm?.[i] === true) }))
     : null;
-  return { ...d, ...rest, gear, base, goals: { mode: ['opt', 'lv', 'tier'].includes(v.goals?.mode) ? v.goals.mode : 'opt', items },
+  const focus = Number.isInteger(v.focus) && v.focus >= 0 && v.focus < PIECES.length ? v.focus : null;
+  const pieceGoals = {};
+  for (const [p, list] of Object.entries(v.pieceGoals || {})) {
+    if (!Array.isArray(list) || !PIECES[+p]) continue;
+    const seen = new Set();
+    pieceGoals[p] = list.map(x => ({ opt: fixOpt(x?.opt), m: clampLv(x?.m) }))
+      .filter(x => opt(x.opt) && !seen.has(x.opt) && seen.add(x.opt)).slice(0, 3);
+  }
+  const plan = v.plan && v.plan.piece === focus && 'auto' in v.plan ? v.plan : null;
+  return { ...d, ...rest, gear, base, focus, pieceGoals, plan, scope: v.scope === 'piece' ? 'piece' : 'all', scopeAsked: !!v.scopeAsked,
+    goals: { mode: ['opt', 'lv', 'tier'].includes(v.goals?.mode) ? v.goals.mode : 'opt', items },
     spent: { ...d.spent, ...(v.spent || {}) }, armed: !!v.armed,
     log: Array.isArray(v.log) ? v.log : [], nikke: { ...d.nikke, ...(v.nikke || {}) } };
 }
@@ -212,7 +228,7 @@ function fromV2(v) {
 function commit(fn, { goal = false, run = false } = {}) {
   fn();
   S.stateNo++;
-  if (goal) S.goalNo++;
+  if (goal) { S.goalNo++; S.pieceGoals = {}; }   // 전체 목표가 바뀌면 부위별 목표는 새 배분에서 다시 잡는다
   if (!run) S.armed = false;
   save();
   paint();
@@ -220,13 +236,12 @@ function commit(fn, { goal = false, run = false } = {}) {
 }
 function calc() {
   if (!Object.keys(S.goals.items).length) return;
+  if (!S.scopeAsked) { ui.askScope = true; paint(); return; }
   S.armed = true;
   save();
   requestRec();
   paint();
 }
-/* 첫 실행 뒤부터는 자물쇠가 이번 실행의 잠금이다 (비용이 붙는다). 그 전에는 원래 잠겨 있던 줄 표시. */
-const started = () => S.log.length > 0 || !!S.pending;
 const repaint = fn => { if (fn) fn(); paint(); };
 
 /* ── 계산기 탭에서 네 부위 채우기 ─────────────────────────── */
@@ -242,7 +257,7 @@ function piecesFrom(gear) {
 }
 function applyGear(st, gear) {
   st.gear = piecesFrom(gear);
-  st.pending = null; st.plan = null; st.armed = false; st.base = null;
+  st.pending = null; st.plan = null; st.focus = null; st.pieceGoals = {}; st.armed = false; st.base = null;
 }
 export function seedGear({ rid, gear }) {
   const apply = st => {
@@ -254,7 +269,7 @@ export function seedGear({ rid, gear }) {
   ui.askFocus = !!rid;
   if (S) {
     apply(S); save();
-    if (mounted) { ui.cmp = null; ui.draft = null; ui.manual = false; ui.rec = null; loadNikkeStats(); paint(); }
+    if (mounted) { ui.cmp = null; ui.draft = null; ui.rec = null; loadNikkeStats(); paint(); }
     return;
   }
   let saved = null;
@@ -270,7 +285,7 @@ function pickNikke(n) {
   const gear = n ? rosterGearFor(n) : null;
   commit(() => {
     S.nikke = { rid: n ? n.rid : null, baseAmmo: null, chargeTime: null };
-    if (gear) { applyGear(S, gear); ui.cmp = null; ui.draft = null; ui.manual = false; ui.rec = null; ui.edit = null; }
+    if (gear) { applyGear(S, gear); ui.cmp = null; ui.draft = null; ui.rec = null; ui.edit = null; }
     S.base = null;
   });
   if (n) { ui.askProf = n.rid; ui.askFocus = true; loadProfiles(); }
@@ -284,7 +299,53 @@ function baseline() {
   if (S.base) return { src: 'start', gear: S.base };
   return { src: null, gear: S.gear };
 }
-const gearCopy = gear => gear.map(g => ({ slot: g.slot, overloaded: g.overloaded, lines: g.lines.map(l => ({ ...l })) }));
+const gearCopy = gear => gear.map(g => ({ slot: g.slot, overloaded: g.overloaded, lines: g.lines.map(l => ({ ...l })),
+  perm: [0, 1, 2].map(i => g.perm?.[i] === true) }));
+
+/* ── 초기화 ───────────────────────────────────────────────── */
+/* 처음 상태 - 첫 실행 직전 장비, 없으면 계정 자료의 장비 */
+function initialGear() {
+  if (S.base) return S.base;
+  const acct = rosterGearFor(nikkeOf(S.nikke.rid));
+  return acct ? piecesFrom(acct) : null;
+}
+const sameGear = (a, b) => JSON.stringify(gearCopy(a)) === JSON.stringify(gearCopy(b));
+const dropUi = () => { ui.cmp = null; ui.draft = null; ui.edit = null; ui.pgEdit = false; ui.recMoved = false; };
+const zeroRun = () => { S.spent = { mod: 0, key: 0 }; S.log = []; };
+/* 재화 소모량과 시도 기록을 한 번에 0으로. 장비는 그대로 둔다. */
+function resetRun() {
+  if (S.pending) return;
+  repaint(() => { zeroRun(); save(); });
+}
+/* 네 부위 - to: 처음 상태(initialGear) 또는 null(모두 비움). 이 장비로 쌓은 소모량·기록도 함께 지운다. */
+function resetGear(to) {
+  if (S.pending) return;
+  commit(() => {
+    S.gear = to ? gearCopy(to) : PIECES.map(emptyPiece);
+    S.base = null; S.plan = null; zeroRun();
+  }, { run: true });
+  dropUi();
+}
+/* 한 부위 - 그 부위에서 한 시도의 소모량·기록만 뺀다 */
+function resetPiece(p, to) {
+  if (S.pending) return;
+  commit(() => {
+    S.gear[p] = to ? gearCopy([to])[0] : emptyPiece(PIECES[p]);
+    for (const x of S.log.filter(y => y.piece === p)) {
+      S.spent.mod = Math.max(0, S.spent.mod - x.cost.mod); S.spent.key = Math.max(0, S.spent.key - x.cost.key);
+    }
+    S.log = S.log.filter(y => y.piece !== p);
+    S.plan = null;
+  }, { run: true });
+  dropUi();
+}
+function resetAll() {
+  if (!confirm(t('np.clearConfirm'))) return;
+  S = defaults();
+  dropUi(); ui.rec = null; ui.askProf = null; ui.askScope = false;
+  save(); paint();
+}
+const chip = (label, fn, extra = {}) => btn('np-rreset', label, fn, extra);
 /* 네 부위 → 종합 (계산기와 같은 규칙: 차속·장탄만 단계 묶음 반올림) */
 const olLines = gear => gear.filter(g => g.overloaded)
   .flatMap(g => g.lines.filter(l => l.opt && opt(l.opt)).map(l => ({ name: l.opt, level: l.lv })));
@@ -332,18 +393,26 @@ async function applySet(set) {
   commit(() => {
     const items = {};
     for (const [id, n] of Object.entries(set.goals)) {
-      if (D.byId[id]) items[id] = { count: Math.min(4, n), minLv: 12, lvs: fitLvs([], Math.min(4, n), 12), eff: null };
+      if (!D.byId[id]) continue;
+      const count = Math.min(4, n);
+      items[id] = { count, minLv: PROF_LV, lvs: presetLvs(id, count), eff: null };
     }
     const e = set.eff;
     if (e && D.byId[e.opt]) {
       const a = S.nikke.baseAmmo;
-      const it = items[e.opt] || { count: 1, minLv: 12, lvs: [12], eff: null };
+      const it = items[e.opt] || { count: 1, minLv: PROF_LV, lvs: presetLvs(e.opt, 1), eff: null };
       if (a && e.shots > a && EFF_OPTS[e.opt] === 'ammo') it.eff = { min: e.shots - a, model: 'pct' };
       items[e.opt] = it;
     }
-    S.goals = { ...S.goals, mode: 'opt', items };
+    S.goals = { ...S.goals, mode: 'tier', items };
   }, { goal: true });
 }
+/* 추천 옵션의 기준 단계. 장비에 이미 더 높은 줄이 있으면 그 단계를 줄마다 목표로 올린다 (예: 2줄, 장비 14·11 → 14·12). */
+const PROF_LV = 12;
+const presetLvs = (id, count) => {
+  const have = S.gear.flatMap(g => (g.overloaded ? g.lines : [])).filter(l => l.opt === id).map(l => l.lv).sort((a, b) => b - a);
+  return Array.from({ length: count }, (_, i) => Math.max(PROF_LV, have[i] || 0));
+};
 
 /* 안 이름 - 한국어는 문서 말 그대로, 그 밖에는 역할만 */
 const setLabel = x => !x.label ? null : ctx.lang === 'ko' ? x.label
@@ -425,7 +494,7 @@ const engineState = () => ({
   gear: engineGear(S.gear),
   goals: S.goals,
   nikke: { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 },
-  pref: S.pref, keep: S.keep, stateNo: S.stateNo, goalNo: S.goalNo,
+  pref: S.pref, keep: S.keep, stateNo: S.stateNo, goalNo: S.goalNo, scope: S.scope, pieceGoals: S.pieceGoals,
 });
 
 let recTimer = 0;
@@ -439,6 +508,7 @@ function requestRec() {
       const out = await compute('rec', { st: engineState() });
       if (out.stateNo !== S.stateNo) return;      // 그 사이 상태가 바뀌었다 - 버린다
       ui.rec = out; ui.err = null;
+      adoptRec(); save();
     } catch (err) {
       if (want === S.stateNo) ui.err = String(err.message || err);
     }
@@ -455,7 +525,7 @@ async function requestCompare() {
   const keep = engineGear(S.gear);
   const acc = keep.map((g, i) => (i === pd.piece ? { ...g, lines: pd.result.map(l => ({ ...l })) } : g));
   try {
-    const out = await compute('compare', { st: engineState(), keep, acc });
+    const out = await compute('compare', { st: engineState(), keep, acc, piece: pd.piece });
     if (S.pending?.tryId !== tryId) return;
     ui.cmp = { ...out, tryId };
   } catch (err) { ui.cmp = { err: String(err.message || err), tryId }; }
@@ -463,21 +533,63 @@ async function requestCompare() {
 }
 
 /* ── 실행 · 선택 (명세 23.3~23.4, 24.5) ───────────────────── */
-/* 지금 실행할 행동 - 직접 설정이 우선, 아니면 추천 */
-function currentAction() {
-  if (ui.manual && S.plan) {
-    const g = S.gear[S.plan.piece];
-    if (!g.overloaded) return { piece: S.plan.piece, kind: 'first', protect: [], unlock: [], cost: { mod: 1, key: 0 }, manual: true };
-    const protect = Object.entries(S.plan.prot || {})
-      .filter(([i]) => g.lines[+i].opt)
-      .map(([i, mat]) => ({ line: +i, mat, fresh: !(mat === 'perm' && g.perm[+i] === true) }));
-    const unlock = [0, 1, 2].filter(i => g.perm[i] === true && !protect.some(p => p.line === i));
-    return { piece: S.plan.piece, kind: S.plan.kind, protect, unlock, cost: tryCost(protect, 0.1), manual: true };
-  }
-  const r = ui.rec;
-  if (!r || r.stateNo !== S.stateNo || !r.alts) return null;
-  const a = r.alts[r.pick];
-  return a && a.ok ? { piece: a.piece, kind: a.act.kind, protect: a.act.protect, unlock: a.act.unlock, cost: a.act.cost } : null;
+/* 지금 유효한 계산 결과 - 재화 우선순위에 맞는 안 하나와 그 안의 부위 p */
+const recView = () => { const r = ui.rec; return r && r.stateNo === S.stateNo && r.alts && r.pick ? r.alts[r.pick] : null; };
+const pieceRec = p => { const v = recView(); return v && p != null && v.pieces[p]?.ok ? v.pieces[p] : null; };
+/* 부위 p 의 목표 - 선택한 부위만 최적화면 사용자가 정한 것, 아니면 전체 배분에서 맡은 몫 */
+const targetsOf = p => (S.scope === 'piece' && S.pieceGoals[p]) || pieceRec(p)?.S || null;
+const protMap = protect => Object.fromEntries(protect.map(x => [x.line, x.mat]));
+const protKey = protect => protect.map(x => x.line + x.mat).sort().join(',');
+const heldProt = g => Object.fromEntries([0, 1, 2].filter(i => g.perm[i] === true && g.lines[i].opt).map(i => [i, 'perm']));
+/* 선택 부위의 실행 설정. auto: 잠금이 추천을 따라간다 (자물쇠를 직접 누르면 꺼진다) */
+const newPlan = p => ({ piece: p, kind: null, prot: heldProt(S.gear[p]), auto: true, sig: null });
+
+/* 계산 결과를 선택 부위 설정에 반영한다. 추천이 직전과 달라지면 종류 선택을 비워 다시 고르게 한다. */
+function adoptRec() {
+  const p = S.focus;
+  if (p == null) { S.plan = null; return; }
+  if (!S.plan || S.plan.piece !== p || !('auto' in S.plan)) S.plan = newPlan(p);
+  const pr = pieceRec(p);
+  if (!pr) return;
+  if (S.scope === 'piece' && !S.pieceGoals[p] && !S.pending) { S.pieceGoals[p] = pr.S.map(x => ({ opt: x.opt, m: x.m })); save(); }
+  const a = pr.act;
+  if (!a || !S.plan.auto) return;
+  /* 이미 걸린 모듈 잠금은 추천이 해제를 권해도 자동으로 풀지 않는다 - 사용자가 자물쇠를 눌러야 풀린다 */
+  const prot = a.kind === 'first' ? {} : { ...heldProt(S.gear[p]), ...protMap(a.protect) };
+  const sig = a.kind + JSON.stringify(prot);
+  if (S.plan.sig && S.plan.sig !== sig && S.plan.kind) { S.plan.kind = null; ui.recMoved = true; }
+  S.plan.prot = prot; S.plan.sig = sig;
+}
+
+function selectPiece(p) {
+  if (S.pending || S.focus === p) return;
+  repaint(() => { S.focus = p; S.plan = newPlan(p); ui.edit = null; ui.pgEdit = false; ui.recMoved = false; save(); });
+}
+
+/* 선택 부위에서 kind 를 지금 잠금 설정으로 실행할 때의 행동. opt: 엔진이 평가한 같은 행동(없으면 null) */
+function actionFor(kind) {
+  const p = S.focus;
+  if (p == null || !S.plan || !kind) return null;
+  const g = S.gear[p];
+  if (!g.overloaded) return kind === 'first' ? { piece: p, kind, protect: [], unlock: [], cost: { mod: 1, key: 0 }, opt: null, best: true } : null;
+  if (kind === 'first') return null;
+  const protect = Object.entries(S.plan.prot || {})
+    .filter(([i]) => g.lines[+i].opt)
+    .map(([i, mat]) => ({ line: +i, mat, fresh: !(mat === 'perm' && g.perm[+i] === true) }))
+    .sort((a, b) => a.line - b.line);
+  const unlock = [0, 1, 2].filter(i => g.perm[i] === true && !protect.some(x => x.line === i));
+  const o = pieceRec(p)?.options.find(x => x.kind === kind && protKey(x.protect) === protKey(protect)) || null;
+  return { piece: p, kind, protect, unlock, cost: o ? o.cost : tryCost(protect, 0.1), opt: o, best: !!o?.best };
+}
+const currentAction = () => actionFor(S.plan?.kind);
+/* 지금 설정이 추천과 같은가 */
+function matchesRec(a, rec) {
+  return !!a && !!rec && a.kind === rec.kind && protKey(a.protect) === protKey(rec.protect);
+}
+function followRec() {
+  const rec = pieceRec(S.focus)?.act;
+  if (!rec || S.pending) return;
+  repaint(() => { S.plan = newPlan(S.focus); adoptRec(); S.plan.kind = rec.kind; ui.recMoved = false; save(); });
 }
 
 function actionProblems(a) {
@@ -497,7 +609,7 @@ function execute() {
   commit(() => {
     const g = S.gear[a.piece];
     const tryId = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 7)}`;
-    if (!S.log.length) S.base = gearCopy(S.gear);
+    if (!S.base) S.base = gearCopy(S.gear);
     S.spent.mod += a.cost.mod; S.spent.key += a.cost.key;
     const before = g.lines.map(l => ({ ...l }));
     const prevPerm = g.perm.slice();
@@ -509,9 +621,9 @@ function execute() {
       result = roll(D, { ...g, lines: before }, a.kind, protectLines, Math.random);
     }
     S.pending = { tryId, piece: a.piece, kind: a.kind, protect: a.protect, unlock: a.unlock, cost: a.cost,
-      before, prevPerm, result, followed: !a.manual };
+      before, prevPerm, result, followed: a.best };
     S.log.push({ tryId, at: Date.now(), piece: a.piece, kind: a.kind, protect: a.protect, cost: a.cost,
-      before, prevPerm, result: null, choice: null, followed: !a.manual, src: S.source });
+      before, prevPerm, result: null, choice: null, followed: a.best, src: S.source });
     if (S.log.length > 300) S.log.splice(0, S.log.length - 300);
   }, { run: true });
   ui.cmp = null;
@@ -546,8 +658,8 @@ function choose(choice) {
     const rec = S.log.find(x => x.tryId === pd.tryId);
     if (rec) { rec.result = pd.result; rec.choice = pd.kind === 'first' ? 'accept' : choice; rec.advice = ui.cmp?.choice || null; }
     S.pending = null;
-    /* 직접 설정은 이어진다 - 빈칸이 된 줄의 잠금만 뺀다 */
-    if (ui.manual && S.plan) S.plan.prot = Object.fromEntries(Object.entries(S.plan.prot || {}).filter(([i]) => S.gear[S.plan.piece].lines[+i].opt));
+    /* 실행 설정은 이어진다 - 빈칸이 된 줄의 잠금만 뺀다 */
+    if (S.plan) S.plan.prot = Object.fromEntries(Object.entries(S.plan.prot || {}).filter(([i]) => S.gear[S.plan.piece].lines[+i].opt));
   }, { run: true });
   ui.cmp = null; ui.draft = null;
 }
@@ -704,7 +816,8 @@ function searchRow() {
     }
     bar.appendChild(group);
   }
-  box.appendChild(h('div', 'np-sline', h('div', 'np-sbox', inp, list), bar));
+  box.appendChild(h('div', 'np-sline', h('div', 'np-sbox', inp, list), bar,
+    chip(t('np.clear'), resetAll, { title: t('np.clearHint'), class: 'np-rreset np-resetall' })));
   return box;
 }
 
@@ -801,31 +914,28 @@ function olCard(title, gear, { src = null, ref = null } = {}) {
 function renderRemote() {
   const min = ui.remoteMin;
   const box = h('aside', { class: 'np-remote' + (min ? ' min' : ''), 'aria-label': t('np.remote') });
-  const toggle = btn('np-rtoggle', min ? '▴' : '▾', () => repaint(() => {
+  box.style.setProperty('--np-top', (document.querySelector('.topbar')?.offsetHeight || 0) + 'px');
+  const toggle = btn('np-rtoggle', min ? '▾' : '▴', () => repaint(() => {
     ui.remoteMin = !min;
     try { localStorage.setItem(REMOTE_STORE, ui.remoteMin ? '1' : '0'); } catch {}
   }), { title: t(min ? 'np.remoteMax' : 'np.remoteMin'), 'aria-label': t(min ? 'np.remoteMax' : 'np.remoteMin'), 'aria-expanded': String(!min) });
-  box.appendChild(h('div', 'np-rhead',
-    h('span', 'np-rttl', t('np.remote')),
-    min ? h('span', 'np-rmini', h('b', 'np-m', '🔵 ' + S.spent.mod), h('b', 'np-k', '🔑 ' + S.spent.key)) : null,
-    toggle));
-  if (min) return box;
-
   const field = (label, ...kids) => h('div', 'np-rfield', h('span', 'np-flbl', label), ...kids);
-  box.appendChild(field(t('np.source'),
-    seg([['real', t('np.srcReal'), t('np.srcRealHint')], ['sim', t('np.srcSim'), t('np.srcSimHint')]], S.source,
-      v => { if (!S.pending) commit(() => { S.source = v; }, { run: true }); }, 'np-seg-s')));
-  box.appendChild(field(t('np.pref'),
-    seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
-      S.pref, v => commit(() => { S.pref = v; }, { run: true }), 'np-seg-s')));
   /* 소모량 초기화는 계산 입력이 아니다 - commit 으로 계산을 멈추지 않는다 */
-  const reset = (k, label) => btn('np-rreset', t('np.reset'), () => repaint(() => { S.spent[k] = 0; save(); }),
-    { title: t('np.resetOf', label), disabled: !S.spent[k] });
-  box.appendChild(field(t('np.spent'),
+  const spent = field(t('np.spent'),
     h('div', 'np-rrow',
-      h('span', { class: 'np-rpair', title: t('np.mod') }, h('span', 'np-rk', icMod()), h('b', 'np-m', String(S.spent.mod)), reset('mod', t('np.mod'))),
-      h('span', { class: 'np-rpair', title: t('np.key') }, h('span', 'np-rk', icKey()), h('b', 'np-k', String(S.spent.key)), reset('key', t('np.key')))),
-    h('span', 'np-note', t('np.tries', S.log.length))));
+      h('span', { class: 'np-rpair', title: t('np.mod') }, h('span', 'np-rk', icMod()), h('b', 'np-m', String(S.spent.mod))),
+      h('span', { class: 'np-rpair', title: t('np.key') }, h('span', 'np-rk', icKey()), h('b', 'np-k', String(S.spent.key))),
+      h('span', 'np-rpair np-rtries', t('np.tries', S.log.length)),
+      chip(t('np.reset'), resetRun, { title: t('np.resetRunHint'), disabled: !!S.pending || !(S.spent.mod || S.spent.key || S.log.length) })));
+  if (!min) {
+    box.appendChild(field(t('np.source'),
+      seg([['real', t('np.srcReal'), t('np.srcRealHint')], ['sim', t('np.srcSim'), t('np.srcSimHint')]], S.source,
+        v => { if (!S.pending) commit(() => { S.source = v; }, { run: true }); }, 'np-seg-s')));
+    box.appendChild(field(t('np.pref'),
+      seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
+        S.pref, v => commit(() => { S.pref = v; }, { run: true }), 'np-seg-s')));
+  }
+  box.append(spent, toggle);
   return box;
 }
 
@@ -834,7 +944,9 @@ function renderGoals(prog) {
   const card = h('section', 'np-card np-goals');
   card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.goals')),
     seg([['opt', t('np.modeOpt'), t('np.modeOptHint')], ['lv', t('np.modeLv'), t('np.modeLvHint')], ['tier', t('np.modeTier'), t('np.modeTierHint')]],
-      S.goals.mode, v => commit(() => { S.goals.mode = v; }, { goal: true }), 'np-seg-s')));
+      S.goals.mode, v => commit(() => { S.goals.mode = v; }, { goal: true }), 'np-seg-s'),
+    chip(t('np.clearCard'), () => commit(() => { S.goals.items = {}; }, { goal: true }),
+      { title: t('np.clearGoalsHint'), disabled: !!S.pending || !Object.keys(S.goals.items).length })));
   card.appendChild(h('p', 'np-note', t('np.goalsHint')));
   const pc = profCard();
   if (pc) card.appendChild(pc);
@@ -943,240 +1055,279 @@ function lvBadges(id, g) {
 }
 
 /* [계산] - 누르기 전에는 아무것도 계산하지 않는다 */
-function calcRow() {
+function calcRow(step) {
   const fresh = S.armed && ui.rec && ui.rec.stateNo === S.stateNo;
   return h('div', 'np-calcrow',
-    btn('np-calc' + (S.armed ? ' done' : ''), S.armed ? (fresh || ui.busy ? '✓ ' + t('np.calcDone') : t('np.calc')) : t('np.calc'), calc,
+    btn('np-calc' + (S.armed ? ' done' : '') + (step === 'calc' ? ' np-next' : ''),
+      S.armed ? (fresh || ui.busy ? '✓ ' + t('np.calcDone') : t('np.calc')) : t('np.calc'), calc,
       { disabled: S.armed || !Object.keys(S.goals.items).length }),
     h('span', 'np-note', S.armed ? t('np.calcArmed') : t('np.calcHint')));
 }
 const defaultEff = id => (EFF_OPTS[id] === 'ammo' ? Math.max(1, Math.round((S.nikke.baseAmmo || 6) * 1.5)) : 10);
 
-/* ── 렌더: 다음 한 번 ─────────────────────────────────────── */
+/* ── 다음에 볼 곳 ─────────────────────────────────────────── */
+/* 흐름상 지금 확인하거나 눌러야 하는 곳 하나 - 그 요소에 np-next (붉은 네온) 를 붙인다 */
+function nextStep() {
+  const pd = S.pending;
+  if (pd) {
+    if (!pd.result) return 'form';
+    return pd.kind === 'first' || (ui.cmp && ui.cmp.tryId === pd.tryId && !ui.cmp.busy) ? 'choose' : null;
+  }
+  if (ui.askProf || ui.askScope) return null;
+  if (!Object.keys(S.goals.items).length) return 'goals';
+  if (!S.armed) return 'calc';
+  const v = recView();
+  if (!v || ui.rec.status !== 'go') return null;
+  if (S.focus == null) return 'tiles';
+  const pr = v.pieces[S.focus];
+  if (!pr.ok || !(pr.v > 0)) return 'tiles';
+  return S.plan?.kind ? 'go' : 'kinds';
+}
+
+/* ── 렌더: 실행 문구·재화 ─────────────────────────────────── */
 function actionText(a) {
   const piece = t('np.piece_' + a.piece);
   if (a.kind === 'first') return t('np.doFirst', piece);
   const prot = a.protect.map(p => t('np.protOne', p.line + 1, t(p.mat === 'key' ? 'np.matKey' : p.fresh ? 'np.matPermNew' : 'np.matPerm')));
   return t(a.kind === 'reset' ? 'np.doReset' : 'np.doChange', piece, prot.length ? prot.join(', ') : t('np.noProtect'));
 }
+const kindLabel = kind => t(kind === 'first' ? 'np.kindFirst' : kind === 'reset' ? 'np.kindReset' : 'np.kindChange');
+const lockText = protect => (protect.length
+  ? protect.map(p => t('np.protOne', p.line + 1, t(p.mat === 'key' ? 'np.lockS_key' : 'np.lockS_new'))).join(', ') : t('np.lockS_none'));
 /* 모듈·락키 수 - 재화 이름 대신 아이콘 */
 const icMod = () => itemIcon(ITEM.module, t('np.mod'));
 const icKey = () => itemIcon(ITEM.lockKey, t('np.key'));
 const costNode = c => h('span', 'np-cost', icMod(), String(c.mod), c.key ? [' + ', icKey(), String(c.key)] : null);
 const meanNode = (m, k) => h('span', 'np-cost', icMod(), num(m), ' · ', icKey(), num(k));
-
-function renderRec(prog) {
-  const card = h('section', 'np-card np-rec');
-  const r = ui.rec && ui.rec.stateNo === S.stateNo ? ui.rec : null;
-  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.next')),
-    h('span', 'np-meta', ui.busy ? t('np.computing') : r ? `#${r.stateNo} · ${r.rules}` : '')));
-
-  if (!Object.keys(S.goals.items).length) { card.appendChild(h('p', 'np-empty', t('np.noGoal'))); return card; }
-  if (!S.armed) {
-    card.appendChild(banner('check', t(ui.rec ? 'np.st_stale' : 'np.st_ready'), t(ui.rec ? 'np.st_staleDesc' : 'np.st_readyDesc')));
-    card.appendChild(calcRow());
-    return card;
-  }
-  if (ui.err) card.appendChild(banner('check', t('np.st_err'), ui.err));
-  if (!r) {
-    card.appendChild(h('div', 'np-skel', h('span', 'np-spin'), t('np.computingLong')));
-    return card;
-  }
-
-  if (r.status === 'done') {
-    card.appendChild(banner('done', t('np.st_done'), t('np.st_doneDesc')));
-    return card;
-  }
-  if (r.status === 'impossible') {
-    card.appendChild(banner('check', t('np.st_impossible'), t('np.st_impossibleDesc')));
-    return card;
-  }
-
-  const a = r.alts[r.pick];
-  const act = { piece: a.piece, kind: a.act.kind, protect: a.act.protect, unlock: a.act.unlock, cost: a.act.cost };
-  const main = h('div', 'np-do' + (ui.manual ? ' dim' : ''));
-  main.appendChild(h('div', 'np-dotitle', actionText(act)));
-  if (act.unlock.length) main.appendChild(h('div', 'np-dosub', t('np.unlockLines', act.unlock.map(i => i + 1).join(', '))));
-
-  const facts = h('dl', 'np-dl');
-  const fact = (k, v, cls) => facts.append(h('dt', null, k), h('dd', cls, v));
-  const lockPart = tryCost(act.protect.map(p => ({ ...p, fresh: false })));
-  const fresh = { mod: act.cost.mod - lockPart.mod, key: act.cost.key };
-  fact(t('np.thisCost'), [costNode(act.cost),
-    fresh.mod || fresh.key ? h('small', null, ` (${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
-    act.cost.estimated ? h('small', 'np-est', ' · ' + t('np.estimated')) : null]);
-  const pc = a.pieces[a.piece];
-  fact(t('np.why'), t('np.whyText', t('np.piece_' + a.piece), pc.S.map(x => short(x.opt) + (x.m > 1 ? ` ${x.m}+` : '')).join('·') || '-', num(pc.m),
-    a.pieces.filter(x => x.v > 0).length));
-  const kept = prog.filter(p => p.eff && p.ok);
-  if (kept.length) fact(t('np.guard'), kept.map(p => `${short(p.opt)} ${fmtEff(p.cfg, p.have)}`).join(', '));
-  fact(t('np.outlookMean'), meanNode(a.m, a.k));
-  main.appendChild(facts);
-
-  const probs = actionProblems(act);
-  const go = btn('np-go', S.source === 'sim' ? t('np.goSim') : t('np.goReal'), execute,
-    { disabled: !!S.pending || ui.manual || probs.length > 0 });
-  main.appendChild(h('div', 'np-goRow', go,
-    probs.map(x => h('span', 'np-prob', t('np.prob_' + x)))));
-  card.appendChild(main);
-
-  /* 대안 - 모듈 절약 / 균형 / 락키 미사용 (다른 것만) */
-  const others = ['mod', 'balanced', 'key'].filter(p => p !== r.pick && r.alts[p]?.ok);
-  const sig = x => JSON.stringify([x.piece, x.act]);
-  const distinct = others.filter(p => sig(r.alts[p]) !== sig(a) || Math.abs(r.alts[p].k - a.k) > 0.5 || Math.abs(r.alts[p].m - a.m) > 0.5);
-  const alts = h('div', 'np-alts');
-  alts.appendChild(h('div', 'np-altttl', t('np.alts')));
-  for (const p of distinct) {
-    const x = r.alts[p];
-    alts.appendChild(h('div', 'np-alt',
-      h('span', 'np-altk', t('np.pref_' + p)),
-      h('span', 'np-altd', actionText({ piece: x.piece, kind: x.act.kind, protect: x.act.protect }), ' · ', meanNode(x.m, x.k)),
-      btn('np-altb', t('np.useThis'), () => commit(() => { S.pref = p; }, { run: true }))));
-  }
-  alts.appendChild(h('div', 'np-alt',
-    h('span', 'np-altk', t('np.altStop')),
-    h('span', 'np-altd', t('np.altStopDesc', prog.filter(x => !x.ok).map(x => `${short(x.opt)} ${x.eff ? fmtEff(x.cfg, x.have) + '/' + fmtEff(x.cfg, x.need) : x.have + '/' + x.need}`).join(', ')))));
-  card.appendChild(alts);
-
-  /* 근거 범위 · 자세히 */
-  const det = h('details', { class: 'np-detail', open: ui.detail || null });
-  det.ontoggle = () => { ui.detail = det.open; };
-  det.appendChild(h('summary', null, t('np.scope')));
-  det.appendChild(h('p', 'np-note', t('np.scopeText', t('np.pref_' + r.pick), Number.isFinite(a.lambda) ? a.lambda : '∞')));
-  det.appendChild(h('ul', 'np-plan', a.pieces.map((x, p) => h('li', null,
-    h('b', null, t('np.piece_' + p)), ' ',
-    x.S.length ? x.S.map(s => short(s.opt) + (s.m > 1 ? ` ${s.m}+` : '')).join('·') : t('np.nothingHere'),
-    x.v > 0 ? [' - ', meanNode(x.m, x.k), x.first ? ' · ' + t('np.firstIncl') : ''] : ` - ${t('np.pieceOk')}`))));
-  if (r.stats) det.appendChild(h('p', 'np-note', t('np.tableStats', r.stats.loaded, r.stats.built)));
-  card.appendChild(det);
-  return card;
-}
+const pct = x => (x >= 0.99995 ? '100%' : x < 0.00005 ? '0%' : (x * 100).toFixed(x < 0.1 ? 2 : 1) + '%');
+const goalChip = x => h('span', 'np-pchip', short(x.opt) + (x.m > 1 ? ` ${x.m}+` : ''));
 
 function banner(kind, title, desc) {
   return h('div', 'np-banner np-b-' + kind, h('b', null, title), desc ? h('span', null, desc) : null);
 }
 
 /* ── 렌더: 네 부위 ───────────────────────────────────────── */
-function renderGear() {
-  const card = h('section', 'np-card np-gearcard');
-  const manualBtn = btn('np-manualb' + (ui.manual ? ' on' : ''), ui.manual ? t('np.manualOn') : t('np.manualOff'),
-    () => repaint(() => {
-      ui.manual = !ui.manual;
-      if (ui.manual) { const a = currentAction(); S.plan = planFromAction(a, a ? a.piece : 0); }
-      save();
-    }), { 'aria-pressed': String(ui.manual), disabled: !!S.pending || !started() && !ui.manual });
-  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.gear')), manualBtn));
+function scopeSeg() {
+  return seg([['all', t('np.scopeAll'), t('np.scopeAllHint')], ['piece', t('np.scopePiece'), t('np.scopePieceHint')]], S.scope,
+    v => { if (!S.pending && v !== S.scope) commit(() => { S.scope = v; S.scopeAsked = true; }, { run: true }); }, 'np-seg-s');
+}
 
-  const act = currentAction();
-  const grid = h('div', 'np-pieces');
-  S.gear.forEach((g, p) => grid.appendChild(pieceCard(g, p, act)));
+function renderGear(step) {
+  const card = h('section', 'np-card np-gearcard');
+  const init = initialGear();
+  card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.gear')),
+    h('span', 'np-headchips',
+      chip(t('np.restore'), () => resetGear(init), { title: t('np.restoreHint'), disabled: !!S.pending || !init || sameGear(init, S.gear) && !S.log.length }),
+      chip(t('np.clearCard'), () => resetGear(null), { title: t('np.clearGearHint'), disabled: !!S.pending || !S.gear.some(g => g.overloaded) })),
+    scopeSeg()));
+  const v = recView();
+  const live = v && ui.rec.status === 'go';
+  const grid = h('div', 'np-pieces' + (step === 'tiles' ? ' np-next' : ''));
+  S.gear.forEach((g, p) => grid.appendChild(pieceTile(g, p, v, live)));
   card.appendChild(grid);
 
-  if (ui.manual && S.plan) card.appendChild(manualBar());
-  card.appendChild(h('p', 'np-note', started() ? t('np.gearHintRun') : t('np.gearHint')));
+  const r = ui.rec && ui.rec.stateNo === S.stateNo ? ui.rec : null;
+  if (!Object.keys(S.goals.items).length) { card.appendChild(h('p', 'np-empty', t('np.noGoal'))); return card; }
+  if (!S.armed) {
+    card.appendChild(banner('check', t(ui.rec ? 'np.st_stale' : 'np.st_ready'), t(ui.rec ? 'np.st_staleDesc' : 'np.st_readyDesc')));
+    card.appendChild(calcRow(step));
+    return card;
+  }
+  if (ui.err) card.appendChild(banner('check', t('np.st_err'), ui.err));
+  if (!r) { card.appendChild(h('div', 'np-skel', h('span', 'np-spin'), t('np.computingLong'))); return card; }
+  if (r.status === 'done') card.appendChild(banner('done', t('np.st_done'), t('np.st_doneDesc')));
+  else if (r.status === 'impossible') card.appendChild(banner('check', t('np.st_impossible'), t('np.st_impossibleDesc')));
+  else if (v && S.scope === 'all') {
+    card.appendChild(h('p', 'np-note np-total', t('np.totalMean'), ' ', meanNode(v.m, v.k), ' · ', t('np.triesAvg', num(v.t)),
+      S.focus == null ? [' · ', h('b', null, t('np.tileHint'))] : null));
+  }
+  card.appendChild(calcRow(step));
   return card;
 }
 
-/* 직접 설정의 시작점 - 같은 부위면 지금 행동을, 아니면 그 부위의 기존 영구 잠금을 그대로 */
-function planFromAction(a, piece) {
-  if (a && a.piece === piece && a.kind !== 'first') {
-    return { piece, kind: a.kind, prot: Object.fromEntries(a.protect.map(x => [x.line, x.mat])) };
-  }
-  const g = S.gear[piece];
-  return { piece, kind: 'change', prot: Object.fromEntries([0, 1, 2].filter(i => g.perm[i] === true).map(i => [i, 'perm'])) };
+/* 줄의 잠금 상태 - 선택 부위는 이번 실행의 잠금 설정, 그 밖의 부위는 이미 걸린 모듈 잠금 */
+function lockStateOf(g, p, i) {
+  const mat = S.focus === p && S.plan?.piece === p ? S.plan.prot?.[i] || null : g.perm[i] === true ? 'perm' : null;
+  return !mat ? 'none' : mat === 'key' ? 'key' : g.perm[i] === true ? 'held' : 'new';
+}
+const lockChip = (g, p, i) => {
+  const st = lockStateOf(g, p, i);
+  return h('span', { class: 'np-tlock np-tlock-' + st, title: t('np.lockS_' + st), 'aria-label': t('np.lockS_' + st) }, LOCK_ICON[st]);
+};
+
+/* 부위 타일 - 누르면 그 부위를 고른다. 남은 기대 비용은 네 부위 모두에 보이고, 가장 싼 부위는 표시만 한다. */
+function pieceTile(g, p, v, live) {
+  const pr = v?.pieces[p];
+  const on = S.focus === p;
+  const done = !!pr && pr.ok && !(pr.v > 0);
+  const tg = targetsOf(p);
+  const head = h('span', 'np-phead', h('span', 'np-pname', t('np.piece_' + p)),
+    on ? h('span', 'np-tbadge sel', t('np.picked')) : null,
+    live && v.cheapest === p ? h('span', 'np-tbadge cheap', t('np.badgeCheapest')) : null,
+    done ? h('span', 'np-tbadge ok', t('np.pieceOk')) : null);
+  const lines = g.overloaded
+    ? g.lines.map((l, i) => {
+      const goal = l.opt && tg?.find(x => x.opt === l.opt);
+      return h('span', 'np-tline ' + (l.opt ? lvCls(l.lv) : 'empty') + (goal ? (l.lv >= goal.m ? ' goal' : ' short') : ''),
+        l.opt ? [h('span', 'np-lopt', short(l.opt)), h('span', 'np-lvb' + olLevelCls(l.lv), String(l.lv)), lockChip(g, p, i)] : t('np.empty'));
+    })
+    : [h('span', 'np-tline empty', t('np.notOlS'))];
+  const foot = h('span', 'np-tfoot');
+  if (tg && tg.length) foot.appendChild(h('span', 'np-tgoals', tg.map(goalChip)));
+  if (pr && pr.ok && pr.v > 0) foot.appendChild(h('span', 'np-tcost', meanNode(pr.m, pr.k), ' · ', t('np.triesAvg', num(pr.t))));
+  else if (pr && !pr.ok) foot.appendChild(h('span', 'np-tcost', t('np.st_impossible')));
+  return btn('np-piece' + (on ? ' on' : '') + (g.overloaded ? '' : ' off') + (done ? ' done' : ''), [head, ...lines, foot],
+    () => selectPiece(p), { 'aria-pressed': String(on), disabled: !!S.pending });
 }
 
-function pieceCard(g, p, act) {
-  const target = act && act.piece === p;
-  const box = h('div', 'np-piece' + (target ? ' target' : '') + (g.overloaded ? '' : ' off'));
-  const head = h('div', 'np-phead', h('span', 'np-pname', t('np.piece_' + p)));
-  const olcb = h('input', { type: 'checkbox', checked: g.overloaded, disabled: !!S.pending });
-  olcb.onchange = () => commit(() => {
-    g.overloaded = olcb.checked;
-    if (!g.overloaded) { g.lines = [E(), E(), E()]; g.perm = [false, false, false]; }
-  });
-  head.appendChild(h('label', 'np-olt', olcb, h('span', null, t('np.overloaded'))));
-  if (ui.manual && S.plan) {
-    head.appendChild(btn('np-pick' + (S.plan.piece === p ? ' on' : ''), S.plan.piece === p ? t('np.picked') : t('np.pick'),
-      () => repaint(() => { S.plan = planFromAction(null, p); save(); })));
-  }
-  box.appendChild(head);
+/* ── 렌더: 선택 부위 (개조 장비 효과) ─────────────────────── */
+const LOCK_ICON = { none: '🔓', held: '🔒', new: '🔒', key: '🗝' };
 
-  if (!g.overloaded) {
-    box.appendChild(h('p', 'np-poff', t('np.notOverloaded')));
-    return box;
-  }
-  g.lines.forEach((l, i) => box.appendChild(lineRow(g, p, i, act)));
-  return box;
-}
-
-/* 자물쇠 상태 - 시작 전: 원래 잠겨 있던 줄. 시작 후: 이번 실행에서 보호할 줄 (대상 부위), 나머지는 기존 영구 잠금. */
-function lockState(g, p, i, act) {
-  if (started() && act && act.piece === p && act.kind !== 'first') {
-    const pr = act.protect.find(x => x.line === i);
-    return pr ? (pr.mat === 'key' ? 'key' : pr.fresh ? 'new' : 'held') : 'none';
-  }
-  return g.perm[i] === true ? 'held' : 'none';
-}
-
-/* 자물쇠 누름
-   시작 전 - 원래 잠겨 있던 줄로 표시/해제 (비용 없음, 입력 변경)
-   시작 후 - 이번 실행의 잠금을 직접 정한다: 없음 → 영구 → 락키 → 없음. 새로 거는 잠금은 이번 비용에 들어간다. */
-function toggleLock(g, p, i) {
-  if (S.pending || !g.lines[i].opt) return;
-  if (!started()) {
-    commit(() => { g.perm[i] = g.perm[i] !== true; });
-    return;
-  }
+/* 자물쇠 - 이번 실행의 잠금: 없음 → 모듈 잠금 → 락키 잠금 → 없음. 새로 거는 잠금은 이번 비용에 들어간다. */
+function toggleLock(i) {
+  const g = S.gear[S.focus];
+  if (S.pending || !S.plan || !g.lines[i].opt) return;
   repaint(() => {
-    if (!ui.manual || !S.plan || S.plan.piece !== p) {
-      S.plan = planFromAction(ui.manual ? null : currentAction(), p);
-      ui.manual = true;
-    }
     const cur = S.plan.prot[i];
     const next = !cur ? 'perm' : cur === 'perm' ? 'key' : null;
     if (next && !cur && Object.keys(S.plan.prot).length >= 2) return;    // 보호는 2줄까지
     if (next) S.plan.prot[i] = next; else delete S.plan.prot[i];
+    S.plan.auto = false;
     save();
   });
 }
 
-const LOCK_ICON = { none: '🔓', held: '🔒', new: '🔒', key: '🗝' };
+function renderPanel(step) {
+  const p = S.focus;
+  const card = h('section', 'np-card np-panel');
+  if (p == null) {
+    card.appendChild(h('div', 'np-cardhead', h('h3', null, t('np.panel'))));
+    card.appendChild(h('p', 'np-empty', t('np.panelNone')));
+    return card;
+  }
+  const g = S.gear[p], pr = pieceRec(p), rec = pr?.act || null, init = initialGear();
+  const mine = S.log.filter(x => x.piece === p);
+  const last = mine.at(-1);
+  const olcb = h('input', { type: 'checkbox', checked: g.overloaded, disabled: !!S.pending });
+  olcb.onchange = () => commit(() => {
+    g.overloaded = olcb.checked;
+    if (!g.overloaded) { g.lines = [E(), E(), E()]; g.perm = [false, false, false]; }
+    S.plan = null;
+  });
+  card.appendChild(h('div', 'np-cardhead',
+    h('h3', null, `${t('np.piece_' + p)} · ${t('np.panel')}`),
+    mine.length ? h('span', 'np-meta', t('np.roundInfo', mine.length, last.choice ? t('np.choice_' + last.choice) : t('np.pendingS'))) : null,
+    h('span', 'np-headchips',
+      chip(t('np.restore'), () => resetPiece(p, init[p]), { title: t('np.restorePieceHint'),
+        disabled: !!S.pending || !init || sameGear([init[p]], [g]) && !mine.length }),
+      chip(t('np.clearCard'), () => resetPiece(p, null), { title: t('np.clearPieceHint'), disabled: !!S.pending || !g.overloaded })),
+    h('label', 'np-olt', olcb, h('span', null, t('np.overloaded')))));
+  card.appendChild(targetRow(p, pr));
 
-function lineRow(g, p, i, act) {
+  const box = h('div', 'np-fx');
+  if (!g.overloaded) box.appendChild(h('p', 'np-poff', t('np.notOverloaded')));
+  else g.lines.forEach((l, i) => box.appendChild(lineRow(g, p, i, rec)));
+  card.appendChild(box);
+
+  const done = !!pr && !(pr.v > 0);
+  if (done) { card.appendChild(banner('done', t('np.pieceDone'), t('np.pieceDoneDesc'))); return card; }
+
+  /* 효과 변경 / 수치 재설정 */
+  if (ui.recMoved) card.appendChild(h('p', 'np-warn np-moved', t('np.recMoved')));
+  const kindBtn = kind => {
+    const a = actionFor(kind);
+    const probs = a ? actionProblems(a) : [];
+    return btn(`np-kind np-kind-${kind}` + (S.plan.kind === kind ? ' on' : ''), [
+      h('span', 'np-kindttl', kindLabel(kind)),
+      a ? h('span', 'np-kindcost', costNode(a.cost)) : null,
+      rec && rec.kind === kind ? h('span', 'np-recb', t('np.recommended')) : null,
+      probs.length ? h('span', 'np-prob', t('np.prob_' + probs[0])) : null,
+    ], () => repaint(() => { S.plan.kind = kind; ui.recMoved = false; save(); }),
+    { disabled: !!S.pending || !S.armed || !pr || probs.length > 0, 'aria-pressed': String(S.plan.kind === kind) });
+  };
+  card.appendChild(h('div', 'np-kinds' + (step === 'kinds' ? ' np-next' : ''),
+    g.overloaded ? [kindBtn('change'), kindBtn('reset')] : kindBtn('first')));
+  if (!S.armed) card.appendChild(h('p', 'np-prob', t('np.prob_calc')));
+
+  /* 이번 소모와 실행 */
+  const a = currentAction();
+  if (a) {
+    const lockPart = tryCost(a.protect.map(x => ({ ...x, fresh: false })));
+    const fresh = { mod: a.cost.mod - lockPart.mod, key: a.cost.key };
+    const probs = actionProblems(a);
+    card.appendChild(h('div', 'np-confirm',
+      h('div', 'np-confirmcost', h('span', 'np-flbl', t('np.thisCost')), costNode(a.cost),
+        fresh.mod || fresh.key ? h('small', null, `(${t('np.costSplit', lockPart.mod, fresh.mod, fresh.key)})`) : null,
+        a.cost.estimated ? h('small', 'np-est', t('np.estimated')) : null),
+      a.unlock.length ? h('div', 'np-dosub', t('np.unlockLines', a.unlock.map(i => i + 1).join(', '))) : null,
+      h('div', 'np-goRow',
+        btn('np-go' + (step === 'go' ? ' np-next' : ''), `${kindLabel(a.kind)} · ${S.source === 'sim' ? t('np.goSim') : t('np.goReal')}`, execute,
+          { disabled: !!S.pending || !S.armed || probs.length > 0 }),
+        rec && !matchesRec(a, rec) ? btn('np-follow', t('np.followRec'), followRec, { disabled: !!S.pending }) : null,
+        probs.map(x => h('span', 'np-prob', t('np.prob_' + x))))));
+  }
+  if (pr) card.appendChild(basisTable(g, pr, rec));
+  return card;
+}
+
+/* 이 부위의 목표 - 선택한 부위만 최적화에서는 직접 고친다 */
+function targetRow(p, pr) {
+  const tg = targetsOf(p);
+  const custom = S.scope === 'piece' && !!S.pieceGoals[p];
+  const row = h('div', 'np-tgrow', h('span', 'np-flbl', t('np.pieceGoal')),
+    h('span', 'np-tgchips', tg ? (tg.length ? tg.map(goalChip) : t('np.nothingHere')) : '-'),
+    h('span', 'np-meta', t(custom ? 'np.pieceGoalCustom' : 'np.pieceGoalAuto')));
+  if (!custom) return row;
+  row.appendChild(btn('np-pgb' + (ui.pgEdit ? ' on' : ''), t(ui.pgEdit ? 'np.pgDone' : 'np.pgEdit'),
+    () => repaint(() => { ui.pgEdit = !ui.pgEdit; }), { disabled: !!S.pending, 'aria-expanded': String(!!ui.pgEdit) }));
+  if (!ui.pgEdit) return row;
+  const list = S.pieceGoals[p];
+  const change = fn => commit(() => { fn(S.pieceGoals[p]); }, { run: true });
+  const ed = h('div', 'np-pged');
+  list.forEach((x, n) => {
+    const sel = h('select', { class: 'np-sel', 'aria-label': t('np.option') },
+      D.opts.map(o => h('option', { value: o.id, disabled: list.some((y, j) => j !== n && y.opt === o.id), selected: x.opt === o.id }, short(o.id))));
+    sel.onchange = () => change(l => { l[n].opt = sel.value; });
+    ed.appendChild(h('div', 'np-erow', sel,
+      h('span', 'np-gfield', t('np.minLv'), stepper(x.m, v => change(l => { l[n].m = v; }), { min: 1, max: MAX_LV, label: t('np.minLv') }),
+        h('span', 'np-gval' + olLevelCls(x.m), `(${pctOf(x.opt, x.m)})`)),
+      btn('np-gx', '✕', () => change(l => { l.splice(n, 1); }), { 'aria-label': t('np.remove'), title: t('np.remove') })));
+  });
+  const free = goalOrder().find(id => !list.some(y => y.opt === id));
+  ed.appendChild(h('div', 'np-ebtns',
+    btn('np-cancel', t('np.pgAdd'), () => change(l => { l.push({ opt: free, m: 12 }); }), { disabled: list.length >= 3 || !free }),
+    btn('np-cancel', t('np.pgReset'), () => commit(() => { delete S.pieceGoals[p]; }, { run: true }))));
+  row.appendChild(ed);
+  return row;
+}
+
+function lineRow(g, p, i, rec) {
   const l = g.lines[i];
-  const goal = l.opt && S.goals.items[l.opt];
-  const lvs = goal && !goal.eff ? goalLevelsUI(goal) : null;
-  const meets = goal && (goal.eff || !lvs || l.lv >= Math.min(...lvs));
-  const isTarget = act && act.piece === p;
-  const prot = isTarget ? act.protect.find(x => x.line === i) : null;
-  const willUnlock = isTarget && act.unlock?.includes(i);
+  const goal = l.opt && targetsOf(p)?.find(x => x.opt === l.opt);
+  const mat = S.plan?.prot?.[i] || null;
+  const st = lockStateOf(g, p, i);
+  const recMat = rec && rec.kind !== 'first' ? (rec.protect.find(x => x.line === i)?.mat || null) : undefined;
   const editing = ui.edit && ui.edit.p === p && ui.edit.i === i;
-  const cls = ['np-line', l.opt ? lvCls(l.lv) : 'empty', goal ? (meets ? 'goal' : 'short') : l.opt ? 'junk' : '',
-    prot ? 'prot-' + prot.mat : '', editing ? 'editing' : ''].join(' ');
+  const cls = ['np-line', l.opt ? lvCls(l.lv) : 'empty', goal ? (l.lv >= goal.m ? 'goal' : 'short') : l.opt ? 'junk' : '',
+    mat ? 'prot-' + mat : '', editing ? 'editing' : ''].join(' ');
   const row = h('div', 'np-lrow');
-  const main = btn(cls, [
+  row.appendChild(h('div', cls,
     h('span', 'np-lno', String(i + 1)),
     l.opt ? h('span', 'np-lopt', short(l.opt)) : h('span', 'np-lempty', t('np.empty')),
     l.opt ? h('span', 'np-lvb' + olLevelCls(l.lv), String(l.lv)) : null,
     l.opt ? h('span', 'np-lval', `(${pctOf(l.opt, l.lv)})`) : h('span', 'np-lsp', Math.round(SLOT_P[i] * 100) + '%'),
-    prot && !started() ? h('span', 'np-ptag np-ptag-' + prot.mat, prot.mat === 'key' ? '🗝 ' + t('np.matKeyS') : '🔒 ' + (prot.fresh ? t('np.matPermNewS') : t('np.matPermS'))) : null,
-    willUnlock ? h('span', 'np-ptag np-ptag-off', t('np.unlockS')) : null,
-  ], () => repaint(() => { ui.edit = editing ? null : { p, i }; }),
-  { 'aria-expanded': String(!!editing), disabled: !!S.pending });
-  row.appendChild(main);
-
+    l.opt && recMat !== undefined && recMat !== mat
+      ? h('span', 'np-ptag np-ptag-rec', t(recMat === 'key' ? 'np.recKey' : recMat ? 'np.recLock' : 'np.recOpen')) : null));
   if (l.opt) {
-    const st = lockState(g, p, i, act);
-    const title = !started() ? t(st === 'held' ? 'np.lockOwnedOn' : 'np.lockOwnedOff')
-      : t('np.lockRun_' + st);
-    row.appendChild(btn('np-lockb np-lockb-' + st + (started() && isTarget && !ui.manual ? ' sug' : ''), LOCK_ICON[st],
-      () => toggleLock(g, p, i), { title, 'aria-label': title, disabled: !!S.pending }));
+    const title = t('np.lockRun_' + st);
+    row.appendChild(btn('np-lockb np-lockb-' + st, [LOCK_ICON[st], h('small', null, t('np.lockS_' + st))],
+      () => toggleLock(i), { title, 'aria-label': title, disabled: !!S.pending }));
   }
+  row.appendChild(btn('np-editb' + (editing ? ' on' : ''), '✎', () => repaint(() => { ui.edit = editing ? null : { p, i }; }),
+    { title: t('np.editLine'), 'aria-label': t('np.editLine'), 'aria-expanded': String(!!editing), disabled: !!S.pending }));
   if (editing) row.appendChild(lineEditor(g, p, i));
   return row;
 }
-const goalLevelsUI = g => (S.goals.mode === 'tier' ? fitLvs(g.lvs, g.count, g.minLv) : S.goals.mode === 'lv' ? [g.minLv] : [1]);
 
 function lineEditor(g, p, i) {
   const l = g.lines[i];
@@ -1195,78 +1346,114 @@ function lineEditor(g, p, i) {
   };
   paintLv();
   sel.onchange = () => { val.textContent = pctText(sel.value, lv); };
+  const held = h('input', { type: 'checkbox', checked: g.perm[i] === true });
   const save1 = () => commit(() => {
     const id = sel.value;
-    const same = id && id === l.opt;
     g.lines[i] = id ? { opt: id, lv } : E();
-    if (!same) g.perm[i] = false;     // 옵션이 바뀌면 잠금도 새로
+    g.perm[i] = !!id && held.checked;
+    S.plan = null;                    // 잠금 설정은 새 장비 값에서 다시 잡는다
     ui.edit = null;
   });
   box.append(
     h('div', 'np-erow', h('span', 'np-elbl', t('np.option')), sel),
     h('div', 'np-erow', h('span', 'np-elbl', t('np.level')), lvBox, val),
+    h('label', 'np-erow np-held', held, h('span', null, t('np.heldAlready'))),
     h('div', 'np-ebtns',
       btn('np-ok', t('np.set'), () => { document.activeElement?.blur?.(); save1(); }),
       btn('np-cancel', t('np.cancel'), () => repaint(() => { ui.edit = null; }))));
   return box;
 }
 
-function manualBar() {
-  const a = currentAction();
-  const bar = h('div', 'np-manual');
-  const g = S.gear[S.plan.piece];
-  if (g.overloaded) {
-    bar.appendChild(seg([['change', t('np.kindChange')], ['reset', t('np.kindReset')]], S.plan.kind,
-      v => repaint(() => { S.plan.kind = v; save(); })));
+/* 판단 근거 - 지금 잠금에서의 효과 변경·수치 재설정과 추천 행동을 같은 기준으로 나란히 */
+function basisTable(g, pr, rec) {
+  const wrap = h('div', 'np-basis');
+  wrap.appendChild(h('div', 'np-basisttl', t('np.basis')));
+  const best = pr.options.find(o => o.best) || null;
+  const rows = [];
+  if (!g.overloaded) rows.push({ label: kindLabel('first'), cost: { mod: 1, key: 0 }, o: { m: pr.m, k: pr.k, t: pr.t }, rec: true, sel: S.plan?.kind === 'first' });
+  else {
+    for (const kind of ['change', 'reset']) {
+      const a = actionFor(kind);
+      if (!a) continue;
+      const skip = actionProblems(a).includes('nothing');
+      /* 엔진은 목표 줄만 잠그고, 수치 재설정은 풀린 목표 줄 가운데 미달인 줄이 있을 때만 평가한다 */
+      const onGoal = a.protect.every(x => pr.S.some(y => y.opt === g.lines[x.line].opt));
+      rows.push({ label: kindLabel(kind), sub: lockText(a.protect), cost: a.cost, o: skip ? null : a.opt,
+        na: skip ? 'np.prob_nothing' : kind === 'reset' && onGoal ? 'np.naReset' : 'np.notEvaluated',
+        rec: matchesRec(a, rec), sel: S.plan?.kind === kind });
+    }
+    if (rec && best && !rows.some(x => x.rec)) rows.push({ label: kindLabel(rec.kind), sub: lockText(rec.protect), cost: rec.cost, o: best, rec: true, sel: false });
   }
-  bar.appendChild(h('span', 'np-mdesc', a ? [actionText(a), ' - ', costNode(a.cost), a.cost.estimated ? ' · ' + t('np.estimated') : ''] : ''));
-  const probs = actionProblems(a);
-  if (!S.armed) probs.push('calc');
-  bar.appendChild(h('div', 'np-goRow',
-    btn('np-go', S.source === 'sim' ? t('np.goSim') : t('np.goReal'), execute, { disabled: !!S.pending || !a || probs.length > 0 }),
-    probs.map(x => h('span', 'np-prob', t('np.prob_' + x)))));
-  bar.appendChild(h('p', 'np-note', t('np.manualHint')));
-  return bar;
+  const tb = h('table', 'np-btable');
+  tb.appendChild(h('thead', null, h('tr', null,
+    ['np.colAct', 'np.colCost', 'np.colGoal', 'np.colBetter', 'np.colRemain', 'np.colTries'].map(k => h('th', null, t(k))))));
+  const body = h('tbody');
+  for (const x of rows) {
+    const o = x.o;
+    const tr = h('tr', (x.rec ? 'rec' : '') + (x.sel ? ' sel' : ''));
+    tr.appendChild(h('th', null, h('b', null, x.label), x.rec ? h('span', 'np-recb', t('np.recommended')) : null,
+      x.sub ? h('small', null, x.sub) : null));
+    tr.appendChild(h('td', null, costNode(x.cost)));
+    if (!o) tr.appendChild(h('td', { class: 'na', colspan: '4' }, t(x.na)));
+    else {
+      const dm = best && o.v != null ? o.m - best.m : 0, dk = best && o.v != null ? o.k - best.k : 0;
+      const worse = best && o.v != null && o.v > best.v + 1e-6;
+      const sign = d => (d > 0 ? '+' : '') + num(d);
+      tr.append(
+        h('td', null, o.pGoal == null ? '-' : pct(o.pGoal)),
+        h('td', null, o.pBetter == null ? '-' : pct(o.pBetter)),
+        h('td', null, meanNode(o.m, o.k),
+          worse ? h('small', 'np-worse', '(', icMod(), sign(dm), Math.abs(dk) >= 0.05 ? [' · ', icKey(), sign(dk)] : null, ')') : null),
+        h('td', null, t('np.timesN', num(o.t))));
+    }
+    body.appendChild(tr);
+  }
+  tb.appendChild(body);
+  wrap.appendChild(h('div', 'np-btwrap', tb));
+  wrap.appendChild(h('div', 'np-basisfoot',
+    h('span', 'np-note', t('np.basisNote')),
+    seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
+      S.pref, v => { if (!S.pending) commit(() => { S.pref = v; }, { run: true }); }, 'np-seg-s')));
+  return wrap;
 }
 
 /* ── 렌더: 결과 창 ────────────────────────────────────────── */
-function renderModal(prog) {
+/* 게임 화면처럼 위에 현재 효과, 아래에 변경 효과를 두고 효과 유지 / 효과 변경을 고른다 */
+function renderModal(prog, step) {
   const pd = S.pending;
-  const g = S.gear[pd.piece];
   const bg = h('div', 'np-modalbg');
-  const box = h('div', { class: 'np-modal', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.resultTitle') });
+  const box = h('div', { class: 'np-modal np-result', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.resultTitle') });
   box.appendChild(h('div', 'np-modalhead',
-    h('span', null, t('np.resultTitle'), ' · ', actionText({ ...pd })),
+    h('span', null, `${t('np.piece_' + pd.piece)} · ${kindLabel(pd.kind)}`),
     h('span', 'np-meta', costNode(pd.cost), ' ', t('np.paid'))));
 
-  const body = h('div', 'np-modalbody');
-  const side = (title, lines, cls, mark) => h('div', 'np-side ' + cls, h('div', 'np-sidettl', title),
+  const frame = (title, lines, cls, isNew) => h('div', 'np-frame ' + cls, h('div', 'np-framettl', title),
     lines.map((l, i) => {
-      const goal = l.opt && S.goals.items[l.opt];
       const prot = pd.protect.some(x => x.line === i);
-      return h('div', 'np-ovslot ' + (l.opt ? lvCls(l.lv) : 'empty') + (mark && goal ? ' good' : ''),
+      const moved = isNew && (l.opt !== pd.before[i].opt || l.lv !== pd.before[i].lv);
+      return h('div', 'np-ovslot ' + (l.opt ? lvCls(l.lv) : 'empty') + (moved ? ' moved' : ''),
         h('span', 'np-lno', String(i + 1)),
         h('span', null, l.opt ? short(l.opt) : t('np.none')),
         l.opt ? h('span', 'np-ovval', `${l.lv} (${pctOf(l.opt, l.lv)})`) : null,
         prot ? h('span', 'np-lock', '🔒') : null);
     }));
-
-  if (pd.kind !== 'first') body.appendChild(side(t('np.cur'), pd.before, 'cur', false));
-  if (pd.result) body.appendChild(side(t('np.new'), pd.result, 'new', true));
-  else body.appendChild(resultForm(pd));
+  const body = h('div', 'np-rbody');
+  if (pd.kind !== 'first') body.append(frame(t('np.cur'), pd.before, 'cur', false), h('div', 'np-rarrow', '▼'));
+  if (pd.result) body.appendChild(frame(t('np.new'), pd.result, 'new', pd.kind !== 'first'));
+  else {
+    const form = resultForm(pd);
+    if (step === 'form') form.classList.add('np-next');
+    body.appendChild(form);
+  }
   box.appendChild(body);
 
-  /* 비교 */
+  const c = pd.result && ui.cmp && ui.cmp.tryId === pd.tryId ? ui.cmp : null;
   if (pd.result) {
-    const c = ui.cmp && ui.cmp.tryId === pd.tryId ? ui.cmp : null;
     const cmp = h('div', 'np-cmp');
     if (pd.kind === 'first') cmp.appendChild(h('p', 'np-note', t('np.firstNoKeep')));
     else if (!c || c.busy) cmp.appendChild(h('p', 'np-note', h('span', 'np-spin'), t('np.comparing')));
     else if (c.err) cmp.appendChild(h('p', 'np-warn', c.err));
     else {
-      cmp.appendChild(h('div', 'np-cmprow',
-        h('div', 'np-cmpcell' + (c.choice === 'keep' ? ' best' : ''), h('small', null, t('np.ifKeep')), h('b', null, meanNode(c.keep.m, c.keep.k))),
-        h('div', 'np-cmpcell' + (c.choice === 'accept' ? ' best' : ''), h('small', null, t('np.ifAccept')), h('b', null, meanNode(c.acc.m, c.acc.k)))));
       if (c.breaks.length) cmp.appendChild(h('p', 'np-warn', t('np.breaks', c.breaks.map(short).join(', '))));
       const d = c.prog1.filter((x, i) => JSON.stringify(x.have) !== JSON.stringify(c.prog0[i].have));
       if (d.length) cmp.appendChild(h('p', 'np-note', t('np.delta') + ' ' + d.map(x => {
@@ -1274,21 +1461,46 @@ function renderModal(prog) {
         return `${short(x.opt)} ${x.eff ? fmtEff(x.cfg, y.have) : y.have} → ${x.eff ? fmtEff(x.cfg, x.have) : x.have}`;
       }).join(', ')));
     }
-    box.appendChild(cmp);
+    if (cmp.childNodes.length) box.appendChild(cmp);
   }
 
+  const ready = c && !c.busy && !c.err;
+  const best = ready ? c.choice : null;
+  const pick = (cls, label, side, choice) => btn(`np-mb ${cls}` + (best === choice ? ' rec' : ''), [
+    h('span', null, label),
+    ready ? h('small', 'np-mbcost', t('np.remainAfter'), ' ', meanNode(side.m, side.k)) : null,
+    best === choice ? h('small', 'np-recb', t('np.recommended')) : null], () => choose(choice));
   const btns = h('div', 'np-modalbtns');
-  const best = ui.cmp && ui.cmp.tryId === pd.tryId ? ui.cmp.choice : null;
   btns.appendChild(btn('np-mb np-mb-cancel', [t('np.cancelTry'), h('small', null, 'Esc')], cancelPending, { title: t('np.cancelTryHint') }));
-  if (pd.result && pd.kind === 'first') {
-    btns.appendChild(btn('np-mb np-mb-apply', '✓ ' + t('np.firstOk'), () => choose('accept')));
-  } else if (pd.result) {
-    btns.append(
-      btn('np-mb np-mb-keep' + (best === 'keep' ? ' rec' : ''), [t('np.keep'), best === 'keep' ? h('small', null, t('np.recommended')) : null], () => choose('keep')),
-      btn('np-mb np-mb-apply' + (best === 'accept' ? ' rec' : ''), [t('np.apply'), best === 'accept' ? h('small', null, t('np.recommended')) : null], () => choose('accept')));
-  }
+  const picks = h('div', 'np-picks' + (step === 'choose' ? ' np-next' : ''));
+  if (pd.result && pd.kind === 'first') picks.appendChild(btn('np-mb np-mb-apply', '✓ ' + t('np.firstOk'), () => choose('accept')));
+  else if (pd.result) picks.append(pick('np-mb-keep', t('np.keep'), c?.keep, 'keep'), pick('np-mb-apply', t('np.apply'), c?.acc, 'accept'));
+  btns.appendChild(picks);
   box.appendChild(btns);
   box.appendChild(h('p', 'np-note np-modalfoot', t('np.paidNote'), ' ', t('np.cancelTryHint')));
+  bg.appendChild(box);
+  return bg;
+}
+
+/* 처음 계산할 때 한 번 - 전체 부위를 함께 볼지, 고른 부위만 볼지 */
+function renderAskScope() {
+  const close = () => { ui.askScope = false; paint(); };
+  const bg = h('div', 'np-modalbg');
+  bg.onclick = e => { if (e.target === bg) close(); };
+  const box = h('div', { class: 'np-modal np-ask', role: 'dialog', 'aria-modal': 'true', 'aria-label': t('np.askScopeTitle') });
+  box.appendChild(h('div', 'np-modalhead', h('span', null, t('np.askScopeTitle'))));
+  const body = h('div', 'np-askbody');
+  body.appendChild(h('p', 'np-note', t('np.askScopeDesc')));
+  for (const v of ['all', 'piece']) {
+    body.appendChild(btn('np-askopt np-askscope', [h('b', null, t(v === 'all' ? 'np.scopeAll' : 'np.scopePiece')),
+      h('span', null, t(v === 'all' ? 'np.scopeAllHint' : 'np.scopePieceHint'))], () => {
+      ui.askScope = false;
+      S.scope = v; S.scopeAsked = true; S.stateNo++;
+      calc();
+    }));
+  }
+  box.appendChild(body);
+  box.appendChild(h('div', 'np-modalbtns', btn('np-mb np-mb-cancel', [t('np.cancel'), h('small', null, 'Esc')], close)));
   bg.appendChild(box);
   return bg;
 }
@@ -1343,8 +1555,6 @@ function renderLog() {
       btn('btn-reset', t('np.undo'), () => { if (confirm(t('np.undoConfirm'))) undoLast(); }),
       h('span', 'np-note', t('np.undoNote'))));
   }
-  det.appendChild(h('div', 'np-logbtns',
-    btn('btn-reset', t('np.clear'), () => { if (confirm(t('np.clearConfirm'))) { S = defaults(); ui.cmp = null; ui.draft = null; ui.edit = null; ui.rec = null; ui.manual = false; save(); paint(); } })));
   return det;
 }
 
@@ -1353,10 +1563,16 @@ function paint() {
   const root = mounted;
   if (!root) return;
   const focusId = document.activeElement?.id;
+  /* 다시 그리는 동안 문서가 잠깐 짧아져 스크롤이 위로 밀린다 - 그리기 전 위치로 되돌린다 */
+  const scrollAt = window.scrollY;
+  const onTile = !!document.activeElement?.classList?.contains('np-piece');
   root.textContent = '';
+  adoptRec();
+  const step = nextStep();
   const prog = progress(D, engineGear(S.gear), S.goals, { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 });
 
   root.appendChild(searchRow());
+  root.appendChild(renderRemote());
   /* 데이터 | 현재 OL 종합 | 변경된 OL 종합 */
   const base = baseline();
   const ref = new Map(olOf(base.gear).map(o => [o.name, o]));
@@ -1365,16 +1581,18 @@ function paint() {
     olCard(t('np.olNow'), base.gear, { src: base.src ? t(base.src === 'acct' ? 'np.olFromAcct' : 'np.olFromStart') : null }),
     olCard(t('np.olChanged'), S.gear, { ref })));
   const main = h('div', 'np-main');
-  main.appendChild(renderGoals(prog));
-  /* 메인 프레임 - 오버로드 옵션 → 계산하기 → 기록 */
+  const goals = renderGoals(prog);
+  if (step === 'goals') goals.classList.add('np-next');
+  main.appendChild(goals);
+  /* 메인 프레임 - 네 부위(부위 선택·계산) → 선택 부위(잠금·실행·판단 근거) → 기록 */
   const right = h('div', 'np-col');
-  right.appendChild(renderGear());
-  right.appendChild(renderRec(prog));
+  right.appendChild(renderGear(step));
+  right.appendChild(renderPanel(step));
   right.appendChild(renderLog());
   main.appendChild(right);
   root.appendChild(main);
-  root.appendChild(renderRemote());
-  if (S.pending) root.appendChild(renderModal(prog));
+  if (S.pending) root.appendChild(renderModal(prog, step));
+  else if (ui.askScope) root.appendChild(renderAskScope());
   else if (ui.askProf && PROF) {
     const p = ui.askProf === S.nikke.rid ? profOf(ui.askProf) : null;
     if (applicable(p).length) {
@@ -1382,7 +1600,9 @@ function paint() {
       if (ui.askFocus) { ui.askFocus = false; requestAnimationFrame(() => root.querySelector('.np-askopt')?.focus()); }
     } else ui.askProf = null;        // 미확정·효과작 보류 - 자동 목표 없음 (문서 「목표를 경로 계산에 넘길 때」)
   }
-  if (focusId) document.getElementById(focusId)?.focus();
+  if (focusId) document.getElementById(focusId)?.focus({ preventScroll: true });
+  else if (onTile) root.querySelector('.np-piece.on')?.focus({ preventScroll: true });
+  if (window.scrollY !== scrollAt) window.scrollTo(0, scrollAt);
 }
 
 /* 바깥을 누르면 줄 편집을 닫는다. */
@@ -1402,14 +1622,15 @@ function wireOutside() {
     if (ui.lvPick && !inside('.np-lvbadges')) { ui.lvPick = null; dirty = true; }
     if (dirty) paint();
   });
-  /* Esc - 결과 창이 떠 있으면 이번 시도 취소, 아니면 줄 편집·직접 설정을 닫는다 */
+  /* Esc - 결과 창이 떠 있으면 이번 시도 취소, 아니면 열려 있는 창·편집 칸을 닫는다 */
   document.addEventListener('keydown', e => {
     if (e.key !== 'Escape' || !mounted?.isConnected) return;
     if (S.pending) { e.preventDefault(); cancelPending(); return; }
     if (ui.askProf) { ui.askProf = null; paint(); return; }
     if (ui.lvPick) { ui.lvPick = null; paint(); return; }
+    if (ui.askScope) { ui.askScope = false; paint(); return; }
     if (ui.edit) { ui.edit = null; paint(); return; }
-    if (ui.manual) { ui.manual = false; paint(); }
+    if (ui.pgEdit) { ui.pgEdit = false; paint(); }
   });
 }
 

@@ -40,40 +40,56 @@ export function createService(option, glossary, { base = null, fetchBytes = null
 
   const P = createPlanner(D, { policyOf: k => policies.get(k) || null });
 
-  const sumPieces = pl => pl.pieces.map(x => ({
-    S: x.S.map(r => ({ opt: r.opt, m: r.m })), v: x.v, m: x.m, k: x.k, first: !!x.first,
-  }));
+  /* 부위별 목표 - '선택한 부위만 최적화'에서 사용자가 정한 것만 유효하다 (3개 이하, 옵션 중복 없음) */
+  const customOf = (st, p) => {
+    const raw = st.scope === 'piece' ? st.pieceGoals?.[p] : null;
+    if (!Array.isArray(raw)) return null;
+    const seen = new Set();
+    return raw.filter(x => D.byId[x.opt] && !seen.has(x.opt) && seen.add(x.opt)).slice(0, 3)
+      .map(x => ({ opt: x.opt, m: Math.min(15, Math.max(1, Math.round(+x.m) || 1)) }));
+  };
 
+  /* 부위는 사용자가 고른다. 네 부위 각각의 남은 비용·최선 행동·행동별 수치를 내고, 가장 싼 부위는 표시용 번호만 준다. */
   async function recommend(st) {
     const prog = progress(D, st.gear, st.goals, st.nikke);
     const base = { stateNo: st.stateNo, goalNo: st.goalNo, rules: rulesTag(), prog };
-    if (!prog.length) return { ...base, status: 'noGoal' };
-    if (isDone(prog)) return { ...base, status: 'done' };
+    const customs = st.gear.map((_, p) => customOf(st, p));
+    const anyCustom = customs.some(Boolean);
+    if (!prog.length && !anyCustom) return { ...base, status: 'noGoal' };
+    if (!anyCustom && isDone(prog)) return { ...base, status: 'done' };
     await ensure();
 
     /* 재화 우선순위별 정책 - 모듈 절약 / 균형 / 락키 미사용 */
     const alts = {};
     for (const pref of PREFS) {
-      const n = P.next(st, pref);
-      if (!n.plan || !Number.isFinite(n.plan.v) || n.piece < 0) { alts[pref] = { pref, ok: false }; continue; }
+      const pl = prog.length ? P.plan(st, pref) : null;
+      const views = st.gear.map((_, p) => P.pieceView(st, pref, p, customs[p], pl));
+      if (!views.some(x => x.ok)) { alts[pref] = { pref, ok: false }; continue; }
+      const live = views.map((x, p) => (x.ok && x.v > 0 ? p : -1)).filter(p => p >= 0);
+      const cheapest = live.length ? live.reduce((a, p) => (views[p].v < views[a].v - 1e-9 ? p : a)) : -1;
+      const sum = f => views.reduce((a, x) => a + (x.ok ? x[f] : 0), 0);
       alts[pref] = {
-        pref, ok: true, lambda: LAMBDAS[pref],
-        piece: n.piece, act: n.act, m: n.plan.m, k: n.plan.k,
-        reqs: n.plan.reqs, pieces: sumPieces(n.plan),
+        pref, ok: true, lambda: LAMBDAS[pref], m: sum('m'), k: sum('k'), t: sum('t'), cheapest,
+        pieces: views.map(x => ({
+          S: x.S.map(r => ({ opt: r.opt, m: r.m })), ok: x.ok, v: x.v, m: x.m, k: x.k, t: x.t, first: !!x.first, custom: !!x.custom,
+          act: x.act, options: x.options,
+        })),
       };
     }
     const pick = st.pref in alts && alts[st.pref].ok ? st.pref : PREFS.find(p => alts[p].ok);
     if (!pick) return { ...base, status: 'impossible', alts };
+    if (alts[pick].cheapest < 0) return { ...base, status: 'done', alts, pick };
     return { ...base, status: 'go', pick, alts, approx: true, stats: P.stats() };
   }
 
-  /* 유지·적용 비교 (23.5) */
-  async function compare(st, keepGear, accGear) {
+  /* 유지·적용 비교 (23.5). piece 를 주면 그 부위에 사용자가 정한 목표가 있을 때 그 부위만 비교한다. */
+  async function compare(st, keepGear, accGear, piece = null) {
     await ensure();
-    const r = P.compare(st, keepGear, accGear, st.pref in LAMBDAS ? st.pref : 'balanced');
+    const targets = piece == null ? null : customOf(st, piece);
+    const r = P.compare(st, keepGear, accGear, st.pref in LAMBDAS ? st.pref : 'balanced', targets ? { piece, targets } : null);
     return {
       stateNo: st.stateNo, choice: r.choice, breaks: r.breaks,
-      keep: { v: r.keep.v, m: r.keep.m, k: r.keep.k }, acc: { v: r.acc.v, m: r.acc.m, k: r.acc.k },
+      keep: { v: r.keep.v, m: r.keep.m, k: r.keep.k, t: r.keep.t }, acc: { v: r.acc.v, m: r.acc.m, k: r.acc.k, t: r.acc.t },
       prog0: r.prog0, prog1: r.prog1,
     };
   }
