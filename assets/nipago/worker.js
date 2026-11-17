@@ -15,7 +15,7 @@ self.onmessage = e => {
         self.postMessage({ id, ok: true });
         return;
       }
-      const out = type === 'compare'
+      const out = type === 'sim' ? await svc.simulate(payload.st, payload.piece) : type === 'compare'
         ? await svc.compare(payload.st, payload.keep, payload.acc, payload.piece)
         : await svc.recommend(payload.st);
       self.postMessage({ id, ok: true, out });

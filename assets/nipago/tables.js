@@ -7,6 +7,11 @@ import { ENGINE_VERSION, LAMBDAS } from './engine.js';
 
 export const TABLE_FILE = 'nipago/policies.bin';
 export const MANIFEST_FILE = 'nipago/manifest.json';
+/* 선택 목표가 있는 표 - 가장 낮은 목표 단계가 11 인 묶음(opt/11.bin)과 12 이상인 묶음(opt/12-15.bin). 필요한 파일만 받는다. */
+export const optShard = minLv => (minLv <= 11 ? '11' : '12-15');
+export const OPT_DIR = 'nipago/opt/';
+export const OPT_MANIFEST = 'nipago/opt/manifest.json';
+export const optFile = shard => `${OPT_DIR}${shard}.bin`;
 
 function fnv(str) {
   let h = 0x811c9dc5;

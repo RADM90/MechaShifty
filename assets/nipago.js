@@ -4,7 +4,7 @@
 
 import { optionLabel, optionFullLabel, olRows, SLOTS, olTotals, olPct, olLevelCls, OL_ORDER, olRank } from './cp.js';
 import { rosterGearFor } from './roster.js';
-import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, MAX_LV, buildData } from './nipago/rules.js';
+import { PIECES, tryCost, fixOpt, CHARGE_RULES, EFF_OPTS, SLOT_P, FIRST_LV, MAX_LV, buildData, cleanPieceGoals, MAX_PIECE_GOALS, goalsPrecomputed } from './nipago/rules.js';
 import { effValue, fmtEff as fmtEffRaw, explainEff as explainEffRaw } from './nipago/effective.js';
 import { roll, progress, validateResult, effCfg } from './nipago/engine.js';
 import { ITEM, itemIcon } from './items.js';
@@ -16,7 +16,7 @@ const E = () => ({ opt: '', lv: 0 });
 let ctx = null, D = null, RAW = null, base = './data/', mounted = null;
 let S = null;                        // 저장되는 상태
 let ui = { edit: null, rec: null, busy: false, cmp: null, draft: null, err: null, logOpen: false,
-  lvPick: null, remoteMin: loadRemoteMin(), askProf: null, askScope: false, pgEdit: false, recMoved: false };
+  lvPick: null, remoteMin: loadRemoteMin(), askProf: null, askScope: false, pgEdit: false, recMoved: false, sim: null };
 
 /* ── 작은 도우미 ─────────────────────────────────────────── */
 function h(tag, attrs, ...kids) {
@@ -98,6 +98,7 @@ async function compute(type, payload) {
     try { return await post(type, payload); } catch { worker = false; }
   }
   if (!inline) inline = (await import('./nipago/service.js')).createService(RAW.option, RAW.glossary, { base: absBase() });
+  if (type === 'sim') return inline.simulate(payload.st, payload.piece);
   return type === 'compare' ? inline.compare(payload.st, payload.keep, payload.acc, payload.piece) : inline.recommend(payload.st);
 }
 /* 워커 안에서는 상대 주소가 워커 파일 기준이 된다 - 절대 주소로 넘긴다 */
@@ -128,7 +129,8 @@ const defaults = () => ({
   scope: 'all',                     // 'all' 전체 부위 최적화 | 'piece' 선택한 부위만 최적화
   scopeAsked: false,                // 범위를 한 번 물었다
   focus: null,                      // 사용자가 고른 부위 번호
-  pieceGoals: {},                   // 선택한 부위만 최적화 - 부위별 목표 { [p]: [{ opt, m }] }
+  pieceGoals: {},                   // 선택한 부위만 최적화 - 부위별 목표 { [p]: [{ opt, m, o }] } (o: 선택 목표)
+  pieceNeed: {},                    // 부위별 선택 목표 최소 충족 개수 { [p]: n }
   plan: null,                       // 선택 부위의 실행 설정 { piece, kind, prot: { [line]: 'perm' | 'key' }, auto, sig }
   stateNo: 1,
   goalNo: 1,
@@ -171,15 +173,14 @@ function normalize(v) {
       perm: [0, 1, 2].map(i => g?.perm?.[i] === true) }))
     : null;
   const focus = Number.isInteger(v.focus) && v.focus >= 0 && v.focus < PIECES.length ? v.focus : null;
-  const pieceGoals = {};
+  const pieceGoals = {}, pieceNeed = {};
   for (const [p, list] of Object.entries(v.pieceGoals || {})) {
     if (!Array.isArray(list) || !PIECES[+p]) continue;
-    const seen = new Set();
-    pieceGoals[p] = list.map(x => ({ opt: fixOpt(x?.opt), m: clampLv(x?.m) }))
-      .filter(x => opt(x.opt) && !seen.has(x.opt) && seen.add(x.opt)).slice(0, 3);
+    const c = cleanPieceGoals(list, v.pieceNeed?.[p], id => !!opt(id));
+    pieceGoals[p] = c.list; pieceNeed[p] = c.need;
   }
   const plan = v.plan && v.plan.piece === focus && 'auto' in v.plan ? v.plan : null;
-  return { ...d, ...rest, gear, base, focus, pieceGoals, plan, scope: v.scope === 'piece' ? 'piece' : 'all', scopeAsked: !!v.scopeAsked,
+  return { ...d, ...rest, gear, base, focus, pieceGoals, pieceNeed, plan, scope: v.scope === 'piece' ? 'piece' : 'all', scopeAsked: !!v.scopeAsked,
     goals: { mode: ['opt', 'lv', 'tier'].includes(v.goals?.mode) ? v.goals.mode : 'opt', items },
     spent: { ...d.spent, ...(v.spent || {}) }, armed: !!v.armed,
     log: Array.isArray(v.log) ? v.log : [], nikke: { ...d.nikke, ...(v.nikke || {}) } };
@@ -209,7 +210,7 @@ function fromV2(v) {
 function commit(fn, { goal = false, run = false } = {}) {
   fn();
   S.stateNo++;
-  if (goal) { S.goalNo++; S.pieceGoals = {}; }   // 전체 목표가 바뀌면 부위별 목표는 새 배분에서 다시 잡는다
+  if (goal) { S.goalNo++; S.pieceGoals = {}; S.pieceNeed = {}; }   // 전체 목표가 바뀌면 부위별 목표는 새 배분에서 다시 잡는다
   if (!run) S.armed = false;
   save();
   paint();
@@ -238,7 +239,7 @@ function piecesFrom(gear) {
 }
 function applyGear(st, gear) {
   st.gear = piecesFrom(gear);
-  st.pending = null; st.plan = null; st.focus = null; st.pieceGoals = {}; st.armed = false; st.base = null;
+  st.pending = null; st.plan = null; st.focus = null; st.pieceGoals = {}; st.pieceNeed = {}; st.armed = false; st.base = null;
 }
 export function seedGear({ rid, gear }) {
   const apply = st => {
@@ -474,7 +475,7 @@ const engineState = () => ({
   gear: engineGear(S.gear),
   goals: S.goals,
   nikke: { baseAmmo: S.nikke.baseAmmo || 0, chargeTime: S.nikke.chargeTime || 1 },
-  pref: S.pref, keep: S.keep, stateNo: S.stateNo, goalNo: S.goalNo, scope: S.scope, pieceGoals: S.pieceGoals,
+  pref: S.pref, keep: S.keep, stateNo: S.stateNo, goalNo: S.goalNo, scope: S.scope, pieceGoals: S.pieceGoals, pieceNeed: S.pieceNeed,
 });
 
 let recTimer = 0;
@@ -494,6 +495,19 @@ function requestRec() {
     }
     if (want === S.stateNo) { ui.busy = false; paint(); }
   }, 120);
+}
+
+/* 선택 부위의 모듈 분포·상황표 - 누를 때만 계산한다 */
+const simKey = () => `${S.stateNo}:${S.focus}:${S.pref}`;
+async function requestSim() {
+  const key = simKey();
+  ui.sim = { key, busy: true };
+  paint();
+  try {
+    const out = await compute('sim', { st: engineState(), piece: S.focus });
+    if (ui.sim?.key === key) ui.sim = { key, out: out.sim };
+  } catch (err) { if (ui.sim?.key === key) ui.sim = { key, err: String(err.message || err) }; }
+  paint();
 }
 
 async function requestCompare() {
@@ -531,7 +545,7 @@ function adoptRec() {
   if (!S.plan || S.plan.piece !== p || !('auto' in S.plan)) S.plan = newPlan(p);
   const pr = pieceRec(p);
   if (!pr) return;
-  if (S.scope === 'piece' && !S.pieceGoals[p] && !S.pending) { S.pieceGoals[p] = pr.S.map(x => ({ opt: x.opt, m: x.m })); save(); }
+  if (S.scope === 'piece' && !S.pieceGoals[p] && !S.pending) { S.pieceGoals[p] = pr.S.map(x => ({ opt: x.opt, m: x.m, o: false })); S.pieceNeed[p] = 0; save(); }
   const a = pr.act;
   if (!a || !S.plan.auto) return;
   /* 이미 걸린 모듈 잠금은 추천이 해제를 권해도 자동으로 풀지 않는다 - 사용자가 자물쇠를 눌러야 풀린다 */
@@ -1080,7 +1094,7 @@ const icKey = () => itemIcon(ITEM.lockKey, t('np.key'));
 const costNode = c => h('span', 'np-cost', icMod(), String(c.mod), c.key ? [' + ', icKey(), String(c.key)] : null);
 const meanNode = (m, k) => h('span', 'np-cost', icMod(), num(m), ' · ', icKey(), num(k));
 const pct = x => (x >= 0.99995 ? '100%' : x < 0.00005 ? '0%' : (x * 100).toFixed(x < 0.1 ? 2 : 1) + '%');
-const goalChip = x => h('span', 'np-pchip', short(x.opt) + (x.m > 1 ? ` ${x.m}+` : ''));
+const goalChip = x => h('span', { class: 'np-pchip' + (x.o ? ' opt' : ''), title: x.o ? t('np.pgOptional') : null }, short(x.opt) + (x.m > 1 ? ` ${x.m}+` : ''));
 
 function banner(kind, title, desc) {
   return h('div', 'np-banner np-b-' + kind, h('b', null, title), desc ? h('span', null, desc) : null);
@@ -1212,6 +1226,15 @@ function renderPanel(step) {
   const done = !!pr && !(pr.v > 0);
   if (done) { card.appendChild(banner('done', t('np.pieceDone'), t('np.pieceDoneDesc'))); return card; }
 
+  /* 입력 점검 - 잠근 줄이 목표가 아니거나 목표 단계에 못 미친다 */
+  const tgs = targetsOf(p) || [];
+  for (const i of Object.keys(S.plan?.prot || {}).map(Number)) {
+    const l = g.lines[i], goal = l.opt && tgs.find(x => x.opt === l.opt);
+    if (!l.opt) continue;
+    if (!goal) card.appendChild(h('p', 'np-warn np-check', t('np.chkJunkLock', i + 1)));
+    else if (l.lv < goal.m) card.appendChild(h('p', 'np-warn np-check', t('np.chkShortLock', i + 1, l.lv, goal.m)));
+  }
+
   /* 효과 변경 / 수치 재설정 */
   if (ui.recMoved) card.appendChild(h('p', 'np-warn np-moved', t('np.recMoved')));
   const kindBtn = kind => {
@@ -1246,7 +1269,7 @@ function renderPanel(step) {
         rec && !matchesRec(a, rec) ? btn('np-follow', t('np.followRec'), followRec, { disabled: !!S.pending }) : null,
         probs.map(x => h('span', 'np-prob', t('np.prob_' + x))))));
   }
-  if (pr) card.appendChild(basisTable(g, pr, rec));
+  if (pr) card.append(basisTable(g, pr, rec), simBlock());
   return card;
 }
 
@@ -1255,14 +1278,21 @@ function targetRow(p, pr) {
   const tg = targetsOf(p);
   const custom = S.scope === 'piece' && !!S.pieceGoals[p];
   const row = h('div', 'np-tgrow', h('span', 'np-flbl', t('np.pieceGoal')),
-    h('span', 'np-tgchips', tg ? (tg.length ? tg.map(goalChip) : t('np.nothingHere')) : '-'),
+    h('span', 'np-tgchips', tg ? (tg.length ? tg.map(goalChip) : t('np.nothingHere')) : '-',
+      custom && S.pieceNeed[p] > 0 ? h('span', 'np-meta', t('np.pgNeedS', S.pieceNeed[p])) : null),
     h('span', 'np-meta', t(custom ? 'np.pieceGoalCustom' : 'np.pieceGoalAuto')));
   if (!custom) return row;
   row.appendChild(btn('np-pgb' + (ui.pgEdit ? ' on' : ''), t(ui.pgEdit ? 'np.pgDone' : 'np.pgEdit'),
     () => repaint(() => { ui.pgEdit = !ui.pgEdit; }), { disabled: !!S.pending, 'aria-expanded': String(!!ui.pgEdit) }));
   if (!ui.pgEdit) return row;
   const list = S.pieceGoals[p];
-  const change = fn => commit(() => { fn(S.pieceGoals[p]); }, { run: true });
+  /* 고칠 때마다 정리한다. 미리 푼 범위 밖의 선택 목표 표는 푸는 데 오래 걸려 계산은 [계산] 을 다시 누를 때 한다. */
+  const change = fn => commit(() => {
+    fn(S.pieceGoals[p]);
+    const c = cleanPieceGoals(S.pieceGoals[p], S.pieceNeed[p], id => !!opt(id));
+    S.pieceGoals[p] = c.list; S.pieceNeed[p] = c.need;
+  });
+  const nReq = list.filter(y => !y.o).length, nOpt = list.length - nReq;
   const ed = h('div', 'np-pged');
   list.forEach((x, n) => {
     const sel = h('select', { class: 'np-sel', 'aria-label': t('np.option') },
@@ -1271,12 +1301,21 @@ function targetRow(p, pr) {
     ed.appendChild(h('div', 'np-erow', sel,
       h('span', 'np-gfield', t('np.minLv'), stepper(x.m, v => change(l => { l[n].m = v; }), { min: 1, max: MAX_LV, label: t('np.minLv') }),
         h('span', 'np-gval' + olLevelCls(x.m), `(${pctOf(x.opt, x.m)})`)),
+      seg([['req', t('np.pgRequired')], ['opt', t('np.pgOptional')]], x.o ? 'opt' : 'req',
+        v => { if ((v === 'opt') !== !!x.o && (v === 'opt' || nReq < 3)) change(l => { l[n].o = v === 'opt'; }); }, 'np-seg-s'),
       btn('np-gx', '✕', () => change(l => { l.splice(n, 1); }), { 'aria-label': t('np.remove'), title: t('np.remove') })));
   });
   const free = goalOrder().find(id => !list.some(y => y.opt === id));
+  if (nOpt) {
+    ed.appendChild(h('div', 'np-erow', h('span', 'np-gfield', t('np.pgNeed'),
+      stepper(S.pieceNeed[p] || 1, v => commit(() => { S.pieceNeed[p] = v; }), { min: 1, max: Math.max(1, Math.min(nOpt, 3 - nReq)), label: t('np.pgNeed') })),
+      goalsPrecomputed(list, S.pieceNeed[p] || 1) ? null : h('span', 'np-note np-pgslow', t('np.pgSlow'))));
+  }
+  /* 필수는 3개까지 - 넷째부터는 선택 목표로 넣는다. 필수가 3개면 선택 목표를 둘 줄이 없다. */
   ed.appendChild(h('div', 'np-ebtns',
-    btn('np-cancel', t('np.pgAdd'), () => change(l => { l.push({ opt: free, m: 12 }); }), { disabled: list.length >= 3 || !free }),
-    btn('np-cancel', t('np.pgReset'), () => commit(() => { delete S.pieceGoals[p]; }, { run: true }))));
+    btn('np-cancel', t('np.pgAdd'), () => change(l => { l.push({ opt: free, m: 12, o: nReq >= 2 && l.length >= 2 }); }),
+      { disabled: list.length >= MAX_PIECE_GOALS || nReq >= 3 || !free }),
+    btn('np-cancel', t('np.pgReset'), () => commit(() => { delete S.pieceGoals[p]; delete S.pieceNeed[p]; }, { run: true }))));
   row.appendChild(ed);
   return row;
 }
@@ -1394,6 +1433,36 @@ function basisTable(g, pr, rec) {
     h('span', 'np-note', t('np.basisNote')),
     seg([['mod', t('np.pref_mod'), t('np.prefHint_mod')], ['balanced', t('np.pref_balanced'), t('np.prefHint_balanced')], ['key', t('np.pref_key'), t('np.prefHint_key')]],
       S.pref, v => { if (!S.pending) commit(() => { S.pref = v; }, { run: true }); }, 'np-seg-s')));
+  return wrap;
+}
+
+/* 모듈 분포와 주요 상황별 행동 - 정책대로 3,000번 굴린 결과 */
+function simBlock() {
+  const wrap = h('div', 'np-basis np-sim');
+  const cur = ui.sim && ui.sim.key === simKey() ? ui.sim : null;
+  wrap.appendChild(h('div', 'np-basisttl', t('np.sim'),
+    cur?.out ? null : btn('np-follow np-simb', cur?.busy ? [h('span', 'np-spin'), t('np.computing')] : t('np.simRun'), requestSim,
+      { disabled: !!cur?.busy || !!S.pending })));
+  if (!cur) { wrap.appendChild(h('p', 'np-note', t('np.simHint'))); return wrap; }
+  if (cur.err) { wrap.appendChild(h('p', 'np-warn', cur.err)); return wrap; }
+  const s = cur.out;
+  if (!s) return wrap;
+  const stat = (k, v) => h('div', 'np-simstat', h('small', null, k), h('b', null, v));
+  wrap.appendChild(h('div', 'np-simstats',
+    stat(t('np.simMean'), [icMod(), num(s.mean)]), stat(t('np.simMedian'), [icMod(), num(s.median)]), stat(t('np.simP90'), [icMod(), num(s.p90)]),
+    stat(t('np.simKeys'), [icKey(), num(s.keys)]), stat(t('np.colTries'), t('np.timesN', num(s.tries)))));
+  const lineText = x => (x.kind === 'empty' ? t('np.empty') : x.kind === 'junk' ? t('np.simJunk')
+    : h('span', x.sat ? 'np-simok' : null, short(x.opt), x.any ? '' : ` ${x.lo === x.hi ? x.lo : `${x.lo}~${x.hi}`}`, x.perm ? ' 🔒' : ''));
+  const tb = h('table', 'np-btable np-simtable');
+  tb.appendChild(h('thead', null, h('tr', null,
+    [t('np.lineN', 1), t('np.lineN', 2), t('np.lineN', 3), t('np.colAct'), t('np.colRemain'), t('np.simVisits')].map(k => h('th', null, k)))));
+  tb.appendChild(h('tbody', null, s.states.map(x => h('tr', null,
+    x.lines.map(l => h('td', 'l', lineText(l))),
+    h('td', 'l', h('b', null, kindLabel(x.kind)), h('small', null, lockText(x.protect))),
+    h('td', null, meanNode(x.m, x.k)),
+    h('td', null, t('np.timesN', x.visits.toFixed(2)))))));
+  wrap.appendChild(h('div', 'np-btwrap', tb));
+  wrap.appendChild(h('p', 'np-note', t('np.simNote', s.runs.toLocaleString())));
   return wrap;
 }
 

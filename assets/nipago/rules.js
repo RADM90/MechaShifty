@@ -24,6 +24,31 @@ export const MAX_PROTECT = 2;
 
 export const PIECES = ['머리', '몸', '팔', '다리'];
 
+/* 부위별 목표 정리 - 필수(o 없음)는 3개까지, 선택(o: true)을 더해 6개까지, 옵션 중복 없음.
+   need: 선택 목표 중 채워야 하는 개수 (1 ~ 남는 줄 수). 선택 목표를 쓸 수 없으면 뺀다. */
+export const MAX_PIECE_GOALS = 6;
+export function cleanPieceGoals(raw, need, has) {
+  const seen = new Set();
+  let list = (Array.isArray(raw) ? raw : [])
+    .map(x => ({ opt: fixOpt(x?.opt), m: Math.min(MAX_LV, Math.max(1, Math.round(+x?.m) || 1)), o: !!x?.o }))
+    .filter(x => has(x.opt) && !seen.has(x.opt) && seen.add(x.opt));
+  let req = 0;
+  list = list.filter(x => x.o || ++req <= 3).slice(0, MAX_PIECE_GOALS);
+  const nReq = list.filter(x => !x.o).length, room = 3 - nReq;
+  if (room < 1) list = list.filter(x => !x.o);
+  const nOpt = list.filter(x => x.o).length;
+  return { list, need: nOpt ? Math.min(nOpt, room, Math.max(1, Math.round(+need) || 1)) : 0 };
+}
+
+/* 선택 목표가 있는 묶음 중 미리 풀어 둔 범위 - 모든 목표가 11단계 이상이고, 목표 3개 이하이거나 필수 2개 + 선택 2개. 그 밖은 브라우저가 직접 푼다. */
+export const OPT_GOAL_MAX = 4;
+export const OPT_GOAL_LV = 11;
+export const goalsPrecomputed = (list, need) => {
+  const nOpt = list.filter(x => x.o).length;
+  if (!nOpt || (need >= nOpt && list.length <= 3)) return true;
+  return (list.length < OPT_GOAL_MAX || (list.length === OPT_GOAL_MAX && nOpt === 2)) && list.every(x => x.m >= OPT_GOAL_LV);
+};
+
 /* 옛 약어 → 지금 이름 (roster.js 와 같은 표) */
 export const OPTION_ALIAS = { 크피: '크댐', 차뎀: '차댐' };
 export const fixOpt = id => OPTION_ALIAS[id] || id;

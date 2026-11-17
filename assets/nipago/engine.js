@@ -40,8 +40,10 @@ function classesFor(m, lp) {
 /* targets: [{ w, m }] - 정규화된 순서. lam: λ. */
 class PieceTable {
   /* policy: 미리 푼 최선 행동 번호 (this.states 순서, 255 = 행동 없음). 주면 평가만 한다. */
-  constructor(D, targets, lam, policy = null) {
+  /* rule: { req: [bool], need } - 필수 목표는 모두, 선택 목표는 need 개 이상 채우면 완성. 없으면 전부 필수. */
+  constructor(D, targets, lam, policy = null, rule = null) {
     this.D = D;
+    this.rule = rule;
     this.K = targets.length;
     this.targets = targets;
     this.lam = lam;
@@ -93,7 +95,12 @@ class PieceTable {
       const d = this.dec(code);
       if (this.cls[d.k].sat[d.c]) got[d.k] = true;
     }
-    return got.every(Boolean);
+    if (!this.rule) return got.every(Boolean);
+    let extra = 0;
+    for (let k = 0; k < this.K; k++) {
+      if (this.rule.req[k]) { if (!got[k]) return false; } else if (got[k]) extra++;
+    }
+    return extra >= this.rule.need;
   }
 
   /* 효과 변경에서 U 줄이 받을 (빈칸 / 무효 / 목표 k) 묶음의 분포.
@@ -377,6 +384,69 @@ class PieceTable {
     return { v: this.V[i], m: this.EM[i], k: this.EK[i], t: this.ET[i], action: a, lines: l, i };
   }
 
+  /* 정책대로 목표가 완성될 때까지 runs 번 굴린다 - 모듈 분포(평균·중앙값·누적 90%)와 자주 거치는 상태 */
+  simulate(piece, tgt, runs, rnd) {
+    const { V, EM, EK, acts, best, goal } = this;
+    const table = acc => {
+      const js = [...acc.keys()];
+      let s = 0;
+      return { js, cum: js.map(j => (s += acc.get(j))), total: s };
+    };
+    const pick = d => {
+      const r = rnd() * d.total;
+      let lo = 0, hi = d.cum.length - 1;
+      while (lo < hi) { const mid = (lo + hi) >> 1; if (d.cum[mid] > r) hi = mid; else lo = mid + 1; }
+      return d.js[lo];
+    };
+    const dists = new Map();
+    const distOf = i => {
+      let d = dists.get(i);
+      if (!d) {
+        const a = acts[i][best[i]], acc = new Map();
+        this.outcomes(this.lines(i), a, (p, j) => acc.set(j, (acc.get(j) || 0) + p));
+        d = { a, ...table(acc) };
+        dists.set(i, d);
+      }
+      return d;
+    };
+    let first = null;
+    if (!piece.overloaded) {
+      const acc = new Map();
+      for (const t of this.tuples([0, 1, 2], 0)) {
+        const j = this.idx(t.r.map(r => (r === -2 ? 0 : r === -1 ? 1 : this.code(r, this.cls[r].of[FIRST_LV], 0))));
+        acc.set(j, (acc.get(j) || 0) + t.p);
+      }
+      first = table(acc);
+    }
+    const start = piece.overloaded ? this.idx(this.encode(piece, tgt)) : -1;
+    const mods = new Float64Array(runs), visits = new Map();
+    let keys = 0, tries = 0;
+    for (let r = 0; r < runs; r++) {
+      let i = start, m = 0;
+      if (i < 0) { m = 1; tries++; i = pick(first); }
+      for (let guard = 0; !goal[i] && best[i] >= 0 && guard < 1e6; guard++) {
+        visits.set(i, (visits.get(i) || 0) + 1);
+        const d = distOf(i);
+        m += d.a.cost.mod; keys += d.a.cost.key; tries++;
+        const j = pick(d);
+        i = V[j] < V[d.a.keep] - 1e-12 ? j : d.a.keep;
+      }
+      mods[r] = m;
+    }
+    const sorted = Float64Array.from(mods).sort();
+    const at = q => sorted[Math.min(runs - 1, Math.floor(q * runs))];
+    const describe = code => {
+      if (code < 2) return { kind: code === 0 ? 'empty' : 'junk' };
+      const d = this.dec(code), c = this.cls[d.k].list[d.c];
+      return { kind: 'goal', opt: tgt[d.k].opt, sat: c.sat, lo: c.lvs[0], hi: c.lvs.at(-1), any: this.targets[d.k].m <= 1, perm: !!d.perm };
+    };
+    const states = [...visits].sort((a, b) => b[1] - a[1]).slice(0, 14).map(([i, n]) => {
+      const a = acts[i][best[i]];
+      return { lines: this.lines(i).map(describe), kind: a.kind, protect: a.protect.map(x => ({ ...x })), m: EM[i], k: EK[i], visits: n / runs };
+    });
+    return { runs, mean: mods.reduce((a, x) => a + x, 0) / runs, median: at(0.5), p90: at(0.9), keys: keys / runs, tries: tries / runs, states };
+  }
+
   /* 지금 상태에서 고를 수 있는 행동마다 - 이번 한 번만 이 행동을 하고 그 뒤는 정책대로 갈 때의 값.
      pGoal: 이번에 부위 목표가 완성될 확률, pBetter: 결과가 지금보다 나을 확률. 최선 행동의 v 는 V 와 같다. */
   options(piece, tgt) {
@@ -546,25 +616,29 @@ function pieceMasks(reqs) {
 }
 
 /* 부위 표의 이름 - 목표의 (가중치, 최소 단계) 를 정렬한 것 + λ */
-const sortTargets = (D, S) => S.map(r => ({ opt: r.opt, m: r.m, w: D.byId[r.opt].w }))
-  .sort((a, b) => a.w - b.w || a.m - b.m || (a.opt < b.opt ? -1 : 1));
+const sortTargets = (D, S) => S.map(r => ({ opt: r.opt, m: r.m, w: D.byId[r.opt].w, o: !!r.o }))
+  .sort((a, b) => a.w - b.w || a.m - b.m || a.o - b.o || (a.opt < b.opt ? -1 : 1));
 export const tableKey = (tgt, lam) => tgt.map(t => `${t.w}:${t.m}`).join('|') + '@' + lam;
+/* 선택 목표가 있는 표의 이름 - 뒤에 필수 여부(1/0)와 최소 충족 개수를 붙인다 */
+export const ruleKey = (tgt, lam, need) => `${tableKey(tgt, lam)}#${tgt.map(t => (t.o ? 0 : 1)).join('')}/${need}`;
 
 /* policyOf(key) → 미리 푼 정책 | null */
 export function createPlanner(D, { policyOf = () => null } = {}) {
   const tables = new Map();
   let built = 0, loaded = 0;
 
-  function table(tgt, lam) {
-    const key = tableKey(tgt, lam);
+  /* need > 0 이면 선택 목표가 있는 표. 미리 푼 정책이 없으면 여기서 직접 푼다 (rules.js 의 goalsPrecomputed 범위 밖). */
+  function table(tgt, lam, need = 0) {
+    const rule = need > 0 ? { req: tgt.map(t => !t.o), need } : null;
+    const key = rule ? ruleKey(tgt, lam, need) : tableKey(tgt, lam);
     let tb = tables.get(key);
     if (!tb) {
       const targets = tgt.map(t => ({ w: t.w, m: t.m }));
       const pol = policyOf(key);
       if (pol) {
-        try { tb = new PieceTable(D, targets, lam, pol); loaded++; } catch { tb = null; }
+        try { tb = new PieceTable(D, targets, lam, pol, rule); loaded++; } catch { tb = null; }
       }
-      if (!tb) { tb = new PieceTable(D, targets, lam); built++; }
+      if (!tb) { tb = new PieceTable(D, targets, lam, null, rule); built++; }
       tables.set(key, tb);
     }
     return tb;
@@ -574,7 +648,9 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
   function pieceCost(piece, S, lam) {
     if (!S.length) return { v: 0, m: 0, k: 0, t: 0 };
     const tgt = sortTargets(D, S);
-    const tb = table(tgt, lam);
+    /* 선택 목표를 전부 채워야 하면 전부 필수인 표와 같은 문제다 */
+    const nOpt = S.filter(r => r.o).length, need = nOpt ? Math.min(nOpt, S.need || 1) : 0;
+    const tb = table(tgt, lam, need >= nOpt && S.length <= 3 ? 0 : need);
     return { ...tb.at(piece, tgt), tgt, tb };
   }
 
@@ -645,7 +721,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     const lam = LAMBDAS[pref];
     const piece = st.gear[p];
     let pc;
-    if (targets) pc = { S: targets.map(x => ({ opt: x.opt, m: x.m, count: 1 })), ...pieceCost(piece, targets, lam) };
+    if (targets) pc = { S: targets.map(x => ({ opt: x.opt, m: x.m, o: !!x.o, count: 1 })), ...pieceCost(piece, targets, lam) };
     else {
       const all = pl || plan(st, pref);
       if (!all || !Number.isFinite(all.v)) return { S: [], v: Infinity, ok: false, options: [], act: null };
@@ -659,6 +735,14 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     })) : [];
     return { S: pc.S, v: pc.v, m: pc.m, k: pc.k, t: pc.t, first: !!pc.first, ok: true, custom: !!targets,
       act: pc.v > 0 ? concrete(piece, pc) : null, options };
+  }
+
+  /* 부위 p 를 정책대로 끝까지 굴린 분포 - 목표는 pieceView 와 같은 기준 */
+  function pieceSim(st, pref, p, targets = null, runs = 3000, rnd = Math.random) {
+    const piece = st.gear[p];
+    const pc = targets ? pieceCost(piece, targets, LAMBDAS[pref]) : plan(st, pref)?.pieces[p];
+    if (!pc || !pc.tb || !(pc.v > 0) || pc.v >= BIG / 2) return null;
+    return pc.tb.simulate(piece, pc.tgt, runs, rnd);
   }
 
   /* 표의 행동 → 화면에 보일 행동 */
@@ -685,7 +769,7 @@ export function createPlanner(D, { policyOf = () => null } = {}) {
     return { keep, acc, choice, breaks, prog0, prog1 };
   }
 
-  return { plan, pieceView, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
+  return { plan, pieceView, pieceSim, compare, concrete, stats: () => ({ tables: tables.size, built, loaded }) };
 }
 
 /* 입력 검증 (26.2) - 결과로 들어온 세 줄이 이번 행동으로 나올 수 있는가 */

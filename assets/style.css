@@ -1152,7 +1152,8 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-snone { padding: 7px 9px; font-size: 13.5px; color: var(--ink-muted); }
 
 /* 데이터 | 현재 OL 종합 | 변경된 OL 종합 */
-.np-datarow { display: grid; gap: 15px; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+/* 데이터 카드는 아래 목표 카드와 같은 폭 (.np-main 첫 열) */
+.np-datarow { display: grid; gap: 15px; grid-template-columns: minmax(0, 400px) minmax(0, 1fr) minmax(0, 1fr); align-items: start; }
 /* 데이터 - 기본 | 옵션 두 열. 행 번호는 nipago.js 가 못박는다(장탄·차지 시간이 같은 행). 가운데 세로줄은 배경으로 */
 .np-dtable {
   display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px;
@@ -1602,6 +1603,7 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 }
 .np-pgb.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 .np-pged { flex-basis: 100%; display: grid; gap: 8px; padding: 10px 12px; border: 1px dashed var(--line-strong); border-radius: var(--r-s); }
+.np-pgslow { margin: 0; font-size: 12.5px; flex: 1 1 220px; }
 .np-fx { display: grid; gap: 5px; margin-bottom: 12px; }
 .np-held { font-size: 13px; color: var(--ink-2); flex-wrap: nowrap; }
 .np-kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 10px; border-radius: var(--r-s); }
@@ -1645,6 +1647,18 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-btable .np-cost { justify-content: flex-end; }
 .np-worse { color: var(--st-bad-ink); display: inline-flex; align-items: center; gap: 1px; margin-left: 6px; }
 .np-worse .ic-item { height: 14px; }
+.np-sim { margin-top: 12px; }
+.np-sim .np-basisttl { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.np-simb { padding: 4px 12px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; }
+.np-simstats { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.np-simstat { display: grid; gap: 2px; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--r-s); font-variant-numeric: tabular-nums; }
+.np-simstat small { font-size: 12.5px; color: var(--ink-muted); }
+.np-simstat b { display: inline-flex; align-items: center; gap: 3px; font-size: 16px; }
+.np-simstat .ic-item { height: 18px; }
+.np-simtable td.l { text-align: left; white-space: normal; }
+.np-simtable td small { display: block; color: var(--ink-muted); font-size: 12.5px; }
+.np-simok { color: var(--st-good); font-weight: 600; }
+.np-check { margin: 0 0 8px; }
 .np-basisfoot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 8px; }
 .np-basisfoot .np-note { margin: 0; font-size: 13px; }
 

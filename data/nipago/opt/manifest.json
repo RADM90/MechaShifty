@@ -1,0 +1,11 @@
+{
+ "note": "니파고 선택 목표 정책 - tools/nipago_tables.mjs --opt 가 만든다. 손으로 고치지 말 것.",
+ "hash": 3014494729,
+ "engine": 1,
+ "rules": "2026-09-17",
+ "cost": "2026-09-17",
+ "files": 2,
+ "tables": 12210,
+ "states": 143066256,
+ "bytes": 7093702
+}
