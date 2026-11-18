@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>메카시프티 · Mecha Shifty</title>
-<meta name="description" content="승리의 여신: 니케 도구 모음 - 캐릭터 목록·픽업일정·통계·전투력 계산기·아레나·전초기지·오버로드 옵션작·특특요 확률">
+<meta name="description" content="승리의 여신: 니케 도구 모음 - 캐릭터 목록·픽업일정·통계·전투력 계산기·아레나·전초기지·오버로드 옵션작·장탄 차속 조합·특특요 확률">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/title/MechaShifty-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/icons/title/MechaShifty-192.png">
 <link rel="apple-touch-icon" href="assets/icons/title/MechaShifty-180.png">
@@ -39,6 +39,7 @@
   <nav class="tabs" role="tablist">
     <button type="button" role="tab" data-tab="calc" aria-selected="true" data-i18n="tab.calc">전투력 계산기</button>
     <button type="button" role="tab" data-tab="nipago" aria-selected="false" data-i18n="tab.nipago">오버로드 옵션작</button>
+    <button type="button" role="tab" data-tab="olcombo" aria-selected="false" data-i18n="tab.olcombo">장탄·차속 조합</button>
     <button type="button" role="tab" data-tab="arena" aria-selected="false" data-i18n="tab.arena">아레나</button>
     <button type="button" role="tab" data-tab="outpost" aria-selected="false" data-i18n="tab.outpost">전초기지</button>
     <button type="button" role="tab" data-tab="nikkes" aria-selected="false" data-i18n="tab.nikkes">니케 리스트</button>
@@ -166,6 +167,11 @@
     <!-- ── 탭 6: 오버로드 옵션작 (니파고) ─────────────────── -->
     <section id="panel-nipago" class="panel" hidden>
       <div id="nipago" class="npwrap"></div>
+    </section>
+
+    <!-- ── 장탄·차속 조합 ──────────────────────────────────── -->
+    <section id="panel-olcombo" class="panel" hidden>
+      <div id="olcombo"></div>
     </section>
 
     <!-- ── 탭 7: 특특요 확률분포 ──────────────────────────── -->

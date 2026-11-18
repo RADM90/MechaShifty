@@ -41,6 +41,7 @@ const STR = {
   'tab.outpost': ['전초기지', 'Outpost', '前哨基地'],
   'tab.nipago': ['오버로드 옵션작', 'Overload rolls', 'オバロ厳選'],
   'tab.intercept': ['특특요 확률', 'Intercept drops', '異常個体'],
+  'tab.olcombo': ['장탄·차속 조합', 'Ammo & charge', '装弾数・チャー速'],
 
   /* 전투력 계산기 탭 (calc.js 에서 ctx.t 로 받아 쓴다) */
   'cp.loading': ['스탯 표를 불러오는 중…', 'Loading stat tables…', 'ステータス表を読み込み中…'],
@@ -1406,6 +1407,82 @@ const STR = {
     (label, v) => `${label} - <b>${v}</b>`,
     (label, v) => `${label} - <b>${v}</b>体`,
   ],
+
+  /* 장탄·차속 조합 탭 (olcombo.js 에서 ctx.t 로 받아 쓴다) */
+  'oc.loading': ['옵션 수치를 불러오는 중…', 'Loading option values…', 'オプション数値を読み込み中…'],
+  'oc.leadAmmo': [
+    '기본 장탄 수를 고르면 오버로드 "최대 장탄 수 증가" 옵션 1-4줄로 도달할 수 있는 장탄 수가 나옵니다. 목표 장탄 수를 고르면 그 값을 만드는 단계 조합이 모두 나옵니다.',
+    'Pick a base magazine to see every magazine size reachable with 1-4 overload "Increase Ammo" lines. Pick a target to list every tier combination that reaches it.',
+    '基本装弾数を選ぶと、オーバーロードの「最大装弾数増加」1-4本で届く装弾数が出ます。目標装弾数を選ぶと、その値になる段階の組み合わせをすべて表示します。',
+  ],
+  'oc.leadCharge': [
+    '오버로드 "차지 속도 증가" 옵션 1-4줄로 도달할 수 있는 차지 속도(정수 %)입니다. 목표 차지 속도를 고르면 그 값을 만드는 단계 조합과, 고른 기본 차지 시간 기준의 차지 시간과 초당 횟수가 나옵니다.',
+    'Charge speed (whole %) reachable with 1-4 overload "Increase Charge Speed" lines. Pick a target to list every tier combination that reaches it, with the charge time and charges per second for the chosen base charge time.',
+    'オーバーロードの「チャージ速度増加」1-4本で届くチャージ速度（整数%）です。目標を選ぶと、その値になる段階の組み合わせと、選んだ基本チャージ時間でのチャージ時間・毎秒回数を表示します。',
+  ],
+  'oc.option': ['옵션', 'Option', 'オプション'],
+  'oc.extra': ['추가 효과', 'Other sources', 'その他の効果'],
+  'oc.cube': ['큐브', 'Cube', 'キューブ'],
+  'oc.cubeAmmo': ['장탄 큐브', 'Ammo cube', '装弾数キューブ'],
+  'oc.cubeCharge': ['차속 큐브', 'Charge speed cube', 'チャー速キューブ'],
+  'oc.coll': ['소장품', 'Collection', 'コレクション'],
+  'oc.collPhase': [(r, n) => `${r} ${n}단계`, (r, n) => `${r} phase ${n}`, (r, n) => `${r} ${n}段階`],
+  'oc.collMG': ['MG에만 적용', 'MG only', 'MGのみ'],
+  'oc.noCollCharge': ['소장품에는 차지 속도 효과가 없습니다.', 'Collection items have no charge speed effect.', 'コレクションにチャージ速度の効果はありません。'],
+  'oc.baseAmmo': ['기본 장탄 수', 'Base magazine', '基本装弾数'],
+  'oc.baseCharge': ['기본 차지 시간', 'Base charge time', '基本チャージ時間'],
+  'oc.tier': ['단계', 'Tier', '段階'],
+  'oc.optPct': ['옵션 %', 'Option %', 'オプション%'],
+  'oc.oneLineAmmo': ['1줄 증가', '1 line', '1本'],
+  'oc.oneLineCharge': ['1줄 정수', '1 line, whole %', '1本の整数%'],
+  'oc.targetAmmo': ['목표 장탄 수', 'Target magazine', '目標装弾数'],
+  'oc.targetCharge': ['목표 차지 속도', 'Target charge speed', '目標チャージ速度'],
+  'oc.minLines': ['필요한 최소 줄 수', 'Fewest lines needed', '必要な最少本数'],
+  'oc.lowest': ['최저 수치', 'Lowest tiers', '最低段階'],
+  'oc.lowestK': [k => `${k}줄 최저`, k => `Lowest with ${k}`, k => `${k}本の最低`],
+  'oc.always': ['모든 조합에 포함', 'In every combination', '全組み合わせに含む'],
+  'oc.shots': [n => `${n}발`, n => `${n} rounds`, n => `${n}発`],
+  'oc.plusShots': [n => `+${n}발`, n => `+${n}`, n => `+${n}発`],
+  'oc.sec': [x => `${x}초`, x => `${x}s`, x => `${x}秒`],
+  'oc.people': [n => `${n}명`, n => `${n}`, n => `${n}体`],
+  'oc.count': [n => `${n}개`, n => `${n}`, n => `${n}件`],
+  'oc.lines': [k => `${k}줄`, k => `${k} line${k > 1 ? 's' : ''}`, k => `${k}本`],
+  'oc.combos': [n => `조합 ${n}개`, n => `${n} combinations`, n => `組み合わせ${n}件`],
+  'oc.headAmmo': [
+    (b, o, a) => `기본 ${b}발 + 옵션 ${o}발${a ? ` + 큐브·소장품 ${a}발` : ''}`,
+    (b, o, a) => `Base ${b} + options ${o}${a ? ` + cube/collection ${a}` : ''}`,
+    (b, o, a) => `基本${b}発 + オプション${o}発${a ? ` + キューブ・コレクション${a}発` : ''}`,
+  ],
+  'oc.headCharge': [
+    (c, tm, f, f0) => `기본 ${c}초 → 차지 ${tm}초 · 초당 ${f}회 (기본 ${f0}회)`,
+    (c, tm, f, f0) => `Base ${c}s → charge ${tm}s · ${f}/s (base ${f0}/s)`,
+    (c, tm, f, f0) => `基本${c}秒 → チャージ${tm}秒 · 毎秒${f}回 (基本${f0}回)`,
+  ],
+  'oc.noteLines': [
+    '같은 옵션은 장비 1개에 1줄만 붙으므로 최대 4줄입니다. 조합은 "옵션 % 합계 - 단계 / 단계 / ..." 로 표시합니다.',
+    'An option appears at most once per gear piece, so 4 lines at most. Combinations read "option % total - tier / tier / ...".',
+    '同じオプションは装備1つに1本までなので最大4本です。組み合わせは「オプション%合計 - 段階 / 段階 / ...」で表示します。',
+  ],
+  'oc.noteAmmo': [
+    '같은 단계 줄끼리 % 를 더하고, 단계 묶음마다 기본 장탄 x % 를 발 단위로 반올림(.5 올림)한 뒤 합산합니다. 큐브와 소장품도 각각 하나의 묶음으로 반올림합니다. 그래서 같은 단계 2줄은 "1줄 증가" 값의 2배와 1발 다를 수 있습니다.',
+    'Lines of the same tier are added first, then each tier group rounds base magazine x % to whole rounds (.5 rounds up) before summing. Cube and collection are rounded as their own groups, so two lines of one tier can differ by 1 from twice the "1 line" value.',
+    '同じ段階の行は%を先に足し、段階ごとに基本装弾数 x %を発単位で四捨五入してから合計します。キューブとコレクションもそれぞれ1つのまとまりとして丸めます。そのため同じ段階2本は「1本」の値の2倍と1発ずれることがあります。',
+  ],
+  'oc.noteAmmoColl': [
+    '소장품의 장탄 효과는 MG 무기군에만 있습니다. 애장품은 SR 4단계와 같습니다. 스킬의 장탄 증가는 포함하지 않았습니다.',
+    'Only MG collection items raise ammo. A favorite item equals SR phase 4. Skill ammo bonuses are not included.',
+    '装弾数が上がるコレクションはMGのみです。宝ものはSR 4段階と同じです。スキルによる装弾数増加は含みません。',
+  ],
+  'oc.noteCharge': [
+    '같은 단계 줄끼리 % 를 더하고, 단계 묶음마다 정수 % 로 반올림(.5 올림)한 뒤 합산합니다. 큐브도 하나의 묶음으로 반올림합니다.',
+    'Lines of the same tier are added first, then each tier group rounds to a whole % (.5 rounds up) before summing. The cube is rounded as its own group.',
+    '同じ段階の行は%を先に足し、段階ごとに整数%へ四捨五入してから合計します。キューブも1つのまとまりとして丸めます。',
+  ],
+  'oc.noteChargeTime': [
+    '차지 시간 = 기본 차지 시간 x (1 - 차지 속도). 초당 횟수 = 1 / 차지 시간이며, 발사 후 딜레이와 재장전, 스킬의 차지 속도 증가는 포함하지 않았습니다.',
+    'Charge time = base charge time x (1 - charge speed). Per second = 1 / charge time; post-shot delay, reload and skill charge speed are not included.',
+    'チャージ時間 = 基本チャージ時間 x (1 - チャージ速度)。毎秒回数 = 1 / チャージ時間で、発射後のディレイ・リロード・スキルのチャージ速度増加は含みません。',
+  ],
 };
 
 export function t(key, ...args) {
@@ -1756,7 +1833,7 @@ function writeHash() {
 }
 
 /* 없어진 탭(#tab=raw 같은 옛 북마크)으로 들어오면 패널이 없어 렌더가 깨진다 */
-const TABS = ['calc', 'nipago', 'arena', 'outpost', 'nikkes', 'pickups', 'stats', 'intercept'];
+const TABS = ['calc', 'nipago', 'olcombo', 'arena', 'outpost', 'nikkes', 'pickups', 'stats', 'intercept'];
 
 function readHash() {
   const p = new URLSearchParams(location.hash.slice(1));
@@ -2303,11 +2380,12 @@ function render() {
   $('#panel-outpost').hidden = state.tab !== 'outpost';
   $('#panel-nipago').hidden = state.tab !== 'nipago';
   $('#panel-intercept').hidden = state.tab !== 'intercept';
+  $('#panel-olcombo').hidden = state.tab !== 'olcombo';
   $('#pickupfilters').hidden = state.tab !== 'pickups';
   $('#kwfilters').hidden = state.tab !== 'nikkes' || !D.keywords;
   $('#tlwrap').hidden = state.tab !== 'pickups';
   /* 도구 탭들은 니케/픽업과 별개라서 위쪽 필터가 걸리지 않는다 */
-  $('.filters').hidden = ['calc', 'arena', 'outpost', 'nipago', 'intercept'].includes(state.tab);
+  $('.filters').hidden = ['calc', 'arena', 'outpost', 'nipago', 'olcombo', 'intercept'].includes(state.tab);
   paintFold();
   /* 싱크로 상한 계산기는 니케 리스트 탭에서만. */
   syncCap(state.tab === 'nikkes');
@@ -2316,6 +2394,11 @@ function render() {
     writeHash();
     import('./nipago.js').then(m => m.renderNipago($('#nipago'),
       { t, L, lang: lang(), nikkes: D.nikkes, nikkeMatcher, iconEl, AXES }));
+    return;
+  }
+  if (state.tab === 'olcombo') {
+    writeHash();
+    import('./olcombo.js').then(m => m.renderOlCombo($('#olcombo'), { t, L, lang: lang(), nikkes: D.nikkes, nameOf }));
     return;
   }
   if (state.tab === 'intercept') {

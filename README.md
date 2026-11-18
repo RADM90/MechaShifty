@@ -38,6 +38,17 @@ Calculates the cheapest route to your target options and recommends the next act
 | Keep or apply | Compares keeping the old result with applying the new one by average remaining cost. |
 | Progress tracking | Shows resources spent, the roll log, and overload option totals before and after changes. |
 
+### Ammo & charge
+
+Lists every max ammo and charge speed value that 1-4 overload option lines can reach, and the tier combinations that reach each one.
+
+| Feature | Description |
+|---|---|
+| Ammo | Pick a base magazine size to see every reachable magazine size and the combinations behind each. |
+| Charge speed | Every reachable whole-% charge speed, with the resulting charge time and charges per second for the chosen base charge time. |
+| Other sources | Add an ammo or charge speed cube, or an MG collection item, to every combination. |
+| Rounding | Same-tier lines are summed and rounded per tier group, the same rule the Overload rolls tab uses. |
+
 ### Outpost
 
 Calculates your outpost level and resource income from campaign progress. Importing account data fills in the progress automatically.

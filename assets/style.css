@@ -1182,11 +1182,11 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .np-cls-core, .np-cls-threshold { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
 .np-cls-none { background: var(--st-bad-bg); color: var(--st-bad-ink); border-color: var(--st-bad-line); }
 
-/* 리모컨 - 탐색 모드 · 재화 우선순위 · 재화 소모량. 화면 위쪽에 붙어 따라온다. 결과 창(100)·상단바(40)보다 아래. */
+/* 리모컨 - 탐색 모드 · 재화 우선순위 · 재화 소모량. 화면 위쪽의 고정 위치 카드 (따라오지 않는다). */
 .np-remote {
-  position: sticky; top: calc(var(--np-top, 0px) + 6px); z-index: 30; margin-bottom: 12px;
+  margin-bottom: 12px;
   display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding: 8px 14px;
-  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r); box-shadow: var(--shadow);
+  background: var(--bg-panel); border: 1px solid var(--line-strong); border-radius: var(--r);
 }
 .np-remote > .np-rtoggle { margin-left: auto; }
 .np-remote .np-rfield { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
@@ -1769,6 +1769,76 @@ table.op-towerTbl tbody td.num { white-space: nowrap; }
 .ic-steplink {
   cursor: pointer; text-decoration: underline dotted; text-underline-offset: 4px;
 }
+
+/* ── 장탄·차속 조합 탭 ─────────────────────────────────────────
+   카드(.op-group)와 전환 버튼(.ic-seg)은 전초기지·특특요 탭 것을 쓴다. 목표 칩 색은 필요한 최소 줄 수(1-4)를 교차표 램프로 나타낸다. */
+.oc-wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 17.5px; }
+.oc-wrap > .op-note { margin: 0; }
+/* 옵션 전환과 추가 효과를 한 줄에 두고, 좁으면 아래로 내린다 */
+.oc-cond { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12.5px 35px; }
+.oc-cond .ic-field { margin-bottom: 0; }
+.oc-toggles { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 25px; min-height: 37.5px; }
+.oc-toggle { display: flex; flex-wrap: wrap; align-items: center; gap: 7.5px 12.5px; }
+.oc-check { display: inline-flex; align-items: center; gap: 7.5px; font-size: 16.5px; cursor: pointer; }
+.oc-check input { width: 17.5px; height: 17.5px; margin: 0; accent-color: var(--accent); }
+.oc-toggle select {
+  padding: 6.5px 10px; background: var(--bg-panel); color: var(--ink);
+  border: 1px solid var(--line-strong); border-radius: var(--r-s); font: inherit; font-size: 15px; max-width: 100%;
+}
+.oc-toggle select:disabled { opacity: .5; }
+.oc-hint { margin: 0; font-size: 14px; color: var(--ink-muted); }
+
+.oc-scroll { overflow-x: auto; margin-bottom: 12.5px; }
+table.oc-lv { border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.oc-lv th, table.oc-lv td { padding: 5px 9px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--line); }
+table.oc-lv th { text-align: left; font-weight: 600; font-size: 13px; color: var(--ink-muted); }
+table.oc-lv thead td { color: var(--ink-muted); background: var(--bg-raise); }
+table.oc-lv thead th { background: var(--bg-raise); }
+table.oc-lv tbody tr:last-child th, table.oc-lv tbody tr:last-child td { border-bottom: 0; }
+
+.oc-groups { display: flex; flex-wrap: wrap; gap: 7.5px; }
+.oc-gchip {
+  display: grid; gap: 2.5px; min-width: 95px; padding: 9px 14px; text-align: left; cursor: pointer;
+  background: var(--bg-panel); color: var(--ink); border: 1px solid var(--line-strong); border-radius: var(--r-s); font: inherit;
+}
+.oc-gchip:hover { background: var(--hover); }
+.oc-gchip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.oc-gv { font-size: 18px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.oc-gs { font-size: 13px; opacity: .8; }
+.oc-who { margin: 12.5px 0 0; font-size: 14px; color: var(--ink-muted); line-height: 1.55; }
+
+.oc-count { margin-left: 9px; font-weight: 400; letter-spacing: 0; text-transform: none; }
+.oc-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.oc-chip {
+  min-width: 46px; padding: 7px 6.5px; cursor: pointer; font: inherit; font-size: 14px; font-weight: 600;
+  font-variant-numeric: tabular-nums; text-align: center; border: 1px solid transparent; border-radius: 5px;
+}
+.oc-k1 { background: var(--ramp-1); color: var(--ink); }
+.oc-k2 { background: var(--ramp-3); color: var(--ink); }
+.oc-k3 { background: var(--ramp-6); color: var(--hm-ink-strong); }
+.oc-k4 { background: var(--ramp-8); color: var(--hm-ink-strong); }
+.oc-chip[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.oc-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 7.5px 15px; margin-top: 12.5px; font-size: 14px; color: var(--ink-muted); }
+.oc-legItem { display: inline-flex; align-items: center; gap: 6.5px; }
+.oc-swatch { width: 14px; height: 14px; border-radius: 3px; }
+
+.oc-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 5px 15px; margin-bottom: 12.5px; }
+.oc-big { font-size: 30px; font-weight: 700; color: var(--accent); font-variant-numeric: tabular-nums; }
+.oc-meta { font-size: 15px; color: var(--ink-2); }
+.oc-low {
+  display: grid; gap: 5px; padding: 11.5px 14px; margin-bottom: 15px;
+  background: var(--bg-raise); border-radius: var(--r-s); font-size: 15px;
+}
+.oc-low > div { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.oc-dim { color: var(--ink-muted); }
+.oc-combo { display: inline-flex; gap: 7.5px; font-variant-numeric: tabular-nums; }
+.oc-sum { color: var(--ink-muted); }
+.oc-lvs { font-weight: 700; color: var(--ink); }
+.oc-lists { display: grid; gap: 15px; }
+.oc-lists h4 { margin: 0 0 6.5px; font-size: 14px; font-weight: 600; color: var(--ink-muted); }
+.oc-lists ol { margin: 0; padding-left: 3em; display: grid; gap: 2.5px; font-size: 15px; }
+.oc-lists li::marker { color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.oc-notes { margin: 0; padding-left: 20px; display: grid; gap: 5px; font-size: 14px; color: var(--ink-muted); line-height: 1.55; }
 
 /* ── 싱크로 레벨 상한 (필터 오른쪽 카드) ────────────────────── */
 .sc-title { margin: 0 0 10px; font-size: 15px; font-weight: 700; line-height: 1.35; }

@@ -903,12 +903,11 @@ function olCard(title, gear, { src = null, ref = null } = {}) {
   return card;
 }
 
-/* ── 렌더: 플로팅 리모컨 ──────────────────────────────────────
-   탐색 모드 · 재화 우선순위 · 재화 소모량. 화면을 내려도 따라온다. */
+/* ── 렌더: 리모컨 ────────────────────────────────────────────
+   탐색 모드 · 재화 우선순위 · 재화 소모량. 화면 위쪽에 놓인 카드. */
 function renderRemote() {
   const min = ui.remoteMin;
   const box = h('aside', { class: 'np-remote' + (min ? ' min' : ''), 'aria-label': t('np.remote') });
-  box.style.setProperty('--np-top', (document.querySelector('.topbar')?.offsetHeight || 0) + 'px');
   const toggle = btn('np-rtoggle', min ? '▾' : '▴', () => repaint(() => {
     ui.remoteMin = !min;
     try { localStorage.setItem(REMOTE_STORE, ui.remoteMin ? '1' : '0'); } catch {}
