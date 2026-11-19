@@ -185,6 +185,7 @@
   "c515": {"ammo":300,"charge":0},
   "c520": {"ammo":6,"charge":1.0},
   "c521": {"ammo":6,"charge":1.0},
+  "c530": {"ammo":6,"charge":1.0},
   "c532": {"ammo":6,"charge":1.0},
   "c550": {"ammo":6,"charge":1.0},
   "c551": {"ammo":120,"charge":0},

@@ -5151,5 +5151,31 @@
   "attack_type": "Metal",
   "burst": "Step2",
   "release_date": "2026-10-29"
+ },
+ {
+  "rid": "c530",
+  "resource_id": 530,
+  "id": 253001,
+  "name_code": 5188,
+  "name": {
+   "ko": "스카이",
+   "en": "Sky",
+   "ja": "スカイ"
+  },
+  "aliases": [
+   "하늘이",
+   "락찔이",
+   "락순이"
+  ],
+  "rarity": "SSR",
+  "class": "Supporter",
+  "corporation": "ELYSION",
+  "corporation_sub_type": null,
+  "squad": "OverTheHorizon",
+  "element": "Iron",
+  "weapon_type": "SR",
+  "attack_type": "Metal",
+  "burst": "Step1",
+  "release_date": "2026-11-19"
  }
 ]
