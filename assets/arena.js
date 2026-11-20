@@ -183,6 +183,7 @@ function entryStats(mode, n, e) {
     .reduce((sum, o) => sum + (statT.optionValue.get(`${name}|${o.level}`) || 0), 0);
   return {
     atk: withStartBuff(n.rid, res.stats, opt('공증'), e.skills),
+    ...atkParts(n.rid, res.stats, opt('공증'), e.skills),
     hp: res.stats.hp,
     def: res.stats.def,
     critRate: 0.15 + opt('크확'),
@@ -211,6 +212,13 @@ function withStartBuff(rid, stats, optionPct, skills) {
   const value = b ? (b.values[(skills?.[b.skill] ?? 10) - 1] || 0) / 100 : 0;
   const pct = 1 + optionPct + (b?.kind === 'pct' ? value : 0);
   return Math.round(stats.atk * pct + (b?.kind === 'hp' ? stats.hp * value : 0));
+}
+
+/* 전투 엔진용 공격력 갈래: 기본 공격력, 공증 옵션 + 전투 시작 공격력 ▲ (스킬 공격력 ▲ 와 더한다), 체력 비례 고정값 */
+function atkParts(rid, stats, optionPct, skills) {
+  const b = data.startAtk?.[rid];
+  const value = b ? (b.values[(skills?.[b.skill] ?? 10) - 1] || 0) / 100 : 0;
+  return { atkBase: stats.atk, atkPct: optionPct + (b?.kind === 'pct' ? value : 0), atkAdd: b?.kind === 'hp' ? stats.hp * value : 0 };
 }
 
 const linkKey = (mode, who, match) => `${mode}:${who}:${match}`;

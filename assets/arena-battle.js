@@ -2,7 +2,7 @@
    대미지 = (공격력 - 방어력) x 무기 배율 x 차지 배율 x (1 + 크리티컬 기댓값 + 풀 버스트 50%) x 코드 상성 x 버프 (오버킬 포함 기록).
    다루지 않는 것: 재사용 시간 감소, 첫 풀 버스트 이후 사이클, 전투 중에만 바뀌는 차지 속도·장탄·재장전, 명중률, 별도 자원 체계. */
 
-import { burstChain, hitPositions, nikkeEvents, ruleOf, HORIZON } from './arena-sim.js';
+import { burstChain, hitPositions, shotStream, WAIT, ruleOf, magazine, HORIZON } from './arena-sim.js';
 
 /* 첫 버스트는 컷신 영상, 다음 버스트 간격은 컷신 끈 영상의 HUD 로 잰 값이다 (arena-sim.js 설명 참고). */
 const FIRST_BURST_DELAY = 25;
@@ -38,6 +38,18 @@ function withFavorite(base, cfg) {
   return d;
 }
 
+/* 아레나 큐브의 전투 상시 효과 (configFromRoster 가 cfg 에 넣는다): 방어력·최대 체력·방어력 무시 대미지·관통 대미지 ▲ */
+function cubeBuffs(cfg) {
+  const out = [];
+  const add = (kind, v) => { if (v) out.push({ kind, value: v, until: Infinity }); };
+  add('def', cfg.cubeDefPct);
+  add('maxHp', cfg.cubeHpPct);
+  add('ignoreUp', cfg.cubeIgnore);
+  add('pierceUp', cfg.cubePierce);
+  add('splitUp', cfg.cubeSplit);
+  return out;
+}
+
 function makeSide(data, input, horizon, opts) {
   const n = input.team.length;
   const slots = input.team.map((s, pos) => {
@@ -50,44 +62,42 @@ function makeSide(data, input, horizon, opts) {
       + s.stats.hp * (cfg.coverCasterPct || 0) / 100;
     return {
       pos, rid: s.rid, cfg, stats: s.stats, d, rule, doll,
-      hp: s.stats.hp, alive: true, deathFrame: null, dealt: 0,
+      hp: s.stats.hp * (1 + (cfg.cubeHpPct || 0) / 100), alive: true, deathFrame: null, dealt: 0,
       stunUntil: -1, invulnUntil: -1, tauntUntil: -1, tauntedBy: null, tauntedUntil: -1, undyingUntil: -1, immuneUntil: -1,
       stealthUntil: rule.stealth ?? -1, decoy: 0, share: null, shareUntil: -1, state: {}, critSeen: 0,
       reloadAt: null, hitsTaken: 0,
-      buffs: [], hitCount: 0, spent: 0, shots: 0, rot: 0,
+      buffs: cubeBuffs(cfg), hitCount: 0, spent: 0, shots: 0, rot: 0,
       castAt: null, modeUntil: -1, modeNext: null, dots: [], hots: [],
       shield: 0, shieldUntil: -1, cover, coverMax: cover,
       coverDef: s.stats.coverDef ?? COVER_DEF, hidden: new Uint8Array(horizon + 1),
       /* 소장품·큐브의 받는 대미지 감소는 니케 몸에만 들어간다. */
       reduceBase: (doll.reduce || 0) + (cfg.cubeReduce || 0),
       chainLeft: null, chainNext: 0, chainStack: 0,
-      procs: (d.procs || []).map((p, i) => ({ ...p, id: i, seen: 0, fired: 0, coolUntil: -1, next: p.first ?? null })),
+      procs: (d.procs || []).map((p, i) => ({ ...p, id: i, seen: p.seen0 || 0, fired: 0, coolUntil: -1, next: p.first ?? null })),
     };
   });
-  /* 사격 타임라인(nikkeEvents)은 미리 계산하므로, 전투 시작부터 끝까지 가는 차지 속도·장탄·재장전 효과만 여기서 cfg 에 접는다.
-     전투 중에 잠깐 켜지는 효과는 반영하지 않는다. */
-  for (const sl of slots) {
-    for (const p of sl?.procs || []) {
-      if (p.on !== 'start' || p.cond) continue;
-      for (const item of p.items) {
-        if (!TIMELINE_KINDS.has(item.kind) || atSkill(item.dur, sl.cfg.skills, p.skill) < 60) continue;
-        const value = atSkill(item.v, sl.cfg.skills, p.skill);
-        for (const t of allyTargets(p, sl, slots)) {
-          if (item.kind === 'chargeSpd') t.cfg.chargeValues.push(value);
-          else if (item.kind === 'ammoPct') t.cfg.ammoParts.push(value);
-          else if (item.kind === 'reloadSpd') t.cfg.reloadPct = (t.cfg.reloadPct || 0) + value;
-        }
-      }
-    }
-  }
+  /* 사격 이벤트는 전투 중에 한 발씩 만든다 (pullShots). 차지 속도·최대 장탄·재장전 속도·펠릿 버프는 사격마다 읽는다. */
   const bucket = Array.from({ length: horizon + 1 }, () => null);
   slots.forEach(sl => {
     if (!sl) return;
-    const events = nikkeEvents(data, sl.rid, sl.cfg, sl.pos, input.side, horizon);
-    for (const e of events) {
-      (bucket[e.f] ||= []).push({ e, sl });
-    }
-    for (const [a, b] of events.cover || []) sl.hidden.fill(1, Math.max(0, a), Math.min(horizon, b) + 1);
+    sl.st = { t: 0, ammo: 0 };
+    const vals = kind => sl.buffs.filter(b => b.kind === kind && b.until >= sl.st.now).map(b => b.value);
+    const live = {
+      /* 차지 속도 증가 효과 면역(리버렐리오)이면 양수 버프는 받지 않는다 */
+      charge: () => vals('chargeSpd').filter(v => v < 0 || !(sl.chargeImmuneUntil >= sl.st.now)),
+      chargeFix: () => { const v = vals('chargeFix'); return v.length ? Math.round(v[v.length - 1] * FPS) : null; },
+      warm: () => vals('warmUp').reduce((x, y) => x + y, 0),
+      pelletFix: () => { const v = vals('pelletFix'); return v.length ? v[v.length - 1] : null; },
+      infinite: () => !!sl.d.mode?.infinite && inMode(sl, sl.st.now),
+      ammoParts: () => vals('ammoPct'),
+      reload: () => vals('reloadSpd').reduce((x, y) => x + y, 0),
+      pellets: () => vals('pellets').reduce((x, y) => x + y, 0),
+      ammoFlat: () => vals('ammoFlat').reduce((x, y) => x + y, 0),
+      rof: () => vals('rofUp').reduce((x, y) => x + y, 0),
+    };
+    /* 부활하면 그 프레임부터 새로 쏜다 */
+    sl.newStream = start => { sl.st.t = start; sl.stream = shotStream(data, sl.rid, sl.cfg, sl.pos, input.side, horizon, live, sl.st, start); };
+    sl.newStream(0);
   });
   let aura = 0;
   slots.forEach(sl => {
@@ -112,8 +122,11 @@ const buffSum = (sl, kind, f) => sl.buffs.reduce((v, b) => v + (b.kind === kind 
 /* 최대 체력 - 최대 체력 ▲ (%) 와 시전자 기준 최대 체력 ▲ (고정값) 버프를 더한다. */
 const maxHpOf = (sl, f) => sl.stats.hp * (1 + buffSum(sl, 'maxHp', f) / 100) + buffSum(sl, 'maxHpFlat', f);
 
-/* 타임라인(nikkeEvents)에 미리 접는 효과 - 전투 시작 시 [지속] 인 것만. */
-const TIMELINE_KINDS = new Set(['chargeSpd', 'ammoPct', 'reloadSpd']);
+/* 지금 최대 장탄 (최대 장탄 수 ▲ 버프 포함) */
+const magazineOf = (sl, f) => sl.rule.noReload ? Infinity : magazine(sl.d.ammo, {
+  ...sl.cfg, ammoParts: [...(sl.cfg.ammoParts || (sl.cfg.ammoPct ? [sl.cfg.ammoPct] : [])), ...sl.buffs.filter(b => b.kind === 'ammoPct' && b.until >= f).map(b => b.value)] })
+  + buffSum(sl, 'ammoFlat', f);
+
 
 /* 아군 대상 고르기. block.filter: { cls, element, weapon } (클래스·코드·무기), block.leftmost: 왼쪽부터 n 기.
    block.excludeSelf / includeSelf: '자신을 제외한' / '자신과'. */
@@ -123,10 +136,16 @@ function matches(sl, flt) {
   if (flt.element && sl.d.element !== flt.element) return false;
   if (flt.weapon && sl.d.weapon !== flt.weapon) return false;
   if (flt.squad && sl.d.squad !== flt.squad) return false;
+  if (flt.step && sl.d.step !== flt.step) return false;
   if (flt.cast != null && (sl.castAt != null) !== flt.cast) return false;
+  if (flt.state && !(sl.state[flt.state]?.until >= 0 && sl.state[flt.state].stacks > 0)) return false;
   return true;
 }
 function allyTargets(block, caster, slots, f = 0) {
+  if (block.to === 'deadHighestAtk') {
+    /* 전투불능 상태 최종 공격력이 가장 높은 아군 (라푼젤 부활) */
+    return slots.filter(x => x && !x.alive).sort((a, b) => b.stats.atk - a.stats.atk || a.pos - b.pos).slice(0, 1);
+  }
   const alive = slots.filter(x => x?.alive !== false && x);
   const n = Math.max(1, Math.round(atSkill(block.n, caster.cfg.skills, block.skill) || 1));
   /* filter.squad === 'own' 은 시전자와 같은 스쿼드 */
@@ -142,6 +161,9 @@ function allyTargets(block, caster, slots, f = 0) {
     case 'allyHighestAtk':
       pool = [...pool].sort((a, b) => effectiveAtk(b, f) - effectiveAtk(a, f) || a.pos - b.pos).slice(0, n);
       break;
+    case 'allyLowestAtk':
+      pool = [...pool].sort((a, b) => effectiveAtk(a, f) - effectiveAtk(b, f) || a.pos - b.pos).slice(0, n);
+      break;
     case 'allyLowestCover': pool = [...pool].sort((a, b) => a.cover - b.cover || a.pos - b.pos).slice(0, n); break;
     case 'coverBroken': pool = pool.filter(x => x.cover <= 0).slice(0, n); break;
     case 'neighbors': pool = alive.filter(x => Math.abs(x.pos - caster.pos) === 1); break;
@@ -151,7 +173,7 @@ function allyTargets(block, caster, slots, f = 0) {
   if (block.includeSelf && !pool.includes(caster) && caster.alive !== false) pool = [caster, ...pool];
   return pool;
 }
-const ALLY_TO = new Set(['self', 'allyAll', 'allyFilter', 'allyLeftmost', 'allyLowestHp', 'allyHighestAtk', 'allyLowestCover',
+const ALLY_TO = new Set(['deadHighestAtk', 'self', 'allyAll', 'allyFilter', 'allyLeftmost', 'allyLowestHp', 'allyHighestAtk', 'allyLowestAtk', 'allyLowestCover',
   'coverBroken', 'neighbors', 'selfAndLowerDef']);
 
 /* ── 스킬 발동 기록 (화면의 타임라인용) ─────────────────────
@@ -181,8 +203,12 @@ function logSkill(side, sl, f, skill, src, items = [], extra = {}) {
   side.events.push({ f, pos: sl.pos, skill: key, src, fx: [...fx], until });
 }
 
+/* 최종 공격력 = 기본 공격력 x (1 + 공증 옵션 + 전투 시작 공격력 ▲ + 스킬 공격력 ▲ 합) + 고정값.
+   atkBase 가 없는 입력(예전 호출)은 stats.atk 에 공증이 이미 곱해진 값으로 본다. */
 function effectiveAtk(sl, f) {
-  return Math.max(1, sl.stats.atk * (1 + buffSum(sl, 'atk', f) / 100) + buffSum(sl, 'atkFlat', f));
+  const s = sl.stats;
+  if (s.atkBase == null) return Math.max(1, s.atk * (1 + buffSum(sl, 'atk', f) / 100) + buffSum(sl, 'atkFlat', f));
+  return Math.max(1, s.atkBase * (1 + (s.atkPct || 0) + buffSum(sl, 'atk', f) / 100) + (s.atkAdd || 0) + buffSum(sl, 'atkFlat', f));
 }
 
 const critRateOf = (att, f, how = {}) => Math.min(1, (att.stats.critRate ?? 0.15) + buffSum(att, 'critRate', f) / 100
@@ -198,23 +224,36 @@ function dealMultiplier(att, tgt, f, side, opts, how) {
   const core = how.core ? 1 + buffSum(att, 'coreUp', f) / 100 : 0;
   /* 엄폐물은 코드가 없고, 니케에게 걸린 받는 대미지 증감도 받지 않는다. */
   const beats = !how.cover && BEATS[att.d.element] === tgt.d.element;
-  const code = beats ? 1 + ELEMENT_BONUS + (s.elementBonus || 0) : 1;
-  /* 공격 대미지 ▲ 묶음: 우월 코드·관통·폭발·버스트(광역/단일) 대미지 ▲ 는 해당 공격에만 더한다. */
+  /* 우월 코드 계수 = 110% + 우코 옵션 + 우월 코드 대미지 ▲ 버프 */
+  const code = beats ? 1 + ELEMENT_BONUS + (s.elementBonus || 0) + buffSum(att, 'beatsUp', f) / 100 : 1;
+  /* 공격 대미지 ▲ 묶음: 관통·폭발·순차·방무·지속·버스트(광역/단일) 대미지 ▲ 는 해당 공격에만 더한다. */
   const given = 1 + (buffSum(att, 'dmgUp', f)
     + (how.ignoreDef ? buffSum(att, 'ignoreUp', f) : 0)
+    + (how.count || how.countState ? buffSum(att, 'seqUp', f) : 0)
     + (how.dot ? buffSum(att, 'dotUp', f) : 0)
-    + (beats ? buffSum(att, 'beatsUp', f) : 0)
     + (how.normal && att.d.pierce ? buffSum(att, 'pierceUp', f) : 0)
     + (how.normal && att.d.splash ? buffSum(att, 'splashUp', f) : 0)
     + (how.burstAoe ? buffSum(att, 'burstAoeUp', f) : 0)
     + (how.burstSingle ? buffSum(att, 'burstSingleUp', f) : 0)) / 100;
-  const taken = how.cover ? 1
-    : Math.max(0, 1 + (buffSum(tgt, 'vuln', f) - buffSum(tgt, 'reduce', f) - tgt.reduceBase) / 100);
+  /* 분배 대미지 ▲ 는 받는 대미지와 같은 묶음에 더한다 */
+  const taken = how.cover ? 1 + (how.split ? buffSum(att, 'splitUp', f) / 100 : 0)
+    : Math.max(0, 1 + ((how.split ? buffSum(att, 'splitUp', f) : 0) + buffSum(tgt, 'vuln', f) - buffSum(tgt, 'reduce', f) - tgt.reduceBase
+      - tgt.buffs.reduce((v, b) => v + (b.kind === 'reduceFrom' && b.until >= f && b.element === att.d.element ? b.value : 0), 0)) / 100);
   return (1 + crit + fb + core) * code * given * taken * (opts.damageScale ?? 1);
 }
 
+/* 회복을 받으면 healedAt 을 남긴다 - '회복 효과 적용 시' (크라운 S2) 발동용 */
 const restore = (t, amount, f = 0) => {
-  if (t.alive) t.hp = Math.min(maxHpOf(t, f), t.hp + amount * (1 + buffSum(t, 'healUp', f) / 100));
+  if (!t.alive) return;
+  const max = maxHpOf(t, f), got = amount * (1 + buffSum(t, 'healUp', f) / 100);
+  const over = t.hp + got - max;
+  t.hp = Math.min(max, t.hp + got);
+  /* 초과 회복 저장 (앵커 : 이노센트 메이드 등) - 넘친 만큼 보호막으로 */
+  if (over > 0 && t.store && t.store.until >= f) {
+    const room = Math.max(0, t.store.cap - (t.shieldUntil >= f ? t.shield : 0));
+    if (room > 0) { t.shield = (t.shieldUntil >= f ? t.shield : 0) + Math.min(room, over); t.shieldUntil = Math.max(t.shieldUntil, t.store.until); }
+  }
+  if (amount > 0) t.healedAt = f;
 };
 
 /* 공격 한 번(사격 한 발, 버스트 대미지 한 줄)의 번호. null 이면 공격마다 따로 센다.
@@ -232,7 +271,10 @@ function takeDamage(tgt, dmg, f, tgtSide) {
     if (id != null && tgtSide?.sharedHitId === id) return;
     if (id != null && sharedOn(tgtSide, f)) tgtSide.sharedHitId = id;
     attackId = null;
-    for (const m of group) absorb(m, dmg / group.length, f, tgtSide);
+    /* 차등 분배(베이)는 최대 체력 비율로, 균등 분배는 똑같이 */
+    const w = tgt.shareWeighted ? group.map(m => maxHpOf(m, f)) : group.map(() => 1);
+    const sum = w.reduce((a, b) => a + b, 0);
+    group.forEach((m, i) => absorb(m, dmg * w[i] / sum, f, tgtSide));
     attackId = id;
     return;
   }
@@ -249,6 +291,8 @@ function absorb(tgt, dmg, f, tgtSide) {
     left -= used;
   }
   if (tgt.shieldUntil >= f && tgt.shield > 0) {
+    /* 보호막 무적(레이블 망상 공유) 동안은 보호막이 줄지 않고 대미지를 전부 막는다 */
+    if (tgt.shieldLockUntil >= f) return;
     const used = Math.min(tgt.shield, left);
     tgt.shield -= used;
     left -= used;
@@ -364,6 +408,8 @@ function resolveTargets(att, foe, f) {
   const alive = foe.slots.filter(x => x?.alive);
   if (!alive.length) return [];
   if (att.d.weapon === 'RL' && buffSum(att, 'rangeUp', f) > 0) return alive;
+  /* 조준 범위 내 적 전체 동시 조준 (모더니아 섬멸 모드) */
+  if (att.d.mode?.allTargets && inMode(att, f)) return alive;
   const taunter = tauntTarget(att, foe, f);
   if (taunter) {
     att.aimReset = true;   // 도발이 끝나면 처음부터 다시 고른다
@@ -381,9 +427,10 @@ const inMode = (sl, f) => sl.modeUntil >= f;
 
 function shotPercent(att, f) {
   const d = att.d;
-  const up = buffSum(att, 'chargeUp', f) / 100 + (att.stats.chargeBonus || 0);
-  /* RL·SR 소장품은 기본 차지 배율에 곱한다 (nikke.gg 대미지 공식). 엄폐물 BLOCK 숫자로 확인했다. */
-  const mul = 1 + (att.doll.chargeMul || 0) / 100;
+  const up = buffSum(att, 'chargeUp', f) / 100 + (att.stats.chargeBonus || 0) + (att.cfg.cubeChargeDmg || 0) / 100;
+  /* RL·SR 소장품은 기본 차지 배율에 곱한다 (nikke.gg 대미지 공식). 엄폐물 BLOCK 숫자로 확인했다.
+     스킬의 '차지 대미지 N% 배율 ▲' (헬름 애장품 버스트) 도 같은 묶음에 더한다. */
+  const mul = 1 + ((att.doll.chargeMul || 0) + buffSum(att, 'chargeMul', f)) / 100;
   if (inMode(att, f)) {
     const m = d.mode;
     const charge = m.fullCharge > 100 ? (m.fullCharge / 100) * mul + up : 1;
@@ -402,7 +449,7 @@ function pushBuff(t, kind, value, until, key, stack) {
   }
   const had = t.buffs.find(b => b.key === key);
   if (!had) {
-    t.buffs.push({ kind, value, until, key, stacks: 1 });
+    t.buffs.push({ kind, value, until, key, stacks: 1, base: value, max: stack || 1 });
     return;
   }
   had.until = until;
@@ -412,9 +459,12 @@ function pushBuff(t, kind, value, until, key, stack) {
   }
 }
 
+/* 주는 회복량 ▲ (힐링 큐브) */
+const healGiven = sl => 1 + (sl.cfg.cubeHealGiven || 0) / 100;
+
 /* 효과 목록을 대상들에게 적용한다. key 가 있으면 같은 효과는 중첩 규칙대로 갱신한다. */
 /* 적에게 거는 해로운 효과 - 해로운 효과 면역이면 막힌다. */
-const HARMFUL = new Set(['vuln', 'stun', 'taunt', 'atkDown', 'defDown', 'defCasterDown', 'dispel']);
+const HARMFUL = new Set(['vuln', 'stun', 'taunt', 'atkDown', 'defDown', 'defCasterDown', 'dispel', 'ammoDown']);
 
 function applyItems(caster, targets, items, f, side, foe, opts, skillKey, keyBase, spread = false, extraHow = {}) {
   const outer = attackId;
@@ -424,7 +474,8 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
   const skills = caster.cfg.skills;
   items.forEach((item, i) => {
     attackId = null;
-    const value = atSkill(item.v, skills, skillKey);
+    /* scaleState: 거는 순간 시전자 상태 중첩 수를 곱한다 (마스트 : 로망틱 메이드 'N% X 취기 중첩 수') */
+    const value = atSkill(item.v, skills, skillKey) * (item.scaleState ? (caster.state[item.scaleState]?.stacks || 0) : 1);
     const until = f + Math.round(atSkill(item.dur, skills, skillKey) * FPS);
     const key = keyBase ? `${keyBase}:${i}` : null;
     if (item.when && !condOk(caster, item.when, f, side)) return;
@@ -452,9 +503,9 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
       else side.fbBonus = (side.fbBonus || 0) + Math.round(value * FPS);
       return;
     }
-    if (item.kind === 'share') {
+    if (item.kind === 'share' || item.kind === 'shareWeighted') {
       const group = targets.filter(t => t.alive);
-      for (const t of group) { t.share = group; t.shareUntil = Math.max(t.shareUntil, until); }
+      for (const t of group) { t.share = group; t.shareUntil = Math.max(t.shareUntil, until); t.shareWeighted = item.kind === 'shareWeighted'; }
       return;
     }
     if (item.kind === 'damage') newAttack();
@@ -464,8 +515,13 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
       switch (item.kind) {
         case 'damage': {
           const mult = item.modeMult && inMode(caster, f) ? item.modeMult : 1;
-          const scale = item.perState ? Math.floor((caster.state[item.perState]?.stacks || 0) / (item.perDiv || 1)) : 1;
-          strike(caster, t, (value * mult * scale) / 100, f, side, foe, opts, { ...item, ...extraHow, src: keyBase || 'burst' });
+          let scale = item.perState ? Math.floor((caster.state[item.perState]?.stacks || 0) / (item.perDiv || 1)) : 1;
+          /* perTargetState: 맞는 적에게 쌓인 상태 중첩 수만큼 (아스카 : WILLE 섬멸의 안티 AT 필드) */
+          if (item.perTargetState) scale *= t.state[item.perTargetState]?.until >= f ? t.state[item.perTargetState].stacks : 0;
+          if (!scale) break;
+          /* 분배 대미지는 맞은 적 수로 나눈다 */
+          const share = item.split ? targets.length : 1;
+          strike(caster, t, (value * mult * scale) / 100 / share, f, side, foe, opts, { ...item, ...extraHow, src: keyBase || 'burst' });
           break;
         }
         case 'undying': t.undyingUntil = Math.max(t.undyingUntil, until); break;
@@ -508,6 +564,13 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
         case 'coverRevive': if (t.cover <= 0) t.cover = (t.coverMax * value) / 100; break;
         case 'coverHeal': if (t.cover > 0) t.cover = Math.min(t.coverMax, t.cover + (t.coverMax * value) / 100); break;
         case 'coverHot': t.hots.push({ cover: (t.coverMax * value) / 100, next: f + DOT_INTERVAL, until }); break;
+        case 'coverHotCaster': t.hots.push({ cover: (maxHpOf(caster, f) * value) / 100, next: f + DOT_INTERVAL, until }); break;
+        case 'warmDown': pushBuff(t, 'warmUp', -value, until, key && `${caster.rid}:${key}`); break;
+        case 'chargeDown': {
+          pushBuff(t, 'chargeSpd', -value, until, key && `${caster.rid}:${key}`);
+          if (item.shots) t.buffs[t.buffs.length - 1].shotsLeft = Math.round(atSkill(item.shots, skills, skillKey));
+          break;
+        }
         case 'coverMaxUp': {
           const add = (maxHpOf(caster, f) * value) / 100;
           t.coverMax += add;
@@ -523,6 +586,8 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
           break;
         }
         case 'stateClear': delete t.state[item.name]; break;
+        case 'shieldLock': t.shieldLockUntil = Math.max(t.shieldLockUntil ?? -1, until); break;
+        case 'tagClear': t.buffs = t.buffs.filter(b => b.tag !== item.name); break;
         case 'chainStack':
           /* 미하라 사슬 감기 중첩 ▲ (최대 20) */
           if (t.chainStack > 0) t.chainStack = Math.min(20, t.chainStack + value);
@@ -540,22 +605,78 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
             q.next = Math.max(f + 1, q.next - Math.round(full * value / 100));
           }
           break;
-        case 'chargeSpd': case 'ammoPct': case 'reloadSpd': case 'accuracy': break;
+        case 'ammoDown': pushBuff(t, 'ammoPct', -value, until, key && `${caster.rid}:${key}`, atSkill(item.stack, skills, skillKey)); break;
+        case 'chargeSpd': case 'ammoPct': case 'reloadSpd': case 'pellets': case 'ammoFlat': case 'rofUp':
+          /* 사격 규칙(chargeStack 등)이 이미 센 자기 차지 속도 스택은 다시 넣지 않는다 (레드 후드·에밀리아·라플라스 : 얼티밋 히어로) */
+          if (item.kind === 'chargeSpd' && t === caster && (caster.rule.chargeStack || caster.rule.chargeAfterFirst || caster.rule.chargeRamp)) break;
+          pushBuff(t, item.kind, value, until, key && `${caster.rid}:${key}`, atSkill(item.stack, skills, skillKey));
+          break;
+        case 'ammoAdd': case 'ammoAddPct': {
+          /* 탄환 충전 N발 / 최대 장탄의 N% - 최대 장탄을 넘지 않는다 */
+          if (!t.st) break;
+          const max = magazineOf(t, f);
+          t.st.ammo = Math.max(0, Math.min(max, t.st.ammo + (item.kind === 'ammoAdd' ? Math.round(value) : Math.round(max * value / 100))));
+          break;
+        }
+        case 'accuracy': break;
+        case 'chargeFix': case 'warmUp': case 'pelletFix':
+          pushBuff(t, item.kind, value, until, key && `${caster.rid}:${key}`);
+          if (item.shots) { const b = t.buffs.find(x => x.key === `${caster.rid}:${key}`) || t.buffs[t.buffs.length - 1]; b.shotsLeft = Math.round(atSkill(item.shots, skills, skillKey)); }
+          break;
+        case 'chargeImmune': t.chargeImmuneUntil = Math.max(t.chargeImmuneUntil ?? -1, until); break;
+        case 'hpCost':
+          /* 현재 체력 N% ▼ - 자기 체력을 깎지만 이것으로 쓰러지지는 않는다 */
+          t.hp = Math.max(1, t.hp - maxHpOf(t, f) * value / 100);
+          break;
+        case 'stackUp':
+          /* 중첩 가능 이로운 효과 중첩량 N개 ▲ - 걸려 있는 중첩형 버프를 최대 중첩까지 올린다 */
+          for (const b of t.buffs) {
+            if (b.max > 1 && b.until >= f && b.base > 0) { b.stacks = Math.min(b.max, b.stacks + Math.round(value)); b.value = b.base * b.stacks; }
+          }
+          break;
+        case 'reduceFrom':
+          /* '{코드} 코드 적으로부터 받는 대미지 N% ▼' */
+          t.buffs.push({ kind: 'reduceFrom', element: item.element, value, until });
+          break;
+        case 'coverMaxCaster': {
+          /* 시전자 최대 체력 비례 엄폐물 최대 체력 ▲ (베이) */
+          const add = maxHpOf(caster, f) * value / 100;
+          t.coverMax += add;
+          t.cover += add;
+          t.buffs.push({ kind: 'coverMaxFlat', value: add, until });
+          break;
+        }
+        case 'healStore':
+          /* 초과 받는 체력 회복량 저장 (시전자 최대 체력 N% 까지) - 넘친 회복을 보호막처럼 쌓는다 */
+          t.store = { cap: maxHpOf(caster, f) * value / 100, until };
+          break;
+        case 'revive':
+          /* 전투불능 아군 부활 - 체력 N% 로 다시 싸우고 사격을 새로 시작한다 */
+          if (t.alive) break;
+          t.alive = true;
+          t.downCounted = false;
+          t.deathFrame = null;
+          t.hp = maxHpOf(t, f) * value / 100;
+          t.newStream?.(f + 1);
+          side.events.push({ f, pos: t.pos, kind: 'revive' });
+          break;
         case 'dot':
           t.dots.push({ att: caster, side, foe, pct: value / 100, next: f + DOT_INTERVAL, until });
           break;
-        case 'heal': restore(t, (maxHpOf(caster, f) * value) / 100, f); break;
+        case 'heal': restore(t, (maxHpOf(caster, f) * value) / 100 * healGiven(caster), f); break;
         case 'hot':
-          t.hots.push({ amount: (caster.stats.hp * value) / 100, next: f + DOT_INTERVAL, until });
+          t.hots.push({ amount: (caster.stats.hp * value) / 100 * healGiven(caster), next: f + DOT_INTERVAL, until });
           break;
         case 'shield':
           t.shield = Math.max(t.shield, (caster.stats.hp * value) / 100);
           t.shieldUntil = Math.max(t.shieldUntil, until);
+          t.shieldedAt = f;
           break;
         case 'sharedShield': {
           const own = side.slots.includes(t) ? side : foe;
           own.shared = Math.max(own.shared, (caster.stats.hp * value) / 100);
           own.sharedUntil = Math.max(own.sharedUntil, until);
+          for (const x of own.slots) if (x?.alive) x.shieldedAt = f;
           break;
         }
         case 'stun': t.stunUntil = Math.max(t.stunUntil, until); break;
@@ -574,24 +695,32 @@ function applyItemsInner(caster, targets, items, f, side, foe, opts, skillKey, k
           }
           break;
         case 'atkCaster': {
-          /* 시전자 기준 공격력 - 중첩 상태 수만큼 곱할 수 있다 (perState) */
+          /* 시전자 기준 공격력 - 시전자의 기본 공격력 기준 (공증 옵션·버프 제외). 중첩 상태 수만큼 곱할 수 있다 (perState) */
           const scale = item.perState ? (caster.state[item.perState]?.stacks || 0) : 1;
-          pushBuff(t, 'atkFlat', caster.stats.atk * value * scale / 100, until, key && `${caster.rid}:${key}`, 1);
+          pushBuff(t, 'atkFlat', (caster.stats.atkBase ?? caster.stats.atk) * value * scale / 100, until, key && `${caster.rid}:${key}`, 1);
           break;
         }
         default:
           pushBuff(t, item.kind, value, until, key && `${caster.rid}:${key}`, atSkill(item.stack, skills, skillKey));
+          /* '[N발 유지]' - 풀 차지 사격 N발 뒤 끝난다 (fireShot 이 센다) */
+          if (item.shots) {
+            const b = t.buffs.find(x => x.key === (key && `${caster.rid}:${key}`)) || t.buffs.at(-1);
+            b.shotsLeft = Math.round(atSkill(item.shots, skills, skillKey));
+          }
           if (item.perState && item.kind !== 'atkCaster') {
             const b = t.buffs.find(x => x.key === (key && `${caster.rid}:${key}`)) || t.buffs.at(-1);
             b.perState = item.perState;
             b.perDiv = item.perDiv;
           }
       }
+      /* tag: 이름 붙은 상태가 풀리면 같이 지울 버프 (tagClear) */
+      if (item.tag && key) for (const b of t.buffs) if (b.key === `${caster.rid}:${key}`) b.tag = item.tag;
     }
   });
 }
 
 function blockTargets(block, caster, side, foe, shotTargets, f = 0) {
+  if (block.to === 'deadHighestAtk') return allyTargets(block, caster, side.slots, f);
   if (ALLY_TO.has(block.to)) return allyTargets(block, caster, side.slots.filter(x => x?.alive), f);
   const picked = pickEnemies(block, caster, side, foe, shotTargets, f);
   /* 대상을 고르는 스킬(공격력이 가장 높은 적 등)도 도발을 따라 도발한 니케를 맨 앞에 둔다. 무작위·적 전체·명중 대상은 그대로다. */
@@ -612,6 +741,7 @@ function pickEnemies(block, caster, side, foe, shotTargets, f) {
     case 'enemyHighestAtk': return [...alive].sort((a, b) => effectiveAtk(b, f) - effectiveAtk(a, f) || a.pos - b.pos).slice(0, n);
     case 'enemyHighestHp': return [...alive].sort((a, b) => maxHpOf(b, f) - maxHpOf(a, f) || a.pos - b.pos).slice(0, n);
     case 'enemyLowestHp': return [...alive].sort((a, b) => a.hp - b.hp || a.pos - b.pos).slice(0, n);
+    case 'enemyLowestDef': return [...alive].sort((a, b) => a.stats.def - b.stats.def || a.pos - b.pos).slice(0, n);
     default: {
       const count = Math.max(1, Math.round(atSkill(block.n, caster.cfg.skills, block.skill)));
       /* '무작위 적 N기' - 시드 난수로 뽑는다 (같은 시드면 같은 결과, 채점 표본마다 시드가 다르다) */
@@ -644,8 +774,12 @@ function condOk(sl, c, f, side) {
   if (c.noFb && side.fbUntil >= f && side.fullBurst != null) return false;
   if (c.alive && !sl.alive) return false;
   if (c.mode && !inMode(sl, f)) return false;
+  if (c.noMode && inMode(sl, f)) return false;
   if (c.stealth && !(sl.stealthUntil >= f)) return false;
   if (c.shield && !(sl.shieldUntil >= f && sl.shield > 0)) return false;
+  if (c.noShield && sl.shieldUntil >= f && sl.shield > 0) return false;
+  if (c.noBurstWithin != null && sl.castAt != null && f - sl.castAt <= c.noBurstWithin) return false;
+  if (c.squadMate && !side.slots.some(x => x && x !== sl && x.d.squad && x.d.squad === sl.d.squad)) return false;
   if (c.decoy && !(sl.decoy > 0)) return false;
   if (c.coverBroken && !(sl.cover <= 0)) return false;
   if (c.teamHas && !side.slots.some(x => x?.alive && x.rid === c.teamHas)) return false;
@@ -732,7 +866,10 @@ function coverTakes(sl, t, pct, f, side, opts) {
 
 function fireShot(sl, e, side, foe, f, opts) {
   const targets = resolveTargets(sl, foe, f);
-  const pct = e?.streamPct ?? shotPercent(sl, f);
+  /* '풀 차지 시' 는 차지가 다 찬 순간이라 그 사격 대미지보다 먼저 건다 */
+  if (!e?.streamPct && (inMode(sl, f) ? sl.d.mode.fullCharge > 100 : sl.d.charge > 0))
+    for (const p of sl.procs) if (p.on === 'fullCharge') fireProc(sl, p, side, foe, f, opts, targets);
+  const pct = (e?.streamPct ?? shotPercent(sl, f)) * (e?.pelletMul || 1);
   const count = sl.d.weapon === 'RL' || !e ? 1 : e.units;
   /* 게이지는 맞은 수만큼 차지만 대미지 칸 수는 따로 정할 수 있다 (홍련 : 신살은 맞힌 엄폐물까지 게이지에 든다). */
   newAttack();
@@ -761,9 +898,11 @@ function fireShot(sl, e, side, foe, f, opts) {
   sl.shots += 1;
   const mode = inMode(sl, f);
   const full = e?.streamPct ? false : mode ? sl.d.mode.fullCharge > 100 : sl.d.charge > 0;
+  /* '[N발 유지]' 버프는 사격마다 하나씩 줄어 0 이 되면 끝난다 */
+  for (const b of sl.buffs) if (b.shotsLeft > 0 && b.until >= f && --b.shotsLeft === 0) b.until = f;
   /* 최대 장탄을 다 쓰면 재장전이 끝나는 시점에 '재장전 완료 시' 가 터진다. */
   if (e?.last) {
-    sl.reloadAt = f + Math.round(sl.d.reload * FPS * (1 - (sl.cfg.reloadPct || 0) / 100));
+    sl.reloadAt = f + Math.max(1, Math.round(sl.d.reload * FPS * (1 - ((sl.cfg.reloadPct || 0) + buffSum(sl, 'reloadSpd', f)) / 100)));
     sl.aimReset = true;   // 재장전하면 다음 사격 때 대상을 처음부터 다시 고른다
   }
   for (const p of sl.procs) {
@@ -771,7 +910,18 @@ function fireShot(sl, e, side, foe, f, opts) {
     switch (p.on) {
       case 'fullHit': case 'fullShot': go = full; break;
       case 'modeShot': go = mode; break;
-      case 'everyShot': go = true; break;
+      case 'everyShot':
+        /* '공격 시 N% 확률로' 는 기댓값으로 쌓아 1 이 되면 발동 */
+        if (p.chance) { p.seen += atSkill(p.chance, sl.cfg.skills, p.skill) / 100; if (p.seen >= 1) { p.seen -= 1; go = true; } }
+        else go = true;
+        break;
+      case 'pelletHits': {
+        /* 펠릿 N회 명중 - 샷건 한 발의 펠릿 수만큼 센다 */
+        p.seen += (e?.units || 1) * targets.length;
+        const every = Math.max(1, atSkill(p.every, sl.cfg.skills, p.skill));
+        if (p.seen >= every) { p.seen -= every; go = true; }
+        break;
+      }
       case 'last': go = !!e?.last; break;
       case 'critHits': {
         /* 크리티컬 N회 명중 - 크리티컬 확률 기댓값으로 센다. */
@@ -784,6 +934,8 @@ function fireShot(sl, e, side, foe, f, opts) {
         if (p.on === 'fullEvery' && !full) break;
         if (p.streamOnly && !e?.streamPct) break;
         if (p.afterBurst && sl.castAt == null) break;
+        /* countIf: 조건(상태)이 꺼져 있으면 세지 않고 처음부터 다시 센다 (추억 남기기 해제 시 초기화) */
+        if (p.countIf && !condOk(sl, p.cond, f, side)) { p.seen = p.seen0 || 0; break; }
         p.seen += 1;
         const every = Math.max(1, Math.round(atSkill(p.every, sl.cfg.skills, p.skill)));
         if (p.seen >= every) {
@@ -860,33 +1012,69 @@ function runTicks(side, f, opts) {
 function runTimers(side, foe, f, opts) {
   if (side.full != null && f === side.full + 1) fireStage(side, foe, 1, f, opts);
   for (const sl of side.slots) {
+    /* 어시스터 큐브: 체력 20% 이하가 되면 최대 체력 ▲ 20초, 늘어난 만큼 현재 체력도 는다 (전투 중 1회로 가정) */
+    if (sl?.alive && sl.cfg.cubeLowHp && !sl.lowHpCube && sl.hp / maxHpOf(sl, f) <= 0.2) {
+      const before = maxHpOf(sl, f);
+      sl.buffs.push({ kind: 'maxHp', value: sl.cfg.cubeLowHp, until: f + 20 * FPS });
+      sl.hp += maxHpOf(sl, f) - before;
+      sl.lowHpCube = true;
+    }
+    /* 베젤 큐브: 풀 버스트 시작마다 시전자 기준 최대 체력만 ▲ (현재 체력은 그대로), 최대 3중첩 */
+    if (sl?.alive && sl.cfg.cubeMaxOnly && side.fullBurst === f)
+      pushBuff(sl, 'maxHpFlat', sl.stats.hp * sl.cfg.cubeMaxOnly / 100, Infinity, 'cube:maxOnly', 3);
     if (!sl?.alive || sl.stunUntil >= f) continue;
     if (sl.d.chain) chainStrike(sl, side, foe, f, opts);
     if (inMode(sl, f) && sl.d.mode.chargeFrames && sl.modeNext != null && f >= sl.modeNext) {
       fireShot(sl, null, side, foe, f, opts);
-      sl.modeNext = f + sl.d.mode.chargeFrames + RECOVERY;
+      /* 무기 변경 탄창이 정해져 있으면(은화 : 택티컬 업 1발) 다 쏠 때마다 재장전한다 */
+      sl.modeShots = (sl.modeShots || 0) + 1;
+      const m = sl.d.mode;
+      const reload = m.ammo && sl.modeShots % m.ammo === 0 ? Math.max(1, Math.round(sl.d.reload * FPS * (1 - ((sl.cfg.reloadPct || 0) + buffSum(sl, 'reloadSpd', f)) / 100))) : 0;
+      sl.modeNext = f + m.chargeFrames + RECOVERY + reload;
     }
     for (const p of sl.procs) {
       if (p.on === 'start' && f === 0) fireProc(sl, p, side, foe, f, opts);
       else if (p.on === 'fbStart' && side.fullBurst === f) fireProc(sl, p, side, foe, f, opts);
       else if (p.on === 'fbEnd' && side.fullBurst != null && side.fbUntil === f) fireProc(sl, p, side, foe, f, opts);
       else if (p.on === 'reloadDone' && sl.reloadAt === f) fireProc(sl, p, side, foe, f, opts);
+      /* 버스트 사용 N초 뒤 (아스카 : WILLE 섬멸 태세 종료 시 섬멸) */
+      else if (p.on === 'burstDelay' && sl.castAt != null && f === sl.castAt + Math.round(atSkill(p.delay, sl.cfg.skills, p.skill) * FPS)) fireProc(sl, p, side, foe, f, opts);
       else if (p.on === 'hpBelow') {
         /* 지켜보는 아군(watch: self | 대상 고르기 규칙) 중 체력 비율이 기준 이하인 첫 니케에게 */
         const thr = atSkill(p.below, sl.cfg.skills, p.skill);
         const pool = p.watch === 'self' ? [sl]
           : allyTargets({ to: p.watch === 'neighbors' ? 'neighbors' : 'allyFilter', filter: p.watchFilter, excludeSelf: p.watchExcludeSelf },
             sl, side.slots.filter(x => x?.alive), f);
-        const hit = pool.find(t => t.alive && t.hp / maxHpOf(t, f) * 100 <= thr);
-        if (hit && !(p.onceEach && hit.state[`hp:${sl.rid}:${p.id}`])) {
+        const hit = pool.find(t => t.alive && t.hp / maxHpOf(t, f) * 100 <= thr && !(p.onceEach && t.state[`hp:${sl.rid}:${p.id}`]));
+        if (hit) {
           const before = p.fired;
           fireProc(sl, p, side, foe, f, opts, [hit]);
           if (p.fired > before && p.onceEach) hit.state[`hp:${sl.rid}:${p.id}`] = { stacks: 1, until: Infinity };
         }
       }
+      else if ((p.on === 'healed' && sl.healedAt != null && sl.healedAt > (p.lastAt ?? -1))
+        || (p.on === 'shielded' && sl.shieldedAt != null && sl.shieldedAt > (p.lastAt ?? -1))) {
+        /* '회복 효과 적용 시'·'보호막 적용 시' - 자신이 받은 뒤 다음 프레임에 한 번 */
+        p.lastAt = p.on === 'healed' ? sl.healedAt : sl.shieldedAt;
+        fireProc(sl, p, side, foe, f, opts);
+      }
+      else if (p.on === 'hpFull') {
+        /* '양 옆 아군 중 1기가 최대 체력 도달 시' - 체력이 최대 아래였다가 최대가 되는 순간 (시작 시 가득 찬 것은 세지 않는다) */
+        const pool = allyTargets({ to: 'neighbors' }, sl, side.slots.filter(x => x?.alive), f);
+        p.notFull ??= {};
+        let hit = null;
+        for (const t of pool) {
+          const full = t.hp >= maxHpOf(t, f) - 1e-6;
+          if (full && p.notFull[t.pos]) hit ??= t;
+          p.notFull[t.pos] = !full;
+        }
+        if (hit) fireProc(sl, p, side, foe, f, opts, [hit]);
+      }
       else if (p.on === 'periodicFrames' && f >= p.next) {
         fireProc(sl, p, side, foe, f, opts);
-        p.next = f + (sl.castAt != null && p.afterBurstEvery ? p.afterBurstEvery : p.every);
+        /* afterBurstFor: 버스트 뒤 그 프레임 동안만 짧은 주기 (마리안 : 퀸 임전 10초) */
+        const short = sl.castAt != null && p.afterBurstEvery && (p.afterBurstFor == null || f - sl.castAt < p.afterBurstFor);
+        p.next = f + (short ? p.afterBurstEvery : p.every);
       } else if (p.on === 'periodic' || p.on === 'periodicFb') {
         if (p.on === 'periodicFb' && side.fbUntil < f) continue;
         const gap = Math.max(1, Math.round(atSkill(p.every, sl.cfg.skills, p.skill) * FPS));
@@ -967,7 +1155,7 @@ function stepBursts(side, foe, f, opts, data) {
   const caster = side.slots[next.pos];
   side.cast.push({ pos: next.pos });
   side.bursts.push({ f, rid: next.rid, pos: next.pos, stage: side.cast.length });
-  applyBurst(caster, side, foe, f, opts, caster.d.step === 0 ? Math.min(side.cast.length, 3) : caster.d.step);
+  applyBurst(caster, side, foe, f, opts, next.step === 0 ? Math.min(side.cast.length, 3) : next.step);
   /* 버스트 N단계 진입 시: 1단계는 게이지가 가득 찬 순간(runTimers), 2단계는 B1 직후.
      3단계 진입은 풀 버스트 시작과 같아 fbStart 로 읽는다. */
   if (side.cast.length === 1) fireStage(side, foe, 2, f, opts);
@@ -981,9 +1169,28 @@ function stepBursts(side, foe, f, opts, data) {
   }
 }
 
+/* 결정 프레임이 된 니케의 사격 이벤트를 뽑아 프레임 칸에 넣는다. */
+function pullShots(side, f) {
+  const horizon = side.bucket.length - 1;
+  for (const sl of side.slots) {
+    if (!sl?.stream || !sl.alive) continue;
+    sl.st.now = f;
+    while (sl.st.t <= f) {
+      const r = sl.stream.next();
+      if (r.done) { sl.st.t = Infinity; break; }
+      const e = r.value;
+      if (e === WAIT) continue;
+      if (e.cover) { sl.hidden.fill(1, Math.max(0, e.cover[0]), Math.min(horizon, e.cover[1]) + 1); continue; }
+      (side.bucket[Math.max(f, e.f)] ||= []).push({ e, sl });
+    }
+  }
+}
+
 function runShots(side, foe, f, opts) {
   const list = side.bucket[f];
   if (!list) return;
+  /* 같은 프레임은 자리, 이벤트 종류(사격, 주기, 지속), 만든 순서로 */
+  if (list.length > 1) list.sort((x, y) => x.sl.pos - y.sl.pos || x.e.phase - y.e.phase || x.e.seq - y.e.seq);
   for (const { e, sl } of list) {
     if (!sl.alive || sl.stunUntil >= f) continue;
     const gain = e.gain + side.aura * e.units;
@@ -1095,6 +1302,7 @@ function runDeaths(sides, f, mode = 'all', forced = null) {
         for (const d of died) {
           const mine = side.slots.includes(d);
           const go = (p.on === 'anyDeath' && sl.alive) || (p.on === 'enemyDeath' && sl.alive && !mine)
+            || (p.on === 'kill' && sl.alive && !mine && d.lastHit?.rid === sl.rid)
             || (p.on === 'allyDeath' && sl.alive && mine && d !== sl) || (p.on === 'selfDeath' && d === sl);
           if (go && p.deadChained && !d.chainStack) continue;
           if (go) fireProc(sl, p, side, side.foe, f, side.opts || {});
@@ -1167,6 +1375,8 @@ export function simulateBattle(data, a, b, opts = {}, horizon = HORIZON) {
     runTimers(B, A, f, opts);
     runTicks(A, f, opts);
     runTicks(B, f, opts);
+    pullShots(A, f);
+    pullShots(B, f);
     runShots(A, B, f, opts);
     runShots(B, A, f, opts);
     runReactions(A, f);

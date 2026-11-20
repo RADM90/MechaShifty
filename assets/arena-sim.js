@@ -20,9 +20,14 @@ const CHARGE_CUTS = [[44, 28], [41, 26], [38, 24], [35, 22], [31, 20], [28, 18],
 
 export function chargeCut(pct) {
   const p = Math.floor(pct);
+  /* 표(44%)를 넘으면 같은 기울기(약 0.64프레임/%)로 늘린다 - 레드 후드 무기 변경 100.8% 등 */
+  if (p > 44) return 28 + Math.round((p - 44) * 0.64);
   const row = CHARGE_CUTS.find(([from]) => p >= from);
   return row ? row[1] : 0;
 }
+
+/* 차지 속도 ▼ 합(음수) - 차지 시간이 그 비율만큼 늘어난다 (에이다 특수 개조 300% ▼) */
+const slowOf = values => values.reduce((s, v) => s + (v < 0 ? -v : 0), 0);
 
 /* 같은 수치끼리 묶어 합한 뒤 반올림해 더한다 - 옵션 여러 줄을 게임이 합치는 방식으로 측정된 규칙. */
 export function sumChargeSpeed(values) {
@@ -77,65 +82,85 @@ export function magazine(base, cfg) {
   const parts = cfg.ammoParts || (cfg.ammoPct ? [cfg.ammoPct] : []);
   return Math.max(1, base + parts.reduce((s, p) => s + Math.floor((2 * base * Math.round(p * 100) + 10000) / 20000), 0));
 }
-export function nikkeEvents(data, rid, cfg, pos, side, horizon = HORIZON) {
+/* 사격 이벤트 생성기. 결정 프레임(st.t)마다 WAIT 를 내고, 전투(arena-battle.js)는 그 프레임이 되면 이어서 뽑는다.
+   live 가 있으면 사격마다 전투 중 버프(차지 속도·최대 장탄·재장전 속도·펠릿)를 읽고, st.ammo 는 탄환 충전이 바로 바꾼다.
+   이벤트 phase 는 같은 프레임 안 처리 순서다 (0 사격, 1 주기 충전, 2 지속 대미지). { cover: [a, b] } 는 엄폐 구간. */
+export const WAIT = Symbol('wait');
+export function* shotStream(data, rid, cfg, pos, side, horizon = HORIZON, live = null, st = {}, start = 0) {
   const n = data.nikkes[rid];
-  if (!n) return [];
+  if (!n) return;
   const rule = ruleOf(data, rid, cfg.treasure);
   const gaugeMult = (1 + (cfg.gaugePct || 0) / 100)
     * (1 + atLevel(rule.selfGauge, cfg.skills) / 100);
   const unit = n.rate * gaugeMult;
-  const out = [];
-  /* 엄폐 구간 [시작, 끝] 프레임. 재장전 중, 차지 무기는 쏜 뒤 다음 차지 전까지 숨는다 (nikke.gg 아레나 메커니즘). */
-  out.cover = [];
-  const add = (f, units, flat = 0, bullets = 0) => {
-    if (f <= horizon) out.push({ f: Math.round(f), gain: units * unit + flat, units, bullets });
+  let seq = 0;
+  const buf = [];
+  const add = (f, units, flat = 0, bullets = 0, phase = 0) => {
+    if (f > horizon) return null;
+    const e = { f: Math.round(f), gain: units * unit + flat, units, bullets, phase, seq: seq++ };
+    buf.push(e);
+    return e;
   };
-  const addPeriodic = () => {
-    const p = rule.periodic;
-    if (!p) return;
-    for (let t0 = p.first; t0 <= horizon; t0 += p.every) {
-      for (const o of p.offsets) add(t0 + o, p.units);
-    }
-  };
+  function* flush() { while (buf.length) yield buf.shift(); }
+  const liveCharge = () => live?.charge?.() || [];
+  const ammoMaxNow = () => rule.noReload ? Infinity
+    : live ? magazine(n.ammo, { ...cfg, ammoParts: [...(cfg.ammoParts || (cfg.ammoPct ? [cfg.ammoPct] : [])), ...(live.ammoParts?.() || [])] }) + (live.ammoFlat?.() || 0)
+    : magazine(n.ammo, cfg);
+  /* 재장전 속도 합이 100% 를 넘으면 즉시 재장전으로 본다 (최소 1프레임) */
+  const reloadNow = () => Math.max(1, Math.round(n.reload * FPS * (1 - ((cfg.reloadPct || 0) + (live?.reload?.() || 0)) / 100)));
+
+  const p = rule.periodic;
+  if (p) for (let t0 = start + p.first; t0 <= horizon; t0 += p.every) for (const o of p.offsets) add(t0 + o, p.units, 0, 0, 1);
+  /* 무기 변경 '장탄 수 무한' 동안은 탄을 쓰지 않는다 */
+  const spend = n0 => (live?.infinite?.() ? 0 : n0);
+  yield* flush();
 
   if (n.weapon === 'MG') {
     /* 사격장 영상 3개로 확인한 연사 공식: 표기 시작 연사에서 발마다 빨라지고, 프레임당 1발이 상한이다.
        탄창을 비우면 재장전한 뒤 예열부터 다시 한다. */
     const mult = rule.hits || 1;
-    const mag = magazine(n.ammo, cfg);
-    const reloadFrames = Math.round(n.reload * FPS * (1 - (cfg.reloadPct || 0) / 100));
-    let f = 0, rpm = n.rof0, left = mag;
+    let f = start, rpm = n.rof0, fired = 0;
+    st.ammo = ammoMaxNow();
     while (f <= horizon) {
+      st.t = Math.round(f);
+      yield WAIT;
       add(f, mult, 0, 1);
-      left -= 1;
-      if (left <= 0) {
-        left = mag;
+      st.ammo -= spend(1);
+      /* 탄충 큐브: 10발 사격마다 탄환 N발 충전 (N = 큐브 수치, 큐브 레벨에 따라 1·2·3발) */
+      if (cfg.bastion && ++fired % BASTION_EVERY === 0) st.ammo += cfg.bastion;
+      yield* flush();
+      st.t = Math.round(f) + 1;
+      yield WAIT;
+      if (st.ammo <= 0) {
+        const reloadFrames = reloadNow();
+        st.ammo = ammoMaxNow();
         rpm = n.rof0;
-        out.cover.push([Math.round(f) + 1, Math.round(f + reloadFrames)]);
+        yield { cover: [Math.round(f) + 1, Math.round(f + reloadFrames)] };
         f += reloadFrames;
       } else {
+        st.ammo = Math.min(st.ammo, ammoMaxNow());
         f += Math.max(FPS * 60 / rpm, 1);
-        rpm = Math.min(n.rof, rpm + n.rofStep);
+        /* 머신건 예열 속도 ▲/▼ 는 발마다 오르는 연사 폭을 바꾼다 */
+        rpm = Math.min(n.rof, rpm + n.rofStep * Math.max(0, 1 + (live?.warm?.() || 0) / 100));
       }
     }
-    addPeriodic();
-    return out;
+    return;
   }
 
   const speeds = cfg.chargeValues || [];
   const charged = n.charge > 0 || rule.first != null;
   const baseCharge = rule.baseCharge ?? n.charge;
   const chargeFrames = extra => {
+    const fix = live?.chargeFix?.();
+    if (fix != null) return fix;
     if (rule.fixedCharge) return baseCharge;
-    const cut = chargeCut(sumChargeSpeed([...speeds, ...extra]));
-    return Math.max(1, baseCharge - cut * (rule.chargeScale || 1));
+    const all = [...speeds, ...extra, ...liveCharge()];
+    const cut = chargeCut(sumChargeSpeed(all));
+    return Math.max(1, (baseCharge - cut * (rule.chargeScale || 1)) * (1 + slowOf(all) / 100));
   };
   const recover = rule.recover ?? 16;
   const land = cfg.noLand ? 0
     : rule.land ?? (n.weapon === 'RL' && rule.first == null ? landDelay(pos, side) : 0);
-  const ammoMax = rule.noReload ? Infinity
-    : magazine(n.ammo, cfg);
-  const reload = Math.round(n.reload * FPS * (1 - (cfg.reloadPct || 0) / 100));
 
   const hitsPerShot = rule.hits ?? baseUnits(n);
   const flat = atLevel(rule.flat, cfg.skills);
@@ -143,20 +168,37 @@ export function nikkeEvents(data, rid, cfg, pos, side, horizon = HORIZON) {
   const everyHits = rule.everyHits || [];
   const everyShots = rule.everyShots || [];
   const hitCounters = everyHits.map(() => 0);
-  let t = charged ? (rule.first ?? chargeFrames([])) : (rule.first ?? 0);
-  let ammo = ammoMax;
-  let shots = 0;
+  let t = start + (charged ? (rule.first ?? chargeFrames([])) : (rule.first ?? 0));
+  st.ammo = ammoMaxNow();
+  let shots = 0, fired = 0;
   let dotStart = null;
+  const dot = rule.dot || rule.dotAfterHits;
+  const startDot = f0 => {
+    dotStart = f0;
+    for (let f = dotStart + dot.every; f <= horizon; f += dot.every) add(f, dot.units, 0, 0, 2);
+  };
 
   while (t + land <= horizon) {
+    st.t = Math.floor(t);
+    yield WAIT;
     shots += 1;
-    const units = shots === 1 && rule.firstHits != null ? rule.firstHits
+    /* 펠릿 개수 ▲ (샷건) - 타격 단위와 대미지가 펠릿 수에 비례한다 */
+    /* 펠릿 개수 N개로 고정(도로시 : 세렌디피티)이면 늘린 펠릿 대신 그 수 */
+    const fixP = n.weapon === 'SG' ? live?.pelletFix?.() : null;
+    const pellets = n.weapon === 'SG' && live?.pellets ? live.pellets() * n.muzzle : 0;
+    const base0 = shots === 1 && rule.firstHits != null ? rule.firstHits
       : rule.pattern ? rule.pattern[(shots - 1) % rule.pattern.length]
       : hitsPerShot;
-    const seq = rule.seq || [[0, units]];
-    seq.forEach(([offset, u], i) => add(t + land + offset, u, i === 0 ? flat : 0, i === 0 || rule.seqBullets ? 1 : 0));
+    const units = fixP != null ? fixP * n.muzzle : base0 + pellets;
+    const seq0 = rule.seq || [[0, units]];
+    let lastShot = null;
+    seq0.forEach(([offset, u], i) => {
+      const e = add(t + land + offset, u, i === 0 ? flat : 0, i === 0 || rule.seqBullets ? 1 : 0);
+      if (e && units !== base0 && n.weapon === 'SG' && !rule.seq) e.pelletMul = units / base0;
+      if (e?.bullets) lastShot = e;
+    });
 
-    const landed = seq.reduce((sum, [, u]) => sum + u, 0);
+    const landed = seq0.reduce((sum, [, u]) => sum + u, 0);
     if (shots === 1 && rule.firstExtra) add(t + land, rule.firstExtra);
     if (rule.firstShotsExtra && shots <= rule.firstShotsExtra.n) add(t + land, rule.firstShotsExtra.units);
     everyHits.forEach((rowRule, i) => {
@@ -169,33 +211,45 @@ export function nikkeEvents(data, rid, cfg, pos, side, horizon = HORIZON) {
     for (const row of everyShots) {
       if (shots % row.n === 0) add(t + land + (row.delay || 0), row.units);
     }
-    if (rule.dot && dotStart == null) dotStart = t + land;
-    if (rule.dotAfterHits && dotStart == null) {
-      const total = (shots) * landed;
-      if (total >= rule.dotAfterHits.n) dotStart = t + land;
-    }
 
-    ammo -= 1;
-    if (ammo <= 0) {
-      const lastShot = out.findLast(e => e.bullets);
-      if (lastShot) lastShot.last = true;
+    /* 탄은 공격 한 번에 1발 - 일제 사격(seqBullets, 베스티 : 택티컬 업 4발)은 발마다 1발씩 쓴다 */
+    const used = rule.seqBullets ? seq0.length : 1;
+    st.ammo -= spend(used);
+    if (cfg.bastion) {
+      st.ammo += (Math.floor((fired + used) / BASTION_EVERY) - Math.floor(fired / BASTION_EVERY)) * cfg.bastion;
+      fired += used;
     }
-    if (ammo <= 0 && rule.lastBullet) add(t + land + 12, rule.lastBullet);
+    if (st.ammo <= 0 && lastShot) lastShot.last = true;
+    if (st.ammo <= 0 && rule.lastBullet) add(t + land + 12, rule.lastBullet);
 
     if (rule.stream && shots >= rule.stream.after) {
       const s = rule.stream;
       /* 연사 탄창은 무기가 바뀌는 순간의 최대 장탄 (라플라스 : 얼티밋 히어로 S1 '사용 무기 변경 시 최대 장탄 수 효과 갱신') */
       const count = magazine(s.count, cfg);
       for (let k = 1; k <= count; k++) {
-        const f = t + land + k * s.every;
-        if (f <= horizon) {
-          out.push({ f: Math.round(f), gain: s.gain * gaugeMult, units: 0, bullets: 1,
-            streamPct: atLevel(s.pct, cfg.skills) / 100 });
-        }
+        const e = add(t + land + k * s.every, 0, 0, 1);
+        if (e) { e.gain = s.gain * gaugeMult; e.streamPct = atLevel(s.pct, cfg.skills) / 100; }
       }
-      break;
+    }
+    if (dot && dotStart == null) {
+      if (rule.dot) startDot(t + land);
+      else if (shots * landed >= rule.dotAfterHits.n) startDot(t + land);
+    }
+    yield* flush();
+    if (rule.stream && shots >= rule.stream.after) {
+      /* 연사를 다 쏘면 남은 탄환이 제거되어 재장전하고, 예열(차지 속도 중첩)부터 다시 쌓는다 (라플라스 : 얼티밋 히어로 S1) */
+      const end = t + land + rule.stream.every * magazine(rule.stream.count, cfg);
+      const reload = reloadNow();
+      yield { cover: [Math.round(end) + 1, Math.round(end + reload)] };
+      t = end + reload + chargeFrames([]);
+      shots = 0;
+      st.ammo = ammoMaxNow();
+      continue;
     }
 
+    /* 다음 사격은 한 프레임 뒤에 정한다 - 이번 사격의 탄환 충전(스킬)이 먼저 들어가야 재장전 여부가 맞다 */
+    st.t = Math.floor(t) + 1;
+    yield WAIT;
     const extra = [];
     if (rule.chargeAfterFirst) extra.push(atLevel(rule.chargeAfterFirst, cfg.skills));
     if (rule.chargeRamp) extra.push(rule.chargeRamp * Math.min(shots, 4));
@@ -205,34 +259,52 @@ export function nikkeEvents(data, rid, cfg, pos, side, horizon = HORIZON) {
     }
     /* rampGaps: 차지 속도 옵션이 없을 때 실측한 풀 차지 사이 간격(N발째 -> N+1발째). 옵션이 있으면 그 몫만큼 당긴다. */
     const measured = rule.rampGaps?.[shots - 1];
-    const next = !charged ? interval
+    /* 공격 속도 ▲ 는 차지 없는 무기의 공격 간격을 줄인다 */
+    const fix = live?.chargeFix?.();
+    const next = !charged ? Math.max(1, Math.round(interval / (1 + (live?.rof?.() || 0) / 100)))
+      : fix != null ? fix + (rule.cycle != null ? rule.cycle - baseCharge : recover)
       : measured != null
-        ? Math.max(1, measured - (chargeCut(sumChargeSpeed([...speeds, ...extra])) - chargeCut(sumChargeSpeed(extra))) * (rule.chargeScale || 1))
+        ? Math.max(1, measured - (chargeCut(sumChargeSpeed([...speeds, ...extra, ...liveCharge()])) - chargeCut(sumChargeSpeed(extra))) * (rule.chargeScale || 1))
         : (rule.cycle ?? (chargeFrames(extra) + recover));
 
-    if (ammo <= 0) {
-      ammo = ammoMax;
-      out.cover.push([Math.round(t) + 1, Math.round(t + reload)]);
+    if (st.ammo <= 0) {
+      const reload = reloadNow();
+      st.ammo = ammoMaxNow();
+      yield { cover: [Math.round(t) + 1, Math.round(t + reload)] };
       t += reload + (charged ? chargeFrames(extra) : 0);
     } else {
+      st.ammo = Math.min(st.ammo, ammoMaxNow());
       /* 연속 차지 사격 니케(연사 속도 rof > 60)와 rule.noCover 니케는 사격 사이에 엄폐하지 않고 바로 다음 차지에 들어간다. */
-      if (charged && !((n.rof ?? 60) > 60) && !rule.noCover) out.cover.push([Math.round(t) + 1, Math.round(t + Math.min(recover, next))]);
+      if (charged && !((n.rof ?? 60) > 60) && !rule.noCover) yield { cover: [Math.round(t) + 1, Math.round(t + Math.min(recover, next))] };
       t += next;
     }
   }
+}
 
-  addPeriodic();
-  const dot = rule.dot || rule.dotAfterHits;
-  if (dot && dotStart != null) {
-    for (let f = dotStart + dot.every; f <= horizon; f += dot.every) add(f, dot.units);
+/* 니케 한 명의 충전 이벤트 전부 (전투 밖 타임라인용). 순서는 사격, 주기 충전, 지속 대미지. */
+export function nikkeEvents(data, rid, cfg, pos, side, horizon = HORIZON) {
+  const out = [];
+  out.cover = [];
+  for (const e of shotStream(data, rid, cfg, pos, side, horizon)) {
+    if (e === WAIT) continue;
+    if (e.cover) out.cover.push(e.cover);
+    else out.push(e);
   }
-  return out;
+  const sorted = out.map((e, i) => [e, i]).sort((a, b) => a[0].phase - b[0].phase || a[1] - b[1]).map(x => x[0]);
+  sorted.cover = out.cover;
+  return sorted;
 }
 
 /* 체인 순서 - P1 부터 차례로 훑어 그 단계를 쓸 수 있는 첫 니케를 고른다. 전 단계 버스트(레드 후드)도 후보이고, out(pos) 가 참인 칸은 뺀다.
    재진입 니케는 순수하게 그 단계인 다른 니케가 있어야 이어진다. 필수 재진입(티아 등)이 없으면 체인이 끊기고, 아니스 : 스타는 건너뛴다. */
 export function burstChain(data, team, out = () => false) {
-  const slots = team.map((s, pos) => (s?.rid ? { ...s, pos, step: data.nikkes[s.rid]?.step } : null))
+  /* assistStep: 기본 버스트 단계가 그 단계인 다른 아군이 없으면 그 단계로 바뀐다 (라피 : 레드 후드 전투 보조) */
+  const base = team.map(s => s?.rid && data.nikkes[s.rid]?.step);
+  const stepOf = (rid, pos) => {
+    const n = data.nikkes[rid];
+    return n?.assistStep && !base.some((b, i) => i !== pos && b === n.assistStep) ? n.assistStep : n?.step;
+  };
+  const slots = team.map((s, pos) => (s?.rid ? { ...s, pos, step: stepOf(s.rid, pos) } : null))
     .filter(x => x && !out(x.pos));
   const used = new Set();
   const take = test => {
@@ -410,9 +482,14 @@ export function soloGainAt(data, rid, cfg, frame, pos = 0, side = 'attack') {
   return events.reduce((sum, e) => sum + e.gain + aura * e.units, 0);
 }
 
-/* 시뮬레이터가 쓰는 큐브 효과. 수치는 data.cubes[tid].values (data/cubes.json, 큐브 레벨 1~15). */
-const CUBE_EFFECT = { 1000303: 'reload', 1000305: 'charge', 1000306: 'ammo', 1000307: 'gauge',
-  1000311: 'reduce', 1000316: 'coverHp' };
+/* 탄충 큐브의 사격 수 조건 (원문 '10발 사격 시') */
+const BASTION_EVERY = 10;
+
+/* 시뮬레이터가 쓰는 큐브 효과. 수치는 data.cubes[tid].values (data/cubes.json, 큐브 레벨 1~15).
+   명중(엔진은 모든 탄이 명중)·파츠(아레나에 파츠 없음) 큐브는 전투 효과가 없고 스탯만 전투력 계산에 들어간다. */
+const CUBE_EFFECT = { 1000302: 'chargeDmg', 1000303: 'reload', 1000304: 'bastion', 1000305: 'charge', 1000306: 'ammo', 1000307: 'gauge',
+  1000308: 'hpPct', 1000309: 'defPct', 1000310: 'healGiven', 1000311: 'reduce', 1000312: 'lowHp', 1000314: 'pierce', 1000315: 'ignore',
+  1000316: 'coverHp', 1000317: 'split', 1000318: 'maxOnly' };
 
 /* 무기군 소장품 효과 { chargeMul, def, reduce, coverHp, ... } (%). data.collection 은 data/weapons.json 의 collection.
    애장품은 SR 15 와 같다. kind: 'R' | 'SR' | '애장품' | 'none', level: 0~15 */
@@ -458,6 +535,16 @@ export function configFromRoster(data, entry, weapon) {
     if (effect === 'reload') cfg.reloadPct = value;
     if (effect === 'reduce') cfg.cubeReduce = value;
     if (effect === 'coverHp') cfg.coverCasterPct = value;
+    if (effect === 'chargeDmg') cfg.cubeChargeDmg = value;
+    if (effect === 'bastion') cfg.bastion = Math.round(value);
+    if (effect === 'hpPct') cfg.cubeHpPct = value;
+    if (effect === 'defPct') cfg.cubeDefPct = value;
+    if (effect === 'healGiven') cfg.cubeHealGiven = value;
+    if (effect === 'pierce') cfg.cubePierce = value;
+    if (effect === 'ignore') cfg.cubeIgnore = value;
+    if (effect === 'lowHp') cfg.cubeLowHp = value;
+    if (effect === 'split') cfg.cubeSplit = value;
+    if (effect === 'maxOnly') cfg.cubeMaxOnly = value;
   }
   cfg.doll = weapon ? collectionEffects(data, weapon, entry.collection?.kind, entry.collection?.level) : {};
   if (cfg.doll.ammo) cfg.ammoParts.push(cfg.doll.ammo);
